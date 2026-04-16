@@ -151,6 +151,150 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Enemy">
       <UniqueIdentifier>{2563cef2-c339-442e-b3ea-de0daa753818}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase">
+      <UniqueIdentifier>{cd514c39-16d2-4951-9bf8-6f444a7bedd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\UIBase\PlayerStatusUIBase">
+      <UniqueIdentifier>{0632c335-22fa-42a3-92ab-5b3620db6cd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ItemBase">
+      <UniqueIdentifier>{90996708-c25f-49f3-bba4-9651fcfcff11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\SceneBase">
+      <UniqueIdentifier>{06f91ff4-b509-4667-9a46-55a86817cdfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Item\HPItem">
+      <UniqueIdentifier>{e1424067-b51b-4707-8bce-25b8e7133f4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Item\StaminaItem">
+      <UniqueIdentifier>{a1344b35-dbe8-459a-89c0-30d2a973d63e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\CameraManager">
+      <UniqueIdentifier>{4873c271-cfe0-465e-bf88-4f7f5957c52f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\ItemManager">
+      <UniqueIdentifier>{6fa154a1-01d0-477b-9a39-6e8e09de8b28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\SceneManager">
+      <UniqueIdentifier>{2677a52f-b054-4e17-8697-fc8cd4ca2eb7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Sky">
+      <UniqueIdentifier>{b50963ee-3805-4a55-832d-f4ce43f9a833}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\BossArea">
+      <UniqueIdentifier>{c8a606fb-e8bb-45bb-b8f1-e7b0ad739657}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Actor\Character\Player">
+      <UniqueIdentifier>{3578da23-2f79-4b9e-8c2c-eab42ef18fde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Actor\Character\Enemy\Boss">
+      <UniqueIdentifier>{051aeba9-c608-40f1-a137-31a7ba043894}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\PlayerStatusUI\HitPoints">
+      <UniqueIdentifier>{13d8248b-2b0e-4f7b-b249-daaf6ce26753}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\PlayerStatusUI\SkillPoints">
+      <UniqueIdentifier>{20206553-afea-45bb-9e82-7f4a30c85e20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\PlayerStatusUI\Stamina">
+      <UniqueIdentifier>{f81308a9-a538-4a5d-88d0-66c194c5ba6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Result\Result">
+      <UniqueIdentifier>{1225f4cf-ac73-4e42-a475-c5e394bc7992}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Result\ResultNum">
+      <UniqueIdentifier>{5f541856-bd56-4197-8103-5ba7bbb51f54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\MainScene">
+      <UniqueIdentifier>{c2bbe998-763d-497a-8607-bd6b79663df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\ResultScene">
+      <UniqueIdentifier>{a0d57502-c798-418f-bf7d-eb1bf50db283}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\SelectScene">
+      <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\TitleScene">
+      <UniqueIdentifier>{330096bb-2b26-4006-8cc8-6e7a6716cfd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\Target">
+      <UniqueIdentifier>{2f790b81-5ccf-4e83-9c3d-81c1f59f7d3c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\UIFrame">
+      <UniqueIdentifier>{1c451909-c6c5-41d5-b7f7-1be0aa2bfecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase">
+      <UniqueIdentifier>{148fbc58-843b-4a40-b480-3ab2e34a5abf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ItemBase">
+      <UniqueIdentifier>{1197ab85-0aea-4d72-9735-bee0b95b8b7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\UIBase\PlayerStatusUIBase">
+      <UniqueIdentifier>{60c75f93-e497-4c87-bd7d-d8db10a59611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\SceneBase">
+      <UniqueIdentifier>{89a2546e-8ddb-4873-bab9-4b3523fdfe37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Item\HPItem">
+      <UniqueIdentifier>{716edf0b-d0db-4e41-9874-fcbd8192f37f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Item\StaminaItem">
+      <UniqueIdentifier>{4fa090e6-1e00-4379-ac4c-c8d863633035}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\CameraManager">
+      <UniqueIdentifier>{a3c73600-cf22-4d2b-8d80-4e9d95e0ed6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\ItemManager">
+      <UniqueIdentifier>{2dc7fda2-c738-400c-91eb-d6d311769ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\SceneManager">
+      <UniqueIdentifier>{374df105-31b3-423b-81c9-05d96f0f20c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Boss">
+      <UniqueIdentifier>{c58431e4-e6ce-4865-8dbf-c92a46df3ad9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Player">
+      <UniqueIdentifier>{b8299d39-f063-4a7c-99b7-0b83c6b5a02d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\BossArea">
+      <UniqueIdentifier>{03a95856-6421-4df1-ab57-8b650f4ef3a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Sky">
+      <UniqueIdentifier>{cbcfe912-a9a8-4ba9-8914-d031d027cd5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\PlayerStatusUI\HitPoints">
+      <UniqueIdentifier>{f384e6b6-847f-40d2-981b-8cb368c7eda3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\PlayerStatusUI\SkillPoints">
+      <UniqueIdentifier>{e204247b-583f-4277-b01f-f5b4a7060e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\PlayerStatusUI\Stamina">
+      <UniqueIdentifier>{8584b80f-f609-4f68-b05f-b9100fe7b9c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Result\Result">
+      <UniqueIdentifier>{2b083088-2659-4213-8f9c-57b27cd732e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Result\ResultNum">
+      <UniqueIdentifier>{013c4683-1a13-44d8-9201-39a352fd74e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\MainScene">
+      <UniqueIdentifier>{d5022ea7-909c-4c92-af01-ca5fcff0bb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\ResultScene">
+      <UniqueIdentifier>{c2f8a092-2f84-4ff4-a77f-26cadfc76c49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\SelectScene">
+      <UniqueIdentifier>{d6396c7a-97de-4daf-9e73-d7656f3d5aa4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\TitleScene">
+      <UniqueIdentifier>{1f6fa5a4-5678-455f-a225-566e9c08891e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\UI\Target">
+      <UniqueIdentifier>{26b3217e-b866-4f02-b99e-87369ab1c37e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\UI\UIFrame">
+      <UniqueIdentifier>{0e3a04cb-a00f-457f-86ab-b54257e8a661}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -168,18 +312,6 @@
     <ClCompile Include="Source\Lib\Math\MyMath.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Scene\Result\ResultScene.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp">
-      <Filter>ソース ファイル\Game\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp">
-      <Filter>ソース ファイル\Game\Base</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputPad.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
@@ -188,12 +320,6 @@
     </ClCompile>
     <ClCompile Include="Source\Game\Camera\Play\PlayCamera.cpp">
       <Filter>ソース ファイル\Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Camera\Debug\DebugCamera.cpp">
-      <Filter>ソース ファイル\Game\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp">
-      <Filter>ソース ファイル\Game\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Effekseer\effekseer.cpp">
       <Filter>ソース ファイル\Effekseer</Filter>
@@ -207,83 +333,98 @@
     <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Scene\Select\SelectScene.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Select\Select.cpp">
       <Filter>ソース ファイル\Game\Select</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Title\Title.cpp">
       <Filter>ソース ファイル\Game\Title</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Result\ResultNum.cpp">
-      <Filter>ソース ファイル\Game\Result</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Item\ItemBase.cpp">
-      <Filter>ソース ファイル\Game\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Item\HP\HPItem.cpp">
-      <Filter>ソース ファイル\Game\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Item\Stamina\StaminaItem.cpp">
-      <Filter>ソース ファイル\Game\Item</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Manager\Item\ItemManager.cpp">
-      <Filter>ソース ファイル\Game\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Effekseer\MyEffeckseer.cpp">
       <Filter>ソース ファイル\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Base\UIBase\UIBase.cpp">
-      <Filter>ソース ファイル\Game\Base</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.cpp">
-      <Filter>ソース ファイル\Game\Base\UIBase</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.cpp">
-      <Filter>ソース ファイル\Game\PlayerStatusUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.cpp">
-      <Filter>ソース ファイル\Game\PlayerStatusUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\PlayerStatusUI\Stamina\Stamina.cpp">
-      <Filter>ソース ファイル\Game\PlayerStatusUI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\UI\UIFrame\UIFrame.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\UI\Target\Target.cpp">
-      <Filter>ソース ファイル\Game\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Object\Sky\Sky.cpp">
-      <Filter>ソース ファイル\Game\Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp">
-      <Filter>ソース ファイル\Game\Object\Actor\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp">
+    <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp">
       <Filter>ソース ファイル\Game\Base\ObjectBase</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Scene\Main\MainScene.cpp">
-      <Filter>ソース ファイル\Game\Scene</Filter>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Result\Result.cpp">
-      <Filter>ソース ファイル\Game\Result</Filter>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp">
-      <Filter>ソース ファイル\Game\Object</Filter>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.cpp">
-      <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy</Filter>
+    <ClCompile Include="Source\Game\Base\UIBase\UIBase.cpp">
+      <Filter>ソース ファイル\Game\Base\UIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.cpp">
+      <Filter>ソース ファイル\Game\Base\UIBase\PlayerStatusUIBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Item\ItemBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ItemBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp">
+      <Filter>ソース ファイル\Game\Base\SceneBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Item\HP\HPItem.cpp">
+      <Filter>ソース ファイル\Game\Item\HPItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Item\Stamina\StaminaItem.cpp">
+      <Filter>ソース ファイル\Game\Item\StaminaItem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\Item\ItemManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\ItemManager</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Manager\Scene\SceneManager.cpp">
-      <Filter>ソース ファイル\Game\Manager</Filter>
+      <Filter>ソース ファイル\Game\Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Sky\Sky.cpp">
+      <Filter>ソース ファイル\Game\Object\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp">
+      <Filter>ソース ファイル\Game\Object\BossArea</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp">
+      <Filter>ソース ファイル\Game\Object\Actor\Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.cpp">
+      <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.cpp">
+      <Filter>ソース ファイル\Game\PlayerStatusUI\HitPoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.cpp">
+      <Filter>ソース ファイル\Game\PlayerStatusUI\SkillPoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\PlayerStatusUI\Stamina\Stamina.cpp">
+      <Filter>ソース ファイル\Game\PlayerStatusUI\Stamina</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Result\Result.cpp">
+      <Filter>ソース ファイル\Game\Result\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Result\ResultNum.cpp">
+      <Filter>ソース ファイル\Game\Result\ResultNum</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Main\MainScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\MainScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Result\ResultScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Select\SelectScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\SelectScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\UI\Target\Target.cpp">
+      <Filter>ソース ファイル\Game\UI\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\UI\UIFrame\UIFrame.cpp">
+      <Filter>ソース ファイル\Game\UI\UIFrame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -305,29 +446,11 @@
     <ClInclude Include="Source\Lib\Math\MyMath.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Scene\Result\ResultScene.h">
-      <Filter>ヘッダー ファイル\Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Scene\Title\TitleScene.h">
-      <Filter>ヘッダー ファイル\Game\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h">
-      <Filter>ヘッダー ファイル\Game\Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Base\Scene\SceneBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputPad.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Camera\Play\PlayCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Camera\Debug\DebugCamera.h">
-      <Filter>ヘッダー ファイル\Game\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h">
-      <Filter>ヘッダー ファイル\Game\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Sound\SoundManager.h">
       <Filter>ヘッダー ファイル\Game\Sound</Filter>
@@ -341,83 +464,98 @@
     <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Scene\Select\SelectScene.h">
-      <Filter>ヘッダー ファイル\Game\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Select\Select.h">
       <Filter>ヘッダー ファイル\Game\Select</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Title\Title.h">
       <Filter>ヘッダー ファイル\Game\Title</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Result\ResultNum.h">
-      <Filter>ヘッダー ファイル\Game\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Result\Result.h">
-      <Filter>ヘッダー ファイル\Game\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Base\Item\ItemBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Item\HP\HPItem.h">
-      <Filter>ヘッダー ファイル\Game\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h">
-      <Filter>ヘッダー ファイル\Game\Item</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Manager\Item\ItemManager.h">
-      <Filter>ヘッダー ファイル\Game\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Effekseer\MyEffeckseer.h">
       <Filter>ヘッダー ファイル\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\UIBase\UIBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace</Filter>
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Item\ItemBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ItemBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\UIBase\PlayerStatusUIBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Scene\SceneBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\SceneBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\UIBase\UIBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\UIBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.h">
-      <Filter>ヘッダー ファイル\Game\PlayerStatusUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.h">
-      <Filter>ヘッダー ファイル\Game\PlayerStatusUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\PlayerStatusUI\Stamina\Stamina.h">
-      <Filter>ヘッダー ファイル\Game\PlayerStatusUI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\UI\UIFrame\UIFrame.h">
-      <Filter>ヘッダー ファイル\Game\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\UI\Target\Target.h">
-      <Filter>ヘッダー ファイル\Game\UI</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Base\Object\ObjectBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h">
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h">
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Sky\Sky.h">
-      <Filter>ヘッダー ファイル\Game\Object</Filter>
+    <ClInclude Include="Source\Game\Item\HP\HPItem.h">
+      <Filter>ヘッダー ファイル\Game\Item\HPItem</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h">
-      <Filter>ヘッダー ファイル\Game\Object\Actor\Character</Filter>
+    <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h">
+      <Filter>ヘッダー ファイル\Game\Item\StaminaItem</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Scene\Main\MainScene.h">
-      <Filter>ヘッダー ファイル\Game\Scene</Filter>
+    <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\CameraManager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\BossArea\BossArea.h">
-      <Filter>ヘッダー ファイル\Game\Object</Filter>
+    <ClInclude Include="Source\Game\Manager\Item\ItemManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\ItemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.h">
-      <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy</Filter>
+      <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h">
+      <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\BossArea\BossArea.h">
+      <Filter>ヘッダー ファイル\Game\Object\BossArea</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Sky\Sky.h">
+      <Filter>ヘッダー ファイル\Game\Object\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.h">
+      <Filter>ヘッダー ファイル\Game\PlayerStatusUI\HitPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.h">
+      <Filter>ヘッダー ファイル\Game\PlayerStatusUI\SkillPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\PlayerStatusUI\Stamina\Stamina.h">
+      <Filter>ヘッダー ファイル\Game\PlayerStatusUI\Stamina</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Result\Result.h">
+      <Filter>ヘッダー ファイル\Game\Result\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Result\ResultNum.h">
+      <Filter>ヘッダー ファイル\Game\Result\ResultNum</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Main\MainScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\MainScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Result\ResultScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\ResultScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Select\SelectScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\SelectScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Title\TitleScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\UI\Target\Target.h">
+      <Filter>ヘッダー ファイル\Game\UI\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\UI\UIFrame\UIFrame.h">
+      <Filter>ヘッダー ファイル\Game\UI\UIFrame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
