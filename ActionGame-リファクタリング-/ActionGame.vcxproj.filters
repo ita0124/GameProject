@@ -426,6 +426,9 @@
     <ClCompile Include="Source\Game\UI\UIFrame\UIFrame.cpp">
       <Filter>ソース ファイル\Game\UI\UIFrame</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp">
+      <Filter>ソース ファイル\Game\HitCheck</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -556,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\UI\UIFrame\UIFrame.h">
       <Filter>ヘッダー ファイル\Game\UI\UIFrame</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\HitCheck\HitCheck.h">
+      <Filter>ヘッダー ファイル\Game\HitCheck</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -166,6 +166,7 @@
     <ClCompile Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.cpp" />
     <ClCompile Include="Source\Game\Base\UIBase\UIBase.cpp" />
     <ClCompile Include="Source\Game\Camera\Play\PlayCamera.cpp" />
+    <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp" />
     <ClCompile Include="Source\Game\Item\HP\HPItem.cpp" />
     <ClCompile Include="Source\Game\Item\Stamina\StaminaItem.cpp" />
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.h" />
     <ClInclude Include="Source\Game\Base\UIBase\UIBase.h" />
     <ClInclude Include="Source\Game\Camera\Play\PlayCamera.h" />
+    <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
     <ClInclude Include="Source\Game\Item\HP\HPItem.h" />
     <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h" />
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />
