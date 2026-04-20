@@ -23,9 +23,16 @@ protected:
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
+	float		m_Gravity;		//重力
+	bool		m_IsFlying;		//空中判定
+	bool		m_IsGravity;	//重力処理をするか
+	ObjectBase* m_Owner;		//オーナーオブジェクト
 
 	int			m_EffectHndl;	//エフェクトハンドル
 	bool		m_IsEffect;		//エフェクト出現判定
+
+	//重力処理
+	void Gravity();
 public:
 	//コンストラクタ
 	ObjectBase();
@@ -86,4 +93,8 @@ public:
 	//Add
 	//座標加算
 	void		AddPos(VECTOR _Pos) { m_Pos = VAdd(m_Pos, _Pos); }
+
+	//Reset
+	//重力リセット
+	virtual void GravityReset();
 };

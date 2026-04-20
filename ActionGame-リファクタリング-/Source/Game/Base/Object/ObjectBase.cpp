@@ -1,5 +1,10 @@
 #include "ObjectBase.h"
 
+namespace {
+	const float	GRAVITY = -0.1f;			//重力
+	const float	GRAVITY_MAX = 5.0f;		//最大重力
+}
+
 //コンストラクタ
 ObjectBase::ObjectBase() {
 	m_Hndl = -1;		//画像ハンドル
@@ -12,14 +17,18 @@ ObjectBase::~ObjectBase() {
 }
 //初期化処理
 void ObjectBase::Init() {
-	m_Pos = VZERO;		//座標
-	m_Rot = VZERO;		//回転率
-	m_Scale = VONE;		//拡縮
-	m_Size = VZERO;		//サイズ
-	m_Rad=FZERO;		//半径
-	m_IsActive = true;	//生存フラグ
+	m_Pos = VZERO;			//座標
+	m_Rot = VZERO;			//回転率
+	m_Scale = VONE;			//拡縮
+	m_Size = VZERO;			//サイズ
+	m_Rad = FZERO;			//半径
+	m_IsActive = true;		//生存フラグ
+	m_Gravity = 0.0f;		//重力
+	m_IsFlying = false;		//空中判定
+	m_IsGravity = false;	//重力処理をするか
+	m_Owner = nullptr;		//オーナーオブジェクト
 
-	m_EffectHndl=-1;	//エフェクトハンドル
+	m_EffectHndl = -1;	//エフェクトハンドル
 	m_IsEffect = false;	//エフェクト出現判定
 
 	m_Kinds = Object;	//種類設定
@@ -62,4 +71,13 @@ VECTOR ObjectBase::GetCenter() {
 	Res.y += m_Rad;
 
 	return Res;
+}
+//重力リセット
+void ObjectBase::GravityReset() {
+	m_Gravity = 0.0f;
+	m_IsFlying = false;
+}
+//重力処理
+void ObjectBase::Gravity() {
+	m_Gravity += GRAVITY;
 }
