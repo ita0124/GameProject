@@ -204,6 +204,7 @@ int MainScene::Step() {
 	CameraStep();
 	PlayerStep();
 	EnemyStep();
+	HitCheck();
 
 	Update();
 
@@ -243,4 +244,8 @@ void MainScene::EnemyStep() {
 //ƒJƒƒ‰ŠÖ˜AStep
 void MainScene::CameraStep() {
 	m_CameraManager.Step(m_Player.GetPos(),VZERO,false);
+}
+//“–‚½‚è”»’èŠÖŒW
+void MainScene::HitCheck() {
+	HitCheck::CollToObject(m_BossArea,m_Player);
 }

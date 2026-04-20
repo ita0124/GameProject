@@ -81,6 +81,8 @@ private:
 	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
 
+	float		m_JumpCalc;									//ジャンプ力計算
+
 	//待機
 	void Wait();
 	//ダメージ食らい

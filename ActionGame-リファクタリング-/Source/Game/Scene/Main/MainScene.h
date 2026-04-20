@@ -13,6 +13,7 @@
 #include "Game/UI/Target/Target.h"
 #include "Game/UI/UIFrame/UIFrame.h"
 #include "Game/Result/ResultNum.h"
+#include "Game/HitCheck/HitCheck.h"
 
 
 namespace {
@@ -69,4 +70,6 @@ private:
 	void EnemyStep();
 	//ƒJƒƒ‰ŠÖ˜AStep
 	void CameraStep();
+	//“–‚½‚è”»’èŠÖŒW
+	void HitCheck();
 };

@@ -1,8 +1,8 @@
 #include "ObjectBase.h"
 
 namespace {
-	const float	GRAVITY = -0.1f;			//重力
-	const float	GRAVITY_MAX = 5.0f;		//最大重力
+	const float	GRAVITY = -0.05f;			//重力
+	const float	GRAVITY_MAX = -2.5f;		//最大重力
 }
 
 //コンストラクタ
@@ -24,7 +24,6 @@ void ObjectBase::Init() {
 	m_Rad = FZERO;			//半径
 	m_IsActive = true;		//生存フラグ
 	m_Gravity = 0.0f;		//重力
-	m_IsFlying = false;		//空中判定
 	m_IsGravity = false;	//重力処理をするか
 	m_Owner = nullptr;		//オーナーオブジェクト
 
@@ -75,9 +74,15 @@ VECTOR ObjectBase::GetCenter() {
 //重力リセット
 void ObjectBase::GravityReset() {
 	m_Gravity = 0.0f;
-	m_IsFlying = false;
+	m_IsGravity = false;
 }
 //重力処理
 void ObjectBase::Gravity() {
+	if (!m_IsGravity)return;
+	//重力方向に加算
 	m_Gravity += GRAVITY;
+	//重力速度を制限
+	if (m_Gravity <= GRAVITY_MAX) {
+		m_Gravity = GRAVITY_MAX;
+	}
 }

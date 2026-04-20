@@ -43,6 +43,8 @@ namespace {
 	const int		ROLLING_TIME = 20;														//ローリング持続時間
 	const float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
 
+	const float		FIRST_JUMP_POWER = 5.0f;												//初回ジャンプ力
+
 	const char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
 
@@ -76,6 +78,7 @@ void Player::Init() {
 		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
+	m_JumpCalc = 0.0f;							//ジャンプ力計算
 }
 //データ読み込み処理
 void Player::Load() {
@@ -199,6 +202,25 @@ void Player::Jump() {
 	if (!m_IsAction[JUMP]) {
 		//ジャンプアクション中に変更
 		m_IsAction[JUMP] = true;
+		//重力処理オン
+		m_IsGravity = true;
+		//初回ジャンプ力設定
+		m_JumpCalc = FIRST_JUMP_POWER;
+	}
+	//重力処理がオフになったら
+	if (!m_IsGravity) {
+		//待機状態へ
+		m_State = WAIT;
+		//ジャンプアクション終了
+		m_IsAction[JUMP] = false;
+	}
+	else {
+		//現在のY座標にジャンプ力を加算
+		m_Pos.y += m_JumpCalc;
+		//重力処理
+		Gravity();
+		//ジャンプ力減衰
+		m_JumpCalc += m_Gravity;
 	}
 }
 //ガード
@@ -360,7 +382,7 @@ void Player::NormalAttack1() {
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
 	}
-	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION&& m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
+	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//通常攻撃２段目へ
 		m_State = NORMAL_ATTACK2;
 		//通常攻撃１段目アクション終了

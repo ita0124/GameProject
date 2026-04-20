@@ -24,7 +24,6 @@ protected:
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
 	float		m_Gravity;		//重力
-	bool		m_IsFlying;		//空中判定
 	bool		m_IsGravity;	//重力処理をするか
 	ObjectBase* m_Owner;		//オーナーオブジェクト
 
@@ -89,6 +88,8 @@ public:
 	void		SetRad(float _Rad) { m_Rad = _Rad; }
 	//生存フラグ
 	void		SetIsActive(bool _IsActive) { m_IsActive = _IsActive; }
+	//重力処理フラグ
+	void		SetIsGravity(bool _IsGravity) { m_IsGravity = _IsGravity; }
 
 	//Add
 	//座標加算

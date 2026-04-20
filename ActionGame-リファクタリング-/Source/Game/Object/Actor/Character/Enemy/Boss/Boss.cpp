@@ -704,6 +704,10 @@ void Boss::SpecialStart() {
 		//必殺開始アクション終了
 		m_IsAction[SPECIAL_START] = false;
 	}
+	else if (Len < SPECIAL_START_END_LEN) {
+		//座標を固定
+		m_Pos = VZERO;
+	}
 	else {
 		//正規化したものを取得
 		DirToZero = VNorm(DirToZero);

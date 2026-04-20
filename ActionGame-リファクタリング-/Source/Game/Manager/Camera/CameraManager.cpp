@@ -11,7 +11,6 @@ void CameraManager::Init() {
 	m_Target = PLAYER;
 
 	m_PlayCamera.Init();
-	m_DebugCamera.Init();
 	SetCameraNearFar(1.0f, 5000.0f);
 }
 
@@ -27,9 +26,6 @@ void CameraManager::Step(VECTOR _PlayerPos, VECTOR _TargetEnemyPos, bool _IsSPAt
 			m_PlayCamera.Step(_TargetEnemyPos, _PlayerPos, _IsSPAtk);
 		}
 		break;
-	case DEBUG:
-		m_DebugCamera.Step();
-		break;
 	}
 }
 
@@ -39,7 +35,5 @@ void CameraManager::Update() {
 	case PLAY:
 		m_PlayCamera.Update();
 		break;
-	case DEBUG:
-		m_DebugCamera.Update();
 	}
 }

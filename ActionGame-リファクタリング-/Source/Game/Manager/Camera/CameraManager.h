@@ -1,6 +1,5 @@
 #pragma once
 #include "Comon.h"
-#include "Game/Camera/Debug/DebugCamera.h"
 #include "Game/Camera/Play/PlayCamera.h"
 
 //カメラを管理するクラス
@@ -10,7 +9,6 @@ public:
 	//使用するカメラを切り替えるためのタグ
 	enum TagCamera {
 		PLAY,			//プレイカメラ
-		DEBUG,			//デバックカメラ
 
 		CAMERA_NUM
 	};
@@ -27,7 +25,6 @@ private:
 	TagPlayCamera m_Target;
 
 	PlayCamera m_PlayCamera;
-	DebugCamera m_DebugCamera;
 
 public:
 	//コンストラクタ
