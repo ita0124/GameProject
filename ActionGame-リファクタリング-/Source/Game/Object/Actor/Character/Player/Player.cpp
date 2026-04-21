@@ -1,7 +1,7 @@
 #include "Player.h"
 
 namespace {
-	const float		RAD = 5.0f;																//半径
+	const float		RAD = 10.0f;															//半径
 	const VECTOR	PLAYER_SIZE = { RAD,RAD,RAD };											//ボックス当たり判定
 
 	const float		HIT_POINTS = 100.0f;													//体力
@@ -59,6 +59,7 @@ Player::~Player() {
 //初期化処理
 void Player::Init() {
 	CharacterBase::Init();
+	m_IsPush = true;							//押し出し判定を行う
 
 	m_Rad = RAD;								//半径
 	m_Size = PLAYER_SIZE;						//ボックス当たり判定
@@ -100,9 +101,10 @@ void Player::Step() {
 	StaminaManager();
 	//状態遷移
 	StateManager();
+	//重力処理
+	GravityManager();
 }
 
-//private
 //待機
 void Player::Wait() {
 	//待機アニメーションループ再生
@@ -207,20 +209,17 @@ void Player::Jump() {
 		//初回ジャンプ力設定
 		m_JumpCalc = FIRST_JUMP_POWER;
 	}
+	//通常移動方向設定
+	if (NormalMoveVec()) {
+		//移動計算
+		MoveCalc();
+	}
 	//重力処理がオフになったら
 	if (!m_IsGravity) {
 		//待機状態へ
 		m_State = WAIT;
 		//ジャンプアクション終了
 		m_IsAction[JUMP] = false;
-	}
-	else {
-		//現在のY座標にジャンプ力を加算
-		m_Pos.y += m_JumpCalc;
-		//重力処理
-		Gravity();
-		//ジャンプ力減衰
-		m_JumpCalc += m_Gravity;
 	}
 }
 //ガード
@@ -685,3 +684,19 @@ void Player::ActionManager() {
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
 	}
 }
+//重力処理
+void Player::GravityManager() {
+	if (m_IsGravity) {
+		//現在のY座標にジャンプ力を加算
+		m_Pos.y += m_JumpCalc;
+		//重力処理
+		ObjectBase::GravityManager();
+		//ジャンプ力減衰
+		m_JumpCalc += m_Gravity;
+	}
+	else {
+		//ジャンプ力リセット
+		m_JumpCalc = 0.0f;
+	}
+}
+

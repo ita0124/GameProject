@@ -26,8 +26,6 @@ protected:
 
 	VECTOR	m_MoveVec;		//移動方向
 
-	bool	m_IsCollision;	//当たり判定実行フラグ
-
 	//アニメーション更新
 	void AnimeUpdate();
 

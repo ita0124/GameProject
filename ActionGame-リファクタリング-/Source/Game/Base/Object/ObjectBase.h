@@ -23,6 +23,8 @@ protected:
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
+	bool		m_IsCollision;	//当たり判定実行フラグ
+	bool		m_IsPush;		//押し出し判定を行うか
 	float		m_Gravity;		//重力
 	bool		m_IsGravity;	//重力処理をするか
 	ObjectBase* m_Owner;		//オーナーオブジェクト
@@ -31,7 +33,7 @@ protected:
 	bool		m_IsEffect;		//エフェクト出現判定
 
 	//重力処理
-	void Gravity();
+	virtual void GravityManager();
 public:
 	//コンストラクタ
 	ObjectBase();
@@ -55,21 +57,27 @@ public:
 
 	//Get
 	//ゲームオブジェクト種類
-	TagKinds	GetKinds()	const { return m_Kinds; }
+	TagKinds	GetKinds()			const { return m_Kinds; }
 	//座標
-	VECTOR		GetPos()	const { return m_Pos; }
+	VECTOR		GetPos()			const { return m_Pos; }
 	//回転率	
-	VECTOR		GetRot()	const { return m_Rot; }
+	VECTOR		GetRot()			const { return m_Rot; }
 	//拡縮
-	VECTOR		GetScale()	const { return m_Scale; }
+	VECTOR		GetScale()			const { return m_Scale; }
 	//サイズ
-	VECTOR		GetSize()	const { return m_Size; }
+	VECTOR		GetSize()			const { return m_Size; }
 	//ハンドル
-	int			GetHndl()	const { return m_Hndl; }
+	int			GetHndl()			const { return m_Hndl; }
 	//半径
-	float		GetRad()	const { return m_Rad; }
+	float		GetRad()			const { return m_Rad; }
 	//生存フラグ
-	bool		GetIsActive()	const { return m_IsActive; }
+	bool		GetIsActive()		const { return m_IsActive; }
+	//重力処理フラグ
+	bool		GetIsGravity()		const { return m_IsGravity; }
+	//当たり判定実行フラグ
+	bool		GetIsCollision()	const { return m_IsCollision; }
+	//押し出し判定を行うか
+	bool		GetIsPush()			const { return m_IsPush; }
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る

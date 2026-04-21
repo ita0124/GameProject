@@ -22,9 +22,11 @@ void ObjectBase::Init() {
 	m_Scale = VONE;			//拡縮
 	m_Size = VZERO;			//サイズ
 	m_Rad = FZERO;			//半径
-	m_IsActive = true;		//生存フラグ
+	m_IsActive = true;		//生存フラグオン
+	m_IsCollision = true;	//当たり判定を実行する
+	m_IsPush = false;		//押し出し判定を行わない
 	m_Gravity = 0.0f;		//重力
-	m_IsGravity = false;	//重力処理をするか
+	m_IsGravity = false;	//重力処理をしない
 	m_Owner = nullptr;		//オーナーオブジェクト
 
 	m_EffectHndl = -1;	//エフェクトハンドル
@@ -62,6 +64,16 @@ void ObjectBase::Draw() {
 	if (!m_IsActive)return;
 	MV1DrawModel(m_Hndl);				//モデル描画
 }
+//重力処理
+void ObjectBase::GravityManager() {
+	if (!m_IsGravity)return;
+	//重力方向に加算
+	m_Gravity += GRAVITY;
+	//重力速度を制限
+	if (m_Gravity <= GRAVITY_MAX) {
+		m_Gravity = GRAVITY_MAX;
+	}
+}
 //モデルの中心を取る
 VECTOR ObjectBase::GetCenter() {
 	VECTOR Res = m_Pos;
@@ -75,14 +87,4 @@ VECTOR ObjectBase::GetCenter() {
 void ObjectBase::GravityReset() {
 	m_Gravity = 0.0f;
 	m_IsGravity = false;
-}
-//重力処理
-void ObjectBase::Gravity() {
-	if (!m_IsGravity)return;
-	//重力方向に加算
-	m_Gravity += GRAVITY;
-	//重力速度を制限
-	if (m_Gravity <= GRAVITY_MAX) {
-		m_Gravity = GRAVITY_MAX;
-	}
 }

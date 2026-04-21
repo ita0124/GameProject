@@ -2,7 +2,68 @@
 
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
+	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_ObjectA.GetIsActive() || !_ObjectB.GetIsActive())return;
+	//どちらかの当たり判定実行フラグがオフになっていれば以降の処理をしない
+	if (!_ObjectA.GetIsCollision() || !_ObjectB.GetIsCollision())return;
 
+	//Aの座標取得
+	VECTOR	ObjectAPos = _ObjectA.GetCenter();
+	//Bの座標取得
+	VECTOR	ObjectBPos = _ObjectB.GetCenter();
+	//Aの半径取得
+	float	ObjectARad = _ObjectA.GetRad();
+	//Bの半径取得
+	float	ObjectBRad = _ObjectB.GetRad();
+	//Y軸を0.0fに固定
+	ObjectAPos.y = 0.0f;
+	ObjectBPos.y = 0.0f;
+
+	bool IsHit = Collision::CheckHitSphereToSphere(ObjectAPos, ObjectARad, ObjectBPos, ObjectBRad);
+
+	if (IsHit) {
+#ifdef _DEBUG
+		DrawSphere3D(ObjectAPos, ObjectARad, DIV, RED, RED, FALSE);
+		DrawSphere3D(ObjectBPos, ObjectBRad, DIV, RED, RED, FALSE);
+#endif // DEBUG
+		//Aの押し出しフラグがオンなら
+		if (_ObjectA.GetIsPush()) {
+			//BからAへの方向ベクトルを生成
+			VECTOR Dir = VSub(ObjectAPos, ObjectBPos);
+			//Y軸は考えない
+			Dir.y = 0.0f;
+			//長さ取得
+			float Len = VSize(Dir);
+			//正規化
+			Dir = VNorm(Dir);
+			//押し出す長さを取得
+			Len = (ObjectARad + ObjectBRad) - Len;
+			//方向ベクトルに押し出す長さを掛ける
+			Dir = VScale(Dir, Len);
+			//念のためY軸を0に
+			Dir.y = 0.0f;
+			//現在の座標に加算
+			_ObjectA.AddPos(Dir);
+		}
+		if (_ObjectB.GetIsPush()) {
+			//AからBへの方向ベクトルを生成
+			VECTOR Dir = VSub(ObjectBPos, ObjectAPos);
+			//Y軸は考えない
+			Dir.y = 0.0f;
+			//長さ取得
+			float Len = VSize(Dir);
+			//正規化
+			Dir = VNorm(Dir);
+			//押し出す長さを取得
+			Len = (ObjectARad + ObjectBRad) - Len;
+			//方向ベクトルに押し出す長さを掛ける
+			Dir = VScale(Dir, Len);
+			//念のためY軸を0に
+			Dir.y = 0.0f;
+			//現在の座標に加算
+			_ObjectA.AddPos(Dir);
+		}
+	}
 }
 //オブジェクト同士の攻撃当たり判定
 void HitCheck::ObjectToObjectAttack(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
@@ -32,16 +93,20 @@ void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
 			//法線の角度を取得
 			float Angle = atan2f(Normal.y, Normal.x);
 			//角度が90度の場合足元にあるかを判断する
-			if (Angle == 90.0f * (DX_PI_F / 180.0f)){
+			if (Angle == 90.0f * (DX_PI_F / 180.0f)) {
 				float fLenY = _Object.GetCenter().y - Col.Dim[Index].HitPosition.y;
 				//着地した場合重力をリセットする
-			if (_Object.GetPos().y - Col.Dim[Index].HitPosition.y < 5.0f)
+				if (_Object.GetPos().y - Col.Dim[Index].HitPosition.y < 5.0f)
 				{
 					//重力をリセット
 					_Object.GravityReset();
 				}
 			}
 		}
+	}
+	else {
+		//何も触れていなければ重力処理をオンにする
+		_Object.SetIsGravity(true);
 	}
 	//毎回データを削除
 	MV1CollResultPolyDimTerminate(Col);

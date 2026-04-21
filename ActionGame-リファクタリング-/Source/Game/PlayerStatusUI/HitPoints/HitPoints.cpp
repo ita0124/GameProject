@@ -55,11 +55,8 @@ void HitPoints::Draw() {
 	for (int i = 0; i < m_Num; i++) {
 		int X = CALC_X * i;
 		DrawRotaGraph((int)m_Pos.x + X, (int)m_Pos.y, 1.0f, 0.0f, m_Hndl[0], TRUE);
-
-		DrawFormatStringToHandle((int)8, (int)m_Pos.y - 15, ORANGE, DxLibFont::FONTHNDL_N30, "ST");
 		DrawFormatStringToHandle((int)m_Pos.x + 500, (int)m_Pos.y - 15, ORANGE, DxLibFont::FONTHNDL_N30, "%d", m_Num);
 	}
-
 	DrawFormatStringToHandle((int)10, (int)m_Pos.y - 15, GREEN, DxLibFont::FONTHNDL_N30, "HP");
 	DrawFormatStringToHandle((int)m_Pos.x + 500, (int)m_Pos.y - 15, GREEN, DxLibFont::FONTHNDL_N30, "%d", m_Num);
 }

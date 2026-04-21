@@ -18,7 +18,6 @@ void ActorBase::Init() {
 	m_AnimeData.EndFlg = true;				//アニメ終了フラグ
 
 	m_MoveVec = VZERO;							//移動方向
-	m_IsCollision = true;						//当たり判定実行フラグ
 }
 //モデル更新処理
 void ActorBase::Update() {

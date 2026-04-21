@@ -3,7 +3,7 @@
 namespace {
 	const VECTOR	INIT_POS = { 0.0f,0.0f,-500.0f };												//初期座標
 
-	const float		RAD = 5.0f;																		//半径
+	const float		RAD = 50.0f;																	//半径
 	const VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
 	const float		HIT_POINTS = 1000.0f;															//体力
@@ -16,6 +16,7 @@ namespace {
 	const float		REAR_ATTACK_MULT = -7.5f;														//後方攻撃の移動乗算値
 	const float		JUMP_MULT = 10.0f;																//ジャンプの移動乗算値
 	const float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
+	const float		SPECIALSTART_MULT = 10.0f;														//必殺開始の移動乗算値
 
 	const float		NORMAL_ATTACK1_CHANGE_MATERIAL_START = 7.0f;									//通常攻撃１段目のマテリアル変更開始フレーム
 	const float		NORMAL_ATTACK1_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃１段目のマテリアル変更終了フレーム
@@ -712,7 +713,7 @@ void Boss::SpecialStart() {
 		//正規化したものを取得
 		DirToZero = VNorm(DirToZero);
 		//1フレームで移動する距離を生成
-		DirToZero = VScale(DirToZero, CHARGE_MULT);
+		DirToZero = VScale(DirToZero, SPECIALSTART_MULT);
 		//座標に加算
 		m_Pos = VAdd(m_Pos, DirToZero);
 		//角度を計算
@@ -759,7 +760,7 @@ void Boss::Special() {
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANTCRY);
 		}
 	}
-	if (m_Pos.y<=0.0f) {
+	if (m_Pos.y <= 0.0f) {
 		//エフェクトリクエスト
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW2, m_Pos, false);
 		//エフェクトの回転角度を設定

@@ -117,7 +117,8 @@ private:
 	void StateManager();
 	//動作管理
 	void ActionManager();
-
+	//重力処理
+	void GravityManager();
 public:
 	//コンストラクタ
 	Player();

@@ -247,5 +247,6 @@ void MainScene::CameraStep() {
 }
 //“–‚½‚è”»’èŠÖŒW
 void MainScene::HitCheck() {
+	HitCheck::ObjectToObjectPush(m_Player,m_Boss);
 	HitCheck::CollToObject(m_BossArea,m_Player);
 }
