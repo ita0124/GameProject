@@ -20,16 +20,19 @@ void SceneManager::Init() {
 	if (m_Scene[SELECT] == nullptr) {
 		m_Scene[SELECT] = new SelectScene;
 	}
-	//ゲーム本編
-	if (m_Scene[MAIN] == nullptr) {
-		m_Scene[MAIN] = new MainScene;
+	//ステージ
+	if (m_Scene[STAGE] == nullptr) {
+		m_Scene[STAGE] = new StageScene;
+	}
+	//ボス
+	if (m_Scene[BOSS] == nullptr) {
+		m_Scene[BOSS] = new BossScene;
 	}
 	//リザルト
 	if (m_Scene[RESULT] == nullptr) {
 		m_Scene[RESULT] = new ResultScene;
 	}
 }
-
 //データ破棄処理
 void SceneManager::Exit() {
 	for (int i = 0; i < SCENE_NUM; i++) {
@@ -39,7 +42,6 @@ void SceneManager::Exit() {
 		}
 	}
 }
-
 //実行中繰り返し行われる処理管理関数
 int SceneManager::Loop() {
 	int Res = 0;
@@ -55,13 +57,17 @@ int SceneManager::Loop() {
 	case SELECT:
 		//終われば次へ
 		if (m_Scene[SELECT]->Loop() != 0) {
-			m_ID = MAIN;
+			m_ID = STAGE;
 		}
 		break;
-
-	case MAIN:
+	case STAGE:
 		//終われば次へ
-		if (m_Scene[MAIN]->Loop() != 0) {
+		if (m_Scene[STAGE]->Loop() != 0) {
+			m_ID = BOSS;
+		}
+	case BOSS:
+		//終われば次へ
+		if (m_Scene[BOSS]->Loop() != 0) {
 			m_ID = RESULT;
 		}
 		break;
@@ -76,7 +82,6 @@ int SceneManager::Loop() {
 
 	return Res;
 }
-
 //描画処理管理
 void SceneManager::Draw() {
 	m_Scene[m_ID]->Draw();

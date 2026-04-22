@@ -181,11 +181,11 @@
     <ClCompile Include="Source\Game\PlayerStatusUI\Stamina\Stamina.cpp" />
     <ClCompile Include="Source\Game\Result\Result.cpp" />
     <ClCompile Include="Source\Game\Result\ResultNum.cpp" />
-    <ClCompile Include="Source\Game\Scene\Main\MainScene.cpp" />
+    <ClCompile Include="Source\Game\Scene\Boss\BossScene.cpp" />
     <ClCompile Include="Source\Game\Scene\Result\ResultScene.cpp" />
     <ClCompile Include="Source\Game\Scene\Select\SelectScene.cpp" />
+    <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp" />
     <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp" />
-    <ClCompile Include="Source\Game\Select\Select.cpp" />
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp" />
     <ClCompile Include="Source\Game\Title\Title.cpp" />
     <ClCompile Include="Source\Game\UI\Target\Target.cpp" />
@@ -228,11 +228,11 @@
     <ClInclude Include="Source\Game\PlayerStatusUI\Stamina\Stamina.h" />
     <ClInclude Include="Source\Game\Result\Result.h" />
     <ClInclude Include="Source\Game\Result\ResultNum.h" />
-    <ClInclude Include="Source\Game\Scene\Main\MainScene.h" />
+    <ClInclude Include="Source\Game\Scene\Boss\BossScene.h" />
     <ClInclude Include="Source\Game\Scene\Result\ResultScene.h" />
     <ClInclude Include="Source\Game\Scene\Select\SelectScene.h" />
+    <ClInclude Include="Source\Game\Scene\Stage\StageScene.h" />
     <ClInclude Include="Source\Game\Scene\Title\TitleScene.h" />
-    <ClInclude Include="Source\Game\Select\Select.h" />
     <ClInclude Include="Source\Game\Sound\SoundManager.h" />
     <ClInclude Include="Source\Game\Title\Title.h" />
     <ClInclude Include="Source\Game\UI\Target\Target.h" />

@@ -1,4 +1,4 @@
-#include "MainScene.h"
+#include "BossScene.h"
 
 namespace {
 	const int	LOAD_TIME = 60;			//非同期処理の最低時間
@@ -13,17 +13,17 @@ namespace {
 }
 
 //コンストラクタ
-MainScene::MainScene() {
+BossScene::BossScene() {
 	//タグをINITに設定
 	m_ID = INIT;
 }
 //デストラクタ
-MainScene::~MainScene() {
+BossScene::~BossScene() {
 	//データ破棄処理管理関数呼び出す
 	Exit();
 }
 //シーン中繰り返し行う処理
-int	MainScene::Loop() {
+int	BossScene::Loop() {
 	int Res = 0;
 
 	switch (m_ID)
@@ -92,7 +92,7 @@ int	MainScene::Loop() {
 	return Res;
 }
 //描画処理管理関数
-void MainScene::Draw() {
+void BossScene::Draw() {
 	switch (m_ID) {
 	case LOAD:
 		DrawRotaGraph((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y,10,0,m_Load.Hndl[(int)m_Load.HndlNum%4],TRUE);
@@ -115,7 +115,7 @@ void MainScene::Draw() {
 	}
 }
 //初期化処理管理関数
-void MainScene::Init() {
+void BossScene::Init() {
 	m_BossArea.Init();				//ボス戦の足場クラス
 	m_Sky.Init();					//天球クラス
 	m_Player.Init();				//プレイヤークラス
@@ -136,7 +136,7 @@ void MainScene::Init() {
 	}
 }
 //データ破棄処理管理関数
-void MainScene::Exit() {
+void BossScene::Exit() {
 	m_BossArea.Exit();				//ボス戦の足場クラス
 	m_Sky.Exit();					//天球クラス
 	m_Player.Exit();				//プレイヤークラス
@@ -149,7 +149,7 @@ void MainScene::Exit() {
 	m_UIFrame.Exit();				//UIフレームクラス
 }
 //データ読み込み処理管理関数
-void MainScene::Load() {
+void BossScene::Load() {
 	m_ItemManger.Load();			//アイテムマネーシャークラス
 	m_HitPoints.Load();				//体力UIクラス
 	m_SkillPoints.Load();			//スキルポイントUIクラス
@@ -168,7 +168,7 @@ void MainScene::Load() {
 	SetUseASyncLoadFlag(false);
 }
 //データ読み込み処理(非同期)
-bool MainScene::LoadASync() {
+bool BossScene::LoadASync() {
 	if (m_Load.IsLoadASync) {
 		m_Load.HndlNum += HNDLNUM_ADD;
 		m_Load.LoadTime++;
@@ -198,7 +198,7 @@ bool MainScene::LoadASync() {
 	return false;
 }
 //毎フレーム呼び出す処理管理関数
-int MainScene::Step() {
+int BossScene::Step() {
 	int Res = 0;
 
 	CameraStep();
@@ -211,7 +211,7 @@ int MainScene::Step() {
 	return Res;
 }
 //モデル更新処理
-void MainScene::Update() {
+void BossScene::Update() {
 	m_BossArea.Update();								//ボス戦の足場クラス
 	m_Sky.Update();										//天球クラス
 	m_Player.Update();									//プレイヤークラス
@@ -229,7 +229,7 @@ void MainScene::Update() {
 	m_Traget.Update(Traget);							//ターゲットクラス
 }
 //プレイヤー関連Step
-void MainScene::PlayerStep() {
+void BossScene::PlayerStep() {
 	m_BossArea.Step();									//ボス戦の足場クラス
 	m_Sky.Step();										//天球クラス
 
@@ -237,16 +237,16 @@ void MainScene::PlayerStep() {
 	m_Player.Step();
 }
 //敵関連Step
-void MainScene::EnemyStep() {
+void BossScene::EnemyStep() {
 	m_Boss.SetPlayerPos(m_Player.GetPos());
 	m_Boss.Step();
 }
 //カメラ関連Step
-void MainScene::CameraStep() {
+void BossScene::CameraStep() {
 	m_CameraManager.Step(m_Player.GetPos(),VZERO,false);
 }
 //当たり判定関係
-void MainScene::HitCheck() {
+void BossScene::HitCheck() {
 	HitCheck::ObjectToObjectPush(m_Player,m_Boss);
 	HitCheck::CollToObject(m_BossArea,m_Player);
 }

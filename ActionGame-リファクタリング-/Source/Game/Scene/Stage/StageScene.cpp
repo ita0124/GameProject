@@ -1,19 +1,17 @@
-#include "SelectScene.h"
+#include "StageScene.h"
 
 //コンストラクタ
-SelectScene::SelectScene() {
+StageScene::StageScene() {
 	//タグをINITに設定
 	m_ID = INIT;
 }
-
 //デストラクタ
-SelectScene::~SelectScene() {
+StageScene::~StageScene() {
 	//データ破棄処理管理関数呼び出す
 	Exit();
 }
-
 //シーン中繰り返し行う処理
-int SelectScene::Loop() {
+int StageScene::Loop() {
 	int Res = 0;
 
 	switch (m_ID) {
@@ -42,7 +40,7 @@ int SelectScene::Loop() {
 			//タグをSTEPに設定
 			m_ID = STEP;
 			//BGMを呼び出す
-			SoundManager::Play(SoundManager::TagID::BGM_SELECT, DX_PLAYTYPE_LOOP);
+			SoundManager::Play(SoundManager::TagID::BGM_TITLE, DX_PLAYTYPE_LOOP);
 		}
 		break;
 
@@ -82,51 +80,23 @@ int SelectScene::Loop() {
 	//0以外の数値が入ると次のシーンへ以降する
 	return Res;
 }
-
 //描画処理管理関数
-void SelectScene::Draw() {
-	/*DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"セレクト");
-	DrawFormatStringToHandle((int)SCREEN_HALF_X, (int)SCREEN_LOWER, WHITE, DxLibFont::FONTHNDL_N50, "%d",m_SelectNum);*/
-
-	m_Sky.Draw();
+void StageScene::Draw() {
+	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"タイトル");
 }
-
 //初期化処理管理関数
-void SelectScene::Init() {
-	m_Sky.Init();
-
-	m_SelectNum = 0;
+void StageScene::Init() {
 }
-
 //データ破棄処理管理関数
-void SelectScene::Exit() {
-	m_Sky.Exit();
+void StageScene::Exit() {
 }
-
 //データ読み込み処理管理関数
-void SelectScene::Load() {
-	m_Sky.Load();
+void StageScene::Load() {
 }
-
 //毎フレーム呼び出す処理管理関数
-int SelectScene::Step() {
+int StageScene::Step() {
 	int Res = 0;
 
-	m_Sky.Step();
-
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_RIGHT)) {
-		m_SelectNum++;
-	}
-	else if (InputKey::IsPushKeyTrg(KEY_INPUT_LEFT)) {
-		m_SelectNum--;
-	}
-
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_RIGHT)) {
-		m_SelectNum++;
-	}
-	else if (InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_LEFT)) {
-		m_SelectNum--;
-	}
 	if (InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		Res = 1;
 	}
@@ -134,8 +104,6 @@ int SelectScene::Step() {
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B)) {
 		Res = 1;
 	}
-
-	m_Sky.Update();
 
 	return Res;
 }

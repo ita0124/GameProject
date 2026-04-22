@@ -1,6 +1,5 @@
 #pragma once
 #include "Game/Base/Scene/SceneBase.h"
-#include "Game/Select/Select.h"
 #include "Game/Object/BossArea/BossArea.h"
 #include "Game/Object/Sky/Sky.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
@@ -20,7 +19,7 @@ namespace {
 	const int HNDL_MAX = 4;	//非同期処理時に表示する画像のハンドル総数
 }
 
-class MainScene :public SceneBase {
+class BossScene :public SceneBase {
 private:
 	BossArea		m_BossArea;			//ボス戦の足場クラス
 	Sky				m_Sky;				//天球クラス
@@ -44,9 +43,9 @@ private:
 	LOAD_DATA		m_Load;
 public:
 	//コンストラクタ
-	MainScene();
+	BossScene();
 	//デストラクタ
-	~MainScene();
+	~BossScene();
 	//シーン中繰り返し行う処理
 	int	Loop() override;
 	//描画処理管理関数

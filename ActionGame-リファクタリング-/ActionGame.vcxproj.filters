@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="リソース ファイル">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Lib">
       <UniqueIdentifier>{3b102669-3262-49d1-a102-68feea9ff7ed}</UniqueIdentifier>
     </Filter>
@@ -205,9 +201,6 @@
     <Filter Include="ソース ファイル\Game\Result\ResultNum">
       <UniqueIdentifier>{5f541856-bd56-4197-8103-5ba7bbb51f54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Scene\MainScene">
-      <UniqueIdentifier>{c2bbe998-763d-497a-8607-bd6b79663df6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Scene\ResultScene">
       <UniqueIdentifier>{a0d57502-c798-418f-bf7d-eb1bf50db283}</UniqueIdentifier>
     </Filter>
@@ -277,9 +270,6 @@
     <Filter Include="ヘッダー ファイル\Game\Result\ResultNum">
       <UniqueIdentifier>{013c4683-1a13-44d8-9201-39a352fd74e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Scene\MainScene">
-      <UniqueIdentifier>{d5022ea7-909c-4c92-af01-ca5fcff0bb03}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Game\Scene\ResultScene">
       <UniqueIdentifier>{c2f8a092-2f84-4ff4-a77f-26cadfc76c49}</UniqueIdentifier>
     </Filter>
@@ -294,6 +284,18 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\UI\UIFrame">
       <UniqueIdentifier>{0e3a04cb-a00f-457f-86ab-b54257e8a661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\BossScene">
+      <UniqueIdentifier>{d5022ea7-909c-4c92-af01-ca5fcff0bb03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\BossScene">
+      <UniqueIdentifier>{c2bbe998-763d-497a-8607-bd6b79663df6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Scene\StageScene">
+      <UniqueIdentifier>{b1ee5516-0380-4a43-8385-ac16ddd6862e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\StageScene">
+      <UniqueIdentifier>{2c897c28-7ac1-4b3f-bfa6-af7aaf3911ea}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -332,9 +334,6 @@
     </ClCompile>
     <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp">
       <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Select\Select.cpp">
-      <Filter>ソース ファイル\Game\Select</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Title\Title.cpp">
       <Filter>ソース ファイル\Game\Title</Filter>
@@ -408,9 +407,6 @@
     <ClCompile Include="Source\Game\Result\ResultNum.cpp">
       <Filter>ソース ファイル\Game\Result\ResultNum</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Scene\Main\MainScene.cpp">
-      <Filter>ソース ファイル\Game\Scene\MainScene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Scene\Result\ResultScene.cpp">
       <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
     </ClCompile>
@@ -428,6 +424,12 @@
     </ClCompile>
     <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp">
       <Filter>ソース ファイル\Game\HitCheck</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Boss\BossScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\BossScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp">
+      <Filter>ソース ファイル\Game\Scene\StageScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -466,9 +468,6 @@
     </ClInclude>
     <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Select\Select.h">
-      <Filter>ヘッダー ファイル\Game\Select</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Title\Title.h">
       <Filter>ヘッダー ファイル\Game\Title</Filter>
@@ -542,9 +541,6 @@
     <ClInclude Include="Source\Game\Result\ResultNum.h">
       <Filter>ヘッダー ファイル\Game\Result\ResultNum</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Scene\Main\MainScene.h">
-      <Filter>ヘッダー ファイル\Game\Scene\MainScene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Scene\Result\ResultScene.h">
       <Filter>ヘッダー ファイル\Game\Scene\ResultScene</Filter>
     </ClInclude>
@@ -562,6 +558,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h">
       <Filter>ヘッダー ファイル\Game\HitCheck</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Boss\BossScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\BossScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Scene\Stage\StageScene.h">
+      <Filter>ヘッダー ファイル\Game\Scene\StageScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
