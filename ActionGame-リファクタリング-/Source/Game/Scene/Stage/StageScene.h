@@ -1,9 +1,16 @@
 #pragma once
 #include "Game/Base/Scene/SceneBase.h"
+#include "Game/Object/Sky/Sky.h"
+#include "Game/Object/Actor/Character/Player/Player.h"
+#include "Game/Object/Stage/NormalPlatform/NormalPlatform.h"
+#include "Game/Manager/Camera/CameraManager.h"
 
 class StageScene :public SceneBase {
 private:
-	
+	Sky				m_Sky;				//天球クラス
+	Player			m_Player;			//プレイヤークラス
+	NormalPlatform	m_NormalPlatform;	
+	CameraManager	m_CameraManager;	//カメラマネージャークラス
 public:
 	//コンストラクタ・デストラクタ
 	StageScene();
@@ -23,4 +30,6 @@ private:
 	void Load() override;
 	//毎フレーム呼び出す処理管理関数
 	int Step() override;
+	//モデル更新処理
+	void Update();
 };

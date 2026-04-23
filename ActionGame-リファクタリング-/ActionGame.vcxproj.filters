@@ -297,6 +297,30 @@
     <Filter Include="ソース ファイル\Game\Scene\StageScene">
       <UniqueIdentifier>{2c897c28-7ac1-4b3f-bfa6-af7aaf3911ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\StageBase">
+      <UniqueIdentifier>{7f4e4860-a5f9-4747-a5e1-379b9d75e109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\StageBase">
+      <UniqueIdentifier>{9118e909-c031-46c8-9679-c71b96ec8b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage">
+      <UniqueIdentifier>{d0335ff2-c665-4259-9e56-c69826925508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage\NormalPlatform">
+      <UniqueIdentifier>{2ac5db1b-6edf-4531-bb3b-8e803ac534e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage">
+      <UniqueIdentifier>{68368f95-744f-45e2-bb54-5378f9e72b2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage\NormalPlatform">
+      <UniqueIdentifier>{9b093a72-8bb5-4367-9815-559265186bb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage\MovingPlatform">
+      <UniqueIdentifier>{ae379be5-88b4-47b5-a5c1-e3922850b02b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage\MovingPlatform">
+      <UniqueIdentifier>{84e741c2-fd9a-4185-9dbd-dd09f8708158}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -431,6 +455,15 @@
     <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp">
       <Filter>ソース ファイル\Game\Scene\StageScene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\StageBase\StageBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\StageBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Stage\NormalPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Stage\MovingPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -564,6 +597,15 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Scene\Stage\StageScene.h">
       <Filter>ヘッダー ファイル\Game\Scene\StageScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\StageBase\StageBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\StageBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Stage\NormalPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Stage\MovingPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

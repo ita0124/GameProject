@@ -82,28 +82,54 @@ int StageScene::Loop() {
 }
 //描画処理管理関数
 void StageScene::Draw() {
-	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"タイトル");
+	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ステージ");
+
+	m_Sky.Draw();
+	m_Player.Draw();
+	m_NormalPlatform.Draw();
 }
 //初期化処理管理関数
 void StageScene::Init() {
+	m_Sky.Init();
+	m_Player.Init();
+	m_NormalPlatform.Init();
+	m_CameraManager.Init();
 }
 //データ破棄処理管理関数
 void StageScene::Exit() {
+	m_Sky.Exit();
+	m_Player.Exit();
+	m_NormalPlatform.Exit();
 }
 //データ読み込み処理管理関数
 void StageScene::Load() {
+	m_Sky.Load();
+	m_Player.Load();
+	m_NormalPlatform.Load();
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
 	int Res = 0;
 
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+	m_Sky.Step();						//天球クラス
+	m_NormalPlatform.Step();
+
+	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
+	m_Player.Step();
+
+	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
 		Res = 1;
 	}
 
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B)) {
-		Res = 1;
-	}
+	Update();
 
 	return Res;
+}
+//モデル更新処理
+void StageScene::Update() {
+	m_Sky.Update();						//天球クラス
+	m_NormalPlatform.Update();
+	m_Player.Update();
+	m_CameraManager.Update();			//カメラマネージャークラス
+	m_CameraManager.Step(m_Player.GetPos(), VZERO, false);
 }

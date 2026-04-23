@@ -162,6 +162,7 @@
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp" />
+    <ClCompile Include="Source\Game\Base\Object\StageBase\StageBase.cpp" />
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp" />
     <ClCompile Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.cpp" />
     <ClCompile Include="Source\Game\Base\UIBase\UIBase.cpp" />
@@ -176,6 +177,8 @@
     <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp" />
     <ClCompile Include="Source\Game\Object\Sky\Sky.cpp" />
+    <ClCompile Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\Stamina\Stamina.cpp" />
@@ -209,6 +212,7 @@
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ObjectBase.h" />
+    <ClInclude Include="Source\Game\Base\Object\StageBase\StageBase.h" />
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h" />
     <ClInclude Include="Source\Game\Base\UIBase\PlayerStatusUIBase\PlayerStatusUIBase.h" />
     <ClInclude Include="Source\Game\Base\UIBase\UIBase.h" />
@@ -223,6 +227,8 @@
     <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h" />
     <ClInclude Include="Source\Game\Object\BossArea\BossArea.h" />
     <ClInclude Include="Source\Game\Object\Sky\Sky.h" />
+    <ClInclude Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\Stamina\Stamina.h" />

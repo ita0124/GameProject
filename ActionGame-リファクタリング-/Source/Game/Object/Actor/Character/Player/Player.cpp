@@ -59,6 +59,7 @@ Player::~Player() {
 //‰Šú‰»ˆ—
 void Player::Init() {
 	CharacterBase::Init();
+
 	m_IsPush = true;							//‰Ÿ‚µo‚µ”»’è‚ğs‚¤
 
 	m_Rad = RAD;								//”¼Œa
