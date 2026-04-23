@@ -53,7 +53,6 @@ int SceneManager::Loop() {
 			m_ID = SELECT;
 		}
 		break;
-
 	case SELECT:
 		//I‚í‚ê‚ÎŽŸ‚Ö
 		if (m_Scene[SELECT]->Loop() != 0) {
@@ -65,13 +64,13 @@ int SceneManager::Loop() {
 		if (m_Scene[STAGE]->Loop() != 0) {
 			m_ID = BOSS;
 		}
+		break;
 	case BOSS:
 		//I‚í‚ê‚ÎŽŸ‚Ö
 		if (m_Scene[BOSS]->Loop() != 0) {
 			m_ID = RESULT;
 		}
 		break;
-
 	case RESULT:
 		//I‚í‚ê‚ÎŽŸ‚Ö
 		if (m_Scene[RESULT]->Loop() != 0) {
