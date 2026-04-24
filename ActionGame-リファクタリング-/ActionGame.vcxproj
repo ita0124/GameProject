@@ -177,6 +177,9 @@
     <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp" />
     <ClCompile Include="Source\Game\Object\Sky\Sky.cpp" />
+    <ClCompile Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.cpp" />
@@ -227,6 +230,9 @@
     <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h" />
     <ClInclude Include="Source\Game\Object\BossArea\BossArea.h" />
     <ClInclude Include="Source\Game\Object\Sky\Sky.h" />
+    <ClInclude Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.h" />
+    <ClInclude Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.h" />
     <ClInclude Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.h" />
     <ClInclude Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.h" />

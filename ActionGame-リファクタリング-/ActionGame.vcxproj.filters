@@ -321,6 +321,24 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Stage\MovingPlatform">
       <UniqueIdentifier>{84e741c2-fd9a-4185-9dbd-dd09f8708158}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage\JumpPlatform">
+      <UniqueIdentifier>{fee22d41-ba9b-4720-8981-5d5d0bae6ac6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage\JumpPlatform">
+      <UniqueIdentifier>{3e95d2e9-691a-42da-b3c7-f7742250f8d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage\FallingPlatform">
+      <UniqueIdentifier>{76bedb8b-dd8e-43c0-8a92-3dd75c2cff25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage\FallingPlatform">
+      <UniqueIdentifier>{b3464bba-d01c-4c7e-8cca-bf6dfc760d18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Stage\BattlePlatform">
+      <UniqueIdentifier>{da221940-038e-475c-8f1f-e234ba1133b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Stage\BattlePlatform">
+      <UniqueIdentifier>{912233d2-3478-476f-a31e-814e9b05d5fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -464,6 +482,15 @@
     <ClCompile Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Stage\MovingPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Stage\JumpPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Stage\FallingPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Stage\BattlePlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -606,6 +633,15 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Stage\MovingPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Stage\JumpPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Stage\FallingPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Stage\BattlePlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

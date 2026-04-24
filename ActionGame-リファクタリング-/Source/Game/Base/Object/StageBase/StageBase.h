@@ -11,5 +11,5 @@ public:
 	//リクエスト
 	//_Pos	:座標指定
 	//_Rot	:角度設定(360°の方)
-	virtual bool Request(const VECTOR&_Pos,const VECTOR &_Rot);
+	virtual bool Request(const VECTOR& _Pos, const VECTOR& _Rot = VZERO);
 };

@@ -87,25 +87,41 @@ void StageScene::Draw() {
 	m_Sky.Draw();
 	m_Player.Draw();
 	m_NormalPlatform.Draw();
+	m_MovingPlatform.Draw();
+	m_JumpPlatform.Draw();
+	m_FallingPlatform.Draw();
+	m_BattlePlatform.Draw();
 }
 //初期化処理管理関数
 void StageScene::Init() {
 	m_Sky.Init();
 	m_Player.Init();
 	m_NormalPlatform.Init();
+	m_MovingPlatform.Init();
+	m_JumpPlatform.Init();
+	m_FallingPlatform.Init();
 	m_CameraManager.Init();
+	m_BattlePlatform.Init();
 }
 //データ破棄処理管理関数
 void StageScene::Exit() {
 	m_Sky.Exit();
 	m_Player.Exit();
 	m_NormalPlatform.Exit();
+	m_MovingPlatform.Exit();
+	m_JumpPlatform.Exit();
+	m_FallingPlatform.Exit();
+	m_BattlePlatform.Exit();
 }
 //データ読み込み処理管理関数
 void StageScene::Load() {
 	m_Sky.Load();
 	m_Player.Load();
 	m_NormalPlatform.Load();
+	m_MovingPlatform.Load();
+	m_JumpPlatform.Load();
+	m_FallingPlatform.Load();
+	m_BattlePlatform.Load();
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
@@ -113,6 +129,10 @@ int StageScene::Step() {
 
 	m_Sky.Step();						//天球クラス
 	m_NormalPlatform.Step();
+	m_MovingPlatform.Step();
+	m_JumpPlatform.Step();
+	m_FallingPlatform.Step();
+	m_BattlePlatform.Step();
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
 	m_Player.Step();
@@ -129,6 +149,10 @@ int StageScene::Step() {
 void StageScene::Update() {
 	m_Sky.Update();						//天球クラス
 	m_NormalPlatform.Update();
+	m_MovingPlatform.Update();
+	m_JumpPlatform.Update();
+	m_FallingPlatform.Update();
+	m_BattlePlatform.Update();
 	m_Player.Update();
 	m_CameraManager.Update();			//カメラマネージャークラス
 	m_CameraManager.Step(m_Player.GetPos(), VZERO, false);
