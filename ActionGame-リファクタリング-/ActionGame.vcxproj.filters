@@ -479,9 +479,6 @@
     <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp">
       <Filter>ソース ファイル\Game\Scene\StageScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp">
-      <Filter>ソース ファイル\Game\Manager\PlatformManager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp">
       <Filter>ソース ファイル\Game\Base\ObjectBase\Platform</Filter>
     </ClCompile>
@@ -499,6 +496,9 @@
     </ClCompile>
     <ClCompile Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\NormalPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\PlatformManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -634,9 +634,6 @@
     <ClInclude Include="Source\Game\Scene\Stage\StageScene.h">
       <Filter>ヘッダー ファイル\Game\Scene\StageScene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h">
-      <Filter>ヘッダー ファイル\Game\Manager\PlatformManager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Base\Object\PlatformBase\PlatformBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\PlatformBase</Filter>
     </ClInclude>
@@ -654,6 +651,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\NormalPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\PlatformManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
