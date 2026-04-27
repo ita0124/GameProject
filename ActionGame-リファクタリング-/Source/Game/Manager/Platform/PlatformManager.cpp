@@ -27,11 +27,12 @@ void PlatformManager::Init() {
 	if (fopen_s(&CsvFile, CSV_FILE_PATH, "r") != 0)return;
 	//データ取得
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
-		for (int a = 0;a < 13;a++)
+		for (int a = 0;a < 13;a++) {
 			//データ一つ分取得
 			fscanf_s(CsvFile, "%d", &Stage[a][Index]);
-		//カンマor改行を飛ばす
-		fgetc(CsvFile);
+			//カンマor改行を飛ばす
+			fgetc(CsvFile);
+		}
 	}
 	//開いたファイルを閉じる
 	fclose(CsvFile);
