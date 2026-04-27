@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/Base/Object/StageBase/StageBase.h"
+#include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
 //通常足場
-class MovingPlatform :public StageBase {
+class MovingPlatform :public PlatformBase {
 public:
 	//コンストラクタ
 	MovingPlatform();

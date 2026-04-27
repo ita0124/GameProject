@@ -2,22 +2,14 @@
 #include "Game/Base/Scene/SceneBase.h"
 #include "Game/Object/Sky/Sky.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
-#include "Game/Object/Stage/NormalPlatform/NormalPlatform.h"
-#include "Game/Object/Stage/MovingPlatform/MovingPlatform.h"
-#include "Game/Object/Stage/JumpPlatform/JumpPlatform.h"
-#include "Game/Object/Stage/FallingPlatform/FallingPlatform.h"
-#include "Game/Object/Stage/BattlePlatform/BattlePlatform.h"
+#include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 
 class StageScene :public SceneBase {
 private:
 	Sky				m_Sky;				//天球クラス
 	Player			m_Player;			//プレイヤークラス
-	NormalPlatform	m_NormalPlatform;
-	MovingPlatform	m_MovingPlatform;
-	JumpPlatform	m_JumpPlatform;
-	FallingPlatform	m_FallingPlatform;
-	BattlePlatform	m_BattlePlatform;
+	PlatformManager	m_PlatformManager;
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 public:
 	//コンストラクタ・デストラクタ

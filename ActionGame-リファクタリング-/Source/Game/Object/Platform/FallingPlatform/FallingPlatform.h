@@ -1,14 +1,16 @@
 #pragma once
-#include "Game/Base/Object/StageBase/StageBase.h"
+#include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
 //通常足場
-class BattlePlatform :public StageBase {
+class FallingPlatform :public PlatformBase {
 private:
+	int		m_Time;
+	int		m_RespawnWait;
 public:
 	//コンストラクタ
-	BattlePlatform();
+	FallingPlatform();
 	//デストラクタ
-	~BattlePlatform();
+	~FallingPlatform();
 	//初期化処理
 	void Init();
 	//データ読み込み処理

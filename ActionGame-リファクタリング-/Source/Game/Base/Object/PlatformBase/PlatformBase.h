@@ -2,7 +2,7 @@
 #include "Game/Base/Object/ObjectBase.h"
 
 //ステージベースクラス
-class StageBase :public ObjectBase {
+class PlatformBase :public ObjectBase {
 protected:
 
 	typedef struct {
@@ -15,9 +15,9 @@ protected:
 	NORMAL_REQUEST_DATA	m_NormalRequestData;	//リクエスト時に最低限必要なデータ構造体
 public:
 	//コンストラクタ
-	StageBase();
+	PlatformBase();
 	//デストラクタ
-	virtual ~StageBase();
+	virtual ~PlatformBase();
 	//初期化処理
 	virtual void Init();
 	//リクエスト

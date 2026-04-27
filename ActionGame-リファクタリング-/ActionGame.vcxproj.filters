@@ -297,47 +297,53 @@
     <Filter Include="ソース ファイル\Game\Scene\StageScene">
       <UniqueIdentifier>{2c897c28-7ac1-4b3f-bfa6-af7aaf3911ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Base\ObjectBase\StageBase">
-      <UniqueIdentifier>{7f4e4860-a5f9-4747-a5e1-379b9d75e109}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\StageBase">
-      <UniqueIdentifier>{9118e909-c031-46c8-9679-c71b96ec8b57}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage">
-      <UniqueIdentifier>{d0335ff2-c665-4259-9e56-c69826925508}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage\NormalPlatform">
-      <UniqueIdentifier>{2ac5db1b-6edf-4531-bb3b-8e803ac534e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage">
+    <Filter Include="ソース ファイル\Game\Object\Platform">
       <UniqueIdentifier>{68368f95-744f-45e2-bb54-5378f9e72b2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage\NormalPlatform">
+    <Filter Include="ソース ファイル\Game\Object\Platform\NormalPlatform">
       <UniqueIdentifier>{9b093a72-8bb5-4367-9815-559265186bb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage\MovingPlatform">
+    <Filter Include="ソース ファイル\Game\Object\Platform\MovingPlatform">
       <UniqueIdentifier>{ae379be5-88b4-47b5-a5c1-e3922850b02b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage\MovingPlatform">
-      <UniqueIdentifier>{84e741c2-fd9a-4185-9dbd-dd09f8708158}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage\JumpPlatform">
+    <Filter Include="ソース ファイル\Game\Object\Platform\JumpPlatform">
       <UniqueIdentifier>{fee22d41-ba9b-4720-8981-5d5d0bae6ac6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage\JumpPlatform">
-      <UniqueIdentifier>{3e95d2e9-691a-42da-b3c7-f7742250f8d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage\FallingPlatform">
+    <Filter Include="ソース ファイル\Game\Object\Platform\FallingPlatform">
       <UniqueIdentifier>{76bedb8b-dd8e-43c0-8a92-3dd75c2cff25}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage\FallingPlatform">
-      <UniqueIdentifier>{b3464bba-d01c-4c7e-8cca-bf6dfc760d18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Stage\BattlePlatform">
+    <Filter Include="ソース ファイル\Game\Object\Platform\BattlePlatform">
       <UniqueIdentifier>{da221940-038e-475c-8f1f-e234ba1133b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Stage\BattlePlatform">
-      <UniqueIdentifier>{912233d2-3478-476f-a31e-814e9b05d5fb}</UniqueIdentifier>
+    <Filter Include="ヘッダー ファイル\Game\Manager\PlatformManager">
+      <UniqueIdentifier>{ad11f2a8-fe17-467f-926e-4a74a7347284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\PlatformManager">
+      <UniqueIdentifier>{c150b69f-c010-4925-90c8-549f5bf8c2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\Platform">
+      <UniqueIdentifier>{7f4e4860-a5f9-4747-a5e1-379b9d75e109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\PlatformBase">
+      <UniqueIdentifier>{9118e909-c031-46c8-9679-c71b96ec8b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform">
+      <UniqueIdentifier>{d0335ff2-c665-4259-9e56-c69826925508}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\BattlePlatform">
+      <UniqueIdentifier>{6ad298b3-27e1-44d9-b50b-4d5480058f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\FallingPlatform">
+      <UniqueIdentifier>{86da3dd2-0813-4058-8601-d1307aaeba8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\JumpPlatform">
+      <UniqueIdentifier>{fe5e43ea-5bda-4a20-9424-957e4aa1f01b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\MovingPlatform">
+      <UniqueIdentifier>{8dd4be55-d769-46b2-9318-7aab7f48d543}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\NormalPlatform">
+      <UniqueIdentifier>{352e5da4-4eb5-44e0-b9e7-f8e422d676d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -473,23 +479,26 @@
     <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp">
       <Filter>ソース ファイル\Game\Scene\StageScene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\StageBase\StageBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ObjectBase\StageBase</Filter>
+    <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\PlatformManager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Stage\NormalPlatform</Filter>
+    <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Stage\MovingPlatform</Filter>
+    <ClCompile Include="Source\Game\Object\Platform\BattlePlatform\BattlePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\BattlePlatform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Stage\JumpPlatform</Filter>
+    <ClCompile Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\FallingPlatform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Stage\FallingPlatform</Filter>
+    <ClCompile Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\JumpPlatform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Stage\BattlePlatform</Filter>
+    <ClCompile Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\MovingPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\NormalPlatform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -625,23 +634,26 @@
     <ClInclude Include="Source\Game\Scene\Stage\StageScene.h">
       <Filter>ヘッダー ファイル\Game\Scene\StageScene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\StageBase\StageBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\StageBase</Filter>
+    <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\PlatformManager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Stage\NormalPlatform\NormalPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Stage\NormalPlatform</Filter>
+    <ClInclude Include="Source\Game\Base\Object\PlatformBase\PlatformBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\PlatformBase</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Stage\MovingPlatform\MovingPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Stage\MovingPlatform</Filter>
+    <ClInclude Include="Source\Game\Object\Platform\BattlePlatform\BattlePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\BattlePlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Stage\JumpPlatform\JumpPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Stage\JumpPlatform</Filter>
+    <ClInclude Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\FallingPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Stage\FallingPlatform\FallingPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Stage\FallingPlatform</Filter>
+    <ClInclude Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\JumpPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Stage\BattlePlatform\BattlePlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Stage\BattlePlatform</Filter>
+    <ClInclude Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\MovingPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\NormalPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
