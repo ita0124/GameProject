@@ -3,13 +3,26 @@
 
 //ステージベースクラス
 class StageBase :public ObjectBase {
+protected:
+
+	typedef struct {
+		VECTOR	Pos;		//座標
+		VECTOR	Rot;		//回転率
+		VECTOR	Scale;		//拡縮
+		VECTOR	Size;		//サイズ
+	}NORMAL_REQUEST_DATA;
+
+	NORMAL_REQUEST_DATA	m_NormalRequestData;	//リクエスト時に最低限必要なデータ構造体
 public:
 	//コンストラクタ
 	StageBase();
 	//デストラクタ
 	virtual ~StageBase();
+	//初期化処理
+	virtual void Init();
 	//リクエスト
-	//_Pos	:座標指定
-	//_Rot	:角度設定(360°の方)
-	virtual bool Request(const VECTOR& _Pos, const VECTOR& _Rot = VZERO);
+	bool Request(NORMAL_REQUEST_DATA _NormalRequestData);
+	//Get
+	//基本データ構造体
+	NORMAL_REQUEST_DATA	GetNormalRequestData() { return m_NormalRequestData; }
 };
