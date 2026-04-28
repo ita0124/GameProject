@@ -12,13 +12,18 @@ PlatformBase::~PlatformBase() {
 void PlatformBase::Init() {
 	ObjectBase::Init();
 
-	memset(&m_NormalRequestData,0, sizeof(NORMAL_REQUEST_DATA));
+	memset(&m_NormalRequestData, 0, sizeof(NORMAL_REQUEST_DATA));
 }
 //リクエスト
-bool PlatformBase::Request(NORMAL_REQUEST_DATA _NormalRequestData) {
-	if (m_IsActive)return false;
+void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
 	//生存フラグオン
 	m_IsActive = true;
-	//最低限必要なデータ
-	memcpy(&m_NormalRequestData, &_NormalRequestData, sizeof(NORMAL_REQUEST_DATA));
+	//座標情報設定
+	m_Pos = _NormalRequestData.Pos;
+	//回転率情報設定
+	m_Rot = _NormalRequestData.Rot;
+	//拡縮情報設定
+	m_Scale = _NormalRequestData.Scale;
+	//サイズ情報設定
+	m_Size = _NormalRequestData.Size;
 }

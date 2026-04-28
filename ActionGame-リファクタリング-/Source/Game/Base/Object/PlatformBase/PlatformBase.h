@@ -21,7 +21,7 @@ public:
 	//初期化処理
 	virtual void Init();
 	//リクエスト
-	bool Request(NORMAL_REQUEST_DATA _NormalRequestData);
+	void Request(const NORMAL_REQUEST_DATA& _NormalRequestData);
 	//Get
 	//基本データ構造体
 	NORMAL_REQUEST_DATA	GetNormalRequestData() { return m_NormalRequestData; }
@@ -30,7 +30,7 @@ public:
 	//基本データ構造体 座標
 	void SetNormalRequestDataPosX(const float& _PosX) { m_NormalRequestData.Pos.x = _PosX; }
 	void SetNormalRequestDataPosY(const float& _PosY) { m_NormalRequestData.Pos.y = _PosY; }
-	void SetNormalRequestDataPosZ(const float& _PosZ) { m_NormalRequestData.Pos.y = _PosZ; }
+	void SetNormalRequestDataPosZ(const float& _PosZ) { m_NormalRequestData.Pos.z = _PosZ; }
 	//基本データ構造体 回転値
 	void SetNormalRequestDataRotX(const float& _RotX) { m_NormalRequestData.Rot.x = _RotX; }
 	void SetNormalRequestDataRotY(const float& _RotY) { m_NormalRequestData.Rot.y = _RotY; }

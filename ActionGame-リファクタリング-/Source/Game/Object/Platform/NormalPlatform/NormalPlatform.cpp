@@ -16,7 +16,6 @@ NormalPlatform::~NormalPlatform() {
 //‰Šú‰»ˆ—
 void NormalPlatform::Init() {
 	ObjectBase::Init();
-	m_Pos = INIT_POS;
 }
 //ƒf[ƒ^“Ç‚İ‚İˆ—
 void NormalPlatform::Load() {

@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//通常足場
+//動く足場
 class MovingPlatform :public PlatformBase {
 public:
 	//コンストラクタ

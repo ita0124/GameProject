@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//’Êí‘«ê
+//ƒoƒgƒ‹‘«ê
 class BattlePlatform :public PlatformBase {
 private:
 public:

@@ -6,7 +6,7 @@
 #include "Game/Object/Platform/JumpPlatform/JumpPlatform.h"
 
 namespace {
-	const int PLATFORM_MAX = 10;
+	const int PLATFORM_MAX = 27;
 	const int PLATFORM_ID = 1;
 	const int REQUEST_DATA_MAX = 12;
 }
@@ -24,8 +24,8 @@ private:
 
 	PlatformBase* m_Platform[PLATFORM_MAX];
 	
-	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];
-	float	m_RequestData[PLATFORM_MAX][REQUEST_DATA_MAX];
+	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];				//出現させるプラットフォームを指定するデータをcsvから受け取り保存する
+	float	m_NormalRequestData[PLATFORM_MAX][REQUEST_DATA_MAX];	//リクエスト時に最低限必要なデータをcsvから受け取り保存する
 public:
 	//初期化処理
 	void Init();
@@ -39,6 +39,4 @@ public:
 	void Step();
 	//モデル更新処理
 	void Update();
-	//リクエスト
-	void Request();
 };

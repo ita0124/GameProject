@@ -1,11 +1,10 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//通常足場
+//落ちる足場
 class FallingPlatform :public PlatformBase {
 private:
-	int		m_Time;
-	int		m_RespawnWait;
+
 public:
 	//コンストラクタ
 	FallingPlatform();

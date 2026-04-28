@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//通常足場
+//ジャンプ足場
 class JumpPlatform :public PlatformBase {
 public:
 	//コンストラクタ

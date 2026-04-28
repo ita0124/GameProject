@@ -575,6 +575,8 @@ bool Player::NormalMoveVec() {
 //移動計算
 void Player::MoveCalc() {
 	VECTOR MoveVec = m_MoveVec;
+	//MoveVecを正規化
+	MoveVec = VNorm(MoveVec);
 	//MoveVecを行列化
 	MATRIX MatMoveVec = MGetTranslate(MoveVec);
 	//カメラのY軸回転値を行列化
