@@ -25,6 +25,8 @@ public:
 	//Get
 	//基本データ構造体
 	NORMAL_REQUEST_DATA	GetNormalRequestData() { return m_NormalRequestData; }
+	//モデルの中心を取る
+	VECTOR GetCenter();
 
 	//Set
 	//基本データ構造体 座標

@@ -4,6 +4,7 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
+#include "Game/HitCheck/HitCheck.h"
 
 class StageScene :public SceneBase {
 private:

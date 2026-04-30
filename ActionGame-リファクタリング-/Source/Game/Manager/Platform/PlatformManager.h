@@ -23,7 +23,7 @@ private:
 	};
 
 	PlatformBase* m_Platform[PLATFORM_MAX];
-	
+
 	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];				//出現させるプラットフォームを指定するデータをcsvから受け取り保存する
 	float	m_NormalRequestData[PLATFORM_MAX][REQUEST_DATA_MAX];	//リクエスト時に最低限必要なデータをcsvから受け取り保存する
 public:
@@ -39,4 +39,6 @@ public:
 	void Step();
 	//モデル更新処理
 	void Update();
+	//指定した配列番号のメンバ変数を返す
+	PlatformBase& GetPlatform(const int _Num) { return *m_Platform[_Num]; }
 };

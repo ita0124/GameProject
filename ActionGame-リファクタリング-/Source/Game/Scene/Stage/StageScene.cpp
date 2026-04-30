@@ -115,6 +115,7 @@ int StageScene::Step() {
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
 	m_Player.Step();
+	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 
 	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
 		Res = 1;

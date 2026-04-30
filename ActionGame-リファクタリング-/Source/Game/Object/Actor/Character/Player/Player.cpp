@@ -2,7 +2,7 @@
 
 namespace {
 	const float		RAD = 10.0f;															//半径
-	const VECTOR	PLAYER_SIZE = { RAD,RAD,RAD };											//ボックス当たり判定
+	const VECTOR	PLAYER_SIZE = { RAD / 2,RAD / 2,RAD / 2 };									//ボックス当たり判定
 
 	const float		HIT_POINTS = 100.0f;													//体力
 	const float		STAMINA = 75.0f;														//スタミナ

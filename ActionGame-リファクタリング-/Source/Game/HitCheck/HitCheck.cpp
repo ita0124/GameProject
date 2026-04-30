@@ -18,9 +18,9 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	//Y軸を0.0fに固定
 	ObjectAPos.y = 0.0f;
 	ObjectBPos.y = 0.0f;
-
+	//当たり判定
 	bool IsHit = Collision::CheckHitSphereToSphere(ObjectAPos, ObjectARad, ObjectBPos, ObjectBRad);
-
+	//当たっていれば
 	if (IsHit) {
 #ifdef _DEBUG
 		DrawSphere3D(ObjectAPos, ObjectARad, DIV, RED, RED, FALSE);
@@ -86,7 +86,7 @@ void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
 			Len = _Object.GetRad() - Len;
 			//法線をめり込んだ距離分掛け算する
 			Vec = VScale(Col.Dim[Index].Normal, Len);
-			//プレイヤーの座標を計算した分だけ移動させる
+			//オブジェクトの座標を計算した分だけ移動させる
 			_Object.SetPos(VAdd(_Object.GetPos(), Vec));
 			//法線を取得
 			VECTOR Normal = Col.Dim[Index].Normal;
@@ -110,4 +110,54 @@ void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
 	}
 	//毎回データを削除
 	MV1CollResultPolyDimTerminate(Col);
+}
+//オブジェクトと足場の当たり判定
+void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager) {
+	//オブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsActive())return;
+	//オブジェクトの座標取得
+	VECTOR	ObjectPos = _Object.GetCenter();
+	//オブジェクトのサイズを取得
+	VECTOR	ObjectSize = _Object.GetSize();
+
+	for (int Index = 0;Index < PLATFORM_MAX;Index++) {
+		//足場マネージャークラスから一つ取得
+		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OnePlatform.GetIsActive())continue;
+		//足場クラスの座標取得
+		VECTOR	PlatformPos = OnePlatform.GetPos();
+		//足場クラスのサイズを取得
+		VECTOR	PlatformSize = OnePlatform.GetSize();
+		//当たり判定
+		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
+		//当たっていれば
+		if (IsHit) {
+#ifdef _DEBUG
+			VECTOR PlatformPos1 = VGet(PlatformPos.x + OnePlatform.GetSize().x / 2, PlatformPos.y + OnePlatform.GetSize().y / 2, PlatformPos.z + OnePlatform.GetSize().z / 2);
+			VECTOR PlatformPos2 = VGet(PlatformPos.x - OnePlatform.GetSize().x / 2, PlatformPos.y - OnePlatform.GetSize().y / 2, PlatformPos.z - OnePlatform.GetSize().z / 2);
+			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
+
+#endif // DEBUG
+			//重力をリセット
+			_Object.GravityReset();
+			//まず中心点から最近点を引き算
+			VECTOR Vec = VSub(ObjectPos, PlatformPos);
+			//取得したベクトルを三平方の定理で長さに変換
+			float Len = VSize(Vec);
+			//正規化
+			Vec = VNorm(Vec);
+			
+			Len = _Object.GetRad() - Len;
+		
+			Vec = VScale(Vec, Len);
+			//オブジェクトの座標を計算した分だけ移動させる
+			_Object.SetPos(VAdd(_Object.GetPos(), Vec));
+			return;
+		}
+		else {
+			//何も触れていなければ重力処理をオンにする
+			_Object.SetIsGravity(true);
+		}
+	}
 }
