@@ -116,7 +116,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	//オブジェクトの生存フラグがオフになっていれば以降の処理をしない
 	if (!_Object.GetIsActive())return;
 	//オブジェクトの座標取得
-	VECTOR	ObjectPos = _Object.GetCenter();
+	VECTOR	ObjectPos = _Object.GetPos();
 	//オブジェクトのサイズを取得
 	VECTOR	ObjectSize = _Object.GetSize();
 
@@ -126,7 +126,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
 		if (!OnePlatform.GetIsActive())continue;
 		//足場クラスの座標取得
-		VECTOR	PlatformPos = OnePlatform.GetPos();
+		VECTOR	PlatformPos = OnePlatform.GetCenter();
 		//足場クラスのサイズを取得
 		VECTOR	PlatformSize = OnePlatform.GetSize();
 		//当たり判定
@@ -143,6 +143,9 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			_Object.GravityReset();
 			//まず中心点から最近点を引き算
 			VECTOR Vec = VSub(ObjectPos, PlatformPos);
+			//
+			Vec.x = 0.0f;
+			Vec.z = 0.0f;
 			//取得したベクトルを三平方の定理で長さに変換
 			float Len = VSize(Vec);
 			//正規化
