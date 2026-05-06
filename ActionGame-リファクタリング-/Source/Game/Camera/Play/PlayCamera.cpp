@@ -56,7 +56,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	}
 
 	if (InputPad::GetRAnalogYInput() > 0.0f) {
-		RotX += (float)InputPad::GetRAnalogYInput()*0.05f;
+		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
 	}
 	else if (InputPad::GetRAnalogYInput() < 0.0f) {
 		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
@@ -89,7 +89,7 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
 
 	//相対ベクトル
-	m_TargetPoint.y= 25.0f;
+	m_TargetPoint.y += 25.0f;
 	VECTOR OffSet = VGet(0.0f, 25.0f, 100.0f);
 
 	//カメラ位置
