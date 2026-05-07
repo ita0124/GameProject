@@ -10,6 +10,10 @@ protected:
 		VECTOR	Rot;		//回転率
 		VECTOR	Scale;		//拡縮
 		VECTOR	Size;		//サイズ
+		//動く床のみ
+		VECTOR	EndPos;		//動く最大座標
+		//動く床のみ
+		float error;
 	}NORMAL_REQUEST_DATA;
 
 	NORMAL_REQUEST_DATA	m_NormalRequestData;	//リクエスト時に最低限必要なデータ構造体

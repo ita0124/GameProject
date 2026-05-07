@@ -49,10 +49,10 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	}
 
 	if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
-		RotY += RotSpeed;
+		RotY += -RotSpeed;
 	}
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_RIGHT)) {
-		RotY += -RotSpeed;
+		RotY += RotSpeed;
 	}
 
 	if (InputPad::GetRAnalogYInput() > 0.0f) {
