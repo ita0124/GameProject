@@ -4,19 +4,23 @@
 //ステージベースクラス
 class PlatformBase :public ObjectBase {
 protected:
-
+	//リクエスト時に最低限必要なデータ構造体
 	typedef struct {
 		VECTOR	Pos;		//座標
 		VECTOR	Rot;		//回転率
 		VECTOR	Scale;		//拡縮
 		VECTOR	Size;		//サイズ
-		//動く床のみ
-		VECTOR	EndPos;		//動く最大座標
-		//動く床のみ
-		float error;
 	}NORMAL_REQUEST_DATA;
 
-	NORMAL_REQUEST_DATA	m_NormalRequestData;	//リクエスト時に最低限必要なデータ構造体
+	//動く床をリクエストする時必要なデータ構造体
+	typedef struct {
+		VECTOR	FirstPos;	//初期座標
+		VECTOR	EndPos;		//終端座標
+		float	MoveSpeed;	//移動速度
+	}MOVINGPLATFORM_REQUEST_DATA;
+
+	NORMAL_REQUEST_DATA			m_NormalRequestData;			//リクエスト時に最低限必要なデータ構造体
+	MOVINGPLATFORM_REQUEST_DATA	m_MovingPlatformRequestData;	//動く床をリクエストする時必要なデータ構造体
 public:
 	//コンストラクタ
 	PlatformBase();
@@ -29,6 +33,8 @@ public:
 	//Get
 	//基本データ構造体
 	NORMAL_REQUEST_DATA	GetNormalRequestData() { return m_NormalRequestData; }
+	//動く床データ構造体
+	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() { return m_MovingPlatformRequestData; }
 	//モデルの中心を取る
 	VECTOR GetCenter();
 
@@ -49,4 +55,14 @@ public:
 	void SetNormalRequestDataSizeX(const float& _SizeX) { m_NormalRequestData.Size.x = _SizeX; }
 	void SetNormalRequestDataSizeY(const float& _SizeY) { m_NormalRequestData.Size.y = _SizeY; }
 	void SetNormalRequestDataSizeZ(const float& _SizeZ) { m_NormalRequestData.Size.z = _SizeZ; }
+	//動く床データ構造体 初期座標
+	void SetMovingPlatformRequestDataFirstPosX(const float& _FirstPosX) { m_MovingPlatformRequestData.FirstPos.x = _FirstPosX; }
+	void SetMovingPlatformRequestDataFirstPosY(const float& _FirstPosY) { m_MovingPlatformRequestData.FirstPos.y = _FirstPosY; }
+	void SetMovingPlatformRequestDataFirstPosZ(const float& _FirstPosZ) { m_MovingPlatformRequestData.FirstPos.z = _FirstPosZ; }
+	//動く床データ構造体 終端座標
+	void SetMovingPlatformRequestDataEndPosX(const float& _EndPosX) { m_MovingPlatformRequestData.EndPos.x = _EndPosX; }
+	void SetMovingPlatformRequestDataEndPosY(const float& _EndPosY) { m_MovingPlatformRequestData.EndPos.y = _EndPosY; }
+	void SetMovingPlatformRequestDataEndPosZ(const float& _EndPosZ) { m_MovingPlatformRequestData.EndPos.z = _EndPosZ; }
+	//動く床データ構造体 移動速度
+	void SetMovingPlatformRequestDataMoveSpeed(const float& _MoveSpeed) { m_MovingPlatformRequestData.MoveSpeed = _MoveSpeed; }
 };

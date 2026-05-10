@@ -31,8 +31,8 @@ void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
 VECTOR PlatformBase::GetCenter() {
 	VECTOR Res = m_Pos;
 
-	//Y²‚ğ”¼Œa•ªã‚°‚é
-	Res.y -= m_Size.y/2;
+	//Y²‚ğYƒTƒCƒY‚Ì”¼•ª‰º‚°‚é
+	Res.y -= m_Size.y / 2;
 
 	return Res;
 }

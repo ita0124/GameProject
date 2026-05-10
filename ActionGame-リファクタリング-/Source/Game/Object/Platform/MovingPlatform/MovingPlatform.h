@@ -3,6 +3,8 @@
 
 //動く足場
 class MovingPlatform :public PlatformBase {
+private:
+	bool m_IsEndPos;	//終端座標にたどり着いたか
 public:
 	//コンストラクタ
 	MovingPlatform();

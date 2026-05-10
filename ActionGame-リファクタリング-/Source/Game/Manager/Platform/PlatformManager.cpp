@@ -17,7 +17,7 @@ void PlatformManager::Init() {
 	//ファイルを開く
 	if (fopen_s(&PlatformIdFile, CSV_PLATFORM_FILE_PATH, "r") != 0)return;
 	//データ取得
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		fscanf_s(PlatformIdFile, "%d", &m_PlatformID[PlatformIndex][0]);
 		//カンマor改行を飛ばす
 		fgetc(PlatformIdFile);
@@ -25,7 +25,7 @@ void PlatformManager::Init() {
 	//開いたファイルを閉じる
 	fclose(PlatformIdFile);
 	//newする
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		switch (m_PlatformID[PlatformIndex][0])
 		{
 		case NORMAL:
@@ -51,7 +51,7 @@ void PlatformManager::Init() {
 		}
 	}
 	//初期化をここで行う
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			m_Platform[PlatformIndex]->Init();
@@ -62,10 +62,10 @@ void PlatformManager::Init() {
 	//ファイルを開く
 	if (fopen_s(&StageFile, CSV_STAGE_FILE_PATH, "r") != 0)return;
 	//データ取得
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
-		for (int RequestDataIndex = 0;RequestDataIndex < REQUEST_DATA_MAX;RequestDataIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
+		for (int RequestDataIndex = 0; RequestDataIndex < REQUEST_DATA_MAX; RequestDataIndex++) {
 			//データ一つ分取得
-			fscanf_s(StageFile, "%f", &m_NormalRequestData[PlatformIndex][RequestDataIndex]);
+			fscanf_s(StageFile, "%f", &m_RequestData[PlatformIndex][RequestDataIndex]);
 			//カンマor改行を飛ばす
 			fgetc(StageFile);
 		}
@@ -73,21 +73,34 @@ void PlatformManager::Init() {
 	//開いたファイルを閉じる
 	fclose(PlatformIdFile);
 
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
-			m_Platform[PlatformIndex]->SetNormalRequestDataPosX(m_NormalRequestData[PlatformIndex][0]);			//X座標
-			m_Platform[PlatformIndex]->SetNormalRequestDataPosY(m_NormalRequestData[PlatformIndex][1]);			//Y座標
-			m_Platform[PlatformIndex]->SetNormalRequestDataPosZ(m_NormalRequestData[PlatformIndex][2]);			//Z座標
-			m_Platform[PlatformIndex]->SetNormalRequestDataRotX(m_NormalRequestData[PlatformIndex][3]);			//X回転率
-			m_Platform[PlatformIndex]->SetNormalRequestDataRotY(m_NormalRequestData[PlatformIndex][4]);			//Y回転率
-			m_Platform[PlatformIndex]->SetNormalRequestDataRotZ(m_NormalRequestData[PlatformIndex][5]);			//Z回転率
-			m_Platform[PlatformIndex]->SetNormalRequestDataScaleX(m_NormalRequestData[PlatformIndex][6]);		//X拡縮
-			m_Platform[PlatformIndex]->SetNormalRequestDataScaleY(m_NormalRequestData[PlatformIndex][7]);		//Y拡縮
-			m_Platform[PlatformIndex]->SetNormalRequestDataScaleZ(m_NormalRequestData[PlatformIndex][8]);		//Z拡縮
-			m_Platform[PlatformIndex]->SetNormalRequestDataSizeX(m_NormalRequestData[PlatformIndex][9]);		//Xサイズ
-			m_Platform[PlatformIndex]->SetNormalRequestDataSizeY(m_NormalRequestData[PlatformIndex][10]);		//Yサイズ
-			m_Platform[PlatformIndex]->SetNormalRequestDataSizeZ(m_NormalRequestData[PlatformIndex][11]);		//Zサイズ
+			//リクエストに最低限必要なデータ
+			m_Platform[PlatformIndex]->SetNormalRequestDataPosX(m_RequestData[PlatformIndex][0]);					//X座標
+			m_Platform[PlatformIndex]->SetNormalRequestDataPosY(m_RequestData[PlatformIndex][1]);					//Y座標
+			m_Platform[PlatformIndex]->SetNormalRequestDataPosZ(m_RequestData[PlatformIndex][2]);					//Z座標
+			m_Platform[PlatformIndex]->SetNormalRequestDataRotX(m_RequestData[PlatformIndex][3]);					//X回転率
+			m_Platform[PlatformIndex]->SetNormalRequestDataRotY(m_RequestData[PlatformIndex][4]);					//Y回転率
+			m_Platform[PlatformIndex]->SetNormalRequestDataRotZ(m_RequestData[PlatformIndex][5]);					//Z回転率
+			m_Platform[PlatformIndex]->SetNormalRequestDataScaleX(m_RequestData[PlatformIndex][6]);					//X拡縮
+			m_Platform[PlatformIndex]->SetNormalRequestDataScaleY(m_RequestData[PlatformIndex][7]);					//Y拡縮
+			m_Platform[PlatformIndex]->SetNormalRequestDataScaleZ(m_RequestData[PlatformIndex][8]);					//Z拡縮
+			m_Platform[PlatformIndex]->SetNormalRequestDataSizeX(m_RequestData[PlatformIndex][9]);					//Xサイズ
+			m_Platform[PlatformIndex]->SetNormalRequestDataSizeY(m_RequestData[PlatformIndex][10]);					//Yサイズ
+			m_Platform[PlatformIndex]->SetNormalRequestDataSizeZ(m_RequestData[PlatformIndex][11]);					//Zサイズ
+			////動く床なら
+			if (m_PlatformID[PlatformIndex][0] == MOVING) {
+				//---データ使いまわし---
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosX(m_RequestData[PlatformIndex][0]);	//X初期座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosY(m_RequestData[PlatformIndex][1]);	//Y初期座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosZ(m_RequestData[PlatformIndex][2]);	//Z初期座標
+				//----------------------
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosX(m_RequestData[PlatformIndex][12]);	//X終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosY(m_RequestData[PlatformIndex][13]);	//Y終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosZ(m_RequestData[PlatformIndex][14]);	//Z終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataMoveSpeed(m_RequestData[PlatformIndex][15]);	//移動速度
+			}
 			//リクエストしてオブジェクトを生成
 			m_Platform[PlatformIndex]->Request(m_Platform[PlatformIndex]->GetNormalRequestData());
 		}
@@ -95,7 +108,7 @@ void PlatformManager::Init() {
 }
 //データ破棄処理
 void PlatformManager::Exit() {
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			//データ破棄
@@ -109,7 +122,7 @@ void PlatformManager::Exit() {
 }
 //データ読み込み処理
 void PlatformManager::Load() {
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			m_Platform[PlatformIndex]->Load();
@@ -118,7 +131,7 @@ void PlatformManager::Load() {
 }
 //描画処理
 void PlatformManager::Draw() {
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			m_Platform[PlatformIndex]->Draw();
@@ -127,7 +140,7 @@ void PlatformManager::Draw() {
 }
 //毎フレーム呼び出す処理
 void PlatformManager::Step() {
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			m_Platform[PlatformIndex]->Step();
@@ -136,7 +149,7 @@ void PlatformManager::Step() {
 }
 //モデル更新処理
 void PlatformManager::Update() {
-	for (int PlatformIndex = 0;PlatformIndex < PLATFORM_MAX;PlatformIndex++) {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
 			m_Platform[PlatformIndex]->Update();

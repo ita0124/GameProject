@@ -77,7 +77,7 @@ void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
 	Col = MV1CollCheck_Sphere(_CollObject.GetHndl(), -1, _Object.GetCenter(), _Object.GetRad());
 	//ポリゴンと当たっていたか
 	if (Col.HitNum != 0) {
-		for (int Index = 0;Index < Col.HitNum;Index++) {
+		for (int Index = 0; Index < Col.HitNum; Index++) {
 			//まず中心点から最近点を引き算
 			VECTOR Vec = VSub(_Object.GetCenter(), Col.Dim[Index].HitPosition);
 			//取得したベクトルを三平方の定理で長さに変換
@@ -120,7 +120,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	//オブジェクトのサイズを取得
 	VECTOR	ObjectSize = _Object.GetSize();
 
-	for (int Index = 0;Index < PLATFORM_MAX;Index++) {
+	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得
 		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
@@ -141,21 +141,79 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 #endif // DEBUG
 			//重力をリセット
 			_Object.GravityReset();
-			//まず中心点から最近点を引き算
-			VECTOR Vec = VSub(ObjectPos, PlatformPos);
-			//
-			Vec.x = 0.0f;
-			Vec.z = 0.0f;
+			//足場の中心座標とオブジェクトの原点座標を引き算
+			VECTOR Sub = VSub(ObjectPos, PlatformPos);
+			//押し出さない軸を0に
+			Sub.x = 0.0f;
+			Sub.z = 0.0f;
 			//取得したベクトルを三平方の定理で長さに変換
-			float Len = VSize(Vec);
+			float Len = VSize(Sub);
 			//正規化
-			Vec = VNorm(Vec);
-			
+			Sub = VNorm(Sub);
+
 			Len = _Object.GetRad() - Len;
-		
-			Vec = VScale(Vec, Len);
+
+			Sub = VScale(Sub, Len);
 			//オブジェクトの座標を計算した分だけ移動させる
-			_Object.SetPos(VAdd(_Object.GetPos(), Vec));
+			_Object.SetPos(VAdd(_Object.GetPos(), Sub));
+			////足場の中心座標とオブジェクトの原点座標を引き算
+			//VECTOR Sub = VSub(ObjectPos, PlatformPos);
+			////float型の絶対値に変換
+			//float AbsCalcX = fabsf(Sub.x);
+			//float AbsCalcY = fabsf(Sub.y);
+			//float AbsCalcZ = fabsf(Sub.z);
+			///*========================
+			//一番差が大きい軸に押し返す
+			//==========================*/
+			////YよりXの方が大きい
+			////ZよりXの方が大きい
+			//if (AbsCalcX >= AbsCalcY && AbsCalcX >= AbsCalcZ) {
+			//	//押し出さない軸を0に
+			//	Sub.y = 0.0f;
+			//	Sub.z = 0.0f;
+			//	//取得したベクトルを三平方の定理で長さに変換
+			//	float Len = VSize(Sub);
+			//	//正規化
+			//	Sub = VNorm(Sub);
+
+			//	Len = _Object.GetRad() - Len;
+
+			//	Sub = VScale(Sub, Len);
+			//	//オブジェクトの座標を計算した分だけ移動させる
+			//	_Object.SetPos(VAdd(_Object.GetPos(), Sub));
+			//}
+			//else if (AbsCalcY >= AbsCalcZ) {
+			//	//重力をリセット
+			//	_Object.GravityReset();
+			//	//押し出さない軸を0に
+			//	Sub.x = 0.0f;
+			//	Sub.z = 0.0f;
+			//	//取得したベクトルを三平方の定理で長さに変換
+			//	float Len = VSize(Sub);
+			//	//正規化
+			//	Sub = VNorm(Sub);
+
+			//	Len = _Object.GetRad() - Len;
+
+			//	Sub = VScale(Sub, Len);
+			//	//オブジェクトの座標を計算した分だけ移動させる
+			//	_Object.SetPos(VAdd(_Object.GetPos(), Sub));
+			//}
+			//else {
+			//	//押し出さない軸を0に
+			//	Sub.x = 0.0f;
+			//	Sub.y = 0.0f;
+			//	//取得したベクトルを三平方の定理で長さに変換
+			//	float Len = VSize(Sub);
+			//	//正規化
+			//	Sub = VNorm(Sub);
+
+			//	Len = _Object.GetRad() - Len;
+
+			//	Sub = VScale(Sub, Len);
+			//	//オブジェクトの座標を計算した分だけ移動させる
+			//	_Object.SetPos(VAdd(_Object.GetPos(), Sub));
+			//}
 			return;
 		}
 		else {

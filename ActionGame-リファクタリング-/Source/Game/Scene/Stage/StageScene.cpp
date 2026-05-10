@@ -39,8 +39,8 @@ int StageScene::Loop() {
 		if (Fade::IsEndIn()) {
 			//タグをSTEPに設定
 			m_ID = STEP;
-			//BGMを呼び出す
-			SoundManager::Play(SoundManager::TagID::BGM_TITLE, DX_PLAYTYPE_LOOP);
+			////BGMを呼び出す
+			//SoundManager::Play(SoundManager::TagID::BGM_TITLE, DX_PLAYTYPE_LOOP);
 		}
 		break;
 
