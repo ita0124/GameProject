@@ -156,4 +156,15 @@ void PlatformManager::Update() {
 		}
 	}
 }
-
+//“–‚½‚è”»’èŒã‚Ìˆ—
+void PlatformManager::HitCalc(const int& _Num) {
+	if (m_Platform[_Num] != nullptr) {
+		m_Platform[_Num]->HitCalc();
+	}
+}
+//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
+void PlatformManager::NotHitCalc(const int& _Num) {
+	if (m_Platform[_Num] != nullptr) {
+		m_Platform[_Num]->NotHitCalc();
+	}
+}

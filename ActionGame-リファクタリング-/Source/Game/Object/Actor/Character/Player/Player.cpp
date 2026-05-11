@@ -96,6 +96,12 @@ void Player::Step() {
 
 #ifdef _DEBUG
 	m_HitPoints = 100;
+
+	if (m_Pos.y <= -500) {
+		m_Pos = VZERO;
+		GravityReset();
+	}
+
 #endif // DEBUG
 
 	//スタミナ処理

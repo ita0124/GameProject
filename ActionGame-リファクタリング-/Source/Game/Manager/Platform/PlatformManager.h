@@ -39,6 +39,10 @@ public:
 	void Step();
 	//モデル更新処理
 	void Update();
+	//当たり判定後の処理(当たっている場合)
+	void HitCalc(const int& _Num);
+	//当たり判定後の処理(当たっていない場合)
+	void NotHitCalc(const int& _Num);
 	//指定した配列番号のメンバ変数を返す
-	PlatformBase& GetPlatform(const int _Num) { return *m_Platform[_Num]; }
+	PlatformBase& GetPlatform(const int &_Num) { return *m_Platform[_Num]; }
 };

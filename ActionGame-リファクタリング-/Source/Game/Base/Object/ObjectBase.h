@@ -54,6 +54,10 @@ public:
 	virtual void Load() = 0;
 	//毎フレーム呼び出す処理
 	virtual void Step() = 0;
+	//当たり判定後の処理(当たっている場合)
+	virtual void HitCalc() {}
+	//当たり判定後の処理(当たっていない場合)
+	virtual void NotHitCalc() {}
 
 	//Get
 	//ゲームオブジェクト種類

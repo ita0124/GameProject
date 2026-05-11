@@ -4,7 +4,11 @@
 //落ちる足場
 class FallingPlatform :public PlatformBase {
 private:
-
+	int		m_FallWait;			//落ち始めるまでの待機時間
+	int		m_FallingTime;		//落ち続ける時間
+	int		m_RespawnWait;		//再生成までの時間
+	bool	m_IsFalling;		//落ちてよいか判断する
+	VECTOR	m_FirstPos;			//初期座標
 public:
 	//コンストラクタ
 	FallingPlatform();
@@ -16,6 +20,10 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+	//当たり判定後の処理(当たっている場合)
+	void HitCalc();
+	//当たり判定後の処理(当たっていない場合)
+	void NotHitCalc();
 };
 
 
