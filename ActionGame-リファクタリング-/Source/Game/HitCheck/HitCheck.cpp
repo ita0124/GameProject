@@ -117,6 +117,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (!_Object.GetIsActive())return;
 	//オブジェクトの座標取得
 	VECTOR	ObjectPos = _Object.GetPos();
+	//オブジェクトの前フレーム座標取得
+	VECTOR PrevPos = _Object.GetPrevPos();
 	//オブジェクトのサイズを取得
 	VECTOR	ObjectSize = _Object.GetSize();
 	//重力処理を行うか
@@ -131,6 +133,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		VECTOR	PlatformPos = OnePlatform.GetCenter();
 		//足場クラスのサイズを取得
 		VECTOR	PlatformSize = OnePlatform.GetSize();
+
+		DrawFormatStringToHandle(50, 200, RED, DxLibFont::FONTHNDL_N30, "%f", ObjectPos.y);
 		//当たり判定
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
 		//当たっていれば
@@ -139,7 +143,6 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			VECTOR PlatformPos1 = VGet(PlatformPos.x + OnePlatform.GetSize().x / 2, PlatformPos.y + OnePlatform.GetSize().y / 2, PlatformPos.z + OnePlatform.GetSize().z / 2);
 			VECTOR PlatformPos2 = VGet(PlatformPos.x - OnePlatform.GetSize().x / 2, PlatformPos.y - OnePlatform.GetSize().y / 2, PlatformPos.z - OnePlatform.GetSize().z / 2);
 			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
-
 #endif // DEBUG
 			//面座標計算
 			//オブジェクト
@@ -155,9 +158,14 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			float ObjectFlont = ObjectPos.z - ObjectSize.z * 0.5f;
 			//奥方向
 			float ObjectBack = ObjectPos.z + ObjectSize.z * 0.5f;
+			//前フレーム
+			//上方向
+			float PrevObjectUp = PrevPos.y + ObjectSize.y * 0.5f;
+			//下方向
+			float PrevObjectDown = PrevPos.y;
 			//足場
 			//上方向
-			float PlatformUP = PlatformPos.y + PlatformSize.y * 0.5f;
+			float PlatformUp = PlatformPos.y + PlatformSize.y * 0.5f;
 			//下方向
 			float PlatformDown = PlatformPos.y - PlatformSize.y * 0.5f;
 			//左方向
@@ -169,92 +177,83 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			//奥方向
 			float PlatformBack = PlatformPos.z + PlatformSize.z * 0.5f;
 
-			//押し戻し量計算
-			//上方向
-			float PushUp = PlatformDown - ObjectUP;
-			//下方向
-			float PushDown = PlatformUP - ObjectDown;
-			//左方向
-			float PushLeft = PlatformRight - ObjectLeft;
-			//右方向
-			float PushRight = PlatformLeft - ObjectRight;
-			//前方向
-			float PushFront = PlatformBack - ObjectFlont;
-			//奥方向
-			float PushBack = PlatformFlont - ObjectBack;
-
-			//最も押し戻し量の小さい方向を探す
-			//角方向の値を絶対値に変換
-			//上方向
-			float PushUpAbs = fabsf(PushUp);
-			//下方向
-			float PushDownAbs = fabsf(PushDown);
-			//左方向
-			float PushLeftAbs = fabsf(PushLeft);
-			//右方向
-			float PushRightAbs = fabsf(PushRight);
-			//前方向
-			float PushFrontAbs = fabsf(PushFront);
-			//奥方向
-			float PushBackAbs = fabsf(PushBack);
-
-			//一旦上方向が最も小さいと仮定する
-			float MinPush = PushUpAbs;
 			//押し戻し方向設定
-			VECTOR PushVec = VGet(0.0f, PushUp, 0.0f);
-			//下方向と比較
-			//小さければ
-			if (PushDownAbs < MinPush) {
-				//最小を更新
-				MinPush = PushDownAbs;
+			VECTOR PushVec = VZERO;
+			//着地
+			if (PrevObjectDown >= PlatformUp) {
+				//押し戻し量計算
+				//上方向
+				float PushUp = PlatformUp - ObjectDown;
 				//押し戻し方向再設定
-				PushVec = VGet(0.0f, PushDown, 0.0f);
-			}
-			//左方向と比較
-			//小さければ
-			if (PushLeftAbs < MinPush) {
-				//最小を更新
-				MinPush = PushLeftAbs;
-				//押し戻し方向再設定
-				PushVec = VGet(PushLeft, 0.0f, 0.0f);
-			}
-			//右方向と比較
-			//小さければ
-			if (PushRightAbs < MinPush) {
-				//最小を更新
-				MinPush = PushRightAbs;
-				//押し戻し方向再設定
-				PushVec = VGet(PushRight, 0.0f, 0.0f);
-			}
-			//前方向と比較
-			//小さければ
-			if (PushFrontAbs < MinPush) {
-				//最小を更新
-				MinPush = PushFrontAbs;
-				//押し戻し方向再設定
-				PushVec = VGet(0.0f, 0.0f, PushFront);
-			}
-			//奥方向と比較
-			//小さければ
-			if (PushBackAbs < MinPush) {
-				//最小を更新
-				MinPush = PushBackAbs;
-				//押し戻し方向再設定
-				PushVec = VGet(0.0f, 0.0f, PushBack);
-			}
-
-			//押し戻し計算
-			_Object.AddPos(PushVec);
-			//オブジェクトの座標を更新
-			ObjectPos = _Object.GetPos();
-
-			//上に乗った場合
-			if (PushVec.y > 0.0f) {
+				PushVec = VGet(0.0f, PushUp, 0.0f);
 				//重力処理を行わない
 				IsGravity = false;
 				//重力をリセット
 				_Object.GravityReset();
 			}
+			//天井ヒット
+			else if (PrevObjectUp <= PlatformDown) {
+				//押し戻し量計算
+				//下方向
+				float PushDown = PlatformDown - ObjectUP;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, PushDown, 0.0f);
+			}
+			else {
+				//押し戻し量計算
+				//左方向
+				float PushLeft = PlatformRight - ObjectLeft;
+				//右方向
+				float PushRight = PlatformLeft - ObjectRight;
+				//前方向
+				float PushFront = PlatformBack - ObjectFlont;
+				//奥方向
+				float PushBack = PlatformFlont - ObjectBack;
+
+				//最も押し戻し量の小さい方向を探す
+				//角方向の値を絶対値に変換
+				//左方向
+				float PushLeftAbs = fabsf(PushLeft);
+				//右方向
+				float PushRightAbs = fabsf(PushRight);
+				//前方向
+				float PushFrontAbs = fabsf(PushFront);
+				//奥方向
+				float PushBackAbs = fabsf(PushBack);
+
+				//一旦上方向が最も小さいと仮定する
+				float MinPush = PushLeftAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(PushLeft, 0.0f, 0.0f);
+				//右方向と比較
+				//小さければ
+				if (PushRightAbs < MinPush) {
+					//最小を更新
+					MinPush = PushRightAbs;
+					//押し戻し方向再設定
+					PushVec = VGet(PushRight, 0.0f, 0.0f);
+				}
+				//前方向と比較
+				//小さければ
+				if (PushFrontAbs < MinPush) {
+					//最小を更新
+					MinPush = PushFrontAbs;
+					//押し戻し方向再設定
+					PushVec = VGet(0.0f, 0.0f, PushFront);
+				}
+				//奥方向と比較
+				//小さければ
+				if (PushBackAbs < MinPush) {
+					//最小を更新
+					MinPush = PushBackAbs;
+					//押し戻し方向再設定
+					PushVec = VGet(0.0f, 0.0f, PushBack);
+				}
+			}
+			//押し戻し計算
+			_Object.AddPos(PushVec);
+			//オブジェクトの座標を更新
+			ObjectPos = _Object.GetPos();
 			//当たり判定後の処理(当たっている場合)
 			_PlatformManager.HitCalc(Index);
 		}
@@ -262,10 +261,10 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			//当たり判定後の処理(当たっていない場合)
 			_PlatformManager.NotHitCalc(Index);
 		}
-		//着地していなければ
-		if (IsGravity) {
-			//重力処理を行う
-			_Object.SetIsGravity(true);
-		}
+	}
+	//着地していなければ
+	if (IsGravity) {
+		//重力処理を行う
+		_Object.SetIsGravity(true);
 	}
 }

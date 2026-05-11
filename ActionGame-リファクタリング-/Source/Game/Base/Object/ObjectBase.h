@@ -20,6 +20,7 @@ protected:
 	VECTOR		m_Rot;			//回転率
 	VECTOR		m_Scale;		//拡縮
 	VECTOR		m_Size;			//サイズ
+	VECTOR		m_PrevPos;		//前フレーム座標
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
@@ -70,6 +71,8 @@ public:
 	VECTOR		GetScale()			const { return m_Scale; }
 	//サイズ
 	VECTOR		GetSize()			const { return m_Size; }
+	//前フレーム座標
+	VECTOR		GetPrevPos()		const { return m_PrevPos; }
 	//ハンドル
 	int			GetHndl()			const { return m_Hndl; }
 	//半径

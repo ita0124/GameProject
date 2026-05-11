@@ -88,6 +88,8 @@ void Player::Load() {
 }
 //–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
 void Player::Step() {
+	m_PrevPos = m_Pos;
+
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
