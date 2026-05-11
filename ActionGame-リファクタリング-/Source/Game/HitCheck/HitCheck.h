@@ -2,6 +2,7 @@
 #include "Lib/Collision/Collision.h"
 #include "Game/Base/Object/ObjectBase.h"
 #include "Game/Manager/Platform/PlatformManager.h"
+#include "Lib/DxLibFont/DxLibFont.h"
 
 class HitCheck {
 public:

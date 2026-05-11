@@ -119,14 +119,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	VECTOR	ObjectPos = _Object.GetPos();
 	//オブジェクトのサイズを取得
 	VECTOR	ObjectSize = _Object.GetSize();
-
-	//同フレーム内に一度行った計算を再度行わないようにするためのフラグ
-	bool IsObjectUPToPlatformDown = false;
-	bool IsObjectDownToPlatformUP = false;
-	bool IsObjectLeftToPlatformRight = false;
-	bool IsObjectRightToPlatformLeft = false;
-	bool IsObjectFlontToPlatformBack = false;
-	bool IsObjectBackToPlatformFlont = false;
+	//重力処理を行うか
+	bool IsGravity = true;
 
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得
@@ -140,228 +134,138 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//当たり判定
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
 		//当たっていれば
-//		if (IsHit) {
-//#ifdef _DEBUG
-//			VECTOR PlatformPos1 = VGet(PlatformPos.x + OnePlatform.GetSize().x / 2, PlatformPos.y + OnePlatform.GetSize().y / 2, PlatformPos.z + OnePlatform.GetSize().z / 2);
-//			VECTOR PlatformPos2 = VGet(PlatformPos.x - OnePlatform.GetSize().x / 2, PlatformPos.y - OnePlatform.GetSize().y / 2, PlatformPos.z - OnePlatform.GetSize().z / 2);
-//			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
-//
-//#endif // DEBUG
-//			//重力をリセット
-//			_Object.GravityReset();
-//
-//			//オブジェクト
-//			//上方向
-//			float ObjectUP = ObjectPos.y + ObjectSize.y * 0.5f;
-//			//下方向
-//			float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
-//			//左側
-//			float ObjectLeft = ObjectPos.x - ObjectSize.x * 0.5f;
-//			//右側
-//			float ObjectRight = ObjectPos.x + ObjectSize.x * 0.5f;
-//			//手前
-//			float ObjectFlont = ObjectPos.z - ObjectSize.z * 0.5f;
-//			//奥
-//			float ObjectBack = ObjectPos.z + ObjectSize.z * 0.5f;
-//			//足場
-//			//上方向
-//			float PlatformUP = PlatformPos.y + PlatformSize.y * 0.5f;
-//			//下方向
-//			float PlatformDown = PlatformPos.y - PlatformSize.y * 0.5f;
-//			//左側
-//			float PlatformLeft = PlatformPos.x - PlatformSize.x * 0.5f;
-//			//右側
-//			float PlatformRight = PlatformPos.x + PlatformSize.x * 0.5f;
-//			//手前
-//			float PlatformFlont = PlatformPos.z - PlatformSize.z * 0.5f;
-//			//奥
-//			float PlatformBack = PlatformPos.z + PlatformSize.z * 0.5f;
-//
-//			//float型の絶対値に変換
-//			// //オブジェクト
-//			//上方向
-//			float AbsObjectUP = fabsf(ObjectUP);
-//			//下方向
-//			float AbsObjectDown = fabsf(ObjectDown);
-//			//左側
-//			float AbsObjectLeft = fabsf(ObjectLeft);
-//			//右側
-//			float AbsObjectRight = fabsf(ObjectRight);
-//			//手前
-//			float AbsObjectFlont = fabsf(ObjectFlont);
-//			//奥
-//			float AbsObjectBack = fabsf(ObjectBack);
-//			//足場
-//			//上方向
-//			float AbsPlatformUP = fabsf(PlatformUP);
-//			//下方向
-//			float AbsPlatformDown = fabsf(PlatformDown);
-//			//左側
-//			float AbsPlatformLeft = fabsf(PlatformLeft);
-//			//右側
-//			float AbsPlatformRight = fabsf(PlatformRight);
-//			//手前
-//			float AbsPlatformFlont = fabsf(PlatformFlont);
-//			//奥
-//			float AbsPlatformBack = fabsf(PlatformBack);
-//			//計算
-//			//オブジェクトの上方向と足場の下方向
-//			float ObjectUpAddPlatformDown = AbsObjectUP + AbsPlatformDown;
-//			//オブジェクトの下方向と足場の上方向
-//			float ObjectDownAddPlatformUP = AbsObjectDown + AbsPlatformUP;
-//			//オブジェクトの左方向と足場の右方向
-//			float ObjectLeftAddPlatformRight = AbsObjectLeft + AbsPlatformRight;
-//			//オブジェクトの右方向と足場の左方向
-//			float ObjectRightAddPlatformLeft = AbsObjectRight + AbsPlatformLeft;
-//			//オブジェクトの手前方向と足場の奥方向
-//			float ObjectFlontAddPlatformBack = AbsObjectFlont + AbsPlatformBack;
-//			//オブジェクトの奥方向と足場の手前方向
-//			float ObjectBackAddPlatformFlont = AbsObjectBack + AbsPlatformFlont;
-//			//計算
-//			//オブジェクトの上方向と足場の下方向
-//			float ObjectUpAddPlatformDown = ObjectUP - PlatformDown;
-//			//オブジェクトの下方向と足場の上方向
-//			float ObjectDownAddPlatformUP = ObjectDown - PlatformUP;
-//			//オブジェクトの左方向と足場の右方向
-//			float ObjectLeftAddPlatformRight = ObjectLeft - PlatformRight;
-//			//オブジェクトの右方向と足場の左方向
-//			float ObjectRightAddPlatformLeft = ObjectRight - PlatformLeft;
-//			//オブジェクトの手前方向と足場の奥方向
-//			float ObjectFlontAddPlatformBack = ObjectFlont - PlatformBack;
-//			//オブジェクトの奥方向と足場の手前方向
-//			float ObjectBackAddPlatformFlont = ObjectBack - PlatformFlont;
-//			//オブジェクトの上方向と足場の下方向
-//			float ObjectUpAddPlatformDown = PlatformDown - ObjectUP;
-//			//オブジェクトの下方向と足場の上方向
-//			float ObjectDownAddPlatformUP = PlatformUP - ObjectDown;
-//			//オブジェクトの左方向と足場の右方向
-//			float ObjectLeftAddPlatformRight = PlatformRight - ObjectLeft;
-//			//オブジェクトの右方向と足場の左方向
-//			float ObjectRightAddPlatformLeft = PlatformLeft - ObjectRight;
-//			//オブジェクトの手前方向と足場の奥方向
-//			float ObjectFlontAddPlatformBack = PlatformBack - ObjectFlont;
-//			//オブジェクトの奥方向と足場の手前方向
-//			float ObjectBackAddPlatformFlont = PlatformFlont - ObjectBack;
-//
-//			//6つの中で最も小さい値の方向に押し返す
-//			//オブジェクトの上方向と足場の下方向が最も小さい
-//			if (ObjectUpAddPlatformDown <= ObjectDownAddPlatformUP &&
-//				ObjectUpAddPlatformDown <= ObjectLeftAddPlatformRight &&
-//				ObjectUpAddPlatformDown <= ObjectRightAddPlatformLeft &&
-//				ObjectUpAddPlatformDown <= ObjectFlontAddPlatformBack &&
-//				ObjectUpAddPlatformDown <= ObjectBackAddPlatformFlont) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectUPToPlatformDown)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformDown - ObjectUP;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(0.0f, Dir, 0.0f);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectUPToPlatformDown = true;
-//			}
-//			//オブジェクトの下方向と足場の上方向が最も小さい
-//			if (ObjectDownAddPlatformUP <= ObjectUpAddPlatformDown &&
-//				ObjectDownAddPlatformUP <= ObjectLeftAddPlatformRight &&
-//				ObjectDownAddPlatformUP <= ObjectRightAddPlatformLeft &&
-//				ObjectDownAddPlatformUP <= ObjectFlontAddPlatformBack &&
-//				ObjectDownAddPlatformUP <= ObjectBackAddPlatformFlont) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectDownToPlatformUP)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformUP - ObjectDown;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(0.0f, Dir, 0.0f);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectDownToPlatformUP = true;
-//			}
-//			//オブジェクトの左方向と足場の右方向が最も小さい
-//			if (ObjectLeftAddPlatformRight <= ObjectUpAddPlatformDown &&
-//				ObjectLeftAddPlatformRight <= ObjectDownAddPlatformUP &&
-//				ObjectLeftAddPlatformRight <= ObjectRightAddPlatformLeft &&
-//				ObjectLeftAddPlatformRight <= ObjectFlontAddPlatformBack &&
-//				ObjectLeftAddPlatformRight <= ObjectBackAddPlatformFlont) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectLeftToPlatformRight)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformRight - ObjectLeft;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(Dir, 0.0f, 0.0f);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectLeftToPlatformRight = true;
-//			}
-//			//オブジェクトの右方向と足場の左方向が最も小さい
-//			if (ObjectRightAddPlatformLeft <= ObjectUpAddPlatformDown &&
-//				ObjectRightAddPlatformLeft <= ObjectDownAddPlatformUP &&
-//				ObjectRightAddPlatformLeft <= ObjectLeftAddPlatformRight &&
-//				ObjectRightAddPlatformLeft <= ObjectFlontAddPlatformBack &&
-//				ObjectRightAddPlatformLeft <= ObjectBackAddPlatformFlont) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectRightToPlatformLeft)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformLeft - ObjectRight;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(Dir, 0.0f, 0.0f);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectRightToPlatformLeft = true;
-//			}
-//			//オブジェクトの手前方向と足場の奥方向が最も小さい
-//			if (ObjectFlontAddPlatformBack <= ObjectUpAddPlatformDown &&
-//				ObjectFlontAddPlatformBack <= ObjectDownAddPlatformUP &&
-//				ObjectFlontAddPlatformBack <= ObjectLeftAddPlatformRight &&
-//				ObjectFlontAddPlatformBack <= ObjectRightAddPlatformLeft &&
-//				ObjectFlontAddPlatformBack <= ObjectBackAddPlatformFlont) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectFlontToPlatformBack)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformBack - ObjectFlont;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(0.0f, 0.0f, Dir);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectFlontToPlatformBack = true;
-//			}
-//			//オブジェクトの奥方向と足場の手前方向
-//			if (ObjectBackAddPlatformFlont <= ObjectUpAddPlatformDown &&
-//				ObjectBackAddPlatformFlont <= ObjectDownAddPlatformUP &&
-//				ObjectBackAddPlatformFlont <= ObjectLeftAddPlatformRight &&
-//				ObjectBackAddPlatformFlont <= ObjectRightAddPlatformLeft &&
-//				ObjectBackAddPlatformFlont <= ObjectFlontAddPlatformBack) {
-//				//同フレーム内に一度計算が行われていれば
-//				if (IsObjectBackToPlatformFlont)continue;
-//				//押し戻す方向を生成
-//				float Dir = PlatformFlont - ObjectBack;
-//				//VECTOR型に格納
-//				VECTOR CalcVec = VGet(0.0f, 0.0f, Dir);
-//				//オブジェクトの座標を計算した分だけ移動させる
-//				_Object.AddPos(CalcVec);
-//				//計算終了に変更
-//				IsObjectBackToPlatformFlont = true;
-//			}
-//			//当たり判定後の処理(当たっている場合)
-//			_PlatformManager.HitCalc(Index);
-//		}
-//		else {
-//			//当たり判定後の処理(当たっていない場合)
-//			_PlatformManager.NotHitCalc(Index);
-//		}
-//		//どの押し戻し処理も実行されていなければ
-//		if (!IsObjectUPToPlatformDown
-//			&& !IsObjectDownToPlatformUP
-//			&& !IsObjectLeftToPlatformRight
-//			&& !IsObjectRightToPlatformLeft
-//			&& !IsObjectFlontToPlatformBack
-//			&& !IsObjectBackToPlatformFlont) {
-//			//何も触れていなければ重力処理をオンにする
-//			_Object.SetIsGravity(true);
-//		}
+		if (IsHit) {
+#ifdef _DEBUG
+			VECTOR PlatformPos1 = VGet(PlatformPos.x + OnePlatform.GetSize().x / 2, PlatformPos.y + OnePlatform.GetSize().y / 2, PlatformPos.z + OnePlatform.GetSize().z / 2);
+			VECTOR PlatformPos2 = VGet(PlatformPos.x - OnePlatform.GetSize().x / 2, PlatformPos.y - OnePlatform.GetSize().y / 2, PlatformPos.z - OnePlatform.GetSize().z / 2);
+			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
+
+#endif // DEBUG
+			//面座標計算
+			//オブジェクト
+			//上方向
+			float ObjectUP = ObjectPos.y + ObjectSize.y * 0.5f;
+			//下方向
+			float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
+			//左方向
+			float ObjectLeft = ObjectPos.x - ObjectSize.x * 0.5f;
+			//右方向
+			float ObjectRight = ObjectPos.x + ObjectSize.x * 0.5f;
+			//前方向
+			float ObjectFlont = ObjectPos.z - ObjectSize.z * 0.5f;
+			//奥方向
+			float ObjectBack = ObjectPos.z + ObjectSize.z * 0.5f;
+			//足場
+			//上方向
+			float PlatformUP = PlatformPos.y + PlatformSize.y * 0.5f;
+			//下方向
+			float PlatformDown = PlatformPos.y - PlatformSize.y * 0.5f;
+			//左方向
+			float PlatformLeft = PlatformPos.x - PlatformSize.x * 0.5f;
+			//右方向
+			float PlatformRight = PlatformPos.x + PlatformSize.x * 0.5f;
+			//前方向
+			float PlatformFlont = PlatformPos.z - PlatformSize.z * 0.5f;
+			//奥方向
+			float PlatformBack = PlatformPos.z + PlatformSize.z * 0.5f;
+
+			//押し戻し量計算
+			//上方向
+			float PushUp = PlatformDown - ObjectUP;
+			//下方向
+			float PushDown = PlatformUP - ObjectDown;
+			//左方向
+			float PushLeft = PlatformRight - ObjectLeft;
+			//右方向
+			float PushRight = PlatformLeft - ObjectRight;
+			//前方向
+			float PushFront = PlatformBack - ObjectFlont;
+			//奥方向
+			float PushBack = PlatformFlont - ObjectBack;
+
+			//最も押し戻し量の小さい方向を探す
+			//角方向の値を絶対値に変換
+			//上方向
+			float PushUpAbs = fabsf(PushUp);
+			//下方向
+			float PushDownAbs = fabsf(PushDown);
+			//左方向
+			float PushLeftAbs = fabsf(PushLeft);
+			//右方向
+			float PushRightAbs = fabsf(PushRight);
+			//前方向
+			float PushFrontAbs = fabsf(PushFront);
+			//奥方向
+			float PushBackAbs = fabsf(PushBack);
+
+			//一旦上方向が最も小さいと仮定する
+			float MinPush = PushUpAbs;
+			//押し戻し方向設定
+			VECTOR PushVec = VGet(0.0f, PushUp, 0.0f);
+			//下方向と比較
+			//小さければ
+			if (PushDownAbs < MinPush) {
+				//最小を更新
+				MinPush = PushDownAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, PushDown, 0.0f);
+			}
+			//左方向と比較
+			//小さければ
+			if (PushLeftAbs < MinPush) {
+				//最小を更新
+				MinPush = PushLeftAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(PushLeft, 0.0f, 0.0f);
+			}
+			//右方向と比較
+			//小さければ
+			if (PushRightAbs < MinPush) {
+				//最小を更新
+				MinPush = PushRightAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(PushRight, 0.0f, 0.0f);
+			}
+			//前方向と比較
+			//小さければ
+			if (PushFrontAbs < MinPush) {
+				//最小を更新
+				MinPush = PushFrontAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, 0.0f, PushFront);
+			}
+			//奥方向と比較
+			//小さければ
+			if (PushBackAbs < MinPush) {
+				//最小を更新
+				MinPush = PushBackAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, 0.0f, PushBack);
+			}
+
+			//押し戻し計算
+			_Object.AddPos(PushVec);
+			//オブジェクトの座標を更新
+			ObjectPos = _Object.GetPos();
+
+			//上に乗った場合
+			if (PushVec.y > 0.0f) {
+				//重力処理を行わない
+				IsGravity = false;
+				//重力をリセット
+				_Object.GravityReset();
+			}
+			//当たり判定後の処理(当たっている場合)
+			_PlatformManager.HitCalc(Index);
+		}
+		else {
+			//当たり判定後の処理(当たっていない場合)
+			_PlatformManager.NotHitCalc(Index);
+		}
+		//着地していなければ
+		if (IsGravity) {
+			//重力処理を行う
+			_Object.SetIsGravity(true);
+		}
 	}
 }
