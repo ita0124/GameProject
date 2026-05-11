@@ -345,6 +345,12 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\NormalPlatform">
       <UniqueIdentifier>{352e5da4-4eb5-44e0-b9e7-f8e422d676d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Sword">
+      <UniqueIdentifier>{637abb46-a290-4373-8aab-3aa07e9b2777}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Sword">
+      <UniqueIdentifier>{3e3fd55a-de6a-4201-aceb-6391698e741b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">

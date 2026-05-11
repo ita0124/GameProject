@@ -3,7 +3,7 @@
 namespace {
 	const VECTOR	INIT_POS = { 75.0f,0.0f,0.0f };
 	const char		FILE_PATH[] = ("Data/Model/Stage/FallingPlatform/FallingPlatform.mv1");	//モデルファイルパス
-	const int		FALL_WAIT_MAX = 15;		//落ち始めるまでの最大待機時間
+	const int		FALL_WAIT_MAX = 20;		//落ち始めるまでの最大待機時間
 	const int		FALL_TIME_MAX = 30;		//落ち続ける最大時間
 	const int		RESPAWAN_WAIT_MAX = 60;	//復活までの待機時間
 	const float		FALLING_POSY = -1.0f;	//1フレームに落ちるY軸ベクトル
@@ -46,7 +46,7 @@ void FallingPlatform::Step() {
 		m_IsActive = false;
 		m_FallingTime = 0;
 	}
-	else if(m_IsFalling) {
+	else if (m_IsFalling) {
 		m_FallingTime++;
 		m_Pos.y += FALLING_POSY;
 	}

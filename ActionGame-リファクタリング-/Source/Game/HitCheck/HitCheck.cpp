@@ -149,7 +149,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			//上方向
 			float ObjectUP = ObjectPos.y + ObjectSize.y * 0.5f;
 			//下方向
-			float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
+			float ObjectDown = ObjectPos.y;
 			//左方向
 			float ObjectLeft = ObjectPos.x - ObjectSize.x * 0.5f;
 			//右方向
@@ -250,6 +250,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 					PushVec = VGet(0.0f, 0.0f, PushBack);
 				}
 			}
+			if(OnePlatform.)
 			//押し戻し計算
 			_Object.AddPos(PushVec);
 			//オブジェクトの座標を更新

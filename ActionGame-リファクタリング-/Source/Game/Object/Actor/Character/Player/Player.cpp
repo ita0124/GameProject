@@ -4,6 +4,8 @@ namespace {
 	const float		RAD = 10.0f;															//半径
 	const VECTOR	PLAYER_SIZE = { RAD / 2,RAD / 2,RAD / 2 };								//ボックス当たり判定
 
+	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
+
 	const float		HIT_POINTS = 100.0f;													//体力
 	const float		STAMINA = 75.0f;														//スタミナ
 	const int		SKILL_POINTS = 5;														//スキルポイント
@@ -100,7 +102,7 @@ void Player::Step() {
 	m_HitPoints = 100;
 
 	if (m_Pos.y <= -500) {
-		m_Pos = VZERO;
+		m_Pos = RESPAWN_POS;
 		GravityReset();
 	}
 
