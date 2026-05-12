@@ -12,7 +12,10 @@ PlatformBase::~PlatformBase() {
 void PlatformBase::Init() {
 	ObjectBase::Init();
 
-	memset(&m_NormalRequestData, 0, sizeof(NORMAL_REQUEST_DATA));
+	memset(&m_NormalRequestData, 0, sizeof(NORMAL_REQUEST_DATA));					//リクエスト時に最低限必要なデータ構造体を初期化
+	memset(&m_MovingPlatformRequestData, 0, sizeof(MOVINGPLATFORM_REQUEST_DATA));	//動く床をリクエストする時必要なデータ構造体を初期化
+
+	m_PlatformKinds = NORMAL;														//足場オブジェクト種類を設定
 }
 //リクエスト
 void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {

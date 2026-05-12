@@ -4,7 +4,8 @@
 //動く足場
 class MovingPlatform :public PlatformBase {
 private:
-	bool m_IsEndPos;	//終端座標にたどり着いたか
+	bool	m_IsEndPos;	//終端座標にたどり着いたか
+	VECTOR	m_MoveDir;	//移動方向ベクトル
 public:
 	//コンストラクタ
 	MovingPlatform();
@@ -16,6 +17,9 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+
+	//Get
+	VECTOR GetMoveDir() { return m_MoveDir; }
 };
 
 

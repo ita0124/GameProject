@@ -2,7 +2,7 @@
 
 namespace {
 	const float		RAD = 10.0f;															//半径
-	const VECTOR	PLAYER_SIZE = { RAD / 2,RAD / 2,RAD / 2 };								//ボックス当たり判定
+	const VECTOR	PLAYER_SIZE = { RAD / 2,RAD/2,RAD / 2 };								//ボックス当たり判定
 
 	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
 

@@ -28,23 +28,23 @@ void PlatformManager::Init() {
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		switch (m_PlatformID[PlatformIndex][0])
 		{
-		case NORMAL:
+		case PlatformBase::TagPlatformKinds::NORMAL:
 			//通常足場クラスをnew
 			m_Platform[PlatformIndex] = new NormalPlatform;
 			break;
-		case MOVING:
+		case PlatformBase::TagPlatformKinds::MOVING:
 			//動く足場クラスをnew
 			m_Platform[PlatformIndex] = new MovingPlatform;
 			break;
-		case FALLING:
+		case PlatformBase::TagPlatformKinds::FALLING:
 			//落ちる足場クラスをnew
 			m_Platform[PlatformIndex] = new FallingPlatform;
 			break;
-		case BATTLE:
+		case PlatformBase::TagPlatformKinds::BATTLE:
 			//バトル足場クラスをnew
 			m_Platform[PlatformIndex] = new BattlePlatform;
 			break;
-		case JUMP:
+		case PlatformBase::TagPlatformKinds::JUMP:
 			//ジャンプ足場クラスをnew
 			m_Platform[PlatformIndex] = new JumpPlatform;
 			break;
@@ -90,7 +90,7 @@ void PlatformManager::Init() {
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeY(m_RequestData[PlatformIndex][10]);					//Yサイズ
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeZ(m_RequestData[PlatformIndex][11]);					//Zサイズ
 			////動く床なら
-			if (m_PlatformID[PlatformIndex][0] == MOVING) {
+			if (m_PlatformID[PlatformIndex][0] == PlatformBase::TagPlatformKinds::MOVING) {
 				//---データ使いまわし---
 				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosX(m_RequestData[PlatformIndex][0]);	//X初期座標
 				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosY(m_RequestData[PlatformIndex][1]);	//Y初期座標

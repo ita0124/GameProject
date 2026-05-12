@@ -18,19 +18,23 @@ MovingPlatform::~MovingPlatform() {
 void MovingPlatform::Init() {
 	ObjectBase::Init();
 	m_IsEndPos = false;			//終端座標にたどり着いたか
+	m_MoveDir = VZERO;			//移動方向ベクトル
+	m_PlatformKinds = MOVING;	//足場オブジェクト種類を再設定
 }
 //データ読み込み処理
 void MovingPlatform::Load() {
 	ObjectBase::Load(FILE_PATH);
+	//初期の移動方向ベクトルを設定
+	m_MoveDir = VSub(m_MovingPlatformRequestData.EndPos, m_MovingPlatformRequestData.FirstPos);
+	//ベクトルを正規化
+	m_MoveDir = VNorm(m_MoveDir);
 }
 //毎フレーム呼び出す処理
 void MovingPlatform::Step() {
 	//終端座標にたどり着いてなければ
 	if (!m_IsEndPos) {
-		//初期座標から終端座標への方向ベクトルを生成
-		VECTOR Dir = VSub(m_MovingPlatformRequestData.EndPos, m_MovingPlatformRequestData.FirstPos);
-		//ベクトルを正規化
-		Dir = VNorm(Dir);
+		//正規化された方向ベクトルを取得
+		VECTOR Dir = m_MoveDir;
 		//正規化したベクトルに移動速度を乗算
 		Dir = VScale(Dir, m_MovingPlatformRequestData.MoveSpeed);
 		//座標に加算
@@ -44,14 +48,16 @@ void MovingPlatform::Step() {
 		if (Len <= MIN_LEN) {
 			//終端にたどり着いた
 			m_IsEndPos = true;
+			//移動方向ベクトルを設定
+			m_MoveDir = VSub(m_MovingPlatformRequestData.FirstPos, m_MovingPlatformRequestData.EndPos);
+			//ベクトルを正規化
+			m_MoveDir = VNorm(m_MoveDir);
 			return;
 		}
 	}
 	else {
-		//終端座標から初期座標への方向ベクトルを生成
-		VECTOR Dir = VSub(m_MovingPlatformRequestData.FirstPos, m_MovingPlatformRequestData.EndPos);
-		//ベクトルを正規化
-		Dir = VNorm(Dir);
+		//正規化された方向ベクトルを取得
+		VECTOR Dir = m_MoveDir;
 		//正規化したベクトルに移動速度を乗算
 		Dir = VScale(Dir, m_MovingPlatformRequestData.MoveSpeed);
 		//座標に加算
@@ -65,6 +71,10 @@ void MovingPlatform::Step() {
 		if (Len <= MIN_LEN) {
 			//終端にたどり着いた
 			m_IsEndPos = false;
+			//移動方向ベクトルを設定
+			m_MoveDir = VSub(m_MovingPlatformRequestData.EndPos, m_MovingPlatformRequestData.FirstPos);
+			//ベクトルを正規化
+			m_MoveDir = VNorm(m_MoveDir);
 			return;
 		}
 	}

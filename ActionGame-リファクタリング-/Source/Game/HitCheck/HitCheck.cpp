@@ -140,9 +140,13 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//当たっていれば
 		if (IsHit) {
 #ifdef _DEBUG
-			VECTOR PlatformPos1 = VGet(PlatformPos.x + OnePlatform.GetSize().x / 2, PlatformPos.y + OnePlatform.GetSize().y / 2, PlatformPos.z + OnePlatform.GetSize().z / 2);
-			VECTOR PlatformPos2 = VGet(PlatformPos.x - OnePlatform.GetSize().x / 2, PlatformPos.y - OnePlatform.GetSize().y / 2, PlatformPos.z - OnePlatform.GetSize().z / 2);
+			VECTOR PlatformPos1 = VGet(PlatformPos.x + ObjectSize.x / 2, PlatformPos.y + ObjectSize.y / 2, PlatformPos.z + ObjectSize.z / 2);
+			VECTOR PlatformPos2 = VGet(PlatformPos.x - ObjectSize.x / 2, PlatformPos.y - ObjectSize.y / 2, PlatformPos.z - ObjectSize.z / 2);
 			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
+
+			VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
+			VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
+			DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
 #endif // DEBUG
 			//面座標計算
 			//オブジェクト
@@ -250,13 +254,35 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 					PushVec = VGet(0.0f, 0.0f, PushBack);
 				}
 			}
-			if(OnePlatform.)
-			//押し戻し計算
-			_Object.AddPos(PushVec);
-			//オブジェクトの座標を更新
-			ObjectPos = _Object.GetPos();
-			//当たり判定後の処理(当たっている場合)
-			_PlatformManager.HitCalc(Index);
+			//もし当たった物体が移動する床だったなら
+			if (OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::MOVING) {
+				//動く足場データを保存する用の変数
+				MovingPlatform* MovePlatform = nullptr;
+				//動く足場クラスにダウンキャストする
+				MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
+				//移動方向ベクトルを取得
+				VECTOR MoveDir = MovePlatform->GetMoveDir();
+				//移動速度を取得
+				float MoveSpeed = MovePlatform->GetMovingPlatformRequestData().MoveSpeed;
+				//移動方向ベクトルに移動速度を乗算
+				MoveDir = VScale(MoveDir, MoveSpeed);
+				//押し戻しに移動方向ベクトルを加算する
+				PushVec = VAdd(PushVec, MoveDir);
+				//押し戻し計算
+				_Object.AddPos(PushVec);
+				//オブジェクトの座標を更新
+				ObjectPos = _Object.GetPos();
+				//当たり判定後の処理(当たっている場合)
+				_PlatformManager.HitCalc(Index);
+			}
+			else {
+				//押し戻し計算
+				_Object.AddPos(PushVec);
+				//オブジェクトの座標を更新
+				ObjectPos = _Object.GetPos();
+				//当たり判定後の処理(当たっている場合)
+				_PlatformManager.HitCalc(Index);
+			}
 		}
 		else {
 			//当たり判定後の処理(当たっていない場合)

@@ -13,15 +13,6 @@ namespace {
 
 class PlatformManager {
 private:
-	//プラットフォームの呼び出し
-	enum TagPlatform {
-		NORMAL,			//通常足場
-		MOVING,			//動く足場
-		FALLING,		//落ちる足場
-		BATTLE,			//バトル足場
-		JUMP,			//ジャンプ足場
-	};
-
 	PlatformBase* m_Platform[PLATFORM_MAX];
 
 	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];				//出現させるプラットフォームを指定するデータをcsvから受け取り保存する

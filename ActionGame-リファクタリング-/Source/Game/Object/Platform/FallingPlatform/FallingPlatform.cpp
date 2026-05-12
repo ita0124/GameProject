@@ -3,7 +3,7 @@
 namespace {
 	const VECTOR	INIT_POS = { 75.0f,0.0f,0.0f };
 	const char		FILE_PATH[] = ("Data/Model/Stage/FallingPlatform/FallingPlatform.mv1");	//モデルファイルパス
-	const int		FALL_WAIT_MAX = 20;		//落ち始めるまでの最大待機時間
+	const int		FALL_WAIT_MAX = 15;		//落ち始めるまでの最大待機時間
 	const int		FALL_TIME_MAX = 30;		//落ち続ける最大時間
 	const int		RESPAWAN_WAIT_MAX = 60;	//復活までの待機時間
 	const float		FALLING_POSY = -1.0f;	//1フレームに落ちるY軸ベクトル
@@ -25,6 +25,7 @@ void FallingPlatform::Init() {
 	m_FallingTime = 0;		//落ち続ける時間
 	m_RespawnWait = 0;		//再生成までの時間
 	m_IsFalling = false;	//落ちてよいか判断する
+	m_PlatformKinds = FALLING;	//足場オブジェクト種類を再設定
 }
 //データ読み込み処理
 void FallingPlatform::Load() {

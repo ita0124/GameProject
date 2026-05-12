@@ -3,6 +3,17 @@
 
 //ステージベースクラス
 class PlatformBase :public ObjectBase {
+public:
+	//足場オブジェクト種類
+	enum TagPlatformKinds {
+		NORMAL,
+		MOVING,
+		FALLING,
+		BATTLE,
+		JUMP,
+
+		PLATFORM_NUM
+	};
 protected:
 	//リクエスト時に最低限必要なデータ構造体
 	typedef struct {
@@ -21,6 +32,8 @@ protected:
 
 	NORMAL_REQUEST_DATA			m_NormalRequestData;			//リクエスト時に最低限必要なデータ構造体
 	MOVINGPLATFORM_REQUEST_DATA	m_MovingPlatformRequestData;	//動く床をリクエストする時必要なデータ構造体
+
+	TagPlatformKinds			m_PlatformKinds;				//足場オブジェクト種類
 public:
 	//コンストラクタ
 	PlatformBase();
@@ -32,9 +45,11 @@ public:
 	void Request(const NORMAL_REQUEST_DATA& _NormalRequestData);
 	//Get
 	//基本データ構造体
-	NORMAL_REQUEST_DATA	GetNormalRequestData() { return m_NormalRequestData; }
+	NORMAL_REQUEST_DATA	GetNormalRequestData() const { return m_NormalRequestData; }
 	//動く床データ構造体
-	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() { return m_MovingPlatformRequestData; }
+	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() const { return m_MovingPlatformRequestData; }
+	//足場オブジェクト種類
+	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
 	//モデルの中心を取る
 	VECTOR GetCenter();
 
