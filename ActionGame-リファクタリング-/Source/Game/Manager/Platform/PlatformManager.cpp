@@ -65,7 +65,9 @@ void PlatformManager::Init() {
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		for (int RequestDataIndex = 0; RequestDataIndex < REQUEST_DATA_MAX; RequestDataIndex++) {
 			//データ一つ分取得
-			fscanf_s(StageFile, "%f", &m_RequestData[PlatformIndex][RequestDataIndex]);
+			if (fscanf_s(StageFile, "%f", &m_RequestData[PlatformIndex][RequestDataIndex]) == 0) {
+				m_RequestData[PlatformIndex][RequestDataIndex] = 0;
+			}
 			//カンマor改行を飛ばす
 			fgetc(StageFile);
 		}

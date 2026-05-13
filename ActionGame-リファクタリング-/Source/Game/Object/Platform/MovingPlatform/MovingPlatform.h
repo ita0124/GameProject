@@ -6,6 +6,7 @@ class MovingPlatform :public PlatformBase {
 private:
 	bool	m_IsEndPos;	//終端座標にたどり着いたか
 	VECTOR	m_MoveDir;	//移動方向ベクトル
+	float	m_PrevLen;	//前フレームの座標から終端座標までの距離を保存する
 public:
 	//コンストラクタ
 	MovingPlatform();

@@ -114,6 +114,8 @@ void Player::Step() {
 	StateManager();
 	//d—Íˆ—
 	GravityManager();
+
+	DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N30, "%d", m_IsGravity);
 }
 
 //‘Ò‹@

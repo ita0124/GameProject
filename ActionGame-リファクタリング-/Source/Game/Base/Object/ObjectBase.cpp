@@ -1,7 +1,7 @@
 #include "ObjectBase.h"
 
 namespace {
-	const float	GRAVITY = -0.05f;			//d—Í
+	const float	GRAVITY = -0.04f;			//d—Í
 	const float	GRAVITY_MAX = -2.5f;		//Å‘åd—Í
 }
 

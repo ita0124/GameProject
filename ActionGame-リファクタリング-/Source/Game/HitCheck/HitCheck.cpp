@@ -124,6 +124,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	//重力処理を行うか
 	bool IsGravity = true;
 
+	DrawFormatStringToHandle(50, 250, RED, DxLibFont::FONTHNDL_N30, "プレイヤー:%f", PrevPos.y);
+
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得
 		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
@@ -134,7 +136,6 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//足場クラスのサイズを取得
 		VECTOR	PlatformSize = OnePlatform.GetSize();
 
-		DrawFormatStringToHandle(50, 200, RED, DxLibFont::FONTHNDL_N30, "%f", ObjectPos.y);
 		//当たり判定
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
 		//当たっていれば
@@ -147,6 +148,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
 			VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
 			DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
+
+			DrawFormatStringToHandle(50, 500, RED, DxLibFont::FONTHNDL_N30, "オブジェクトの座標：%f", PlatformPos.y);
 #endif // DEBUG
 			//面座標計算
 			//オブジェクト
@@ -194,6 +197,9 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				IsGravity = false;
 				//重力をリセット
 				_Object.GravityReset();
+
+				DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N30, "%f", PushUp);
+				DrawFormatStringToHandle(50, 550, RED, DxLibFont::FONTHNDL_N30, "足場上面：%f", PlatformUp);
 			}
 			//天井ヒット
 			else if (PrevObjectUp <= PlatformDown) {
@@ -294,4 +300,6 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//重力処理を行う
 		_Object.SetIsGravity(true);
 	}
+
+	DrawFormatStringToHandle(50, 200, RED, DxLibFont::FONTHNDL_N30, "今プレイヤー:%f", ObjectPos.y);
 }
