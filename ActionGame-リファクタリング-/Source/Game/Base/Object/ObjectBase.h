@@ -41,6 +41,8 @@ protected:
 	int			m_EffectHndl;	//エフェクトハンドル
 	bool		m_IsEffect;		//エフェクト出現判定
 
+	bool		m_IsPlatform;		//足場判断
+
 	//重力処理
 	virtual void GravityManager();
 public:
@@ -93,6 +95,8 @@ public:
 	bool		GetIsCollision()	const { return m_IsCollision; }
 	//押し出し判定を行うか
 	bool		GetIsPush()			const { return m_IsPush; }
+	//足場判断
+	bool		GetIsPlatform()		const { return m_IsPlatform; }
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る
@@ -113,6 +117,8 @@ public:
 	void		SetIsActive(bool _IsActive) { m_IsActive = _IsActive; }
 	//重力処理フラグ
 	void		SetIsGravity(bool _IsGravity) { m_IsGravity = _IsGravity; }
+	//足場判断
+	void		SetIsPlatform(bool _IsPlatform) { m_IsPlatform = _IsPlatform; }
 
 	//Add
 	//座標加算

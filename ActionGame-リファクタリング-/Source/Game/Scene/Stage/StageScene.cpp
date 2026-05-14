@@ -84,7 +84,7 @@ int StageScene::Loop() {
 void StageScene::Draw() {
 	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ステージ");
 
-	/*m_Sky.Draw();*/
+	m_Sky.Draw();
 	m_Player.Draw();
 	m_PlatformManager.Draw();
 }

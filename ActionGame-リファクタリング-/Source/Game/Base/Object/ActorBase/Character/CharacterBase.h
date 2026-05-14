@@ -20,7 +20,6 @@ protected:
 	bool	m_IsStaminaRecover;	//スタミナを回復させてよいか
 
 
-
 public:
 	//コンストラクタ
 	CharacterBase();

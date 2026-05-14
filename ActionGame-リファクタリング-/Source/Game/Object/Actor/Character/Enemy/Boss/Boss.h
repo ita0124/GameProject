@@ -135,7 +135,7 @@ private:
 
 	int			m_SpecialChargeTime;									//必殺チャージの継続時間
 
-	int			m_AttackPatterns[PATTERN_INDEX][ATTACK_INDEX];		//攻撃パターンの配列
+	int			m_AttackPatterns[ATTACK_INDEX][PATTERN_INDEX];		//攻撃パターンの配列
 	int			m_PatternIndex;										//攻撃パターンの種類
 	int			m_AttackIndex;										//パターン内の攻撃順
 	int			m_NextAttack;										//次に行う予定の攻撃

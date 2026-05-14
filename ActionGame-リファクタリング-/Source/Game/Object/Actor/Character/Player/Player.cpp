@@ -100,13 +100,12 @@ void Player::Step() {
 
 #ifdef _DEBUG
 	m_HitPoints = 100;
+#endif // DEBUG
 
 	if (m_Pos.y <= -500) {
 		m_Pos = RESPAWN_POS;
 		GravityReset();
 	}
-
-#endif // DEBUG
 
 	//スタミナ処理
 	StaminaManager();

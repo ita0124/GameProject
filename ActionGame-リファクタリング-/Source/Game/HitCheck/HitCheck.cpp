@@ -127,7 +127,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	bool IsMovingPlatform = false;
 
 	DrawFormatStringToHandle(50, 100, RED, DxLibFont::FONTHNDL_N20, "プレイヤー前フレームY座標:%f", PrevPos.y);
-	DrawFormatStringToHandle(50, 120, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算前プレイヤーY座標:%f", PrevPos.y);
+	DrawFormatStringToHandle(50, 120, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算前プレイヤーY座標:%f", ObjectPos.y);
 
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得

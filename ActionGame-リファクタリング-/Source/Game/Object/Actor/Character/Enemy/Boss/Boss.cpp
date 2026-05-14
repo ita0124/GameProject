@@ -129,7 +129,7 @@ void Boss::Load() {
 	for (int Column = 0; Column < ATTACK_INDEX; Column++) {
 		for (int Row = 0; Row < PATTERN_INDEX; Row++) {
 			//データ一つ分取得
-			fscanf_s(AttackPatternsFile, "%d", &m_AttackPatterns[Row][Column]);
+			fscanf_s(AttackPatternsFile, "%d", &m_AttackPatterns[Column][Row]);
 			//カンマor改行を飛ばす
 			fgetc(AttackPatternsFile);
 		}
