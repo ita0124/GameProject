@@ -35,7 +35,7 @@ VECTOR PlatformBase::GetCenter() {
 	VECTOR Res = m_Pos;
 
 	//YŽ²‚ðYƒTƒCƒY‚Ì”¼•ª‰º‚°‚é
-	Res.y -= m_Size.y / 2;
+	Res.y -= m_Size.y*0.5f;
 
 	return Res;
 }

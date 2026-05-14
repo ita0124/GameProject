@@ -2,7 +2,7 @@
 
 namespace {
 	const float		RAD = 10.0f;															//半径
-	const VECTOR	PLAYER_SIZE = { RAD / 2,RAD/2,RAD / 2 };								//ボックス当たり判定
+	const VECTOR	PLAYER_SIZE = { RAD / 2,20.0f,RAD / 2 };								//ボックス当たり判定
 
 	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
 
@@ -115,7 +115,7 @@ void Player::Step() {
 	//重力処理
 	GravityManager();
 
-	DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N30, "%d", m_IsGravity);
+	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "重力判定：%d", m_IsGravity);
 }
 
 //待機

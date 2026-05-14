@@ -72,8 +72,8 @@ void PlayCamera::Step(VECTOR _TargetPos) {
 	m_CalcRot.x += RotX;
 	m_CalcRot.y += RotY;
 
-	float DownLimit = DX_PI_F * 15.0f / 180.0f;
-	float UpLimit = DX_PI_F * 20.0f / 180.0f;
+	float DownLimit = DX_PI_F * 0.0f / 180.0f;
+	float UpLimit = DX_PI_F * 45.0f / 180.0f;
 	if (m_CalcRot.x > DownLimit) {
 		m_CalcRot.x = DownLimit;
 	}
