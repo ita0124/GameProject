@@ -101,6 +101,8 @@ public:
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る
 	VECTOR		GetCenter(TagShape _Shape);
+	//モデルの中心を取る
+	VECTOR		GetPrevCenter(TagShape _Shape);
 
 	//Set
 	//座標

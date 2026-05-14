@@ -34,6 +34,7 @@ void MovingPlatform::Load() {
 }
 //毎フレーム呼び出す処理
 void MovingPlatform::Step() {
+	m_PrevPos = m_Pos;
 	//終端座標にたどり着いてなければ
 	if (!m_IsEndPos) {
 		//正規化された方向ベクトルを取得

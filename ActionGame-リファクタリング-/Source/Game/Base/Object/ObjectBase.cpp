@@ -88,6 +88,19 @@ VECTOR ObjectBase::GetCenter(TagShape _Shape) {
 	}
 	return Res;
 }
+//モデルの中心を取る
+VECTOR ObjectBase::GetPrevCenter(TagShape _Shape) {
+	VECTOR Res = m_PrevPos;
+	if (_Shape == BALL) {
+		//Y軸を半径分上げる
+		Res.y += m_Rad;
+	}
+	else if (_Shape == BOX) {
+		//Y軸をY軸サイズの半分あげる
+		Res.y += m_Size.y * 0.5f;
+	}
+	return Res;
+}
 //重力リセット
 void ObjectBase::GravityReset() {
 	m_Gravity = 0.0f;

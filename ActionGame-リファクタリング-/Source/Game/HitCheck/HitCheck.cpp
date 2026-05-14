@@ -117,8 +117,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (!_Object.GetIsActive())return;
 	//オブジェクトの座標取得
 	VECTOR	ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-	//オブジェクトの前フレーム座標取得
-	VECTOR PrevPos = _Object.GetPrevPos();
+	//オブジェクトの１フレーム前の座標取得
+	VECTOR PrevPos = _Object.GetPrevCenter(ObjectBase::TagShape::BOX);
 	//オブジェクトのサイズを取得
 	VECTOR	ObjectSize = _Object.GetSize();
 	//重力処理を行うか
@@ -135,9 +135,9 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
 		if (!OnePlatform.GetIsActive())continue;
 		//足場クラスの座標取得
-		VECTOR	PlatformPos = OnePlatform.GetCenter();
+		VECTOR PlatformPos = OnePlatform.GetCenter();
 		//足場クラスのサイズを取得
-		VECTOR	PlatformSize = OnePlatform.GetSize();
+		VECTOR PlatformSize = OnePlatform.GetSize();
 
 		//当たり判定
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
@@ -159,7 +159,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			//上方向
 			float ObjectUP = ObjectPos.y + ObjectSize.y * 0.5f;
 			//下方向
-			float ObjectDown = ObjectPos.y- ObjectSize.y * 0.5f;
+			float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
 			//左方向
 			float ObjectLeft = ObjectPos.x - ObjectSize.x * 0.5f;
 			//右方向
@@ -168,11 +168,11 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			float ObjectFlont = ObjectPos.z - ObjectSize.z * 0.5f;
 			//奥方向
 			float ObjectBack = ObjectPos.z + ObjectSize.z * 0.5f;
-			//前フレーム
+			//１フレーム前
 			//上方向
 			float PrevObjectUp = PrevPos.y + ObjectSize.y * 0.5f;
 			//下方向
-			float PrevObjectDown = PrevPos.y;
+			float PrevObjectDown = PrevPos.y - ObjectSize.y * 0.5f;
 			//足場
 			//上方向
 			float PlatformUp = PlatformPos.y + PlatformSize.y * 0.5f;
@@ -189,8 +189,10 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 
 			//押し戻し方向設定
 			VECTOR PushVec = VZERO;
+			//着地しているか
+			bool IsLanding = false;
 			//着地
-			if (PrevObjectDown >= PlatformUp) {
+			if (PrevObjectDown >= PlatformUp || ObjectDown>= PlatformUp) {
 				//押し戻し量計算
 				//上方向
 				float PushUp = PlatformUp - ObjectDown;
@@ -200,6 +202,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				IsGravity = false;
 				//重力をリセット
 				_Object.GravityReset();
+				//着地フラグをオン
+				IsLanding = true;
 
 				DrawFormatStringToHandle(50, 140, RED, DxLibFont::FONTHNDL_N20, "プレイヤー下面:%f", ObjectDown);
 				DrawFormatStringToHandle(50, 240, RED, DxLibFont::FONTHNDL_N20, "上方向の押し戻し量%f", PushUp);
@@ -264,35 +268,32 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 					PushVec = VGet(0.0f, 0.0f, PushBack);
 				}
 			}
+			//押し戻し計算
+			_Object.AddPos(PushVec);
+			//オブジェクトの座標を更新
+			ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
 			//もし当たった物体が移動する床だったなら
 			if (OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::MOVING) {
-				//動く足場データを保存する用の変数
-				MovingPlatform* MovePlatform = nullptr;
-				//動く足場クラスにダウンキャストする
-				MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
-				//移動方向ベクトルを取得
-				VECTOR MoveDir = MovePlatform->GetMoveDir();
-				//移動速度を取得
-				float MoveSpeed = MovePlatform->GetMovingPlatformRequestData().MoveSpeed;
-				//移動方向ベクトルに移動速度を乗算
-				MoveDir = VScale(MoveDir, MoveSpeed);
-				//押し戻しに移動方向ベクトルを加算する
-				PushVec = VAdd(PushVec, MoveDir);
-				//押し戻し計算
-				_Object.AddPos(PushVec);
-				//オブジェクトの座標を更新
-				ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-				//当たり判定後の処理(当たっている場合)
-				_PlatformManager.HitCalc(Index);
+				//上から着地した
+				if (IsLanding){
+					//動く足場データを保存する用の変数
+					MovingPlatform* MovePlatform = nullptr;
+					//動く足場クラスにダウンキャストする
+					MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
+					//現在の座標を取得
+					VECTOR NowPos = MovePlatform->GetPos();
+					//１フレーム前の座標を取得
+					VECTOR PrevPos = MovePlatform->GetPrevPos();
+					//１フレームでどれだけ移動したか
+					VECTOR MovePos = VSub(NowPos, PrevPos);
+					//押し戻し計算
+					_Object.AddPos(MovePos);
+					//オブジェクトの座標を更新
+					ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
+				}
 			}
-			else {
-				//押し戻し計算
-				_Object.AddPos(PushVec);
-				//オブジェクトの座標を更新
-				ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-				//当たり判定後の処理(当たっている場合)
-				_PlatformManager.HitCalc(Index);
-			}
+			//当たり判定後の処理(当たっている場合)
+			_PlatformManager.HitCalc(Index);
 		}
 		else {
 			//当たり判定後の処理(当たっていない場合)

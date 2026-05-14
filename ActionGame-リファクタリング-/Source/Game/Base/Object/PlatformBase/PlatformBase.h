@@ -52,6 +52,8 @@ public:
 	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
 	//モデルの中心を取る
 	VECTOR GetCenter();
+	//モデルの１フレーム前の中心を取る
+	VECTOR GetPrevCenter();
 
 	//Set
 	//基本データ構造体 座標

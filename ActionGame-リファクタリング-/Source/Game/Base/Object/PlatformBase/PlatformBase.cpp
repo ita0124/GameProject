@@ -39,3 +39,12 @@ VECTOR PlatformBase::GetCenter() {
 
 	return Res;
 }
+//モデルの１フレーム前の中心を取る
+VECTOR PlatformBase::GetPrevCenter() {
+	VECTOR Res = m_PrevPos;
+
+	//Y軸をYサイズの半分下げる
+	Res.y -= m_Size.y * 0.5f;
+
+	return Res;
+}
