@@ -123,11 +123,13 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	VECTOR	ObjectSize = _Object.GetSize();
 	//重力処理を行うか
 	bool IsGravity = true;
-	//動く床と当たったか
-	bool IsMovingPlatform = false;
 
 	DrawFormatStringToHandle(50, 100, RED, DxLibFont::FONTHNDL_N20, "プレイヤー前フレームY座標:%f", PrevPos.y);
 	DrawFormatStringToHandle(50, 120, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算前プレイヤーY座標:%f", ObjectPos.y);
+
+	VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
+	VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
+	DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
 
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得
@@ -139,19 +141,15 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//足場クラスのサイズを取得
 		VECTOR PlatformSize = OnePlatform.GetSize();
 
+		VECTOR PlatformPos1 = VGet(PlatformPos.x + PlatformSize.x / 2, PlatformPos.y + PlatformSize.y / 2, PlatformPos.z + PlatformSize.z / 2);
+		VECTOR PlatformPos2 = VGet(PlatformPos.x - PlatformSize.x / 2, PlatformPos.y - PlatformSize.y / 2, PlatformPos.z - PlatformSize.z / 2);
+		DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
+
 		//当たり判定
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
 		//当たっていれば
 		if (IsHit) {
 #ifdef _DEBUG
-			VECTOR PlatformPos1 = VGet(PlatformPos.x + PlatformSize.x / 2, PlatformPos.y + PlatformSize.y / 2, PlatformPos.z + PlatformSize.z / 2);
-			VECTOR PlatformPos2 = VGet(PlatformPos.x - PlatformSize.x / 2, PlatformPos.y - PlatformSize.y / 2, PlatformPos.z - PlatformSize.z / 2);
-			DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
-
-			VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
-			VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
-			DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
-
 			DrawFormatStringToHandle(50, 200, RED, DxLibFont::FONTHNDL_N20, "足場ののY座標：%f", PlatformPos.y);
 #endif // DEBUG
 			//面座標計算
@@ -192,7 +190,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			//着地しているか
 			bool IsLanding = false;
 			//着地
-			if (PrevObjectDown >= PlatformUp || ObjectDown>= PlatformUp) {
+			if (PrevObjectDown >= PlatformUp || ObjectDown >= PlatformUp) {
 				//押し戻し量計算
 				//上方向
 				float PushUp = PlatformUp - ObjectDown;
@@ -204,6 +202,24 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				_Object.GravityReset();
 				//着地フラグをオン
 				IsLanding = true;
+				//もし当たった物体が移動する床だったなら
+				if (OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::MOVING) {
+					//上から着地した
+					if (IsLanding) {
+						//動く足場データを保存する用の変数
+						MovingPlatform* MovePlatform = nullptr;
+						//動く足場クラスにダウンキャストする
+						MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
+						//現在の座標を取得
+						VECTOR NowPos = MovePlatform->GetPos();
+						//１フレーム前の座標を取得
+						VECTOR PrevPos = MovePlatform->GetPrevPos();
+						//１フレームでどれだけ移動したか
+						VECTOR MovePos = VSub(NowPos, PrevPos);
+						//
+						_Object.SetPlatformVec(MovePos);
+					}
+				}
 
 				DrawFormatStringToHandle(50, 140, RED, DxLibFont::FONTHNDL_N20, "プレイヤー下面:%f", ObjectDown);
 				DrawFormatStringToHandle(50, 240, RED, DxLibFont::FONTHNDL_N20, "上方向の押し戻し量%f", PushUp);
@@ -272,26 +288,6 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			_Object.AddPos(PushVec);
 			//オブジェクトの座標を更新
 			ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-			//もし当たった物体が移動する床だったなら
-			if (OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::MOVING) {
-				//上から着地した
-				if (IsLanding){
-					//動く足場データを保存する用の変数
-					MovingPlatform* MovePlatform = nullptr;
-					//動く足場クラスにダウンキャストする
-					MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
-					//現在の座標を取得
-					VECTOR NowPos = MovePlatform->GetPos();
-					//１フレーム前の座標を取得
-					VECTOR PrevPos = MovePlatform->GetPrevPos();
-					//１フレームでどれだけ移動したか
-					VECTOR MovePos = VSub(NowPos, PrevPos);
-					//押し戻し計算
-					_Object.AddPos(MovePos);
-					//オブジェクトの座標を更新
-					ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-				}
-			}
 			//当たり判定後の処理(当たっている場合)
 			_PlatformManager.HitCalc(Index);
 		}
@@ -304,7 +300,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (IsGravity) {
 		//重力処理を行う
 		_Object.SetIsGravity(true);
-	}
 
+	}
 	DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算後プレイヤーY座標:%f", ObjectPos.y);
 }

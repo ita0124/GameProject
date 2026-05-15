@@ -22,6 +22,7 @@ void ObjectBase::Init() {
 	m_Scale = VONE;			//拡縮
 	m_Size = VZERO;			//サイズ
 	m_PrevPos = m_Pos;		//前フレーム座標
+	m_PlatformVec = VZERO;	//足場の動く移動方向
 	m_Rad = FZERO;			//半径
 	m_IsActive = true;		//生存フラグオン
 	m_IsCollision = true;	//当たり判定を実行する
