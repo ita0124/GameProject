@@ -21,6 +21,9 @@ void MovingPlatform::Init() {
 	m_MoveDir = VZERO;			//移動方向ベクトル
 	m_PrevLen = FZERO;			//前フレームの座標から終端座標までの距離を保存する
 	m_PlatformKinds = MOVING;	//足場オブジェクト種類を再設定
+
+	m_IsHit = false;
+	m_Object = nullptr;
 }
 //データ読み込み処理
 void MovingPlatform::Load() {
@@ -35,6 +38,14 @@ void MovingPlatform::Load() {
 //毎フレーム呼び出す処理
 void MovingPlatform::Step() {
 	m_PrevPos = m_Pos;
+
+	if (m_IsHit) {
+		if (m_Object != nullptr) {
+			VECTOR MoveDir = VScale(m_MoveDir, m_MovingPlatformRequestData.MoveSpeed);
+			m_Object->SetPlatformVec(MoveDir);
+		}
+	}
+
 	//終端座標にたどり着いてなければ
 	if (!m_IsEndPos) {
 		//正規化された方向ベクトルを取得
@@ -116,4 +127,13 @@ void MovingPlatform::Step() {
 			m_PrevLen = Len;
 		}
 	}
+}
+//当たり判定後の処理(当たっている場合)
+void MovingPlatform::HitCalc(ObjectBase* _Object) {
+	m_IsHit = true;
+	m_Object = _Object;
+}
+//当たり判定後の処理(当たっていない場合)
+void MovingPlatform::NotHitCalc(ObjectBase* _Object) {
+	m_IsHit = false;
 }

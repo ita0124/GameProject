@@ -159,14 +159,14 @@ void PlatformManager::Update() {
 	}
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—
-void PlatformManager::HitCalc(const int& _Num) {
+void PlatformManager::HitCalc(const int& _Num, ObjectBase* _Object) {
 	if (m_Platform[_Num] != nullptr) {
-		m_Platform[_Num]->HitCalc();
+		m_Platform[_Num]->HitCalc(_Object);
 	}
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
-void PlatformManager::NotHitCalc(const int& _Num) {
+void PlatformManager::NotHitCalc(const int& _Num, ObjectBase* _Object) {
 	if (m_Platform[_Num] != nullptr) {
-		m_Platform[_Num]->NotHitCalc();
+		m_Platform[_Num]->NotHitCalc(_Object);
 	}
 }

@@ -53,7 +53,7 @@ void FallingPlatform::Step() {
 	}
 }
 //当たり判定後の処理(当たっている場合)
-void FallingPlatform::HitCalc() {
+void FallingPlatform::HitCalc(ObjectBase* _Object) {
 	//一定以上乗られていたら
 	if (m_FallWait >= FALL_WAIT_MAX) {
 		//落ちてよい
@@ -67,7 +67,7 @@ void FallingPlatform::HitCalc() {
 	}
 }
 //当たり判定後の処理(当たっていない場合)
-void FallingPlatform::NotHitCalc() {
+void FallingPlatform::NotHitCalc(ObjectBase* _Object) {
 	//待機時間をリセット
 	m_FallWait = 0;
 }

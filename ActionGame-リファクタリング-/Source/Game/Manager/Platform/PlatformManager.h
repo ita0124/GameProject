@@ -31,9 +31,9 @@ public:
 	//モデル更新処理
 	void Update();
 	//当たり判定後の処理(当たっている場合)
-	void HitCalc(const int& _Num);
+	void HitCalc(const int& _Num, ObjectBase* _Object);
 	//当たり判定後の処理(当たっていない場合)
-	void NotHitCalc(const int& _Num);
+	void NotHitCalc(const int& _Num, ObjectBase* _Object);
 	//指定した配列番号のメンバ変数を返す
 	PlatformBase& GetPlatform(const int &_Num) { return *m_Platform[_Num]; }
 };

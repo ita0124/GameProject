@@ -21,9 +21,9 @@ public:
 	//–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
 	void Step();
 	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
-	void HitCalc();
+	void HitCalc(ObjectBase* _Object);
 	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
-	void NotHitCalc();
+	void NotHitCalc(ObjectBase* _Object);
 };
 
 
