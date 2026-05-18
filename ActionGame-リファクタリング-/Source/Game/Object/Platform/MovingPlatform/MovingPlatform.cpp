@@ -43,6 +43,7 @@ void MovingPlatform::Step() {
 		if (m_Object != nullptr) {
 			VECTOR MoveDir = VScale(m_MoveDir, m_MovingPlatformRequestData.MoveSpeed);
 			m_Object->SetPlatformVec(MoveDir);
+			m_Object = nullptr;
 		}
 	}
 
@@ -71,7 +72,7 @@ void MovingPlatform::Step() {
 			m_MoveDir = VNorm(m_MoveDir);
 		}
 		//終端座標を通り過ぎている
-		else if (m_PrevLen< Len) {
+		else if (m_PrevLen < Len) {
 			//終端にたどり着いた
 			m_IsEndPos = true;
 			//移動方向ベクトルを設定

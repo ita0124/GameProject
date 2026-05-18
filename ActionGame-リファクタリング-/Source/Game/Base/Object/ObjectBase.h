@@ -64,9 +64,9 @@ public:
 	//毎フレーム呼び出す処理
 	virtual void Step() = 0;
 	//当たり判定後の処理(当たっている場合)
-	virtual void HitCalc() {}
+	virtual void HitCalc(ObjectBase* _Object) {}
 	//当たり判定後の処理(当たっていない場合)
-	virtual void NotHitCalc() {}
+	virtual void NotHitCalc(ObjectBase* _Object) {}
 
 	//Get
 	//ゲームオブジェクト種類

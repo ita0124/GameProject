@@ -52,10 +52,6 @@ public:
 	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
 	//モデルの中心を取る
 	VECTOR GetCenter();
-	//当たり判定後の処理(当たっている場合)
-	virtual void HitCalc(ObjectBase* _Object) {}
-	//当たり判定後の処理(当たっていない場合)
-	virtual void NotHitCalc(ObjectBase* _Object) {}
 
 	//Set
 	//基本データ構造体 座標
