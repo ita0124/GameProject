@@ -4,7 +4,7 @@ namespace {
 	const float		RAD = 10.0f;															//半径
 	const VECTOR	PLAYER_SIZE = { RAD / 2,20.0f,RAD / 2 };								//ボックス当たり判定
 
-	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
+	const VECTOR	RESPAWN_POS = { 0.0f,100.0f,0.0f };									//落下後のリスポーン座標
 
 	const float		HIT_POINTS = 100.0f;													//体力
 	const float		STAMINA = 75.0f;														//スタミナ
