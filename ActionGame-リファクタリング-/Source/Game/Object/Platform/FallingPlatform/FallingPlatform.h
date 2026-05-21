@@ -9,6 +9,7 @@ private:
 	int		m_RespawnWait;		//再生成までの時間
 	bool	m_IsFalling;		//落ちてよいか判断する
 	VECTOR	m_FirstPos;			//初期座標
+	ObjectBase* m_Object;
 public:
 	//コンストラクタ
 	FallingPlatform();

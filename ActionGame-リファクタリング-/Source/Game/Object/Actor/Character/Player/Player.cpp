@@ -113,8 +113,6 @@ void Player::Step() {
 		GravityReset();
 	}
 
-
-
 	//スタミナ処理
 	StaminaManager();
 	//状態遷移
@@ -123,6 +121,10 @@ void Player::Step() {
 	GravityManager();
 
 	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "重力判定：%d", m_IsGravity);
+
+	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
+	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
+	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
 }
 
 //待機

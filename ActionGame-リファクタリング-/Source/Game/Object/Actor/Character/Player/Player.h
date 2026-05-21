@@ -48,9 +48,9 @@ public:
 		HANDEND_LEFT,		//左指骨
 		SHOULDER_RIGHT,		//右鎖骨
 		UPPERARM_RIGHT,		//右上腕骨
-		LOWERARM_RIGHT,		//左尺骨
-		HAND_RIGHT,			//右指骨
-		HANDEND_RIGHT,		//右手の先
+		LOWERARM_RIGHT,		//右尺骨
+		HAND_RIGHT,			//右中手骨
+		HANDEND_RIGHT,		//右指骨
 		PELVIS_LEFT,		//左骨盤
 		UPPERLEG_LEFT,		//左大腿骨
 		LOWERLRG_LEFT,		//左脛骨

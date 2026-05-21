@@ -2,6 +2,8 @@
 #include "Game/Base/Scene/SceneBase.h"
 #include "Game/Object/Sky/Sky.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
+#include "Game/Object/Sword/Sword.h"
+#include "Game/Object/Shield/Shield.h"
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/HitCheck/HitCheck.h"
@@ -10,7 +12,9 @@ class StageScene :public SceneBase {
 private:
 	Sky				m_Sky;				//天球クラス
 	Player			m_Player;			//プレイヤークラス
-	PlatformManager	m_PlatformManager;
+	Sword			m_Sword;			//剣クラス
+	Shield			m_Shield;			//盾クラス
+	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 public:
 	//コンストラクタ・デストラクタ

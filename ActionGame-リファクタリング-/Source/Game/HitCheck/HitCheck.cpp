@@ -210,24 +210,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				_Object.GravityReset();
 				//着地フラグをオン
 				IsLanding = true;
-				//もし当たった物体が移動する床だったなら
-				//if (OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::MOVING) {
-				//	//上から着地した
-				//	if (IsLanding) {
-				//		//動く足場データを保存する用の変数
-				//		MovingPlatform* MovePlatform = nullptr;
-				//		//動く足場クラスにダウンキャストする
-				//		MovePlatform = dynamic_cast<MovingPlatform*>(&OnePlatform);
-				//		//現在の座標を取得
-				//		VECTOR NowPos = MovePlatform->GetPos();
-				//		//１フレーム前の座標を取得
-				//		VECTOR PrevPos = MovePlatform->GetPrevPos();
-				//		//１フレームでどれだけ移動したか
-				//		VECTOR MovePos = VSub(NowPos, PrevPos);
-				//		//
-				//		_Object.SetPlatformVec(MovePos);
-				//	}
-				//}
+				//当たり判定後の処理(当たっている場合)
+				_PlatformManager.HitCalc(Index, &_Object);
 
 				DrawFormatStringToHandle(50, 140, RED, DxLibFont::FONTHNDL_N20, "プレイヤー下面:%f", ObjectDown);
 				DrawFormatStringToHandle(50, 240, RED, DxLibFont::FONTHNDL_N20, "上方向の押し戻し量%f", PushUp);
@@ -296,8 +280,6 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			_Object.AddPos(PushVec);
 			//オブジェクトの座標を更新
 			ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
-			//当たり判定後の処理(当たっている場合)
-			_PlatformManager.HitCalc(Index, &_Object);
 		}
 		else {
 			//当たり判定後の処理(当たっていない場合)

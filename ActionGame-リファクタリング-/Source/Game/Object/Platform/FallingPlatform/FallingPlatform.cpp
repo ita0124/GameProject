@@ -50,6 +50,12 @@ void FallingPlatform::Step() {
 	else if (m_IsFalling) {
 		m_FallingTime++;
 		m_Pos.y += FALLING_POSY;
+
+		if (m_Object != nullptr) {
+			VECTOR MoveDir = VGet(0.0f, FALLING_POSY, 0.0f);
+			m_Object->SetPlatformVec(MoveDir);
+			m_Object = nullptr;
+		}
 	}
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
@@ -65,6 +71,7 @@ void FallingPlatform::HitCalc(ObjectBase* _Object) {
 		//‘Ò‹@ŠÔ‚ğ‰ÁZ
 		m_FallWait++;
 	}
+	m_Object = _Object;
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
 void FallingPlatform::NotHitCalc(ObjectBase* _Object) {

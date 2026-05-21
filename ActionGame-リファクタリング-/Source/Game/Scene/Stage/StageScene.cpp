@@ -86,24 +86,33 @@ void StageScene::Draw() {
 
 	m_Sky.Draw();
 	m_Player.Draw();
+	m_Sword.Draw();
+	m_Shield.Draw();
 	m_PlatformManager.Draw();
 }
 //初期化処理管理関数
 void StageScene::Init() {
 	m_Sky.Init();
 	m_Player.Init();
+	//オーナーを設定
+	m_Sword.Init(&m_Player);
+	m_Shield.Init(&m_Player);
 	m_PlatformManager.Init();
 }
 //データ破棄処理管理関数
 void StageScene::Exit() {
 	m_Sky.Exit();
 	m_Player.Exit();
+	m_Sword.Exit();
+	m_Shield.Exit();
 	m_PlatformManager.Exit();
 }
 //データ読み込み処理管理関数
 void StageScene::Load() {
 	m_Sky.Load();
 	m_Player.Load();
+	m_Sword.Load();
+	m_Shield.Load();
 	m_PlatformManager.Load();
 }
 //毎フレーム呼び出す処理管理関数
@@ -115,6 +124,8 @@ int StageScene::Step() {
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
 	m_Player.Step();
+	m_Sword.Step();
+	m_Shield.Step();
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 
 	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
@@ -133,9 +144,11 @@ int StageScene::Step() {
 }
 //モデル更新処理
 void StageScene::Update() {
-	m_Sky.Update();						//天球クラス
+	m_Sky.Update();												//天球クラス
 	m_PlatformManager.Update();
 	m_Player.Update();
-	m_CameraManager.Update();			//カメラマネージャークラス
+	m_Sword.Update();
+	m_Shield.Update();
+	m_CameraManager.Update();									//カメラマネージャークラス
 	m_CameraManager.Step(m_Player.GetPos(), VZERO, false);
 }
