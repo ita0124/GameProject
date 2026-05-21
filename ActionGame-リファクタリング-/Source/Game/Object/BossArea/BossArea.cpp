@@ -1,7 +1,7 @@
 #include "BossArea.h"
 
 namespace {
-	const VECTOR	SCALE = { 10.0f,1.0f,10.0f };							//初期スケール
+	const VECTOR	SCALE = { 20.0f,1.0f,20.0f };						//初期スケール
 	const char		FILE_PATH[] = ("Data/Model/BossArea/BossArea.mv1");	//モデルファイルパス
 }
 

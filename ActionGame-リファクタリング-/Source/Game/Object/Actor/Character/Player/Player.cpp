@@ -4,7 +4,7 @@ namespace {
 	const float		RAD = 10.0f;															//半径
 	const VECTOR	PLAYER_SIZE = { RAD / 2,20.0f,RAD / 2 };								//ボックス当たり判定
 
-	const VECTOR	RESPAWN_POS = { 0.0f,1000.0f,0.0f };									//落下後のリスポーン座標
+	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
 
 	const float		HIT_POINTS = 100.0f;													//体力
 	const float		STAMINA = 75.0f;														//スタミナ
@@ -24,6 +24,7 @@ namespace {
 	const float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
 	const float		GUARD_MIN_STAMINA = 10.0f;												//ガード状態維持に必要な最低限のスタミナ量
+	const float		ROLLING_MIN_STAMINA = 10.0f;											//ローリング発動に必要な最低限のスタミナ量
 
 	const float		SKILL_ATTACK_COLLISION_START = 15.0f;									//スキル攻撃の当たり判定開始フレーム
 	const float		SKILL_ATTACK_COLLISION_END = 35.0f;										//スキル攻撃の当たり判定終了フレーム
@@ -45,7 +46,7 @@ namespace {
 	const int		ROLLING_TIME = 20;														//ローリング持続時間
 	const float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
 
-	const float		FIRST_JUMP_POWER = 5.0f;												//初回ジャンプ力
+	const float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
 
 	const char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
@@ -680,9 +681,12 @@ void Player::StateManager() {
 }
 //動作管理
 void Player::ActionManager() {
-	//ローリング
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_X) || InputKey::IsPushKeyTrg(KEY_INPUT_R)) {
-		m_State = ROLLING;
+	//スタミナが一定値を上回っていれば
+	if (m_Stamina > ROLLING_MIN_STAMINA) {
+		//ローリング
+		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_X) || InputKey::IsPushKeyTrg(KEY_INPUT_R)) {
+			m_State = ROLLING;
+		}
 	}
 	//ジャンプ
 	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_A) || InputKey::IsPushKeyTrg(KEY_INPUT_Z))) {

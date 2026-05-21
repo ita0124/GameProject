@@ -82,7 +82,7 @@ int StageScene::Loop() {
 }
 //描画処理管理関数
 void StageScene::Draw() {
-	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ステージ");
+	DrawFormatStringToHandle((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15, "ステージ");
 
 	m_Sky.Draw();
 	m_Player.Draw();
@@ -118,6 +118,12 @@ int StageScene::Step() {
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 
 	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
+		Res = 1;
+	}
+
+	//終了位置設定　後にゴールオブジェクトを追加する
+	VECTOR Pos = m_Player.GetPos();
+	if (Pos.x <= 30.0f && Pos.x >= -30.0f && Pos.y >= 1200 && Pos.z <= 670.0f && Pos.z >= 610.0f) {
 		Res = 1;
 	}
 

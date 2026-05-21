@@ -182,7 +182,9 @@
     <ClCompile Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Shield\Shield.cpp" />
     <ClCompile Include="Source\Game\Object\Sky\Sky.cpp" />
+    <ClCompile Include="Source\Game\Object\Sword\Sword.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.cpp" />
     <ClCompile Include="Source\Game\PlayerStatusUI\Stamina\Stamina.cpp" />
@@ -236,7 +238,9 @@
     <ClInclude Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Shield\Shield.h" />
     <ClInclude Include="Source\Game\Object\Sky\Sky.h" />
+    <ClInclude Include="Source\Game\Object\Sword\Sword.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\HitPoints\HitPoints.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\SkillPoints\SkillPoints.h" />
     <ClInclude Include="Source\Game\PlayerStatusUI\Stamina\Stamina.h" />
