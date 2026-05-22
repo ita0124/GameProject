@@ -95,7 +95,7 @@ int	BossScene::Loop() {
 void BossScene::Draw() {
 	switch (m_ID) {
 	case LOAD:
-		DrawRotaGraph((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y,10,0,m_Load.Hndl[(int)m_Load.HndlNum%4],TRUE);
+		DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, 10, 0, m_Load.Hndl[(int)m_Load.HndlNum % 4], TRUE);
 		break;
 	case STARTWAIT:
 		m_Sky.Draw();
@@ -128,11 +128,11 @@ void BossScene::Init() {
 	m_Traget.Init();				//ターゲットクラス
 	m_UIFrame.Init();				//UIフレームクラス
 
-	m_Load.LoadTime=0;				//非同期処理継続時間
-	m_Load.HndlNum=0.0f;			//非同期処理時に表示する画像
-	m_Load.IsLoadASync=false;		//非同期処理中か
+	m_Load.LoadTime = 0;				//非同期処理継続時間
+	m_Load.HndlNum = 0.0f;			//非同期処理時に表示する画像
+	m_Load.IsLoadASync = false;		//非同期処理中か
 	for (int Index = 0; Index < HNDL_MAX; Index++) {
-		m_Load.Hndl[Index]=-1;		//画像ハンドル
+		m_Load.Hndl[Index] = -1;		//画像ハンドル
 	}
 }
 //データ破棄処理管理関数
@@ -208,6 +208,15 @@ int BossScene::Step() {
 
 	Update();
 
+	if (!m_Player.GetIsActive()) {
+		Res = 1;
+		ResultNum::SetNum(Res);
+	}
+	if (!m_Boss.GetIsActive()) {
+		Res = 2;
+		ResultNum::SetNum(Res);
+	}
+
 	return Res;
 }
 //モデル更新処理
@@ -218,7 +227,7 @@ void BossScene::Update() {
 	m_Boss.Update();
 	m_CameraManager.Update();							//カメラマネージャークラス
 
-	int HitPoints=(int)m_Player.GetHitPoints();
+	int HitPoints = (int)m_Player.GetHitPoints();
 	m_HitPoints.Update(HitPoints);						//体力UIクラス
 	int SkillPoints = (int)m_Player.GetSkillPoints();
 	m_SkillPoints.Update(SkillPoints);					//スキルポイントUIクラス
@@ -243,10 +252,10 @@ void BossScene::EnemyStep() {
 }
 //カメラ関連Step
 void BossScene::CameraStep() {
-	m_CameraManager.Step(m_Player.GetPos(),VZERO,false);
+	m_CameraManager.Step(m_Player.GetPos(), VZERO, false);
 }
 //当たり判定関係
 void BossScene::HitCheck() {
-	HitCheck::ObjectToObjectPush(m_Player,m_Boss);
-	HitCheck::CollToObject(m_BossArea,m_Player);
+	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
+	HitCheck::CollToObject(m_BossArea, m_Player);
 }

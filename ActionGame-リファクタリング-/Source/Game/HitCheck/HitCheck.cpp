@@ -67,7 +67,17 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 }
 //オブジェクト同士の攻撃当たり判定
 void HitCheck::ObjectToObjectAttack(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
-
+	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_ObjectA.GetIsActive() || !_ObjectB.GetIsActive())return;
+	//どちらかの当たり判定実行フラグがオフになっていれば以降の処理をしない
+	if (!_ObjectA.GetIsCollision() || !_ObjectB.GetIsCollision())return;
+	//もしオブジェクトAが種類：武器なら
+	if (_ObjectA.GetKinds() == ObjectBase::TagKinds::Weapon) {
+		//オーナーの生存フラグがオフになっていれば以降の処理をしない
+		if (!_ObjectA.GetOwner()->GetIsActive())return;
+		//オーナーの当たり判定実行フラグがオフになっていれば以降の処理をしない
+		if (!_ObjectA.GetOwner()->GetIsCollision())return;
+	}
 }
 //Collとオブジェクトの当たり判定
 void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {

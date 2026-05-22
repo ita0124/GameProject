@@ -94,6 +94,8 @@ public:
 	bool		GetIsCollision()	const { return m_IsCollision; }
 	//押し出し判定を行うか
 	bool		GetIsPush()			const { return m_IsPush; }
+	//オーナーを渡す
+	ObjectBase	*GetOwner()			const {return m_Owner;}
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る

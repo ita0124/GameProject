@@ -362,9 +362,6 @@
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Lib\Fade\Fade.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
@@ -517,6 +514,9 @@
     </ClCompile>
     <ClCompile Include="Source\Game\Object\Shield\Shield.cpp">
       <Filter>ソース ファイル\Game\Object\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

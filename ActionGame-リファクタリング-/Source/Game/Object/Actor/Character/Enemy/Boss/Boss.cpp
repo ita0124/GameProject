@@ -48,7 +48,7 @@ namespace {
 
 	const float		SPECIAL_START_END_LEN = 25.0f;													//必殺開始アクションから次の状態に移行する最低距離
 
-	const float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025;										//必殺チャージ中のアニメーション再生速度加算値
+	const float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025f;										//必殺チャージ中のアニメーション再生速度加算値
 	const int		SPECIAL_CHARGE_END_TIME = 1200;													//必殺チャージ終了フレーム
 
 	const VECTOR	SPECIAL_INIT_VECTOR = { FZERO,500.0f,FZERO };									//必殺の初めに座標を変更するときの値
@@ -142,7 +142,6 @@ void Boss::Step() {
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
-		return;
 	}
 	//状態遷移
 	StateManager();
@@ -199,7 +198,7 @@ void Boss::Down() {
 //死亡
 void Boss::Death() {
 	//死亡アニメーション再生
-	RequestEndLoop(ANIME_DEATH);
+	RequestEndLoop(ANIME_DEATH, ANIME_SPEED);
 
 	if (!m_IsAction[DEATH]) {
 		//死亡アクション中に変更

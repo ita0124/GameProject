@@ -4,6 +4,8 @@
 #include "Game/Object/Sky/Sky.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
+#include "Game/Object/Sword/Sword.h"
+#include "Game/Object/Shield/Shield.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/Manager/Item/ItemManager.h"
 #include "Game/PlayerStatusUI/HitPoints/HitPoints.h"
@@ -24,6 +26,8 @@ private:
 	BossArea		m_BossArea;			//ボス戦の足場クラス
 	Sky				m_Sky;				//天球クラス
 	Player			m_Player;			//プレイヤークラス
+	Sword			m_Sword;			//剣クラス
+	Shield			m_Shield;			//盾クラス
 	Boss			m_Boss;
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 	ItemManager		m_ItemManger;		//アイテムマネーシャークラス
