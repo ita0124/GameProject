@@ -57,5 +57,6 @@ void Shield::Step() {
 void Shield::Init() {
 	ObjectBase::Init();
 
-	m_Kinds = Weapon;		//í—Şİ’è
+	m_Rad = RAD;
+	m_Kinds = SHIELD;		//í—Şİ’è
 }

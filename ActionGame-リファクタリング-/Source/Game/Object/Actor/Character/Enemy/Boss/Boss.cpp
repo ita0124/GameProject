@@ -1,4 +1,5 @@
 #include "Boss.h"
+#include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
 	const VECTOR	INIT_POS = { 0.0f,0.0f,-500.0f };												//初期座標
@@ -55,17 +56,20 @@ namespace {
 
 	const float		SPECIAL_POSY_CALC = -50.0f;														//必殺中のY座標計算値
 
-	const float		NORMAL_ATTACK1_COLLISION_RAD = 20.0f;											//通常攻撃１段目の攻撃当たり判定の半径
-	const float		NORMAL_ATTACK2_COLLISION_RAD = 30.0f;											//通常攻撃２段目の攻撃当たり判定の半径
-	const float		NORMAL_ATTACK3_COLLISION_RAD = 50.0f;											//通常攻撃３段目の攻撃当たり判定の半径
+	const float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
+	const float		NORMAL_ATTACK2_COLLISION_RAD = 20.0f;											//通常攻撃２段目の攻撃当たり判定の半径
+	const float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
 	const float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
 
-	const float		ANIME_SPEED = 0.4f;																//アニメーション再生スピード
+	const float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
+	const float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージ
 
 	const float		NORMAL_ATTACK1_POWER = 10.0f;													//通常攻撃１段目時の攻撃力
 	const float		NORAML_ATTACK2_POWER = 15.0f;													//通常攻撃２段目時の攻撃力
 	const float		NORAML_ATTACK3_POWER = 20.0f;													//通常攻撃３段目時の攻撃力
 	const float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
+
+	const float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
 	const char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	const char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
@@ -82,6 +86,8 @@ Boss::~Boss() {
 //初期化処理
 void Boss::Init() {
 	EnemyBase::Init();
+
+	m_Kinds = BOSS;
 
 	m_Pos = INIT_POS;									//座標
 	m_Rad = RAD;										//半径
@@ -143,8 +149,43 @@ void Boss::Step() {
 		m_HitPoints = 0;
 		m_State = DEATH;
 	}
+
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+	}
+	else {
+		m_DamageTime--;
+	}
+
 	//状態遷移
 	StateManager();
+}
+//当たり判定後の処理(当たっている場合)
+void Boss::HitCalc(ObjectBase* _Object) {
+	//プレイヤークラスデータを保存する変数
+	Player* PointerPlayer = nullptr;
+	//プレイヤークラスをダウンキャスト
+	PointerPlayer = dynamic_cast<Player*>(_Object);
+	//ダウン状態の時
+	if (m_State == DOWN) {
+		//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+		m_HitPoints = m_HitPoints - (PointerPlayer->GetPower()* DOWN_DAMAGE_TAKEN_MULT);
+	}
+	else {
+		//HPを消費
+		m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+	}
+	//エフェクトリクエスト
+	VECTOR Pos = m_Pos;
+	m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::PIERRE02LOSSOFBLOOD, Pos, false);
+	MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	////ダメージ処理の継続時間セット
+	m_DamageTime = 15;
+	//当たり判定オン
+	m_IsCollision = false;
 }
 //待機
 void Boss::Wait() {
@@ -555,7 +596,7 @@ void Boss::Jump() {
 //突進チャージ
 void Boss::ChargeAttackStart() {
 	//突進チャージアニメーション再生
-	RequestEndLoop(ANIME_CHARGE_ATTACK_START, ANIME_SPEED);
+	RequestEndLoop(ANIME_CHARGE_ATTACK_START, CHARGE_START_ANIME_SPEED);
 	//正規化された方向ベクトルを取得
 	VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
 	//角度を計算

@@ -56,6 +56,7 @@ void Sword::Step() {
 //‰Šú‰»ˆ—
 void Sword::Init() {
 	ObjectBase::Init();
-
-	m_Kinds = Weapon;		//í—Şİ’è
+	
+	m_Rad = RAD;
+	m_Kinds = SWORD;		//í—Şİ’è
 }

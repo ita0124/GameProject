@@ -1,8 +1,9 @@
 #include "Player.h"
+#include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
 
 namespace {
-	const float		RAD = 10.0f;															//半径
-	const VECTOR	PLAYER_SIZE = { RAD / 2,20.0f,RAD / 2 };								//ボックス当たり判定
+	const float		RAD = 5.0f;																//半径
+	const VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
 	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
 
@@ -48,6 +49,8 @@ namespace {
 
 	const float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
 
+	const float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;												//ガード時の被ダメ軽減量
+
 	const char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
 
@@ -62,6 +65,8 @@ Player::~Player() {
 //初期化処理
 void Player::Init() {
 	CharacterBase::Init();
+
+	m_Kinds = PLAYER;
 
 	m_IsPush = true;							//押し出し判定を行う
 
@@ -83,6 +88,7 @@ void Player::Init() {
 		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
+	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
 	m_JumpCalc = 0.0f;							//ジャンプ力計算
 }
 //データ読み込み処理
@@ -126,7 +132,28 @@ void Player::Step() {
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
 }
-
+//当たり判定後の処理(当たっている場合)
+void Player::HitCalc(ObjectBase* _Object) {
+	//ボスクラスデータを保存する変数
+	Boss* PointerBoss = nullptr;
+	//ボスクラスをダウンキャスト
+	PointerBoss = dynamic_cast<Boss*>(_Object);
+	//ダウン状態の時
+	if (m_State == GUARD) {
+		//スタミナを消費
+		m_Stamina = PointerBoss->GetPower();
+		//敵のの攻撃力に被ダメ率を乗算後HPを消費
+		m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
+	}
+	else {
+		//HPを消費
+		m_HitPoints = m_HitPoints - PointerBoss->GetPower();
+		//当たり判定オフ
+		m_IsCollision = false;
+		//ダメージ状態へ
+		m_State = DAMAGE;
+	}
+}
 //待機
 void Player::Wait() {
 	//待機アニメーションループ再生
@@ -147,10 +174,18 @@ void Player::Damage() {
 	RequestEndLoop(DAMAGE);
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
+	//当たり判定オフ
+	m_IsCollision = false;
+	//X軸回転率をリセット
+	m_Rot.x = 0.0f;
+	//アクションフラグをリセット
+	ResetIsAction();
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
+		//当たり判定オン
+		m_IsCollision = true;
 	}
 }
 //死亡
@@ -261,6 +296,8 @@ void Player::Guard() {
 		m_IsAction[GUARD] = true;
 		//当たり判定オフ
 		m_IsCollision = false;
+		//ガードの当たり判定発生
+		m_IsGuardCollision = true;
 	}
 	//ガードボタンを離したら
 	if (!InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) && !InputKey::IsPushKeyRep(KEY_INPUT_F)) {
@@ -269,7 +306,9 @@ void Player::Guard() {
 		//当たり判定オン
 		m_IsCollision = true;
 		//ガードアクション終了
-		m_IsAction[ROLLING] = false;
+		m_IsAction[GUARD] = false;
+		//ガードの当たり判定発生
+		m_IsGuardCollision = false;
 	}
 	//スタミナが一定値を下回れば
 	if (m_Stamina <= GUARD_MIN_STAMINA) {
@@ -279,6 +318,8 @@ void Player::Guard() {
 		m_IsCollision = true;
 		//ガードアクション終了
 		m_IsAction[ROLLING] = false;
+		//ガードの当たり判定発生
+		m_IsGuardCollision = false;
 	}
 }
 //パリィ
@@ -322,6 +363,7 @@ void Player::SkillAttack() {
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > SKILL_ATTACK_COLLISION_START && m_AnimeData.Frame < SKILL_ATTACK_COLLISION_END) {
+
 		if (!m_IsAttackCollision) {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
@@ -724,6 +766,12 @@ void Player::GravityManager() {
 	else {
 		//ジャンプ力リセット
 		m_JumpCalc = 0.0f;
+	}
+}
+//アクションフラグをリセット
+void Player::ResetIsAction() {
+	for (int State = 0;State < STATE_NUM;State++) {
+		m_IsAction[State] = false;
 	}
 }
 

@@ -1,4 +1,7 @@
 #include "HitCheck.h"
+#include "Game/Object/Actor/Character/Player/Player.h"
+#include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
+#include "Game/Object/Sword/Sword.h"
 
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
@@ -61,23 +64,125 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 			//念のためY軸を0に
 			Dir.y = 0.0f;
 			//現在の座標に加算
-			_ObjectA.AddPos(Dir);
+			_ObjectB.AddPos(Dir);
 		}
 	}
 }
 //オブジェクト同士の攻撃当たり判定
-void HitCheck::ObjectToObjectAttack(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
+void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObject) {
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
-	if (!_ObjectA.GetIsActive() || !_ObjectB.GetIsActive())return;
-	//どちらかの当たり判定実行フラグがオフになっていれば以降の処理をしない
-	if (!_ObjectA.GetIsCollision() || !_ObjectB.GetIsCollision())return;
-	//もしオブジェクトAが種類：武器なら
-	if (_ObjectA.GetKinds() == ObjectBase::TagKinds::Weapon) {
-		//オーナーの生存フラグがオフになっていれば以降の処理をしない
-		if (!_ObjectA.GetOwner()->GetIsActive())return;
-		//オーナーの当たり判定実行フラグがオフになっていれば以降の処理をしない
-		if (!_ObjectA.GetOwner()->GetIsCollision())return;
+	if (!_Object.GetIsActive() || !_AttackObject.GetIsActive())return;
+	//オブジェクトの当たり判定フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsCollision())return;
+	/*===========================================================================*/
+	//オブジェクトがプレイヤーかつ攻撃オブジェクトがボスだった場合
+	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
+		//ボスクラスデータを保存する変数
+		Boss* PointerBoss = nullptr;
+		//ボスクラスをダウンキャスト
+		PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
+		//ボスのフレーム分
+		for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FRONT;FrameNum++) {
+			//フレームの攻撃判定がオフになっていたら次のフレームを見る
+			if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
+			//プレイヤーの座標を取得
+			VECTOR	PlayerPos1 = _Object.GetCenter();
+			//プレイヤーの頭の座標を取得
+			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNamber::HEAD);
+			//プレイヤーの当たり判定半径を取得
+			float	PlayerRad = _Object.GetRad();
+			//ボスの座標を取得
+			VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
+			//ボスの当たり判定半径を取得
+			float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
+#ifdef _DEBUG
+			DrawSphere3D(PlayerPos1, PlayerRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(PlayerPos2, PlayerRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(BossPos, BossRad, DIV, RED, RED, FALSE);
+#endif // DEBUG
+			//当たり判定
+			bool IsHit1 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
+			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
+			//当たっていれば
+			if (IsHit1 || IsHit2) {
+				_Object.HitCalc(PointerBoss);
+			}
+		}
 	}
+	/*===========================================================================*/
+	//オブジェクトが盾だった場合
+	if (_Object.GetKinds() == ObjectBase::TagKinds::SHIELD) {
+		//オーナーを取得
+		ObjectBase* Owner = _Object.GetOwner();
+		//プレイヤークラスデータを保存する変数
+		Player* PointerPlayer = nullptr;
+		//プレイヤークラスをダウンキャスト
+		PointerPlayer = dynamic_cast<Player*>(Owner);
+		//攻撃当たり判定を生成してよいか
+		if (PointerPlayer->GetIsGuardCollision()) {
+			//ボスクラスデータを保存する変数
+			Boss* PointerBoss = nullptr;
+			//ボスクラスをダウンキャスト
+			PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
+			//ボスのフレーム分
+			for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FRONT;FrameNum++) {
+				//フレームの攻撃判定がオフになっていたら次のフレームを見る
+				if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
+				//プレイヤーの座標を取得
+				VECTOR	ShieldPos = _Object.GetPos();
+				//プレイヤーの当たり判定半径を取得
+				float	ShieldRad = _Object.GetRad();
+				//ボスの座標を取得
+				VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
+				//ボスの当たり判定半径を取得
+				float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
+#ifdef _DEBUG
+				DrawSphere3D(ShieldPos, ShieldRad, DIV, RED, RED, FALSE);
+				DrawSphere3D(BossPos, BossRad, DIV, RED, RED, FALSE);
+#endif // DEBUG
+				//当たり判定
+				bool IsHit = Collision::CheckHitSphereToSphere(ShieldPos, ShieldRad, BossPos, BossRad);
+				//当たっていれば
+				if (IsHit) {
+					PointerPlayer->HitCalc(PointerBoss);
+				}
+			}
+		}
+	}
+	/*===========================================================================*/
+	//攻撃オブジェクトが剣だった場合
+	if (_AttackObject.GetKinds() == ObjectBase::TagKinds::SWORD) {
+		//オーナーを取得
+		ObjectBase* Owner = _AttackObject.GetOwner();
+		//オーナーの生存フラグがオフになっていれば以降の処理をしない
+		if (!Owner->GetIsActive())return;
+		//プレイヤークラスデータを保存する変数
+		Player* PointerPlayer = nullptr;
+		//プレイヤークラスをダウンキャスト
+		PointerPlayer = dynamic_cast<Player*>(Owner);
+		//攻撃当たり判定を生成してよいか
+		if (PointerPlayer->GetIsAttackCollision()) {
+			//剣の指定したフレームの座標を取得
+			VECTOR	SwordPos = _AttackObject.GetFramePos(_AttackObject.GetHndl(), Sword::FrameNamber::BLADE002);
+			//剣の当たり判定半径を取得
+			float	SwordRad = _AttackObject.GetRad();
+			//オブジェクトの座標を取得
+			VECTOR	ObjectPos = _Object.GetCenter();
+			//オブジェクトの当たり判定半径を取得
+			float	ObjectRad = _Object.GetRad();
+#ifdef _DEBUG
+			DrawSphere3D(SwordPos, SwordRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(ObjectPos, ObjectRad, DIV, RED, RED, FALSE);
+#endif // DEBUG
+			//当たり判定
+			bool IsHit = Collision::CheckHitSphereToSphere(SwordPos, SwordRad, ObjectPos, ObjectRad);
+			//当たっていれば
+			if (IsHit) {
+				_Object.HitCalc(PointerPlayer);
+			}
+		}
+	}
+	/*===========================================================================*/
 }
 //Collとオブジェクトの当たり判定
 void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
@@ -133,14 +238,14 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	VECTOR	ObjectSize = _Object.GetSize();
 	//重力処理を行うか
 	bool IsGravity = true;
-
+#ifdef _DEBUG
 	DrawFormatStringToHandle(50, 100, RED, DxLibFont::FONTHNDL_N20, "プレイヤー前フレームY座標:%f", PrevPos.y);
 	DrawFormatStringToHandle(50, 120, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算前プレイヤーY座標:%f", ObjectPos.y);
 
 	VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
 	VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
 	DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
-
+#endif // DEBUG
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		//足場マネージャークラスから一つ取得
 		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
@@ -222,10 +327,11 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				IsLanding = true;
 				//当たり判定後の処理(当たっている場合)
 				_PlatformManager.HitCalc(Index, &_Object);
-
+#ifdef _DEBUG
 				DrawFormatStringToHandle(50, 140, RED, DxLibFont::FONTHNDL_N20, "プレイヤー下面:%f", ObjectDown);
 				DrawFormatStringToHandle(50, 240, RED, DxLibFont::FONTHNDL_N20, "上方向の押し戻し量%f", PushUp);
 				DrawFormatStringToHandle(50, 260, RED, DxLibFont::FONTHNDL_N20, "足場上面：%f", PlatformUp);
+#endif // DEBUG
 			}
 			//天井ヒット
 			else if (PrevObjectUp <= PlatformDown) {
@@ -302,5 +408,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		_Object.SetIsGravity(true);
 
 	}
+#ifdef _DEBUG
 	DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "当たり判定計算後プレイヤーY座標:%f", ObjectPos.y);
+#endif // DEBUG
 }

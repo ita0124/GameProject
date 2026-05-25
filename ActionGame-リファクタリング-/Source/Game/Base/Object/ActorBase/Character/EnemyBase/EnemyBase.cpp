@@ -11,7 +11,7 @@ EnemyBase::~EnemyBase() {
 //初期化処理
 void EnemyBase::Init() {
 	CharacterBase::Init();
-	m_Kinds = Enemy;		//種類設定
+	m_Kinds = ENEMY;		//種類設定
 
 	m_PlayerPos = VZERO;	//プレイヤー座標
 

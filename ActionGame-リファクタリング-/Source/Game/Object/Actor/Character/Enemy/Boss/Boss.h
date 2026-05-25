@@ -198,6 +198,7 @@ private:
 	void DeleteFrameDataIsHitFlg(int _FrameNamber);
 	//全てのボーン攻撃判定を削除する
 	void AllDeleteFrameDataIsHitFlg();
+
 public:
 	//コンストラクタ
 	Boss();
@@ -209,8 +210,18 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+	//当たり判定後の処理(当たっている場合)
+	void HitCalc(ObjectBase* _Object);
 
 	//Get
 	//プレイヤータグ
 	TagState	GetState() const { return m_State; }
+	//指定のボーン座標を取得する
+	VECTOR	GetFrameDataPos(int _Num) { return m_FrameData[_Num].Pos; }
+	//指定のボーン半径を取得する
+	float	GetFrameDataRad(int _Num) { return m_FrameData[_Num].Rad; }
+	//指定のボーン当たり判定を取得する
+	bool	GetFrameDataIsHitFlg(int _Num) { return m_FrameData[_Num].IsHitFlg; }
+	//指定のボーン攻撃判定を取得する
+	bool	GetFrameDataIsAttackFlg(int _Num) { return m_FrameData[_Num].IsAttackFlg; }
 };

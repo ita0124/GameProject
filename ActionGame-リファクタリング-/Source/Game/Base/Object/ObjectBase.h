@@ -8,11 +8,14 @@ class ObjectBase {
 public:
 	//ゲームオブジェクト種類
 	enum TagKinds {
-		Object,		//オブジェクト	//3Dモデルを動かすための必要最低限のものは入っている
-		Actor,		//アクタ		//アニメーションを行うものはここ
-		Character,	//キャラクター	//体力などのステータスがある
-		Enemy,		//エネミー		//プレイヤーに攻撃を与えてくるものはここ
-		Weapon,		//武器			//プレイヤーが持つ武器
+		OBJECT,		//オブジェクト	//3Dモデルを動かすための必要最低限のものは入っている
+		ACTOR,		//アクタ		//アニメーションを行うものはここ
+		CHARACTER,	//キャラクター	//体力などのステータスがある
+		PLAYER,		//プレイヤー	//プレイヤー
+		ENEMY,		//エネミー		//プレイヤーに攻撃を与えてくるものはここ
+		BOSS,		//ボス
+		SWORD,		//剣
+		SHIELD,		//盾
 	};
 
 	//オブジェクトの形状
@@ -99,9 +102,9 @@ public:
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る
-	VECTOR		GetCenter(TagShape _Shape);
+	VECTOR		GetCenter(TagShape _Shape= BALL);
 	//モデルの中心を取る
-	VECTOR		GetPrevCenter(TagShape _Shape);
+	VECTOR		GetPrevCenter(TagShape _Shape= BALL);
 
 	//Set
 	//座標

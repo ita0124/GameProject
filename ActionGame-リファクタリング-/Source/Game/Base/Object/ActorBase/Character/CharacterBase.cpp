@@ -11,7 +11,7 @@ CharacterBase::~CharacterBase() {
 //‰Šú‰»ˆ—
 void CharacterBase::Init() {
 	ActorBase::Init();
-	m_Kinds = Character;		//í—Şİ’è
+	m_Kinds = CHARACTER;		//í—Şİ’è
 
 	m_Power = FZERO;			//UŒ‚—Í
 	m_HitPoints = FZERO;		//‘Ì—Í

@@ -106,6 +106,8 @@ void BossScene::Draw() {
 		m_Sky.Draw();
 		m_BossArea.Draw();
 		m_Player.Draw();
+		m_Sword.Draw();
+		m_Shield.Draw();
 		m_Boss.Draw();
 		m_UIFrame.Draw();
 		m_HitPoints.Draw();
@@ -119,7 +121,9 @@ void BossScene::Init() {
 	m_BossArea.Init();				//ボス戦の足場クラス
 	m_Sky.Init();					//天球クラス
 	m_Player.Init();				//プレイヤークラス
-	m_Boss.Draw();
+	m_Sword.Init(&m_Player);		//剣クラス
+	m_Shield.Init(&m_Player);		//盾クラス
+	m_Boss.Draw();					//ボスクラス
 	m_CameraManager.Init();			//カメラマネージャークラス
 	m_ItemManger.Init();			//アイテムマネーシャークラス
 	m_HitPoints.Init();				//体力UIクラス
@@ -140,7 +144,9 @@ void BossScene::Exit() {
 	m_BossArea.Exit();				//ボス戦の足場クラス
 	m_Sky.Exit();					//天球クラス
 	m_Player.Exit();				//プレイヤークラス
-	m_Boss.Draw();
+	m_Sword.Exit();					//剣クラス
+	m_Shield.Exit();				//盾クラス
+	m_Boss.Draw();					//ボスクラス
 	m_ItemManger.Exit();			//アイテムマネーシャークラス
 	m_HitPoints.Exit();				//体力UIクラス
 	m_SkillPoints.Exit();			//スキルポイントUIクラス
@@ -162,7 +168,10 @@ void BossScene::Load() {
 	m_BossArea.Load();				//ボス戦の足場クラス
 	m_Sky.Load();					//天球クラス
 	m_Player.Load();				//プレイヤークラス
-	m_Boss.Load();
+	m_Sword.Load();					//剣クラス
+	m_Shield.Load();				//盾クラス
+	m_Boss.Load();					//ボスクラス
+	
 
 	//非同期読み込みを行わない
 	SetUseASyncLoadFlag(false);
@@ -224,7 +233,9 @@ void BossScene::Update() {
 	m_BossArea.Update();								//ボス戦の足場クラス
 	m_Sky.Update();										//天球クラス
 	m_Player.Update();									//プレイヤークラス
-	m_Boss.Update();
+	m_Sword.Update();									//剣クラス
+	m_Shield.Update();									//盾クラス
+	m_Boss.Update();									//ボスクラス
 	m_CameraManager.Update();							//カメラマネージャークラス
 
 	int HitPoints = (int)m_Player.GetHitPoints();
@@ -244,6 +255,8 @@ void BossScene::PlayerStep() {
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
 	m_Player.Step();
+	m_Sword.Step();
+	m_Shield.Step();
 }
 //敵関連Step
 void BossScene::EnemyStep() {
@@ -258,4 +271,7 @@ void BossScene::CameraStep() {
 void BossScene::HitCheck() {
 	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
 	HitCheck::CollToObject(m_BossArea, m_Player);
+	HitCheck::ObjectToObjectAttack(m_Boss,m_Sword);
+	HitCheck::ObjectToObjectAttack(m_Shield, m_Boss);
+	HitCheck::ObjectToObjectAttack(m_Player, m_Boss);
 }

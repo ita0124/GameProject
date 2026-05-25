@@ -4,6 +4,23 @@
 //剣クラス
 class Sword :public ObjectBase {
 public:
+	//ボーン番号enum
+	enum FrameNamber {
+		ARMATURE,		//アーマチュア
+		//ここからボーン
+		POMMEL,			//柄頭
+		GRIP,			//柄
+		GRIP001,		//柄１
+		GUARD,			//鍔
+		BLADE,			//刃
+		BLADE001,		//刃１
+		BLADE002,		//刃２
+		VLADEEND,		//刃先
+		//これ以下は使うことがないと思うので省略
+
+		FARAM_NUM
+	};
+
 	//コンストラクタ
 	Sword();
 	//デストラクタ

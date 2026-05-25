@@ -11,7 +11,7 @@ ActorBase::~ActorBase() {
 //初期化処理
 void ActorBase::Init() {
 	ObjectBase::Init();
-	m_Kinds = Actor;							//種類設定
+	m_Kinds = ACTOR;							//種類設定
 
 	memset(&m_AnimeData, 0, sizeof(ANIME_DATA));	//アニメーション関連変数構造体
 	m_AnimeData.Hndl = -1;					//ハンドル

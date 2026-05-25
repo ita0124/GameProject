@@ -28,7 +28,7 @@ private:
 	Player			m_Player;			//プレイヤークラス
 	Sword			m_Sword;			//剣クラス
 	Shield			m_Shield;			//盾クラス
-	Boss			m_Boss;
+	Boss			m_Boss;				//ボスクラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 	ItemManager		m_ItemManger;		//アイテムマネーシャークラス
 	HitPoints		m_HitPoints;		//体力UIクラス

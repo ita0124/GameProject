@@ -80,6 +80,7 @@ private:
 
 	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
+	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
 
 	float		m_JumpCalc;									//ジャンプ力計算
 
@@ -130,6 +131,8 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+	//当たり判定後の処理(当たっている場合)
+	void HitCalc(ObjectBase* _Object);
 
 	//Get
 	//プレイヤータグ
@@ -138,10 +141,16 @@ public:
 	bool		GetIsAction(int _State)const { return m_IsAction[_State]; }
 	//アクション成功判定フラグ
 	bool		GetIsActionSuccess(int _State)const { return m_IsActionSuccess[_State]; }
+	//攻撃の当たり判定を発生させてよいか
+	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
+	//ガードの当たり判定を発生させてよいか
+	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
 
 	//Set
-	// //カメラ回転率
+	//カメラ回転率
 	void	SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
 	void	SetAttackTargetPos(ActorBase& _ActorBase) { m_AttackTargetPos = _ActorBase.GetPos(); }
+	//アクションフラグをリセット
+	void	ResetIsAction();
 };

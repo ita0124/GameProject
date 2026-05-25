@@ -34,7 +34,7 @@ void ObjectBase::Init() {
 	m_EffectHndl = -1;	//エフェクトハンドル
 	m_IsEffect = false;	//エフェクト出現判定
 
-	m_Kinds = Object;	//種類設定
+	m_Kinds = OBJECT;	//種類設定
 }
 //データ破棄処理
 void ObjectBase::Exit() {
