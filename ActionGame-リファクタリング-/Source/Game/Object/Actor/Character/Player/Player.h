@@ -77,10 +77,14 @@ private:
 
 	bool		m_IsAction[STATE_NUM];						//アクションフラグ
 	bool		m_IsActionSuccess[STATE_NUM];				//アクション成功判定フラグ
+	int			m_ActionSuccessTime[STATE_NUM];				//アクション成功の継続時間
 
 	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
+
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
+	int			m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
+	bool		m_IsParryWindo;								//パリィ許容フラグ
 
 	float		m_JumpCalc;									//ジャンプ力計算
 
@@ -120,6 +124,10 @@ private:
 	void ActionManager();
 	//重力処理
 	void GravityManager();
+	//アクションフラグをリセット
+	void ResetIsAction();
+	//アクション成功フラグ管理
+	void ActionSuccessManager();
 public:
 	//コンストラクタ
 	Player();
@@ -145,12 +153,12 @@ public:
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか
 	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
+	//パリィ許容フラグ
+	bool		GetIsParryWindo() { return m_IsParryWindo; }
 
 	//Set
 	//カメラ回転率
 	void	SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
 	void	SetAttackTargetPos(ActorBase& _ActorBase) { m_AttackTargetPos = _ActorBase.GetPos(); }
-	//アクションフラグをリセット
-	void	ResetIsAction();
 };

@@ -103,8 +103,8 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();
-		m_BossArea.Draw();
+		/*m_Sky.Draw();*/
+		/*m_BossArea.Draw();*/
 		m_Player.Draw();
 		m_Sword.Draw();
 		m_Shield.Draw();

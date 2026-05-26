@@ -44,12 +44,16 @@ namespace {
 	const float		NORAML_ATTACK2_POWER = 15.0f;											//通常攻撃２段目時の攻撃力
 	const float		NORAML_ATTACK3_POWER = 20.0f;											//通常攻撃３段目時の攻撃力
 
+	const float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
+
+	const float		PARRY_WINDOW_TIME = 10;													//ガードアクション実行後のパリィに移行できる許容時間
+
 	const int		ROLLING_TIME = 20;														//ローリング持続時間
 	const float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
 
 	const float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
 
-	const float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;												//ガード時の被ダメ軽減量
+	const float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
 
 	const char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
@@ -83,12 +87,15 @@ void Player::Init() {
 	for (int Index = 0; Index < STATE_NUM; Index++) {
 		m_IsAction[Index] = false;				//アクションフラグ
 		m_IsActionSuccess[Index] = false;		//アクション成功判定フラグ
+		m_ActionSuccessTime[Index] = 0;			//アクション成功の継続時間
 	}
 	for (int Index = 0; Index < NORMAL_ATTACK_MAX; Index++) {
 		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
+	m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
+	m_IsParryWindo = true;						//パリィ許容フラグ
 	m_JumpCalc = 0.0f;							//ジャンプ力計算
 }
 //データ読み込み処理
@@ -125,8 +132,8 @@ void Player::Step() {
 	StateManager();
 	//重力処理
 	GravityManager();
-
-	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "重力判定：%d", m_IsGravity);
+	//アクション成功フラグ管理
+	ActionSuccessManager();
 
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
@@ -138,12 +145,25 @@ void Player::HitCalc(ObjectBase* _Object) {
 	Boss* PointerBoss = nullptr;
 	//ボスクラスをダウンキャスト
 	PointerBoss = dynamic_cast<Boss*>(_Object);
-	//ダウン状態の時
+	//ガード状態の時
 	if (m_State == GUARD) {
-		//スタミナを消費
-		m_Stamina = PointerBoss->GetPower();
-		//敵のの攻撃力に被ダメ率を乗算後HPを消費
-		m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
+		//パリィ許容フラグがオンなら
+		if (m_IsParryWindo) {
+			//パリィ状態に変更
+			m_State = PARRY;
+			//スタミナを回復
+			m_Stamina += PointerBoss->GetPower()/2;
+			//パリィアクション成功
+			m_IsActionSuccess[PARRY] = true;
+		}
+		else {
+			//スタミナを消費
+			m_Stamina -= PointerBoss->GetPower();
+			//敵のの攻撃力に被ダメ率を乗算後HPを消費
+			m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
+			//ガードアクション成功
+			m_IsActionSuccess[GUARD] = true;
+		}
 	}
 	else {
 		//HPを消費
@@ -176,6 +196,10 @@ void Player::Damage() {
 	m_IsStaminaRecover = false;
 	//当たり判定オフ
 	m_IsCollision = false;
+	//攻撃の当たり判定消滅
+	m_IsAttackCollision = false;
+	//ガードの当たり判定消失
+	m_IsGuardCollision = false;
 	//X軸回転率をリセット
 	m_Rot.x = 0.0f;
 	//アクションフラグをリセット
@@ -307,8 +331,12 @@ void Player::Guard() {
 		m_IsCollision = true;
 		//ガードアクション終了
 		m_IsAction[GUARD] = false;
-		//ガードの当たり判定発生
+		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
+		//ガードアクション実行後のパリィに移行できる許容時間をリセット
+		m_ParryWindoeTime = 0;
+		//パリィに移行してもよい
+		m_IsParryWindo = true;
 	}
 	//スタミナが一定値を下回れば
 	if (m_Stamina <= GUARD_MIN_STAMINA) {
@@ -317,9 +345,24 @@ void Player::Guard() {
 		//当たり判定オン
 		m_IsCollision = true;
 		//ガードアクション終了
-		m_IsAction[ROLLING] = false;
-		//ガードの当たり判定発生
+		m_IsAction[GUARD] = false;
+		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
+		//ガードアクション実行後のパリィに移行できる許容時間をリセット
+		m_ParryWindoeTime = 0;
+		//パリィに移行してもよい
+		m_IsParryWindo = true;
+	}
+	//ガードアクション実行後のパリィに移行できる許容時間が一定の値を超えていれば
+	if (m_ParryWindoeTime >= PARRY_WINDOW_TIME) {
+		//パリィに移行することを許可しない
+		m_IsParryWindo = false;
+	}
+	else {
+		//ガードアクション実行後のパリィに移行できる許容時間を加算
+		m_ParryWindoeTime++;
+		//パリィに移行してもよい
+		m_IsParryWindo = true;
 	}
 }
 //パリィ
@@ -330,10 +373,16 @@ void Player::Parry() {
 	m_IsStaminaRecover = false;
 
 	if (!m_IsAction[PARRY]) {
+		//ガードアクション終了
+		m_IsAction[GUARD] = false;
 		//パリィアクション中に変更
 		m_IsAction[PARRY] = true;
 		//当たり判定オフ
 		m_IsCollision = false;
+		//ガードアクション実行後のパリィに移行できる許容時間をリセット
+		m_ParryWindoeTime = 0;
+		//パリィに移行してもよい
+		m_IsParryWindo = true;
 	}
 
 	//アニメーションが終わったら
@@ -344,6 +393,8 @@ void Player::Parry() {
 		m_IsCollision = true;
 		//パリィアクション終了
 		m_IsAction[PARRY] = false;
+		//パリィアクション成功フラグをオフに
+		m_IsActionSuccess[PARRY] = false;
 	}
 }
 //スキル攻撃
@@ -687,39 +738,51 @@ void Player::StateManager() {
 	switch (m_State) {
 	case WAIT:				//待機
 		Wait();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "WAIT");
 		break;
 	case DAMAGE:			//ダメージ
 		Damage();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DAMAGE");
 		break;
 	case DEATH:				//死亡
 		Death();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DEATH");
 		break;
 	case WALK:				//歩き
 		Walk();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "WALK");
 		break;
 	case ROLLING:			//ローリング
 		Rolling();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "ROLLING");
 		break;
 	case JUMP:				//ジャンプ
 		Jump();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "JUMP");
 		break;
 	case GUARD:				//ガード
 		Guard();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
 		break;
 	case PARRY:				//パリィ
 		Parry();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "PARRY");
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "SKILL_ATTACK");
 		break;
 	case NORMAL_ATTACK1:	//通常攻撃１段目
 		NormalAttack1();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK1");
 		break;
 	case NORMAL_ATTACK2:	//通常攻撃２段目
 		NormalAttack2();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK2");
 		break;
 	case NORMAL_ATTACK3:	//通常攻撃３段目
 		NormalAttack3();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK3");
 		break;
 	}
 }
@@ -774,4 +837,42 @@ void Player::ResetIsAction() {
 		m_IsAction[State] = false;
 	}
 }
+//アクション成功フラグ管理
+void Player::ActionSuccessManager() {
+	for (int State = 0;State < STATE_NUM;State++) {
+		//アクション成功フラグがオンになっていなければ次の配列へ
+		if (!m_IsActionSuccess[State])continue;
+		//アクション成功フラグがオンになっているものはなにか
+		switch (State) {
+		case GUARD:				//ガード
+			//ガードアクション成功継続時間が一定の値以上になっていれば
+			if (m_ActionSuccessTime[GUARD] >= GUARD_SUCCESS_TIME) {
+				//ガードアクション成功継続時間をリセット
+				m_ActionSuccessTime[GUARD] = 0;
+				//ガードアクション成功フラグをオフに
+				m_IsActionSuccess[GUARD] = false;
+			}
+			else {
+				//ガードアクション成功継続時間を加算
+				m_ActionSuccessTime[GUARD]++;
+			}
+			break;
+		case PARRY:				//パリィ
+		
+			break;
+		case SKILL_ATTACK:		//スキル攻撃
+			
+			break;
+		case NORMAL_ATTACK1:	//通常攻撃１段目
+		
+			break;
+		case NORMAL_ATTACK2:	//通常攻撃２段目
+			
+			break;
+		case NORMAL_ATTACK3:	//通常攻撃３段目
+			
+			break;
+		}
 
+	}
+}

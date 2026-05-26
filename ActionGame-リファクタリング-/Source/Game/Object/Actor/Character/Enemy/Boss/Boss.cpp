@@ -71,6 +71,9 @@ namespace {
 
 	const float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
+	const float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
+	const float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
+
 	const char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	const char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
 }
@@ -132,8 +135,8 @@ void Boss::Load() {
 	//ファイルを開く　失敗したらこれ以降の処理を行わない
 	if (fopen_s(&AttackPatternsFile, ATTACK_CSV_FILE_PATH, "r") != 0)return;
 	//データ取得
-	for (int Column = 0; Column < ATTACK_INDEX; Column++) {
-		for (int Row = 0; Row < PATTERN_INDEX; Row++) {
+	for (int Column = 0; Column < PATTERN_INDEX; Column++) {
+		for (int Row = 0; Row < ATTACK_INDEX; Row++) {
 			//データ一つ分取得
 			fscanf_s(AttackPatternsFile, "%d", &m_AttackPatterns[Column][Row]);
 			//カンマor改行を飛ばす
@@ -159,9 +162,14 @@ void Boss::Step() {
 	else {
 		m_DamageTime--;
 	}
-
 	//状態遷移
 	StateManager();
+
+	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "攻撃力:%.0f", m_Power);
+	DrawFormatStringToHandle(50, 460, RED, DxLibFont::FONTHNDL_N20, "攻撃パターン配列番号:%d", m_PatternIndex);
+	DrawFormatStringToHandle(50, 480, RED, DxLibFont::FONTHNDL_N20, "攻撃種配列番号:%d", m_AttackIndex);
+	DrawFormatStringToHandle(50, 500, RED, DxLibFont::FONTHNDL_N20, "今の攻撃種:%d", m_State);
+	DrawFormatStringToHandle(50, 520, RED, DxLibFont::FONTHNDL_N20, "次の攻撃種:%d", m_NextAttack);
 }
 //当たり判定後の処理(当たっている場合)
 void Boss::HitCalc(ObjectBase* _Object) {
@@ -169,23 +177,29 @@ void Boss::HitCalc(ObjectBase* _Object) {
 	Player* PointerPlayer = nullptr;
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
-	//ダウン状態の時
-	if (m_State == DOWN) {
-		//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
-		m_HitPoints = m_HitPoints - (PointerPlayer->GetPower()* DOWN_DAMAGE_TAKEN_MULT);
+	if (PointerPlayer->GetState() == Player::TagState::PARRY) {
+		if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
+			//ダウン状態へ
+			m_State = DOWN;
+			//ダウン状態継続時間を設定
+			m_DownTime = m_Power * PARRY_DOWN_TIME_MULT;
+		}
 	}
 	else {
-		//HPを消費
-		m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+		//ダウン状態の時
+		if (m_State == DOWN) {
+			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
+		}
+		else {
+			//HPを消費
+			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+		}
+		////ダメージ処理の継続時間セット
+		m_DamageTime = 15;
+		//当たり判定オン
+		m_IsCollision = false;
 	}
-	//エフェクトリクエスト
-	VECTOR Pos = m_Pos;
-	m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::PIERRE02LOSSOFBLOOD, Pos, false);
-	MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-	////ダメージ処理の継続時間セット
-	m_DamageTime = 15;
-	//当たり判定オン
-	m_IsCollision = false;
 }
 //待機
 void Boss::Wait() {
@@ -223,6 +237,8 @@ void Boss::Down() {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsHitFlg();
+		//アクションフラグをリセット
+		ResetIsAction();
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
@@ -233,6 +249,7 @@ void Boss::Down() {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 	}
 	else {
+		//ダウン状態継続時間を減算
 		m_DownTime--;
 	}
 }
@@ -837,36 +854,34 @@ void Boss::ActionManager() {
 }
 //攻撃パターン管理
 void Boss::AttackPatternManager() {
-	//パターン内の攻撃順を1進める
+	//攻撃種配列を１つずらす
 	m_AttackIndex++;
-	//パターン内の攻撃順の最大格納量より多いなら
+	//攻撃種配列の最大格納量より多ければ
 	if (m_AttackIndex >= ATTACK_INDEX) {
-		//パターン内の攻撃順を0に
+		//先頭にリセット
 		m_AttackIndex = 0;
-		//攻撃パターンの種類の最大格納量より多いなら
+		//攻撃パターン配列を1ずらす
+		m_PatternIndex++;
+		//攻撃パターン配列の最大格納量より多いなら
 		if (m_PatternIndex >= PATTERN_INDEX) {
-			//攻撃パターンを0に
+			//先頭にリセット
 			m_PatternIndex = 0;
 		}
-		else {
-			//攻撃パターンを1進める
-			m_PatternIndex++;
-		}
 	}
-	//二つの配列番号に合致する位置の数値を格納
-	int Attack = (int)m_AttackPatterns[m_PatternIndex][m_AttackIndex];
-	//状態を変化
+	//二次元配列に合致する位置の数値を取得する
+	int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
+	//状態変化
 	m_State = (TagState)Attack;
 
 	//次の攻撃は何の予定か調べる
 	int NextAttackIndex = m_AttackIndex + 1;
-	//最大格納量を超過していたら無視
+	//最大格納量より多ければ-1を入れておく
 	if (NextAttackIndex >= ATTACK_INDEX) {
-		m_NextAttack = 0;
+		m_NextAttack = -1;
 	}
 	else {
-		//二つの配列番号に合致する位置の数値を格納
-		int NextAttack = (int)m_AttackPatterns[m_PatternIndex][NextAttackIndex];
+		//二次元配列に合致する位置の数値を取得する
+		int NextAttack= m_AttackPatterns[m_PatternIndex][NextAttackIndex];
 		//次の攻撃を保存
 		m_NextAttack = (TagState)NextAttack;
 	}
@@ -880,54 +895,71 @@ void Boss::StateManager() {
 	switch (m_State) {
 	case WAIT:						//待機
 		Wait();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "WAIT");
 		break;
 	case DOWN:						//ダウン
 		Down();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "DOWN");
 		break;
 	case DEATH:						//死亡
 		Death();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "DEATH");
 		break;
 	case WALK:						//歩き
 		Walk();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "WALK");
 		break;
 	case BREAK_NORMAL_ATTACK1:		//通常攻撃１段目　攻撃終了(鼻)
 		BreakNormalAttack1();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK1");
 		break;
 	case CHAIN_NORMAL_ATTACK1:		//通常攻撃１段目　攻撃継続(鼻)
 		ChainNormalAttack1();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHAIN_NORMAL_ATTACK1");
 		break;
 	case BREAK_NORMAL_ATTACK2:		//通常攻撃２段目　攻撃終了(牙振り上げ)
 		BreakNormalAttack2();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK2");
 		break;
 	case CHAIN_NORMAL_ATTACK2:		//通常攻撃２段目　攻撃継続(牙振り上げ)
 		ChainNormalAttack2();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHAIN_NORMAL_ATTACK2");
 		break;
 	case BREAK_NORMAL_ATTACK3:		//通常攻撃３段目　攻撃終了(踏みつけ)
 		BreakNormalAttack3();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK3");
 		break;
 	case REAR_ATTACK:				//後方攻撃
 		RearAttack();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "REAR_ATTACK");
 		break;
 	case JUMP:						//突進直前移動
 		Jump();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "JUMP");
 		break;
 	case CHARGE_ATTACK_START:		//突進チャージ
 		ChargeAttackStart();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE_ATTACK_START");
 		break;
 	case CHARGE:					//突進
 		Charge();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE");
 		break;
 	case CHARGE_ATTACK:				//突進振り上げ
 		ChargeAttack();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE_ATTACK");
 		break;
 	case SPECIAL_START:				//必殺開始
 		SpecialStart();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL_START");
 		break;
 	case SPECIAL_CHARGE:			//必殺チャージ
 		SpecialCharge();
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL_CHARGE");
 		break;
 	case SPECIAL:
 		Special();					//必殺
+		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL");
 		break;
 	}
 }
@@ -971,5 +1003,11 @@ void Boss::AllDeleteFrameDataIsHitFlg() {
 			//指定のボーン攻撃判定を削除する
 			DeleteFrameDataIsHitFlg(Index);
 		}
+	}
+}
+//アクションフラグをリセット
+void Boss::ResetIsAction() {
+	for (int State = 0;State < STATE_NUM;State++) {
+		m_IsAction[State] = false;
 	}
 }
