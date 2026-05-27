@@ -158,6 +158,7 @@
     <ClCompile Include="Source\Effekseer\effekseer.cpp" />
     <ClCompile Include="Source\Effekseer\MyEffeckseer.cpp" />
     <ClCompile Include="Source\Game\Base\Item\ItemBase.cpp" />
+    <ClCompile Include="Source\Game\Base\Object2D\Object2DBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp" />
     <ClCompile Include="Source\Game\Title\Title.cpp" />
+    <ClCompile Include="Source\Game\UI\HitPoints\HitPoints.cpp" />
     <ClCompile Include="Source\Lib\Collision\Collision.cpp" />
     <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp" />
     <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp" />
@@ -204,6 +206,7 @@
     <ClInclude Include="Source\Effekseer\effekseer.h" />
     <ClInclude Include="Source\Effekseer\MyEffeckseer.h" />
     <ClInclude Include="Source\Game\Base\Item\ItemBase.h" />
+    <ClInclude Include="Source\Game\Base\Object2D\Object2DBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h" />
@@ -237,6 +240,7 @@
     <ClInclude Include="Source\Game\Scene\Title\TitleScene.h" />
     <ClInclude Include="Source\Game\Sound\SoundManager.h" />
     <ClInclude Include="Source\Game\Title\Title.h" />
+    <ClInclude Include="Source\Game\UI\HitPoints\HitPoints.h" />
     <ClInclude Include="Source\Lib\Collision\Collision.h" />
     <ClInclude Include="Source\Lib\Debug\DebugFPS.h" />
     <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h" />

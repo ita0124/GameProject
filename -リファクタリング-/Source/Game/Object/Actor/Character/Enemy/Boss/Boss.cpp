@@ -184,7 +184,7 @@ void Boss::HitCalc(ObjectBase* _Object) {
 			//ダウン状態へ
 			m_State = DOWN;
 			//ダウン状態継続時間を設定
-			m_DownTime = m_Power * PARRY_DOWN_TIME_MULT;
+			m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
 		}
 	}
 	else {

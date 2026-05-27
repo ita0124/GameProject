@@ -288,6 +288,24 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Shield">
       <UniqueIdentifier>{bf567a38-07e2-4d33-a726-b1d9fddea1d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Base\Object2DBase">
+      <UniqueIdentifier>{f11cfb2e-8a96-4f5b-bd40-6603d32b6422}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\Object2DBase">
+      <UniqueIdentifier>{d7d54376-ed4e-4674-8fc7-44d6fb893e95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\UI">
+      <UniqueIdentifier>{d02b5435-cbb9-4aea-bad6-e10477f58779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI">
+      <UniqueIdentifier>{eb6f8482-c26c-470f-9527-274fa18a899c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\UI\HitPoints">
+      <UniqueIdentifier>{8ef7dce3-1b94-4b9c-9f9b-ba9c37ef99e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\UI\HitPoints">
+      <UniqueIdentifier>{1fc76bd8-66e8-457b-af52-42216a07e39b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -418,6 +436,12 @@
     </ClCompile>
     <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
       <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object2D\Object2DBase.cpp">
+      <Filter>ソース ファイル\Game\Base\Object2DBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\UI\HitPoints\HitPoints.cpp">
+      <Filter>ソース ファイル\Game\UI\HitPoints</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -555,6 +579,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Shield\Shield.h">
       <Filter>ヘッダー ファイル\Game\Object\Shield</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object2D\Object2DBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\Object2DBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\UI\HitPoints\HitPoints.h">
+      <Filter>ヘッダー ファイル\Game\UI\HitPoints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
