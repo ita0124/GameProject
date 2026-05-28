@@ -103,12 +103,15 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();
-		m_BossArea.Draw();
-		m_Player.Draw();
-		m_Sword.Draw();
-		m_Shield.Draw();
-		m_Boss.Draw();
+		m_Sky.Draw();				//天球クラス
+		m_BossArea.Draw();			//ボス戦の足場クラス
+		m_Player.Draw();			//プレイヤークラス
+		m_Sword.Draw();				//剣クラス
+		m_Shield.Draw();			//盾クラス
+		m_Boss.Draw();				//ボスクラス
+		m_HitPoints.Draw();			//体力UIクラス
+		m_SkillPoints.Draw();		//スキルポイントUIクラス
+		m_Stamina.Draw();			//スタミナUIクラス
 	}
 }
 //初期化処理管理関数
@@ -118,7 +121,10 @@ void BossScene::Init() {
 	m_Player.Init();				//プレイヤークラス
 	m_Sword.Init(&m_Player);		//剣クラス
 	m_Shield.Init(&m_Player);		//盾クラス
-	m_Boss.Draw();					//ボスクラス
+	m_HitPoints.Init();				//体力UIクラス
+	m_SkillPoints.Init();			//スキルポイントUIクラス
+	m_Stamina.Init();				//スタミナUIクラス
+	m_Boss.Init();					//ボスクラス
 	m_CameraManager.Init();			//カメラマネージャークラス
 
 	m_Load.LoadTime = 0;				//非同期処理継続時間
@@ -135,7 +141,10 @@ void BossScene::Exit() {
 	m_Player.Exit();				//プレイヤークラス
 	m_Sword.Exit();					//剣クラス
 	m_Shield.Exit();				//盾クラス
-	m_Boss.Draw();					//ボスクラス
+	m_HitPoints.Exit();				//体力UIクラス
+	m_SkillPoints.Exit();			//スキルポイントUIクラス
+	m_Stamina.Exit();				//スタミナUIクラス
+	m_Boss.Exit();					//ボスクラス
 }
 //データ読み込み処理管理関数
 void BossScene::Load() {
@@ -147,6 +156,9 @@ void BossScene::Load() {
 	m_Player.Load();				//プレイヤークラス
 	m_Sword.Load();					//剣クラス
 	m_Shield.Load();				//盾クラス
+	m_HitPoints.Load();				//体力UIクラス
+	m_SkillPoints.Load();			//スキルポイントUIクラス
+	m_Stamina.Load();				//スタミナUIクラス
 	m_Boss.Load();					//ボスクラス
 	
 
@@ -192,6 +204,14 @@ int BossScene::Step() {
 	HitCheck();
 
 	CameraStep();
+
+	int HitPoints = m_Player.GetHitPoints();
+	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
+	int SkillPoints = m_Player.GetSkillPoints();
+	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
+	int Stamina = m_Player.GetStamina();
+	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
+
 	Update();
 
 	if (!m_Player.GetIsActive()) {

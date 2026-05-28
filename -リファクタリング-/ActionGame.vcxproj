@@ -191,6 +191,8 @@
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp" />
     <ClCompile Include="Source\Game\Title\Title.cpp" />
     <ClCompile Include="Source\Game\UI\HitPoints\HitPoints.cpp" />
+    <ClCompile Include="Source\Game\UI\SkillPoints\SkillPoints.cpp" />
+    <ClCompile Include="Source\Game\UI\Stamina\Stamina.cpp" />
     <ClCompile Include="Source\Lib\Collision\Collision.cpp" />
     <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp" />
     <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp" />
@@ -241,6 +243,8 @@
     <ClInclude Include="Source\Game\Sound\SoundManager.h" />
     <ClInclude Include="Source\Game\Title\Title.h" />
     <ClInclude Include="Source\Game\UI\HitPoints\HitPoints.h" />
+    <ClInclude Include="Source\Game\UI\SkillPoints\SkillPoints.h" />
+    <ClInclude Include="Source\Game\UI\Stamina\Stamina.h" />
     <ClInclude Include="Source\Lib\Collision\Collision.h" />
     <ClInclude Include="Source\Lib\Debug\DebugFPS.h" />
     <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h" />

@@ -9,10 +9,10 @@ namespace {
 
 	const float		HIT_POINTS = 100.0f;													//体力
 	const float		STAMINA = 75.0f;														//スタミナ
-	const int		SKILL_POINTS = 5;														//スキルポイント
+	const int		SKILL_POINTS = 50;														//スキルポイント
 	const float		MAX_HITPOINTS = 100.0f;													//最大体力
 	const float		MAX_STAMINA = 100.0f;													//最大スタミナ
-	const int		MAX_SKILL_POINTS = 10;													//最大スキルポイント
+	const int		MAX_SKILL_POINTS = 100;													//最大スキルポイント
 
 	const float		ADD_STAMINA = 0.01f;													//プレイヤースタミナ回復量(１フレーム毎)
 
@@ -152,7 +152,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 			//パリィ状態に変更
 			m_State = PARRY;
 			//スタミナを回復
-			m_Stamina += PointerBoss->GetPower()/2;
+			m_Stamina += PointerBoss->GetPower() / 2;
 			//パリィアクション成功
 			m_IsActionSuccess[PARRY] = true;
 		}
@@ -410,7 +410,7 @@ void Player::SkillAttack() {
 		//攻撃力設定
 		m_Power = SKILL_ATTACKPOWER;
 		//スキルゲージ減少
-		m_SkillPoints += -1;
+		m_SkillPoints += -10;
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > SKILL_ATTACK_COLLISION_START && m_AnimeData.Frame < SKILL_ATTACK_COLLISION_END) {
@@ -807,7 +807,7 @@ void Player::ActionManager() {
 		}
 	}
 	//スキル攻撃
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q)) {
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q) && m_SkillPoints <= 0) {
 		m_State = SKILL_ATTACK;
 	}
 	//通常攻撃１段目
@@ -857,22 +857,6 @@ void Player::ActionSuccessManager() {
 				m_ActionSuccessTime[GUARD]++;
 			}
 			break;
-		case PARRY:				//パリィ
-		
-			break;
-		case SKILL_ATTACK:		//スキル攻撃
-			
-			break;
-		case NORMAL_ATTACK1:	//通常攻撃１段目
-		
-			break;
-		case NORMAL_ATTACK2:	//通常攻撃２段目
-			
-			break;
-		case NORMAL_ATTACK3:	//通常攻撃３段目
-			
-			break;
 		}
-
 	}
 }
