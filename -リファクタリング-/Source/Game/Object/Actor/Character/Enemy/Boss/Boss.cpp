@@ -10,7 +10,7 @@ namespace {
 	const float		HIT_POINTS = 1000.0f;															//体力
 	const float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
-	const float		ACTION_WAIT_DISTANCE = 1000.0f;													//WAITに移行するプレイヤーとの距離
+	const float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
 	const float		ACTION_ATTACK_DISTANCE = 75.0f;													//攻撃に移行するプレイヤーとの距離
 
 	const float		WALK_MULT = 5.0f;																//歩き時の移動乗算値
@@ -108,12 +108,13 @@ void Boss::Init() {
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 	m_BeforJumpPos = VZERO;								//ジャンプ直前の座標を保存
 	m_PredictedLandingPos = VZERO;						//着地予定座標
-	m_SpecialChargeTime = 0;								//必殺チャージの継続時間
+	m_SpecialChargeTime = 0;							//必殺チャージの継続時間
+	m_DirectNum = 0;									//どの方向判定ボーンと当たったかを保存する
 
-	for (int Index = 0; Index < FARAM_NUM; Index++) {
+	for (int Index = 0; Index <= TOSEEND_RIGHT; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
 		m_FrameData[Index].Rad = FZERO;					//ボーン半径
-		m_FrameData[Index].IsHitFlg = false;			//ボーン当たり判定
+		m_FrameData[Index].IsCollision = false;			//ボーン当たり判定
 		m_FrameData[Index].IsAttackFlg = false;			//ボーン攻撃判定
 	}
 
@@ -162,6 +163,10 @@ void Boss::Step() {
 	else {
 		m_DamageTime--;
 	}
+	//当たり判定設定
+	for (int Index = FRONT; Index <= FARAM_NUM; Index++) {
+		SetFrameDataIsCollision(Index, 50.0f);
+	}
 	//状態遷移
 	StateManager();
 
@@ -203,6 +208,10 @@ void Boss::HitCalc(ObjectBase* _Object) {
 		m_IsCollision = false;
 	}
 }
+//方向判定ボーンと当たった場合
+void Boss::HitFrame(int _FrameNum) {
+	m_DirectNum = _FrameNum;
+}
 //待機
 void Boss::Wait() {
 	//待機アニメーションループ再生
@@ -212,7 +221,7 @@ void Boss::Wait() {
 		//ダウンアクション中に変更
 		m_IsAction[WAIT] = true;
 		//全てのボーン攻撃判定を削除する
-		AllDeleteFrameDataIsHitFlg();
+		AllDeleteFrameDataIsAttackFlg();
 	}
 	//設定した時間分待機を続けたら
 	if (m_NextActionTime >= 0) {
@@ -238,7 +247,7 @@ void Boss::Down() {
 		//輪郭線のマテリアルをマテリアル青に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
-		AllDeleteFrameDataIsHitFlg();
+		AllDeleteFrameDataIsAttackFlg();
 		//アクションフラグをリセット
 		ResetIsAction();
 	}
@@ -266,7 +275,7 @@ void Boss::Death() {
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
-		AllDeleteFrameDataIsHitFlg();
+		AllDeleteFrameDataIsAttackFlg();
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -362,7 +371,7 @@ void Boss::NoormalAttack1(TagState _State) {
 	}
 	else {
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsHitFlg(NOSE004END);
+		DeleteFrameDataIsAttackFlg(NOSE004END);
 	}
 	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK1_EFFECT_REQUEST) {
 		//エフェクト発生判定オン
@@ -434,8 +443,8 @@ void Boss::NoormalAttack2(TagState _State) {
 	}
 	else {
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsHitFlg(FANG003END_LEFT);
-		DeleteFrameDataIsHitFlg(FANG003END_RIGHT);
+		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
+		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
 	}
 	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK2_EFFECT_REQUEST) {
 		//エフェクト発生判定オン
@@ -484,8 +493,8 @@ void Boss::BreakNormalAttack3() {
 	}
 	else {
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsHitFlg(PALMEND_LEFT);
-		DeleteFrameDataIsHitFlg(PALMEND_RIGHT);
+		DeleteFrameDataIsAttackFlg(PALMEND_LEFT);
+		DeleteFrameDataIsAttackFlg(PALMEND_RIGHT);
 	}
 	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK3_EFFECT_REQUEST) {
 		//エフェクト発生判定オン
@@ -541,7 +550,7 @@ void Boss::RearAttack() {
 		SetFrameDataIsAttackFlg(TOSEEND_LEFT, REAR_ATTACK_COLLISION_RAD);
 		SetFrameDataIsAttackFlg(TOSEEND_RIGHT, REAR_ATTACK_COLLISION_RAD);
 		//正規化された方向ベクトルを取得
-		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
+		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, GetFrameDataPos(FRONT), TRUE);
 		//1フレームで移動する距離を生成
 		DirToPlayer = VScale(DirToPlayer, REAR_ATTACK_MULT);
 		//座標に加算
@@ -553,8 +562,8 @@ void Boss::RearAttack() {
 	}
 	else {
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsHitFlg(TOSEEND_LEFT);
-		DeleteFrameDataIsHitFlg(TOSEEND_RIGHT);
+		DeleteFrameDataIsAttackFlg(TOSEEND_LEFT);
+		DeleteFrameDataIsAttackFlg(TOSEEND_RIGHT);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -740,8 +749,8 @@ void Boss::ChargeAttack() {
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsHitFlg(FANG003END_LEFT);
-		DeleteFrameDataIsHitFlg(FANG003END_RIGHT);
+		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
+		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
 	}
 }
 //必殺開始
@@ -856,36 +865,50 @@ void Boss::ActionManager() {
 }
 //攻撃パターン管理
 void Boss::AttackPatternManager() {
-	//攻撃種配列を１つずらす
-	m_AttackIndex++;
-	//攻撃種配列の最大格納量より多ければ
-	if (m_AttackIndex >= ATTACK_INDEX) {
-		//先頭にリセット
-		m_AttackIndex = 0;
-		//攻撃パターン配列を1ずらす
-		m_PatternIndex++;
-		//攻撃パターン配列の最大格納量より多いなら
-		if (m_PatternIndex >= PATTERN_INDEX) {
-			//先頭にリセット
-			m_PatternIndex = 0;
-		}
-	}
-	//二次元配列に合致する位置の数値を取得する
-	int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
-	//状態変化
-	m_State = (TagState)Attack;
+	switch (m_DirectNum) {
+	case REAR:
+	case REAR_END:
+		m_State = REAR_ATTACK;
+		break;
+	case RIGHT:
+	case RIGHT_END:
+	case LEFT:
+	case LEFT_END:
 
-	//次の攻撃は何の予定か調べる
-	int NextAttackIndex = m_AttackIndex + 1;
-	//最大格納量より多ければ-1を入れておく
-	if (NextAttackIndex >= ATTACK_INDEX) {
-		m_NextAttack = -1;
-	}
-	else {
+		break;
+	default:
+		//攻撃種配列を１つずらす
+		m_AttackIndex++;
+		//攻撃種配列の最大格納量より多ければ
+		if (m_AttackIndex >= ATTACK_INDEX) {
+			//先頭にリセット
+			m_AttackIndex = 0;
+			//攻撃パターン配列を1ずらす
+			m_PatternIndex++;
+			//攻撃パターン配列の最大格納量より多いなら
+			if (m_PatternIndex >= PATTERN_INDEX) {
+				//先頭にリセット
+				m_PatternIndex = 0;
+			}
+		}
 		//二次元配列に合致する位置の数値を取得する
-		int NextAttack= m_AttackPatterns[m_PatternIndex][NextAttackIndex];
-		//次の攻撃を保存
-		m_NextAttack = (TagState)NextAttack;
+		int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
+		//状態変化
+		m_State = (TagState)Attack;
+
+		//次の攻撃は何の予定か調べる
+		int NextAttackIndex = m_AttackIndex + 1;
+		//最大格納量より多ければ-1を入れておく
+		if (NextAttackIndex >= ATTACK_INDEX) {
+			m_NextAttack = -1;
+		}
+		else {
+			//二次元配列に合致する位置の数値を取得する
+			int NextAttack = m_AttackPatterns[m_PatternIndex][NextAttackIndex];
+			//次の攻撃を保存
+			m_NextAttack = (TagState)NextAttack;
+		}
+		break;
 	}
 }
 //ジャンプ時の着地地点管理
@@ -1000,23 +1023,23 @@ void Boss::StateManager() {
 	}
 }
 //当たり判定設定
-void Boss::SetFrameData(int _FrameNamber, float _Rad) {
+void Boss::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {
 	m_FrameData[_FrameNamber].Pos = GetFramePos(m_Hndl, _FrameNamber);
 	m_FrameData[_FrameNamber].Rad = _Rad;
-	m_FrameData[_FrameNamber].IsHitFlg = true;
+	m_FrameData[_FrameNamber].IsCollision = true;
 }
 //指定のボーン当たり判定を削除する
-void Boss::DeleteFrameDataIsHitFlgFalse(int _FrameNamber) {
+void Boss::DeleteFrameDataIsCollision(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
 	m_FrameData[_FrameNamber].Rad = FZERO;
-	m_FrameData[_FrameNamber].IsHitFlg = false;
+	m_FrameData[_FrameNamber].IsCollision = false;
 }
 //全てのボーン当たり判定を削除する
-void Boss::AllDeleteFrameDataIsHitFlgFalse() {
+void Boss::AllDeleteFrameDataIsCollision() {
 	for (int Index = 0; Index < FARAM_NUM; Index++) {
-		if (m_FrameData[Index].IsHitFlg) {
+		if (m_FrameData[Index].IsCollision) {
 			//指定のボーン攻撃判定を削除する
-			DeleteFrameDataIsHitFlgFalse(Index);
+			DeleteFrameDataIsAttackFlg(Index);
 		}
 	}
 }
@@ -1027,17 +1050,17 @@ void Boss::SetFrameDataIsAttackFlg(int _FrameNamber, float _Rad) {
 	m_FrameData[_FrameNamber].IsAttackFlg = true;
 }
 //指定のボーン攻撃判定を削除する
-void Boss::DeleteFrameDataIsHitFlg(int _FrameNamber) {
+void Boss::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
 	m_FrameData[_FrameNamber].Rad = FZERO;
 	m_FrameData[_FrameNamber].IsAttackFlg = false;
 }
 //全てのボーン攻撃判定を削除する
-void Boss::AllDeleteFrameDataIsHitFlg() {
+void Boss::AllDeleteFrameDataIsAttackFlg() {
 	for (int Index = 0; Index < FARAM_NUM; Index++) {
 		if (m_FrameData[Index].IsAttackFlg) {
 			//指定のボーン攻撃判定を削除する
-			DeleteFrameDataIsHitFlg(Index);
+			DeleteFrameDataIsAttackFlg(Index);
 		}
 	}
 }

@@ -162,9 +162,6 @@
     <Filter Include="ソース ファイル\Game\Scene\ResultScene">
       <UniqueIdentifier>{a0d57502-c798-418f-bf7d-eb1bf50db283}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Scene\SelectScene">
-      <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Scene\TitleScene">
       <UniqueIdentifier>{330096bb-2b26-4006-8cc8-6e7a6716cfd4}</UniqueIdentifier>
     </Filter>
@@ -318,6 +315,9 @@
     <Filter Include="ソース ファイル\Game\UI\Stamina">
       <UniqueIdentifier>{12d36e10-4506-4a38-8c02-c1c21b320b4d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\ResultScene\SelectScene">
+      <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -405,7 +405,7 @@
       <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Scene\Select\SelectScene.cpp">
-      <Filter>ソース ファイル\Game\Scene\SelectScene</Filter>
+      <Filter>ソース ファイル\Game\Scene\ResultScene\SelectScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp">
       <Filter>ソース ファイル\Game\Scene\TitleScene</Filter>

@@ -3,12 +3,20 @@
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
 #include "Game/Object/Sword/Sword.h"
 
+//オブジェクト同士の様々な当たり判定を行う
+void HitCheck::ObjectToObject(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
+	//オブジェクト同士の押し合い当たり判定
+	ObjectToObjectPush(_ObjectA, _ObjectB);
+	//オブジェクトの攻撃当たり判定
+	ObjectToObjectAttack(_ObjectA, _ObjectB);
+	//オブジェクトの位置関係判定
+	ObjectToObjectRelativePos(_ObjectA, _ObjectB);
+}
+
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
 	if (!_ObjectA.GetIsActive() || !_ObjectB.GetIsActive())return;
-	//どちらかの当たり判定実行フラグがオフになっていれば以降の処理をしない
-	if (!_ObjectA.GetIsCollision() || !_ObjectB.GetIsCollision())return;
 
 	//Aの座標取得
 	VECTOR	ObjectAPos = _ObjectA.GetCenter(ObjectBase::TagShape::BALL);
@@ -82,7 +90,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		//ボスクラスをダウンキャスト
 		PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
 		//ボスのフレーム分
-		for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FRONT;FrameNum++) {
+		for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FARAM_NUM;FrameNum++) {
 			//フレームの攻撃判定がオフになっていたら次のフレームを見る
 			if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
 			//プレイヤーの座標を取得
@@ -127,7 +135,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//ボスクラスをダウンキャスト
 			PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
 			//ボスのフレーム分
-			for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FRONT;FrameNum++) {
+			for (int FrameNum = 0;FrameNum <= Boss::FrameNamber::TOSEEND_RIGHT;FrameNum++) {
 				//ガード成功フラグがオンになっていたら以降の処理は行わない
 				if (PointerPlayer->GetIsActionSuccess(Player::TagState::GUARD))return;
 				//パリィ成功フラグがオンになっていたら以降の処理は行わない
@@ -205,6 +213,44 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		}
 	}
 	/*===========================================================================*/
+}
+//オブジェクトの位置関係判定
+void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _RelativePosObject) {
+	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsActive() || !_RelativePosObject.GetIsActive())return;
+
+	//位置関係を判定するオブジェクトがボスなら
+	if (_RelativePosObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
+		//ボスクラスデータを保存する変数
+		Boss* PointerBoss = nullptr;
+		//ボスクラスをダウンキャスト
+		PointerBoss = dynamic_cast<Boss*>(&_RelativePosObject);
+		for (int FrameNum = Boss::FrameNamber::FRONT;FrameNum < Boss::FrameNamber::FARAM_NUM;FrameNum++) {
+			//プレイヤーの座標を取得
+			VECTOR	PlayerPos1 = _Object.GetCenter();
+			//プレイヤーの頭の座標を取得
+			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNamber::HEAD);
+			//プレイヤーの当たり判定半径を取得
+			float	PlayerRad = _Object.GetRad();
+			//ボスの座標を取得
+			VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
+			//ボスの当たり判定半径を取得
+			float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
+#ifdef _DEBUG
+			DrawSphere3D(PlayerPos1, PlayerRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(PlayerPos2, PlayerRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(BossPos, BossRad, DIV, RED, RED, FALSE);
+#endif // DEBUG
+			//当たり判定
+			bool IsHit1 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
+			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
+			//当たっていれば
+			if (IsHit1 || IsHit2) {
+				PointerBoss->HitFrame(FrameNum);
+			}
+		}
+	}
+
 }
 //Collとオブジェクトの当たり判定
 void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {

@@ -407,6 +407,8 @@ void Player::SkillAttack() {
 		m_IsAction[SKILL_ATTACK] = true;
 		//当たり判定オフ
 		m_IsCollision = false;
+		//押し出し判定オフ
+		m_IsPush = true;
 		//攻撃力設定
 		m_Power = SKILL_ATTACKPOWER;
 		//スキルゲージ減少
@@ -456,6 +458,8 @@ void Player::SkillAttack() {
 		m_IsAction[SKILL_ATTACK] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
+		//押し出し判定オン
+		m_IsPush = true;
 	}
 }
 //通常攻撃１段目
@@ -799,12 +803,9 @@ void Player::ActionManager() {
 	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_A) || InputKey::IsPushKeyTrg(KEY_INPUT_Z))) {
 		m_State = JUMP;
 	}
-	//スタミナが一定値を上回っていれば
-	if (m_Stamina > GUARD_MIN_STAMINA) {
-		//ガード
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyTrg(KEY_INPUT_F)) {
-			m_State = GUARD;
-		}
+	//ガード
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyTrg(KEY_INPUT_F)) {
+		m_State = GUARD;
 	}
 	//スキル攻撃
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q) && m_SkillPoints <= 0) {
@@ -844,7 +845,8 @@ void Player::ActionSuccessManager() {
 		if (!m_IsActionSuccess[State])continue;
 		//アクション成功フラグがオンになっているものはなにか
 		switch (State) {
-		case GUARD:				//ガード
+			//ガード
+		case GUARD:
 			//ガードアクション成功継続時間が一定の値以上になっていれば
 			if (m_ActionSuccessTime[GUARD] >= GUARD_SUCCESS_TIME) {
 				//ガードアクション成功継続時間をリセット

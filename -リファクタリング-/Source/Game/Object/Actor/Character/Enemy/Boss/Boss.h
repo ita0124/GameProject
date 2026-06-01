@@ -98,6 +98,7 @@ public:
 		LOWERLRG_RIGHT,			//右脛骨
 		TOES_RIGHT,				//右足骨
 		TOSEEND_RIGHT,			//右指骨
+		//方向判定ボーン
 		FRONT,					//前方
 		FRONT_END,				//前方-終-
 		REAR,					//後方
@@ -133,7 +134,9 @@ private:
 	VECTOR		m_BeforJumpPos;										//ジャンプ直前の座標を保存
 	VECTOR		m_PredictedLandingPos;								//着地予定座標
 
-	int			m_SpecialChargeTime;									//必殺チャージの継続時間
+	int			m_SpecialChargeTime;								//必殺チャージの継続時間
+
+	int			m_DirectNum;										//どの方向判定ボーンと当たったかを保存する
 
 	int			m_AttackPatterns[PATTERN_INDEX][ATTACK_INDEX];		//攻撃パターンの配列
 	int			m_PatternIndex;										//攻撃パターンの種類
@@ -187,17 +190,17 @@ private:
 	//状態遷移
 	void StateManager();
 	//指定のボーン当たり判定を設定設定
-	void SetFrameData(int _FrameNamber, float _Rad);
+	void SetFrameDataIsCollision(int _FrameNamber, float _Rad);
 	//指定のボーン当たり判定を削除する
-	void DeleteFrameDataIsHitFlgFalse(int _FrameNamber);
+	void DeleteFrameDataIsCollision(int _FrameNamber);
 	//全てのボーン当たり判定を削除する
-	void AllDeleteFrameDataIsHitFlgFalse();
+	void AllDeleteFrameDataIsCollision();
 	//指定のボーン攻撃判定を設定
 	void SetFrameDataIsAttackFlg(int _FrameNamber, float _Rad);
 	//指定のボーン攻撃判定を削除する
-	void DeleteFrameDataIsHitFlg(int _FrameNamber);
+	void DeleteFrameDataIsAttackFlg(int _FrameNamber);
 	//全てのボーン攻撃判定を削除する
-	void AllDeleteFrameDataIsHitFlg();
+	void AllDeleteFrameDataIsAttackFlg();
 	//アクションフラグをリセット
 	void ResetIsAction();
 public:
@@ -213,6 +216,8 @@ public:
 	void Step();
 	//当たり判定後の処理(当たっている場合)
 	void HitCalc(ObjectBase* _Object);
+	//方向判定ボーンと当たった場合
+	void HitFrame(int _FrameNum);
 
 	//Get
 	//プレイヤータグ
@@ -222,7 +227,7 @@ public:
 	//指定のボーン半径を取得する
 	float	GetFrameDataRad(int _Num) { return m_FrameData[_Num].Rad; }
 	//指定のボーン当たり判定を取得する
-	bool	GetFrameDataIsHitFlg(int _Num) { return m_FrameData[_Num].IsHitFlg; }
+	bool	GetFrameDataIsHitFlg(int _Num) { return m_FrameData[_Num].IsCollision; }
 	//指定のボーン攻撃判定を取得する
 	bool	GetFrameDataIsAttackFlg(int _Num) { return m_FrameData[_Num].IsAttackFlg; }
 };

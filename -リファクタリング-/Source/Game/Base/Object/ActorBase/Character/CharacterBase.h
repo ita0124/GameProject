@@ -8,7 +8,7 @@ protected:
 	typedef struct {
 		VECTOR	Pos;			//ボーン座標
 		float	Rad;			//ボーン半径
-		bool	IsHitFlg;		//ボーン当たり判定
+		bool	IsCollision;	//ボーン当たり判定
 		bool	IsAttackFlg;	//ボーン攻撃判定
 	}FRAME_DATA;				//子クラスで各々が設定
 

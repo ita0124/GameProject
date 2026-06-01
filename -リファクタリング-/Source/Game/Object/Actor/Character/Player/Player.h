@@ -160,5 +160,5 @@ public:
 	//カメラ回転率
 	void	SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
-	void	SetAttackTargetPos(ActorBase& _ActorBase) { m_AttackTargetPos = _ActorBase.GetPos(); }
+	void	SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
 };

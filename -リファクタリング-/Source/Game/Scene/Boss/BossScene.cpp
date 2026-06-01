@@ -205,11 +205,11 @@ int BossScene::Step() {
 
 	CameraStep();
 
-	int HitPoints = m_Player.GetHitPoints();
+	int HitPoints = (int)m_Player.GetHitPoints();
 	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
-	int SkillPoints = m_Player.GetSkillPoints();
+	int SkillPoints = (int)m_Player.GetSkillPoints();
 	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
-	int Stamina = m_Player.GetStamina();
+	int Stamina = (int)m_Player.GetStamina();
 	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
 
 	Update();
@@ -241,6 +241,7 @@ void BossScene::PlayerStep() {
 	m_Sky.Step();										//天球クラス
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
+	m_Player.SetAttackTargetPos(m_Boss.GetPos());
 	m_Player.Step();
 	m_Sword.Step();
 	m_Shield.Step();
@@ -256,9 +257,8 @@ void BossScene::CameraStep() {
 }
 //当たり判定関係
 void BossScene::HitCheck() {
-	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
+	HitCheck::ObjectToObject(m_Player, m_Boss);
 	HitCheck::CollToObject(m_BossArea, m_Player);
-	HitCheck::ObjectToObjectAttack(m_Boss,m_Sword);
-	HitCheck::ObjectToObjectAttack(m_Shield, m_Boss);
-	HitCheck::ObjectToObjectAttack(m_Player, m_Boss);
+	HitCheck::ObjectToObject(m_Boss,m_Sword);
+	HitCheck::ObjectToObject(m_Shield, m_Boss);
 }
