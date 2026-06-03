@@ -165,7 +165,8 @@
     <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp" />
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp" />
-    <ClCompile Include="Source\Game\Camera\Play\PlayCamera.cpp" />
+    <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp" />
+    <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp" />
     <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp" />
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp" />
@@ -215,7 +216,8 @@
     <ClInclude Include="Source\Game\Base\Object\ObjectBase.h" />
     <ClInclude Include="Source\Game\Base\Object\PlatformBase\PlatformBase.h" />
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h" />
-    <ClInclude Include="Source\Game\Camera\Play\PlayCamera.h" />
+    <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h" />
+    <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h" />
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
     <ClInclude Include="Source\Game\Item\HP\HPItem.h" />
     <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h" />

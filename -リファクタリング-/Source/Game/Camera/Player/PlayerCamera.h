@@ -2,9 +2,10 @@
 #include "Comon.h"
 #include "Lib/Input/InputKey.h"
 #include "Lib/Input/InputPad.h"
+#include "Game/Object/Actor/Character/Player/Player.h"
 
 //ゲームプレイ中に使うカメラクラス
-class PlayCamera {
+class PlayerCamera {
 private:
 	VECTOR m_CameraPos;		//カメラ位置
 	VECTOR m_TargetPos;		//注視点
@@ -15,24 +16,17 @@ private:
 	VECTOR m_CameraPoint;
 	VECTOR m_TargetPoint;
 
-	bool m_IsFree1;
-	bool m_IsFree2;
-
-	bool m_IsTarget1;
-	bool m_IsTarget2;
-
+	bool	m_IsCameraPosSetEnd;
+	bool	m_IsTargetPosSetEnd;
 public:
 	//コンストラクタ
-	PlayCamera();
+	PlayerCamera();
 
 	//初期化
 	void Init();
 
 	//毎フレーム呼び出す処理(ノーマル)
-	void Step(VECTOR _TargetPos);
-
-	//毎フレーム呼び出す処理(ロックオン)
-	void Step(VECTOR _TargetPos,VECTOR _PlayerPos,bool _IsSPAtk);
+	void Step(Player& _Player);
 
 	//更新処理
 	void Update();
@@ -45,8 +39,5 @@ public:
 
 	VECTOR GetCameraPos() { return m_CameraPos; }
 
-	VECTOR GetTarget() { return m_TargetPos; }
-
-	bool GetIsTarget1() { return m_IsTarget1; }
-	bool GetIsTarget2() { return m_IsTarget2; }
+	VECTOR GetTargetPos() { return m_TargetPos; }
 };

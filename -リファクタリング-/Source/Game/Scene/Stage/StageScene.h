@@ -43,4 +43,6 @@ private:
 	int Step() override;
 	//モデル更新処理
 	void Update();
+	//カメラ関連Step
+	void CameraStep();
 };

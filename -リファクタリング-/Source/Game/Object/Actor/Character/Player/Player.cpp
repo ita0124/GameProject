@@ -97,6 +97,13 @@ void Player::Init() {
 	m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
 	m_IsParryWindo = true;						//パリィ許容フラグ
 	m_JumpCalc = 0.0f;							//ジャンプ力計算
+
+	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
+	m_KnockBackDistance = FZERO;				//現在のノックバック量
+	m_KnockBackMaxDistance = FZERO;				//最大ノックバック量
+	m_KnockBackSpeed = FZERO;					//１フレーム当たりの移動量を設定
+	m_KnockBackDuration = 0;					//ノックバック継続時間	
+	m_IsKnockedBack = false;					//ノックバックフラグ
 }
 //データ読み込み処理
 void Player::Load() {
@@ -861,4 +868,18 @@ void Player::ActionSuccessManager() {
 			break;
 		}
 	}
+}
+//ノックバック
+void Player::KnockBackManager() {
+	if (!m_IsKnockedBack) {
+		//ノックバックフラグをオンに
+		m_IsKnockedBack = true;
+		//最大ノックバック量を保存
+		m_KnockBackMaxDistance = m_KnockBackDistance;
+		//１フレーム当たりの移動量を設定
+		m_KnockBackSpeed = m_KnockBackMaxDistance * 0.1f;
+	}
+	//ノックバック継続時間を加算
+	m_KnockBackDuration++;
+
 }

@@ -88,6 +88,13 @@ private:
 
 	float		m_JumpCalc;									//ジャンプ力計算
 
+	VECTOR		m_KnockBackStartPos;						//ノックバック開始時の敵座標
+	float		m_KnockBackDistance;						//現在のノックバック量
+	float		m_KnockBackMaxDistance;						//最大ノックバック量
+	float		m_KnockBackSpeed;							//１フレーム当たりの移動量
+	int			m_KnockBackDuration;						//ノックバック継続時間	
+	bool		m_IsKnockedBack;							//ノックバック中フラグ
+
 	//待機
 	void Wait();
 	//ダメージ食らい
@@ -128,6 +135,8 @@ private:
 	void ResetIsAction();
 	//アクション成功フラグ管理
 	void ActionSuccessManager();
+	//ノックバック
+	void KnockBackManager();
 public:
 	//コンストラクタ
 	Player();
@@ -155,6 +164,8 @@ public:
 	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
 	//パリィ許容フラグ
 	bool		GetIsParryWindo() { return m_IsParryWindo; }
+	//攻撃サーチを行う物体の座標
+	VECTOR		GetAttackTargetPos() { return m_AttackTargetPos; }
 
 	//Set
 	//カメラ回転率

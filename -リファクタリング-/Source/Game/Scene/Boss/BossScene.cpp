@@ -253,7 +253,42 @@ void BossScene::EnemyStep() {
 }
 //ÉJÉÅÉâä÷òAStep
 void BossScene::CameraStep() {
-	m_CameraManager.Step(m_Player.GetPos(), VZERO, false);
+	m_CameraManager.Step(m_Player);
+
+	if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
+		/*m_Target.Update(Vec);*/
+	}
+
+	VECTOR	CameraPos = m_CameraManager.GetCameraPos();
+	CameraPos.y = 0.0f;
+	VECTOR  CameraTargetPos= m_CameraManager.GetTargetPos();
+	CameraTargetPos.y = 0.0f;
+	VECTOR	TargetPos = m_Player.GetAttackTargetPos();
+	TargetPos.y = 0.0f;
+
+	VECTOR	SubCalc1 = VSub(CameraPos, CameraTargetPos);
+	VECTOR	SubCalc2 = VSub(CameraPos, TargetPos);
+
+	SubCalc1 = VNorm(SubCalc1);
+	SubCalc2 = VNorm(SubCalc2);
+	float Dot = VDot(SubCalc1, SubCalc2);
+
+	if (Dot < 1.0f) {
+		Dot = acosf(Dot);
+
+		Dot = Dot * 180.0f / DX_PI_F;
+	}
+
+	if (Dot < 90.0f) {
+		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_THUMB) || InputPad::IsPushPadTrg(XINPUT_BUTTON_LEFT_THUMB) || InputKey::IsPushKeyTrg(KEY_INPUT_C)) {
+			if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
+				m_CameraManager.ChangeCamera(CameraManager::TagCamera::PLAYER);
+			}
+			else if (m_CameraManager.GetID() == CameraManager::TagCamera::PLAYER) {
+				m_CameraManager.ChangeCamera(CameraManager::TagCamera::TARGET);
+			}
+		}
+	}
 }
 //ìñÇΩÇËîªíËä÷åW
 void BossScene::HitCheck() {

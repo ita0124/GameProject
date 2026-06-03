@@ -318,6 +318,18 @@
     <Filter Include="ソース ファイル\Game\Scene\ResultScene\SelectScene">
       <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Camera\Player">
+      <UniqueIdentifier>{a26b750a-1f50-4140-a6de-b20b28b29824}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Camera\Player">
+      <UniqueIdentifier>{8ce0041d-e8dd-4d6d-91b8-5b83772f1b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Camera\Target">
+      <UniqueIdentifier>{90445a6d-e94f-464c-9028-1decfd33dae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Camera\Target">
+      <UniqueIdentifier>{02efb31a-2cdc-4fee-b937-2a86a10ee9f9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -337,9 +349,6 @@
     </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Camera\Play\PlayCamera.cpp">
-      <Filter>ソース ファイル\Game\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\Effekseer\effekseer.cpp">
       <Filter>ソース ファイル\Effekseer</Filter>
@@ -461,6 +470,12 @@
     <ClCompile Include="Source\Game\UI\Stamina\Stamina.cpp">
       <Filter>ソース ファイル\Game\UI\Stamina</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera\Target</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -483,9 +498,6 @@
     </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputPad.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Camera\Play\PlayCamera.h">
-      <Filter>ヘッダー ファイル\Game\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Sound\SoundManager.h">
       <Filter>ヘッダー ファイル\Game\Sound</Filter>
@@ -609,6 +621,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\UI\Stamina\Stamina.h">
       <Filter>ヘッダー ファイル\Game\UI\Stamina</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h">
+      <Filter>ヘッダー ファイル\Game\Camera\Target</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h">
+      <Filter>ヘッダー ファイル\Game\Camera\Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
