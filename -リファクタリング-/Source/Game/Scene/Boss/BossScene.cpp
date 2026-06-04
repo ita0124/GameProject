@@ -103,8 +103,8 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();				//天球クラス
-		m_BossArea.Draw();			//ボス戦の足場クラス
+		//m_Sky.Draw();				//天球クラス
+		//m_BossArea.Draw();			//ボス戦の足場クラス
 		m_Player.Draw();			//プレイヤークラス
 		m_Sword.Draw();				//剣クラス
 		m_Shield.Draw();			//盾クラス
@@ -241,7 +241,7 @@ void BossScene::PlayerStep() {
 	m_Sky.Step();										//天球クラス
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
-	m_Player.SetAttackTargetPos(m_Boss.GetPos());
+	m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(),Boss::FrameNamber::CHEST));
 	m_Player.Step();
 	m_Sword.Step();
 	m_Shield.Step();
@@ -253,8 +253,6 @@ void BossScene::EnemyStep() {
 }
 //カメラ関連Step
 void BossScene::CameraStep() {
-	m_CameraManager.Step(m_Player);
-
 	if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
 		/*m_Target.Update(Vec);*/
 	}
@@ -289,11 +287,21 @@ void BossScene::CameraStep() {
 			}
 		}
 	}
+
+	m_CameraManager.Step(m_Player);
 }
 //当たり判定関係
 void BossScene::HitCheck() {
-	HitCheck::ObjectToObject(m_Player, m_Boss);
+	//ボスと剣の攻撃当たり判定
+	HitCheck::ObjectToObjectAttack(m_Boss, m_Sword);
+	//盾とボスの攻撃当たり判定
+	HitCheck::ObjectToObjectAttack(m_Shield, m_Boss);
+	//プレイヤーとボスの押し合い当たり判定
+	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
+	//プレイヤーとボスの攻撃当たり判定
+	HitCheck::ObjectToObjectAttack(m_Player, m_Boss);
+	//プレイヤーとボスの位置関係判定
+	HitCheck::ObjectToObjectRelativePos(m_Player, m_Boss);
+	//ステージとプレイヤーの当たり判定
 	HitCheck::CollToObject(m_BossArea, m_Player);
-	HitCheck::ObjectToObject(m_Boss,m_Sword);
-	HitCheck::ObjectToObject(m_Shield, m_Boss);
 }

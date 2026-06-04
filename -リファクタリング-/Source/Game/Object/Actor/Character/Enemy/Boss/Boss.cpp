@@ -870,12 +870,12 @@ void Boss::AttackPatternManager() {
 	case REAR_END:
 		m_State = REAR_ATTACK;
 		break;
-	case RIGHT:
+	/*case RIGHT:
 	case RIGHT_END:
 	case LEFT:
 	case LEFT_END:
 
-		break;
+		break;*/
 	default:
 		//UŒ‚í”z—ñ‚ğ‚P‚Â‚¸‚ç‚·
 		m_AttackIndex++;

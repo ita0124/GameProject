@@ -33,6 +33,33 @@ void CameraManager::Update() {
 		break;
 	}
 }
+void CameraManager::ChangeCamera(TagCamera _Camera) {
+	m_Camera = _Camera;
+	switch (m_Camera) {
+	case PLAYER:
+		//切り替え後の初期化を行う
+		m_PlayCamera.SetIsCameraPosSetEndFalse();
+		m_PlayCamera.SetIsTargetPosSetEndFalse();
+		//カメラ位置
+		m_PlayCamera.SetCameraPos(m_TargetCamera.GetCameraPos());
+		//注視点
+		m_PlayCamera.SetTargetPos(m_TargetCamera.GetTargetPos());
+		//カメラ回転角度
+		m_PlayCamera.SetCameraRot(m_TargetCamera.GetCameraRot());
+		break;
+	case TARGET:
+		//切り替え後の初期化を行う
+		m_TargetCamera.SetIsCameraPosSetEndFalse();
+		m_TargetCamera.SetIsTargetPosSetEndFalse();
+		//カメラ位置
+		m_TargetCamera.SetCameraPos(m_PlayCamera.GetCameraPos());
+		//注視点
+		m_TargetCamera.SetTargetPos(m_PlayCamera.GetTargetPos());
+		//カメラ回転角度
+		m_TargetCamera.SetCameraRot(m_PlayCamera.GetCameraRot());
+		break;
+	}
+}
 VECTOR CameraManager::GetCameraRot() {
 	switch (m_Camera) {
 	case PLAYER:

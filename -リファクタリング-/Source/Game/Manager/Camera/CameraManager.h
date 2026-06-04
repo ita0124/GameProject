@@ -33,7 +33,7 @@ public:
 	//XVˆ—
 	void Update();
 
-	void ChangeCamera(TagCamera _Camera) { m_Camera = _Camera; }
+	void ChangeCamera(TagCamera _Camera);
 
 	TagCamera GetID() { return m_Camera; }
 	

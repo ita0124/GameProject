@@ -177,8 +177,6 @@ void StageScene::Update() {
 }
 //ƒJƒƒ‰ŠÖ˜AStep
 void StageScene::CameraStep() {
-	m_CameraManager.Step(m_Player);
-
 	if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
 		/*m_Target.Update(Vec);*/
 	}
@@ -213,4 +211,6 @@ void StageScene::CameraStep() {
 			}
 		}
 	}
+
+	m_CameraManager.Step(m_Player);
 }

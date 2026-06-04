@@ -34,10 +34,21 @@ public:
 	//デバック用
 	void Draw();
 
+	//カメラ位置
+	VECTOR GetCameraPos() { return m_CameraPos; }
+	//注視点
+	VECTOR GetTargetPos() { return m_TargetPos; }
 	//カメラの回転率
 	VECTOR GetCameraRot() { return m_CameraRot; }
 
-	VECTOR GetCameraPos() { return m_CameraPos; }
-
-	VECTOR GetTargetPos() { return m_TargetPos; }
+	//フラグセット
+	//プレイヤーカメラとターゲットカメラが切り替わるタイミングにマネージャーで呼ぶ
+	void SetIsCameraPosSetEndFalse() { m_IsCameraPosSetEnd = false; }
+	void SetIsTargetPosSetEndFalse() { m_IsTargetPosSetEnd = false; }
+	//カメラ位置
+	void SetCameraPos(VECTOR _CameraPos) { m_CameraPos = _CameraPos; }
+	//注視点
+	void SetTargetPos(VECTOR _TargetPos) { m_TargetPos = _TargetPos; }
+	//カメラ回転角度
+	void SetCameraRot(VECTOR _CameraRot) { m_CameraRot = _CameraRot; }
 };

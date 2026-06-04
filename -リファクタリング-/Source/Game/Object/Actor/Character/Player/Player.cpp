@@ -101,9 +101,10 @@ void Player::Init() {
 	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
 	m_KnockBackDistance = FZERO;				//現在のノックバック量
 	m_KnockBackMaxDistance = FZERO;				//最大ノックバック量
-	m_KnockBackSpeed = FZERO;					//１フレーム当たりの移動量を設定
+	m_KnockBackSub = FZERO;						//1フレーム毎のノックバック力減衰量
 	m_KnockBackDuration = 0;					//ノックバック継続時間	
-	m_IsKnockedBack = false;					//ノックバックフラグ
+	m_IsKnockBackCalcStart = true;				//ノックバック計算を始めるフラグ
+	m_IsKnockBack = false;						//ノックバック中フラグ
 }
 //データ読み込み処理
 void Player::Load() {
@@ -871,15 +872,35 @@ void Player::ActionSuccessManager() {
 }
 //ノックバック
 void Player::KnockBackManager() {
-	if (!m_IsKnockedBack) {
-		//ノックバックフラグをオンに
-		m_IsKnockedBack = true;
+	if (!m_IsKnockBackCalcStart) {
+		//ノックバック計算を開始
+		m_IsKnockBackCalcStart = true;
+		//ノックバック中フラグをオン
+		m_IsKnockBack = true;
 		//最大ノックバック量を保存
 		m_KnockBackMaxDistance = m_KnockBackDistance;
 		//１フレーム当たりの移動量を設定
-		m_KnockBackSpeed = m_KnockBackMaxDistance * 0.1f;
+		m_KnockBackSub = m_KnockBackMaxDistance * 0.1f;
 	}
-	//ノックバック継続時間を加算
-	m_KnockBackDuration++;
-
+	//ノックバック中なら
+	if (m_IsKnockBack) {
+		//ノックバック継続時間を加算
+		m_KnockBackDuration++;
+		//方向ベクトルを取得(正規化済み)
+		VECTOR DirToPlayerPos = GetDirectionNotY(m_KnockBackStartPos, m_Pos, true);
+		if (m_KnockBackDuration >= 10) {
+			//移動量を計算
+			VECTOR KnockBackSpeed= VScale(DirToPlayerPos, m_KnockBackDistance);
+			//座標に加算
+			m_Pos = VAdd(m_Pos, KnockBackSpeed);
+			//ノックバック量を1フレーム毎の減衰量分減らす
+			m_KnockBackDistance -= m_KnockBackSub;
+		}
+		else {
+			//ノックバック中フラグをオフ
+			m_IsKnockBack = false;
+			//ノックバック継続時間をリセット
+			m_KnockBackDuration = 0;
+		}
+	}
 }

@@ -3,16 +3,6 @@
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
 #include "Game/Object/Sword/Sword.h"
 
-//オブジェクト同士の様々な当たり判定を行う
-void HitCheck::ObjectToObject(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
-	//オブジェクト同士の押し合い当たり判定
-	ObjectToObjectPush(_ObjectA, _ObjectB);
-	//オブジェクトの攻撃当たり判定
-	ObjectToObjectAttack(_ObjectA, _ObjectB);
-	//オブジェクトの位置関係判定
-	ObjectToObjectRelativePos(_ObjectA, _ObjectB);
-}
-
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
@@ -219,8 +209,8 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
 	if (!_Object.GetIsActive() || !_RelativePosObject.GetIsActive())return;
 
-	//位置関係を判定するオブジェクトがボスなら
-	if (_RelativePosObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
+	//オブジェクトがプレイヤーかつ位置関係を判定するオブジェクトがボスなら
+	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _RelativePosObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
 		//ボスクラスデータを保存する変数
 		Boss* PointerBoss = nullptr;
 		//ボスクラスをダウンキャスト

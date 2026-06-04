@@ -91,9 +91,10 @@ private:
 	VECTOR		m_KnockBackStartPos;						//ノックバック開始時の敵座標
 	float		m_KnockBackDistance;						//現在のノックバック量
 	float		m_KnockBackMaxDistance;						//最大ノックバック量
-	float		m_KnockBackSpeed;							//１フレーム当たりの移動量
-	int			m_KnockBackDuration;						//ノックバック継続時間	
-	bool		m_IsKnockedBack;							//ノックバック中フラグ
+	float		m_KnockBackSub;								//1フレーム毎のノックバック力減衰量
+	int			m_KnockBackDuration;						//ノックバック継続時間
+	bool		m_IsKnockBackCalcStart;						//ノックバック計算を始めるフラグ
+	bool		m_IsKnockBack;								//ノックバック中フラグ
 
 	//待機
 	void Wait();
