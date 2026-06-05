@@ -171,6 +171,10 @@ void Player::HitCalc(ObjectBase* _Object) {
 			m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
 			//ガードアクション成功
 			m_IsActionSuccess[GUARD] = true;
+			//ノックバックの力を計算
+			float KnockBackPower = (PointerBoss->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
+			//ノックバックデータ数値代入
+			SetKnockBackData(KnockBackPower, PointerBoss->GetPos());
 		}
 	}
 	else {
@@ -180,6 +184,10 @@ void Player::HitCalc(ObjectBase* _Object) {
 		m_IsCollision = false;
 		//ダメージ状態へ
 		m_State = DAMAGE;
+		//ノックバックの力を計算
+		float KnockBackPower = PointerBoss->GetPower() * 0.5f;
+		//ノックバックデータ数値代入
+		SetKnockBackData(KnockBackPower, PointerBoss->GetPos());
 	}
 }
 //待機
@@ -219,6 +227,8 @@ void Player::Damage() {
 		//当たり判定オン
 		m_IsCollision = true;
 	}
+	//ノックバック
+	KnockBackManager();
 }
 //死亡
 void Player::Death() {
@@ -322,6 +332,8 @@ void Player::Guard() {
 	}
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
+	//ノックバック
+	KnockBackManager();
 
 	if (!m_IsAction[GUARD]) {
 		//ガードアクション中に変更
@@ -396,7 +408,7 @@ void Player::Parry() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = GUARD;
 		//当たり判定オン
 		m_IsCollision = true;
 		//パリィアクション終了
@@ -888,7 +900,7 @@ void Player::KnockBackManager() {
 		m_KnockBackDuration++;
 		//方向ベクトルを取得(正規化済み)
 		VECTOR DirToPlayerPos = GetDirectionNotY(m_KnockBackStartPos, m_Pos, true);
-		if (m_KnockBackDuration >= 10) {
+		if (m_KnockBackDuration <= 10) {
 			//移動量を計算
 			VECTOR KnockBackSpeed= VScale(DirToPlayerPos, m_KnockBackDistance);
 			//座標に加算
@@ -903,4 +915,14 @@ void Player::KnockBackManager() {
 			m_KnockBackDuration = 0;
 		}
 	}
+}
+//ノックバックデータ数値代入
+void Player::SetKnockBackData(float _Power, VECTOR _Pos) {
+	//スタミナ残量が少ないほどノックバック量が大きくる
+	float Calc = (MAX_STAMINA - m_Stamina) * 0.01f;
+	m_KnockBackDistance = _Power + Calc;
+	//ノックバック計算を始める
+	m_IsKnockBackCalcStart = false;
+	//ノックバック開始時の敵座標
+	m_KnockBackStartPos = _Pos;
 }

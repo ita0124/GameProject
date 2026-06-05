@@ -138,6 +138,8 @@ private:
 	void ActionSuccessManager();
 	//ノックバック
 	void KnockBackManager();
+	//ノックバックデータ数値代入
+	void SetKnockBackData(float _Power,VECTOR _Pos);
 public:
 	//コンストラクタ
 	Player();
