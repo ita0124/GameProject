@@ -25,7 +25,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #endif
 
 	//ウィンドウ名設定
-	SetWindowText("リファクタリング");
+	SetWindowText("ActionGame");
 
 	// ＤＸライブラリ初期化処理
 	if (DxLib_Init() == -1) return -1;

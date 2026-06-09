@@ -103,8 +103,8 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		//m_Sky.Draw();				//天球クラス
-		//m_BossArea.Draw();			//ボス戦の足場クラス
+		m_Sky.Draw();				//天球クラス
+		m_BossArea.Draw();			//ボス戦の足場クラス
 		m_Player.Draw();			//プレイヤークラス
 		m_Sword.Draw();				//剣クラス
 		m_Shield.Draw();			//盾クラス

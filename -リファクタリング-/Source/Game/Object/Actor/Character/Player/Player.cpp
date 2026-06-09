@@ -122,11 +122,10 @@ void Player::Step() {
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
-		return;
 	}
 
 #ifdef _DEBUG
-	m_HitPoints = 100;
+	m_HitPoints = HIT_POINTS;
 #endif // DEBUG
 
 	if (m_Pos.y <= -500) {
@@ -403,6 +402,8 @@ void Player::Parry() {
 		m_ParryWindoeTime = 0;
 		//パリィに移行してもよい
 		m_IsParryWindo = true;
+		//サウンドリクエスト
+		SoundManager::Play(SoundManager::TagID::SE_PARRY);
 	}
 
 	//アニメーションが終わったら
@@ -428,7 +429,7 @@ void Player::SkillAttack() {
 		//当たり判定オフ
 		m_IsCollision = false;
 		//押し出し判定オフ
-		m_IsPush = true;
+		m_IsPush = false;
 		//攻撃力設定
 		m_Power = SKILL_ATTACKPOWER;
 		//スキルゲージ減少

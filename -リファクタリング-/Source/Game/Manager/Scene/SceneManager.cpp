@@ -16,10 +16,6 @@ void SceneManager::Init() {
 	if (m_Scene[TITLE] == nullptr) {
 		m_Scene[TITLE] = new TitleScene;
 	}
-	//セレクト
-	if (m_Scene[SELECT] == nullptr) {
-		m_Scene[SELECT] = new SelectScene;
-	}
 	//ステージ
 	if (m_Scene[STAGE] == nullptr) {
 		m_Scene[STAGE] = new StageScene;
@@ -50,12 +46,6 @@ int SceneManager::Loop() {
 	case TITLE:
 		//終われば次へ
 		if (m_Scene[TITLE]->Loop() != 0) {
-			m_ID = SELECT;
-		}
-		break;
-	case SELECT:
-		//終われば次へ
-		if (m_Scene[SELECT]->Loop() != 0) {
 			m_ID = STAGE;
 		}
 		break;

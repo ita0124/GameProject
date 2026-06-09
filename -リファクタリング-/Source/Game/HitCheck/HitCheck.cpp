@@ -324,8 +324,9 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 
 		VECTOR PlatformPos1 = VGet(Pos1X, Pos1Y, Pos1Z);
 		VECTOR PlatformPos2 = VGet(Pos2X, Pos2Y, Pos2Z);
+#ifdef _DEBUG
 		DrawCube3D(PlatformPos1, PlatformPos2, RED, RED, FALSE);
-
+#endif // DEBUG
 		//“–‚½‚è”»’è
 		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
 		//“–‚½‚Á‚Ä‚¢‚ê‚Î

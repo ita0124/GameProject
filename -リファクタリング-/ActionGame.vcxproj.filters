@@ -75,12 +75,6 @@
     <Filter Include="ヘッダー ファイル\Effekseer">
       <UniqueIdentifier>{8961861d-57c6-425e-8042-3a5d1edf3de7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Select">
-      <UniqueIdentifier>{3d62e858-3ad2-4401-838b-d04dfeb01b27}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Select">
-      <UniqueIdentifier>{0848ef2d-4771-472f-83eb-e43be9ebcd2a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Game\Item">
       <UniqueIdentifier>{639d25d8-244b-44ee-808c-8bd2ab5f0893}</UniqueIdentifier>
     </Filter>
@@ -455,9 +449,6 @@
     <ClCompile Include="Source\Game\Object\Shield\Shield.cpp">
       <Filter>ソース ファイル\Game\Object\Shield</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Base\Object2D\Object2DBase.cpp">
       <Filter>ソース ファイル\Game\Base\Object2DBase</Filter>
     </ClCompile>
@@ -476,15 +467,15 @@
     <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp">
       <Filter>ソース ファイル\Game\Camera\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\Lib\Collision\Collision.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\Debug\DebugFPS.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Source\Lib\Fade\Fade.h">
@@ -627,6 +618,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Debug\DebugFPS.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

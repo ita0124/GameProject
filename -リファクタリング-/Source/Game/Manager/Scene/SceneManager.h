@@ -11,7 +11,6 @@ private:
 	//シーンを管理するタグ
 	enum TagScene {
 		TITLE,
-		SELECT,
 		STAGE,
 		BOSS,
 		RESULT,

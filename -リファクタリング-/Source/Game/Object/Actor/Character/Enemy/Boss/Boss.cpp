@@ -68,10 +68,11 @@ namespace {
 	const float		NORAML_ATTACK2_POWER = 15.0f;													//通常攻撃２段目時の攻撃力
 	const float		NORAML_ATTACK3_POWER = 20.0f;													//通常攻撃３段目時の攻撃力
 	const float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
+	const float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
 
 	const float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
-	const float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
+	const float		PARRY_DOWN_POWER_THRESHOLD = 17.0f;												//パリィされたときにダウンへ移行する攻撃力
 	const float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
 	const char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
@@ -218,10 +219,12 @@ void Boss::Wait() {
 	RequestLoop(ANIME_WAIT);
 
 	if (!m_IsAction[WAIT]) {
-		//ダウンアクション中に変更
-		m_IsAction[WAIT] = true;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//アクションフラグをリセット
+		ResetIsAction();
+		//ダウンアクション中に変更
+		m_IsAction[WAIT] = true;
 	}
 	//設定した時間分待機を続けたら
 	if (m_NextActionTime >= 0) {
@@ -242,14 +245,14 @@ void Boss::Down() {
 	RequestLoop(ANIME_DOWN);
 
 	if (!m_IsAction[DOWN]) {
-		//ダウンアクション中に変更
-		m_IsAction[DOWN] = true;
 		//輪郭線のマテリアルをマテリアル青に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 		//アクションフラグをリセット
 		ResetIsAction();
+		//ダウンアクション中に変更
+		m_IsAction[DOWN] = true;
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
@@ -405,7 +408,7 @@ void Boss::ChainNormalAttack2() {
 	//通常攻２段目　攻撃継続(鼻)アニメーション再生
 	RequestEndLoop(ANIME_CHAIN_NORMAL_ATTACK2, ANIME_SPEED);
 	//通常攻撃２段目共通処理
-	NoormalAttack1(CHAIN_NORMAL_ATTACK2);
+	NoormalAttack2(CHAIN_NORMAL_ATTACK2);
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//攻撃パターン管理
@@ -483,10 +486,6 @@ void Boss::BreakNormalAttack3() {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK3_COLLISION_END) {
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
-		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(PALMEND_LEFT, NORMAL_ATTACK3_COLLISION_RAD);
 		SetFrameDataIsAttackFlg(PALMEND_RIGHT, NORMAL_ATTACK3_COLLISION_RAD);
@@ -511,6 +510,10 @@ void Boss::BreakNormalAttack3() {
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW3, Pos2, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
+			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		}
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -715,7 +718,7 @@ void Boss::ChargeAttack() {
 		//突進振り上げアクション中に変更
 		m_IsAction[CHARGE_ATTACK] = true;
 		//攻撃力設定
-		m_Power = NORAML_ATTACK2_POWER;
+		m_Power = CHARGE_ATTACK_POWER;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
@@ -745,7 +748,7 @@ void Boss::ChargeAttack() {
 		//待機状態へ
 		m_State = WAIT;
 		//突進振り上げアクション終了
-		m_IsAction[BREAK_NORMAL_ATTACK2] = false;
+		m_IsAction[CHARGE_ATTACK] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 		//ボーン攻撃判定を削除する
@@ -873,9 +876,7 @@ void Boss::AttackPatternManager() {
 	/*case RIGHT:
 	case RIGHT_END:
 	case LEFT:
-	case LEFT_END:
-
-		break;*/
+	case LEFT_END:*/
 	default:
 		//攻撃種配列を１つずらす
 		m_AttackIndex++;
@@ -908,6 +909,12 @@ void Boss::AttackPatternManager() {
 			//次の攻撃を保存
 			m_NextAttack = (TagState)NextAttack;
 		}
+		//正規化された方向ベクトルを取得
+		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
+		//角度を計算
+		float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
+		//Y軸回転値に代入
+		m_Rot.y = RotY;
 		break;
 	}
 }
