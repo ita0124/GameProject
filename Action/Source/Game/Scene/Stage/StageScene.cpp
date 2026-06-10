@@ -155,11 +155,11 @@ int StageScene::Step() {
 		Res = 1;
 	}
 
-	int HitPoints = m_Player.GetHitPoints();
+	int HitPoints = (int)m_Player.GetHitPoints();
 	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
-	int SkillPoints = m_Player.GetSkillPoints();
+	int SkillPoints = (int)m_Player.GetSkillPoints();
 	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
-	int Stamina = m_Player.GetStamina();
+	int Stamina = (int)m_Player.GetStamina();
 	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
 
 	Update();

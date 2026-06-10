@@ -1,6 +1,6 @@
 #include <crtdbg.h>
 #include "Comon.h"
-#include "Lib/Debug/DebugFPS.h"
+#include "Lib/FPS/FPS.h"
 #include "Lib/Fade/Fade.h"
 #include "Lib/Input/InputKey.h"
 #include "Lib/Input/InputPad.h"

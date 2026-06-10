@@ -7,7 +7,7 @@ namespace {
 	const float		RAD = 50.0f;																	//半径
 	const VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	const float		HIT_POINTS = 1000.0f;															//体力
+	const float		HIT_POINTS = 10.0f;																//体力
 	const float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
 	const float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
@@ -266,7 +266,7 @@ void Boss::Death() {
 		//変更があった
 		m_PrevState = m_State;
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 	}
@@ -699,6 +699,8 @@ void Boss::ChargeAttack() {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = CHARGE_ATTACK_POWER;
+		//輪郭線のマテリアルをマテリアル黒に変更
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
