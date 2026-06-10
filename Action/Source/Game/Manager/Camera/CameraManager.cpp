@@ -78,6 +78,8 @@ VECTOR CameraManager::GetCameraPos() {
 	case TARGET:
 		return m_TargetCamera.GetCameraPos();
 		break;
+	default:
+		return VZERO;
 	}
 }
 VECTOR CameraManager::GetTargetPos() {
@@ -88,6 +90,8 @@ VECTOR CameraManager::GetTargetPos() {
 	case TARGET:
 		return m_TargetCamera.GetTargetPos();
 		break;
+	default:
+		return VZERO;
 	}
 }
 void CameraManager::Draw() {

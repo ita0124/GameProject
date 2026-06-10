@@ -195,9 +195,9 @@
     <ClCompile Include="Source\Game\UI\SkillPoints\SkillPoints.cpp" />
     <ClCompile Include="Source\Game\UI\Stamina\Stamina.cpp" />
     <ClCompile Include="Source\Lib\Collision\Collision.cpp" />
-    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp" />
     <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp" />
     <ClCompile Include="Source\Lib\Fade\Fade.cpp" />
+    <ClCompile Include="Source\Lib\FPS\FPS.cpp" />
     <ClCompile Include="Source\Lib\Input\InputKey.cpp" />
     <ClCompile Include="Source\Lib\Input\InputPad.cpp" />
     <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp" />
@@ -248,9 +248,9 @@
     <ClInclude Include="Source\Game\UI\SkillPoints\SkillPoints.h" />
     <ClInclude Include="Source\Game\UI\Stamina\Stamina.h" />
     <ClInclude Include="Source\Lib\Collision\Collision.h" />
-    <ClInclude Include="Source\Lib\Debug\DebugFPS.h" />
     <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h" />
     <ClInclude Include="Source\Lib\Fade\Fade.h" />
+    <ClInclude Include="Source\Lib\FPS\FPS.h" />
     <ClInclude Include="Source\Lib\Input\InputKey.h" />
     <ClInclude Include="Source\Lib\Input\InputPad.h" />
     <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h" />

@@ -122,11 +122,9 @@ public:
 	};
 private:
 	TagState	m_State;											//ボス状態変数
+	TagState	m_PrevState;										//１フレーム前の状態
 
 	FRAME_DATA	m_FrameData[FARAM_NUM];								//ボスのボーン分の情報を格納
-
-	bool		m_IsAction[STATE_NUM];								//アクションフラグ
-	bool		m_IsActionSuccess[STATE_NUM];						//アクション成功判定フラグ
 
 	bool		m_IsDamage;											//ダメージ処理中か
 	int			m_DamageTime;										//ダメージ処理の継続時間
@@ -201,8 +199,6 @@ private:
 	void DeleteFrameDataIsAttackFlg(int _FrameNamber);
 	//全てのボーン攻撃判定を削除する
 	void AllDeleteFrameDataIsAttackFlg();
-	//アクションフラグをリセット
-	void ResetIsAction();
 public:
 	//コンストラクタ
 	Boss();

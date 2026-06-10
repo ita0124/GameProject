@@ -467,7 +467,7 @@
     <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp">
       <Filter>ソース ファイル\Game\Camera\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Lib\Debug\DebugFPS.cpp">
+    <ClCompile Include="Source\Lib\FPS\FPS.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
   </ItemGroup>
@@ -619,7 +619,7 @@
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Lib\Debug\DebugFPS.h">
+    <ClInclude Include="Source\Lib\FPS\FPS.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
   </ItemGroup>

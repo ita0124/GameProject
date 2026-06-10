@@ -112,6 +112,7 @@ void BossScene::Draw() {
 		m_HitPoints.Draw();			//体力UIクラス
 		m_SkillPoints.Draw();		//スキルポイントUIクラス
 		m_Stamina.Draw();			//スタミナUIクラス
+		break;
 	}
 }
 //初期化処理管理関数

@@ -45,7 +45,7 @@ namespace {
 	const float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
 
 	const float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
-	const float		CHARGE_END_LEN = 75.0f;															//突進アクションから次の状態に移行する最低距離
+	const float		CHARGE_END_LEN = RAD + 10.0f;													//突進アクションから次の状態に移行する最低距離
 
 	const float		SPECIAL_START_END_LEN = 25.0f;													//必殺開始アクションから次の状態に移行する最低距離
 
@@ -99,12 +99,8 @@ void Boss::Init() {
 
 	m_HitPoints = HIT_POINTS;							//体力
 
-	for (int Index = 0; Index < STATE_NUM; Index++) {
-		m_IsAction[Index] = false;						//アクションフラグ
-		m_IsActionSuccess[Index] = false;				//アクション成功判定フラグ
-	}
-
 	m_State = WAIT;										//ボス状態変数
+	m_PrevState = m_State;								//１フレーム前の状態
 	m_IsDamage = false;									//ダメージ処理中か
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 	m_BeforJumpPos = VZERO;								//ジャンプ直前の座標を保存
@@ -217,21 +213,17 @@ void Boss::HitFrame(int _FrameNum) {
 void Boss::Wait() {
 	//待機アニメーションループ再生
 	RequestLoop(ANIME_WAIT);
-
-	if (!m_IsAction[WAIT]) {
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
-		//アクションフラグをリセット
-		ResetIsAction();
-		//ダウンアクション中に変更
-		m_IsAction[WAIT] = true;
 	}
 	//設定した時間分待機を続けたら
 	if (m_NextActionTime >= 0) {
 		//歩き状態へ
 		m_State = WALK;
-		//待機アクション終了
-		m_IsAction[WAIT] = false;
 		//初期化
 		m_NextActionTime = 0;
 	}
@@ -244,21 +236,18 @@ void Boss::Down() {
 	//ダウンアニメーションループ再生
 	RequestLoop(ANIME_DOWN);
 
-	if (!m_IsAction[DOWN]) {
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//輪郭線のマテリアルをマテリアル青に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
-		//アクションフラグをリセット
-		ResetIsAction();
-		//ダウンアクション中に変更
-		m_IsAction[DOWN] = true;
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
 		m_State = WAIT;
-		//ダウンアクション終了
-		m_IsAction[DOWN] = false;
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 	}
@@ -272,9 +261,10 @@ void Boss::Death() {
 	//死亡アニメーション再生
 	RequestEndLoop(ANIME_DEATH, ANIME_SPEED);
 
-	if (!m_IsAction[DEATH]) {
-		//死亡アクション中に変更
-		m_IsAction[DEATH] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
@@ -282,8 +272,6 @@ void Boss::Death() {
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
-		//死亡アクション終了
-		m_IsAction[DEATH] = false;
 		//生存フラグをオフ
 		m_IsActive = false;
 	}
@@ -292,10 +280,10 @@ void Boss::Death() {
 void Boss::Walk() {
 	//歩きアニメーションループ再生
 	RequestLoop(ANIME_WALK);
-
-	if (!m_IsAction[WALK]) {
-		//歩きアクション中に変更
-		m_IsAction[WALK] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 	}
 	//行動管理
 	ActionManager();
@@ -312,8 +300,7 @@ void Boss::Walk() {
 		m_Rot.y = RotY;
 	}
 	else {
-		//歩きアクション終了
-		m_IsAction[WALK] = false;
+
 	}
 }
 //通常攻撃１段目　攻撃終了(鼻)
@@ -326,8 +313,6 @@ void Boss::BreakNormalAttack1() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
-		//通常攻撃１段目アクション終了
-		m_IsAction[BREAK_NORMAL_ATTACK1] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -342,17 +327,16 @@ void Boss::ChainNormalAttack1() {
 	if (m_AnimeData.EndFlg) {
 		//攻撃パターン管理
 		AttackPatternManager();
-		//通常攻撃１段目アクション終了
-		m_IsAction[CHAIN_NORMAL_ATTACK1] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
 }
 //通常攻撃１段目共通処理
 void Boss::NoormalAttack1(TagState _State) {
-	if (!m_IsAction[_State]) {
-		//通常攻撃１段目アクション中に変更
-		m_IsAction[_State] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORMAL_ATTACK1_POWER;
 	}
@@ -397,8 +381,6 @@ void Boss::BreakNormalAttack2() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
-		//通常攻撃２段目アクション終了
-		m_IsAction[BREAK_NORMAL_ATTACK2] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -413,17 +395,16 @@ void Boss::ChainNormalAttack2() {
 	if (m_AnimeData.EndFlg) {
 		//攻撃パターン管理
 		AttackPatternManager();
-		//通常攻撃２段目アクション終了
-		m_IsAction[CHAIN_NORMAL_ATTACK2] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
 }
 //通常攻撃２段目共通処理
 void Boss::NoormalAttack2(TagState _State) {
-	if (!m_IsAction[_State]) {
-		//通常攻撃２段目アクション中に変更
-		m_IsAction[_State] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK2_POWER;
 	}
@@ -471,9 +452,11 @@ void Boss::BreakNormalAttack3() {
 	//通常攻撃３段目　攻撃終了(踏みつけ)アニメーション再生
 	RequestEndLoop(ANIME_BREAK_NORMAL_ATTACK3, ANIME_SPEED);
 
-	if (!m_IsAction[BREAK_NORMAL_ATTACK3]) {
-		//通常攻撃３段目アクション中に変更
-		m_IsAction[BREAK_NORMAL_ATTACK3] = true;
+
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK3_POWER;
 	}
@@ -519,8 +502,6 @@ void Boss::BreakNormalAttack3() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
-		//通常攻撃３段目アクション終了
-		m_IsAction[BREAK_NORMAL_ATTACK3] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -530,9 +511,10 @@ void Boss::RearAttack() {
 	//後方攻撃アニメーション再生
 	RequestEndLoop(ANIME_REAR_ATTACK, ANIME_SPEED);
 
-	if (!m_IsAction[REAR_ATTACK]) {
-		//後方攻撃アクション中に変更
-		m_IsAction[REAR_ATTACK] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = REAR_ATTACK_POWER;
 	}
@@ -572,8 +554,6 @@ void Boss::RearAttack() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
-		//後方攻撃アクション終了
-		m_IsAction[REAR_ATTACK] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -584,9 +564,10 @@ void Boss::Jump() {
 	//待機アニメーションループ再生
 	RequestLoop(ANIME_WAIT, ANIME_SPEED);
 
-	if (!m_IsAction[JUMP]) {
-		//ジャンプアクション中に変更
-		m_IsAction[JUMP] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//着地予定座標を設定
 		m_PredictedLandingPos = { 0.0f,0.0f,-500.0f };
 		//現在の座標を保存
@@ -618,8 +599,6 @@ void Boss::Jump() {
 	else {
 		//突進チャージ状態へ
 		m_State = CHARGE_ATTACK_START;
-		//ジャンプアクション終了
-		m_IsAction[JUMP] = false;
 		//Y軸を地面に設置
 		m_Pos.y = 0;
 	}
@@ -635,9 +614,10 @@ void Boss::ChargeAttackStart() {
 	//Y軸回転値に代入
 	m_Rot.y = RotY;
 
-	if (!m_IsAction[CHARGE_ATTACK_START]) {
-		//突進チャージアクション中に変更
-		m_IsAction[CHARGE_ATTACK_START] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 	}
 	if (!m_IsEffect) {
 		//エフェクト発生判定オン
@@ -653,8 +633,6 @@ void Boss::ChargeAttackStart() {
 	if (m_AnimeData.EndFlg) {
 		//突進状態へ
 		m_State = CHARGE;
-		//突進チャージアクション終了
-		m_IsAction[CHARGE_ATTACK_START] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -668,9 +646,10 @@ void Boss::Charge() {
 	//サイズ取得
 	float Len = VSize(DirToPlayer);
 
-	if (!m_IsAction[CHARGE]) {
-		//突進アクション中に変更
-		m_IsAction[CHARGE] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
@@ -714,18 +693,16 @@ void Boss::ChargeAttack() {
 	//突進振り上げアニメーション再生
 	RequestEndLoop(ANIME_CHARGE_ATTACK, ANIME_SPEED);
 
-	if (!m_IsAction[CHARGE_ATTACK]) {
-		//突進振り上げアクション中に変更
-		m_IsAction[CHARGE_ATTACK] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = CHARGE_ATTACK_POWER;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
 		}
-		//ボーンに攻撃判定を生成
-		SetFrameDataIsAttackFlg(FANG003END_LEFT, NORMAL_ATTACK2_COLLISION_RAD);
-		SetFrameDataIsAttackFlg(FANG003END_RIGHT, NORMAL_ATTACK2_COLLISION_RAD);
 	}
 	if (!m_IsEffect && m_AnimeData.Frame) {
 		//エフェクト発生判定オン
@@ -747,13 +724,16 @@ void Boss::ChargeAttack() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = WAIT;
-		//突進振り上げアクション終了
-		m_IsAction[CHARGE_ATTACK] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 		//ボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
 		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
+	}
+	else {
+		//ボーンに攻撃判定を生成
+		SetFrameDataIsAttackFlg(FANG003END_LEFT, NORMAL_ATTACK2_COLLISION_RAD);
+		SetFrameDataIsAttackFlg(FANG003END_RIGHT, NORMAL_ATTACK2_COLLISION_RAD);
 	}
 }
 //必殺開始
@@ -761,9 +741,10 @@ void Boss::SpecialStart() {
 	//必殺開始アニメーション再生
 	RequestEndLoop(ANIME_SPECIAL_START, ANIME_SPEED);
 
-	if (!m_IsAction[SPECIAL_START]) {
-		//必殺開始アクション中に変更
-		m_IsAction[SPECIAL_START] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 	}
 	//方向ベクトルを取得
 	VECTOR DirToZero = GetDirectionNotY(m_Pos, VZERO);
@@ -773,8 +754,6 @@ void Boss::SpecialStart() {
 	if (m_AnimeData.EndFlg && Len < SPECIAL_START_END_LEN) {
 		//必殺チャージ状態へ
 		m_State = SPECIAL_CHARGE;
-		//必殺開始アクション終了
-		m_IsAction[SPECIAL_START] = false;
 	}
 	else if (Len < SPECIAL_START_END_LEN) {
 		//座標を固定
@@ -798,9 +777,10 @@ void Boss::SpecialCharge() {
 	//必殺チャージアニメーションループ再生
 	RequestLoop(ANIME_SPECIAL_CHAGE, ANIME_SPEED);
 
-	if (!m_IsAction[SPECIAL_CHARGE]) {
-		//必殺チャージアクション中に変更
-		m_IsAction[SPECIAL_CHARGE] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 	}
 	//アニメーションの再生速度を取得
 	float AnimeSpeed = m_AnimeData.Speed;
@@ -813,17 +793,16 @@ void Boss::SpecialCharge() {
 	if (m_SpecialChargeTime >= SPECIAL_CHARGE_END_TIME) {
 		//必殺へ
 		m_State = SPECIAL;
-		//必殺チャージアクション終了
-		m_IsAction[SPECIAL_START] = false;
 		//初期化
 		m_SpecialChargeTime = 0;
 	}
 }
 //必殺
 void Boss::Special() {
-	if (!m_IsAction[SPECIAL]) {
-		//必殺チャージアクション中に変更
-		m_IsAction[SPECIAL] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//座標を変更
 		m_Pos = SPECIAL_INIT_VECTOR;
 		//サウンドリクエスト
@@ -873,10 +852,10 @@ void Boss::AttackPatternManager() {
 	case REAR_END:
 		m_State = REAR_ATTACK;
 		break;
-	/*case RIGHT:
-	case RIGHT_END:
-	case LEFT:
-	case LEFT_END:*/
+		/*case RIGHT:
+		case RIGHT_END:
+		case LEFT:
+		case LEFT_END:*/
 	default:
 		//攻撃種配列を１つずらす
 		m_AttackIndex++;
@@ -927,107 +906,60 @@ void Boss::StateManager() {
 	switch (m_State) {
 	case WAIT:						//待機
 		Wait();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "WAIT");
-#endif // DEBUG
 		break;
 	case DOWN:						//ダウン
 		Down();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "DOWN");
-#endif // DEBUG
 		break;
 	case DEATH:						//死亡
 		Death();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "DEATH");
-#endif // DEBUG
 		break;
 	case WALK:						//歩き
 		Walk();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "WALK");
-#endif // DEBUG
 		break;
 	case BREAK_NORMAL_ATTACK1:		//通常攻撃１段目　攻撃終了(鼻)
 		BreakNormalAttack1();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK1");
-#endif // DEBUG
 		break;
 	case CHAIN_NORMAL_ATTACK1:		//通常攻撃１段目　攻撃継続(鼻)
 		ChainNormalAttack1();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHAIN_NORMAL_ATTACK1");
-#endif // DEBUG
 		break;
 	case BREAK_NORMAL_ATTACK2:		//通常攻撃２段目　攻撃終了(牙振り上げ)
 		BreakNormalAttack2();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK2");
-#endif // DEBUG
 		break;
 	case CHAIN_NORMAL_ATTACK2:		//通常攻撃２段目　攻撃継続(牙振り上げ)
 		ChainNormalAttack2();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHAIN_NORMAL_ATTACK2");
-#endif // DEBUG
 		break;
 	case BREAK_NORMAL_ATTACK3:		//通常攻撃３段目　攻撃終了(踏みつけ)
 		BreakNormalAttack3();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "BREAK_NORMAL_ATTACK3");
-#endif // DEBUG
 		break;
 	case REAR_ATTACK:				//後方攻撃
 		RearAttack();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "REAR_ATTACK");
-#endif // DEBUG
 		break;
 	case JUMP:						//突進直前移動
 		Jump();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "JUMP");
-#endif // DEBUG
 		break;
 	case CHARGE_ATTACK_START:		//突進チャージ
 		ChargeAttackStart();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE_ATTACK_START");
-#endif // DEBUG
 		break;
 	case CHARGE:					//突進
 		Charge();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE");
-#endif // DEBUG
 		break;
 	case CHARGE_ATTACK:				//突進振り上げ
 		ChargeAttack();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "CHARGE_ATTACK");
-#endif // DEBUG
 		break;
 	case SPECIAL_START:				//必殺開始
 		SpecialStart();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL_START");
-#endif // DEBUG
 		break;
 	case SPECIAL_CHARGE:			//必殺チャージ
 		SpecialCharge();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL_CHARGE");
-#endif // DEBUG
 		break;
-	case SPECIAL:
-		Special();					//必殺
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "SPECIAL");
-#endif // DEBUG
+	case SPECIAL:					//必殺
+		Special();
+
 		break;
 	}
+#ifdef _DEBUG
+	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "%d", (int)m_State);
+#endif // DEBUG
 }
 //当たり判定設定
 void Boss::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {
@@ -1044,10 +976,8 @@ void Boss::DeleteFrameDataIsCollision(int _FrameNamber) {
 //全てのボーン当たり判定を削除する
 void Boss::AllDeleteFrameDataIsCollision() {
 	for (int Index = 0; Index < FARAM_NUM; Index++) {
-		if (m_FrameData[Index].IsCollision) {
-			//指定のボーン攻撃判定を削除する
-			DeleteFrameDataIsAttackFlg(Index);
-		}
+		//指定のボーン攻撃判定を削除する
+		DeleteFrameDataIsCollision(Index);
 	}
 }
 //指定のボーン攻撃判定を設定
@@ -1065,15 +995,7 @@ void Boss::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
 //全てのボーン攻撃判定を削除する
 void Boss::AllDeleteFrameDataIsAttackFlg() {
 	for (int Index = 0; Index < FARAM_NUM; Index++) {
-		if (m_FrameData[Index].IsAttackFlg) {
-			//指定のボーン攻撃判定を削除する
-			DeleteFrameDataIsAttackFlg(Index);
-		}
-	}
-}
-//アクションフラグをリセット
-void Boss::ResetIsAction() {
-	for (int State = 0;State < STATE_NUM;State++) {
-		m_IsAction[State] = false;
+		//指定のボーン攻撃判定を削除する
+		DeleteFrameDataIsAttackFlg(Index);
 	}
 }
