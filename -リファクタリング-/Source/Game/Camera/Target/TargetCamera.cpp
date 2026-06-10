@@ -26,6 +26,8 @@ void TargetCamera::Init() {
 
 	m_IsCameraPosSetEnd = false;
 	m_IsTargetPosSetEnd = false;
+
+	Update();
 }
 //ƒƒbƒNƒIƒ“
 void TargetCamera::Step(Player& _Player) {

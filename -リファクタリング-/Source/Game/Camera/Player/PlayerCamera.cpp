@@ -26,6 +26,8 @@ void PlayerCamera::Init() {
 
 	m_IsCameraPosSetEnd = false;
 	m_IsTargetPosSetEnd = false;
+
+	Update();
 }
 //毎フレーム呼び出す処理(ノーマル)
 void PlayerCamera::Step(Player& _Player) {
