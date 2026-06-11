@@ -71,8 +71,6 @@ private:
 
 	VECTOR		m_CamraRot;									//カメラの回転率を代入する
 
-	VECTOR		m_AttackTargetPos;							//攻撃サーチを行う物体の座標
-
 	int			m_RollingTime;								//ローリング継続時間
 
 	bool		m_IsAction[STATE_NUM];						//アクションフラグ
@@ -95,6 +93,10 @@ private:
 	int			m_KnockBackDuration;						//ノックバック継続時間
 	bool		m_IsKnockBackCalcStart;						//ノックバック計算を始めるフラグ
 	bool		m_IsKnockBack;								//ノックバック中フラグ
+
+	VECTOR		m_AttackTargetPos;							// 攻撃対象の座標
+	float		m_TargetAngle;								// 攻撃対象との角度差
+	bool		m_IsTargetAngleSet;							// 一度だけ角度を設定するフラグ
 
 	//待機
 	void Wait();
