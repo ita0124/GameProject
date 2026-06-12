@@ -106,8 +106,8 @@ void Player::Init() {
 	m_IsKnockBack = false;						//ノックバック中フラグ
 
 	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
-	m_TargetAngle=0.0f;								// 攻撃対象との角度差
-	m_IsSetTargetAngle=false;							// 一度だけ角度を設定するフラグ
+	m_TargetAngle = 0.0f;								// 攻撃対象との角度差
+	m_IsSetTargetAngle = false;							// 一度だけ角度を設定するフラグ
 }
 //データ読み込み処理
 void Player::Load() {
@@ -833,7 +833,7 @@ void Player::ActionManager() {
 		m_State = GUARD;
 	}
 	//スキル攻撃
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q) && m_SkillPoints >= 0) {
+	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q)) && m_SkillPoints > 0) {
 		m_State = SKILL_ATTACK;
 	}
 	//通常攻撃１段目
