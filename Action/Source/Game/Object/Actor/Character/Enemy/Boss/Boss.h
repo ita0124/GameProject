@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 
-namespace {
+namespace BOSS{
 	const int PATTERN_INDEX = 5;
 	const int ATTACK_INDEX = 7;
 }
@@ -136,7 +136,7 @@ private:
 
 	int			m_DirectNum;										//どの方向判定ボーンと当たったかを保存する
 
-	int			m_AttackPatterns[PATTERN_INDEX][ATTACK_INDEX];		//攻撃パターンの配列
+	int			m_AttackPatterns[BOSS::PATTERN_INDEX][BOSS::ATTACK_INDEX];		//攻撃パターンの配列
 	int			m_PatternIndex;										//攻撃パターンの種類
 	int			m_AttackIndex;										//パターン内の攻撃順
 	int			m_NextAttack;										//次に行う予定の攻撃

@@ -73,7 +73,7 @@ void PlatformManager::Init() {
 		}
 	}
 	//開いたファイルを閉じる
-	fclose(PlatformIdFile);
+	fclose(StageFile);
 
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない

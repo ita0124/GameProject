@@ -162,7 +162,7 @@ bool InputPad::GetRTriggerInputRep(unsigned int _Num) {
 
 //右トリガーの入力(トリガー)
 bool InputPad::GetRTriggerInputTrg(unsigned int _Num) {
-	if (((float)m_NowInput[_Num].LeftTrigger / (float)TRIGGER_MAX) > 0 && ((float)m_OldInput[_Num].RightTrigger / (float)TRIGGER_MAX) == 0.0f) {
+	if (((float)m_NowInput[_Num].RightTrigger / (float)TRIGGER_MAX) > 0 && ((float)m_OldInput[_Num].RightTrigger / (float)TRIGGER_MAX) == 0.0f) {
 		return true;
 	}
 	else {

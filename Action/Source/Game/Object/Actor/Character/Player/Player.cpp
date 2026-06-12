@@ -82,7 +82,6 @@ void Player::Init() {
 	m_SkillPoints = SKILL_POINTS;				//スキルポイント
 
 	m_State = WAIT;								//プレイヤー状態変数
-	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
 	m_RollingTime = 0;							//ローリング継続時間
 	for (int Index = 0; Index < STATE_NUM; Index++) {
 		m_IsAction[Index] = false;				//アクションフラグ
@@ -94,7 +93,7 @@ void Player::Init() {
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
-	m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
+	m_ParryWindoeTime = 0;						//ガードアクション実行後のパリィに移行できる許容時間
 	m_IsParryWindo = true;						//パリィ許容フラグ
 	m_JumpCalc = 0.0f;							//ジャンプ力計算
 
@@ -105,6 +104,10 @@ void Player::Init() {
 	m_KnockBackDuration = 0;					//ノックバック継続時間	
 	m_IsKnockBackCalcStart = true;				//ノックバック計算を始めるフラグ
 	m_IsKnockBack = false;						//ノックバック中フラグ
+
+	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
+	m_TargetAngle=0.0f;								// 攻撃対象との角度差
+	m_IsSetTargetAngle=false;							// 一度だけ角度を設定するフラグ
 }
 //データ読み込み処理
 void Player::Load() {
@@ -520,6 +523,7 @@ void Player::NormalAttack1() {
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
+
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//通常攻撃２段目へ
@@ -829,7 +833,7 @@ void Player::ActionManager() {
 		m_State = GUARD;
 	}
 	//スキル攻撃
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q) && m_SkillPoints <= 0) {
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q) && m_SkillPoints >= 0) {
 		m_State = SKILL_ATTACK;
 	}
 	//通常攻撃１段目
@@ -855,13 +859,13 @@ void Player::GravityManager() {
 }
 //アクションフラグをリセット
 void Player::ResetIsAction() {
-	for (int State = 0;State < STATE_NUM;State++) {
+	for (int State = 0; State < STATE_NUM; State++) {
 		m_IsAction[State] = false;
 	}
 }
 //アクション成功フラグ管理
 void Player::ActionSuccessManager() {
-	for (int State = 0;State < STATE_NUM;State++) {
+	for (int State = 0; State < STATE_NUM; State++) {
 		//アクション成功フラグがオンになっていなければ次の配列へ
 		if (!m_IsActionSuccess[State])continue;
 		//アクション成功フラグがオンになっているものはなにか
@@ -903,7 +907,7 @@ void Player::KnockBackManager() {
 		VECTOR DirToPlayerPos = GetDirectionNotY(m_KnockBackStartPos, m_Pos, true);
 		if (m_KnockBackDuration <= 10) {
 			//移動量を計算
-			VECTOR KnockBackSpeed= VScale(DirToPlayerPos, m_KnockBackDistance);
+			VECTOR KnockBackSpeed = VScale(DirToPlayerPos, m_KnockBackDistance);
 			//座標に加算
 			m_Pos = VAdd(m_Pos, KnockBackSpeed);
 			//ノックバック量を1フレーム毎の減衰量分減らす

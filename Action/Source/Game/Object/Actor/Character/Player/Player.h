@@ -96,7 +96,7 @@ private:
 
 	VECTOR		m_AttackTargetPos;							// 攻撃対象の座標
 	float		m_TargetAngle;								// 攻撃対象との角度差
-	bool		m_IsTargetAngleSet;							// 一度だけ角度を設定するフラグ
+	bool		m_IsSetTargetAngle;							// 一度だけ角度を設定するフラグ
 
 	//待機
 	void Wait();

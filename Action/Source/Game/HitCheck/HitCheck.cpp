@@ -100,7 +100,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 #endif // DEBUG
 			//“–‚½‚è”»’è
 			bool IsHit1 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
-			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
+			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos2, PlayerRad, BossPos, BossRad);
 			//“–‚½‚Á‚Ä‚¢‚ê‚Î
 			if (IsHit1 || IsHit2) {
 				_Object.HitCalc(PointerBoss);

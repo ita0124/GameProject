@@ -115,8 +115,8 @@ void Boss::Init() {
 		m_FrameData[Index].IsAttackFlg = false;			//ボーン攻撃判定
 	}
 
-	for (int Row = 0; Row < PATTERN_INDEX; Row++) {
-		for (int Column = 0; Column < ATTACK_INDEX; Column++) {
+	for (int Row = 0; Row < BOSS::PATTERN_INDEX; Row++) {
+		for (int Column = 0; Column < BOSS::ATTACK_INDEX; Column++) {
 			m_AttackPatterns[Row][Column] = -1;			//攻撃パターンの配列
 		}
 	}
@@ -133,8 +133,8 @@ void Boss::Load() {
 	//ファイルを開く　失敗したらこれ以降の処理を行わない
 	if (fopen_s(&AttackPatternsFile, ATTACK_CSV_FILE_PATH, "r") != 0)return;
 	//データ取得
-	for (int Column = 0; Column < PATTERN_INDEX; Column++) {
-		for (int Row = 0; Row < ATTACK_INDEX; Row++) {
+	for (int Column = 0; Column < BOSS::PATTERN_INDEX; Column++) {
+		for (int Row = 0; Row < BOSS::ATTACK_INDEX; Row++) {
 			//データ一つ分取得
 			fscanf_s(AttackPatternsFile, "%d", &m_AttackPatterns[Column][Row]);
 			//カンマor改行を飛ばす
@@ -181,28 +181,30 @@ void Boss::HitCalc(ObjectBase* _Object) {
 	Player* PointerPlayer = nullptr;
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
-	if (PointerPlayer->GetState() == Player::TagState::PARRY) {
-		if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
-			//ダウン状態へ
-			m_State = DOWN;
-			//ダウン状態継続時間を設定
-			m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
-		}
-	}
-	else {
-		//ダウン状態の時
-		if (m_State == DOWN) {
-			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
-			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
+	if (PointerPlayer != nullptr) {
+		if (PointerPlayer->GetState() == Player::TagState::PARRY) {
+			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
+				//ダウン状態へ
+				m_State = DOWN;
+				//ダウン状態継続時間を設定
+				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
+			}
 		}
 		else {
-			//HPを消費
-			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			//ダウン状態の時
+			if (m_State == DOWN) {
+				//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+				m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
+			}
+			else {
+				//HPを消費
+				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			}
+			////ダメージ処理の継続時間セット
+			m_DamageTime = 15;
+			//当たり判定オン
+			m_IsCollision = false;
 		}
-		////ダメージ処理の継続時間セット
-		m_DamageTime = 15;
-		//当たり判定オン
-		m_IsCollision = false;
 	}
 }
 //方向判定ボーンと当たった場合
@@ -862,13 +864,13 @@ void Boss::AttackPatternManager() {
 		//攻撃種配列を１つずらす
 		m_AttackIndex++;
 		//攻撃種配列の最大格納量より多ければ
-		if (m_AttackIndex >= ATTACK_INDEX) {
+		if (m_AttackIndex >= BOSS::ATTACK_INDEX) {
 			//先頭にリセット
 			m_AttackIndex = 0;
 			//攻撃パターン配列を1ずらす
 			m_PatternIndex++;
 			//攻撃パターン配列の最大格納量より多いなら
-			if (m_PatternIndex >= PATTERN_INDEX) {
+			if (m_PatternIndex >= BOSS::PATTERN_INDEX) {
 				//先頭にリセット
 				m_PatternIndex = 0;
 			}
@@ -881,7 +883,7 @@ void Boss::AttackPatternManager() {
 		//次の攻撃は何の予定か調べる
 		int NextAttackIndex = m_AttackIndex + 1;
 		//最大格納量より多ければ-1を入れておく
-		if (NextAttackIndex >= ATTACK_INDEX) {
+		if (NextAttackIndex >= BOSS::ATTACK_INDEX) {
 			m_NextAttack = -1;
 		}
 		else {
