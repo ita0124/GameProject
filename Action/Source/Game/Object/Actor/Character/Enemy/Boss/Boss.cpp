@@ -7,7 +7,7 @@ namespace {
 	const float		RAD = 50.0f;																	//半径
 	const VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	const float		HIT_POINTS = 10.0f;																//体力
+	const float		HIT_POINTS = 1000.0f;															//体力
 	const float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
 	const float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
