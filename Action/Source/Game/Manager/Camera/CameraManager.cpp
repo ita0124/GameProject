@@ -37,9 +37,6 @@ void CameraManager::ChangeCamera(TagCamera _Camera) {
 	m_Camera = _Camera;
 	switch (m_Camera) {
 	case PLAYER:
-		//切り替え後の初期化を行う
-		m_PlayCamera.SetIsCameraPosSetEndFalse();
-		m_PlayCamera.SetIsTargetPosSetEndFalse();
 		//カメラ位置
 		m_PlayCamera.SetCameraPos(m_TargetCamera.GetCameraPos());
 		//注視点
@@ -48,9 +45,6 @@ void CameraManager::ChangeCamera(TagCamera _Camera) {
 		m_PlayCamera.SetCameraRot(m_TargetCamera.GetCameraRot());
 		break;
 	case TARGET:
-		//切り替え後の初期化を行う
-		m_TargetCamera.SetIsCameraPosSetEndFalse();
-		m_TargetCamera.SetIsTargetPosSetEndFalse();
 		//カメラ位置
 		m_TargetCamera.SetCameraPos(m_PlayCamera.GetCameraPos());
 		//注視点

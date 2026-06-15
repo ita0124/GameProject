@@ -77,9 +77,6 @@ private:
 	bool		m_IsActionSuccess[STATE_NUM];				//アクション成功判定フラグ
 	int			m_ActionSuccessTime[STATE_NUM];				//アクション成功の継続時間
 
-	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
-	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
-
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
 	int			m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
 	bool		m_IsParryWindo;								//パリィ許容フラグ
@@ -94,9 +91,12 @@ private:
 	bool		m_IsKnockBackCalcStart;						//ノックバック計算を始めるフラグ
 	bool		m_IsKnockBack;								//ノックバック中フラグ
 
-	VECTOR		m_AttackTargetPos;							// 攻撃対象の座標
-	float		m_TargetAngle;								// 攻撃対象との角度差
-	bool		m_IsSetTargetAngle;							// 一度だけ角度を設定するフラグ
+	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
+	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
+	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
+	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//攻撃進行方向
+	float		m_TargetAngle;								//攻撃対象との角度差
+
 
 	//待機
 	void Wait();
@@ -122,10 +122,14 @@ private:
 	void NormalAttack2();
 	//通常攻撃３段目
 	void NormalAttack3();
-	//通常移動方向設定
-	bool NormalMoveVec();
-	//移動計算
-	void MoveCalc();
+	//通常移動方向更新
+	bool UpdateNormalMoveVec();
+	//通常移動計算
+	void NormalMoveCalc();
+	//攻撃移動方向更新
+	bool UpdateAttackMoveVec(int _Index);
+	//攻撃移動計算
+	void AttackMoveCalc(int _Index);
 	//スタミナ処理
 	void StaminaManager();
 	//状態遷移

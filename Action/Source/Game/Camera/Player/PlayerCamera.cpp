@@ -24,12 +24,9 @@ void PlayerCamera::Init() {
 	m_CameraPoint = { -0.5f,25.0f,52.5f };
 	m_CameraPos = { -0.5f,25.0f,52.5f };
 
-	m_IsCameraPosSetEnd = false;
-	m_IsTargetPosSetEnd = false;
-
 	Update();
 }
-//毎フレーム呼び出す処理(ノーマル)
+//プレイヤー
 void PlayerCamera::Step(Player& _Player) {
 	m_TargetPoint = _Player.GetPos();
 	float RotSpeed = 0.05f;
@@ -51,7 +48,7 @@ void PlayerCamera::Step(Player& _Player) {
 	}
 
 	if (InputPad::GetRAnalogYInput() > 0.0f) {
-		RotX += (float)InputPad::GetRAnalogYInput()*0.05f;
+		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
 	}
 	else if (InputPad::GetRAnalogYInput() < 0.0f) {
 		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
@@ -84,47 +81,14 @@ void PlayerCamera::Step(Player& _Player) {
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
 
 	//相対ベクトル
-	m_TargetPoint.y+= 25.0f;
+	m_TargetPoint.y += 25.0f;
 	VECTOR OffSet = VGet(0.0f, 25.0f, 100.0f);
 
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);
 	m_CameraPoint = VAdd(m_TargetPoint, CameraPosCalc);
-	/*m_CameraPoint.y = 50.0f;*/
 
-	/*m_TargetPos = m_TargetPoint;
-	m_CameraPos = m_CameraPoint;*/
 	m_CameraRot.y = m_CalcRot.y;
-
-	if (!m_IsCameraPosSetEnd || !m_IsTargetPosSetEnd) {
-		VECTOR v1 = VSub(m_CameraPoint, m_CameraPos);
-		float f1 = VSize(v1);
-		if (f1 > CALC_LEN) {
-			v1 = VNorm(v1);
-			v1 = VScale(v1, 5.0f);
-			m_CameraPos = VAdd(m_CameraPos, v1);
-		}
-		else {
-			m_CameraPos = m_CameraPoint;
-			m_IsCameraPosSetEnd = true;
-		}
-
-		VECTOR v2 = VSub(m_TargetPoint, m_TargetPos);
-		float f2 = VSize(v2);
-		if (f2 > CALC_LEN) {
-			v2 = VNorm(v2);
-			v2 = VScale(v2, 5.0f);
-			m_TargetPos = VAdd(m_TargetPos, v2);
-		}
-		else {
-			m_TargetPos = m_TargetPoint;
-			m_IsTargetPosSetEnd = true;
-		}
-	}
-	else {
-		m_CameraPos = m_CameraPoint;
-		m_TargetPos = m_TargetPoint;
-	}
 }
 //更新処理
 void PlayerCamera::Update() {
@@ -150,4 +114,13 @@ void PlayerCamera::Draw() {
 	DrawFormatString(50, 400, RED, "注視点座標X:%f", m_TargetPos.x);
 	DrawFormatString(50, 425, RED, "注視点座標Y:%f", m_TargetPos.y);
 	DrawFormatString(50, 450, RED, "注視点座標Z:%f", m_TargetPos.z);
+}
+//現在座標から目標座標へ線形補間した座標を返す
+VECTOR PlayerCamera::CameraLerp(VECTOR _CurrentPos, VECTOR _TargetPos, float _LerpRate) {
+	//現在座標から目標座標への方向ベクトルを生成
+	VECTOR MoveVec = VSub(_TargetPos, _CurrentPos);
+	//移動量計算
+	VECTOR AddVec = VScale(MoveVec, _LerpRate);
+	//座標更新
+	return VAdd(_CurrentPos, AddVec);
 }

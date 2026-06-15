@@ -69,7 +69,7 @@ public:
 
 	//Set
 	//移動方向
-	void	SetMoveVec(VECTOR _MoveVec) { m_MoveVec = _MoveVec; }
+	void	UpdateMoveVec(VECTOR _MoveVec) { m_MoveVec = _MoveVec; }
 	//アニメーションのスピード変化
 	void	SetAnimeSpeed(float _AnimeSpeed) { m_AnimeData.Speed = _AnimeSpeed; }
 };

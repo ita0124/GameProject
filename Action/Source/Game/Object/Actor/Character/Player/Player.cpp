@@ -21,6 +21,7 @@ namespace {
 	const float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
 	const float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
 	const float		SKILL_ATTACK_MOVE_MULT = 20.0f;											//スキル攻撃時の移動乗算値
+	const float		PLAYER_NORMAL_ATTACK_MOVE_MULT = 5.0f;									//通常攻撃時の移動乗算値
 
 	const float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
@@ -88,10 +89,6 @@ void Player::Init() {
 		m_IsActionSuccess[Index] = false;		//アクション成功判定フラグ
 		m_ActionSuccessTime[Index] = 0;			//アクション成功の継続時間
 	}
-	for (int Index = 0; Index < NORMAL_ATTACK_MAX; Index++) {
-		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
-	}
-	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
 	m_ParryWindoeTime = 0;						//ガードアクション実行後のパリィに移行できる許容時間
 	m_IsParryWindo = true;						//パリィ許容フラグ
@@ -106,8 +103,12 @@ void Player::Init() {
 	m_IsKnockBack = false;						//ノックバック中フラグ
 
 	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
-	m_TargetAngle = 0.0f;								// 攻撃対象との角度差
-	m_IsSetTargetAngle = false;							// 一度だけ角度を設定するフラグ
+	m_TargetAngle = 0.0f;						// 攻撃対象との角度差
+	for (int Index = 0; Index < NORMAL_ATTACK_MAX; Index++) {
+		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
+		m_AttackMoveVec[Index] = VZERO;			//攻撃進行方向
+	}
+	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
 }
 //データ読み込み処理
 void Player::Load() {
@@ -199,7 +200,7 @@ void Player::Wait() {
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定
-	if (NormalMoveVec()) {
+	if (UpdateNormalMoveVec()) {
 		//歩き状態へ
 		m_State = WALK;
 	}
@@ -251,9 +252,9 @@ void Player::Walk() {
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定
-	if (NormalMoveVec()) {
+	if (UpdateNormalMoveVec()) {
 		//移動計算
-		MoveCalc();
+		NormalMoveCalc();
 	}
 	else {
 		//待機状態へ
@@ -267,9 +268,9 @@ void Player::Rolling() {
 	//ローリングアニメーションループ再生
 	RequestLoop(ROLLING);
 	//通常移動方向設定
-	if (NormalMoveVec()) {
+	if (UpdateNormalMoveVec()) {
 		//移動計算
-		MoveCalc();
+		NormalMoveCalc();
 	}
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
@@ -311,9 +312,9 @@ void Player::Jump() {
 		m_JumpCalc = FIRST_JUMP_POWER;
 	}
 	//通常移動方向設定
-	if (NormalMoveVec()) {
+	if (UpdateNormalMoveVec()) {
 		//移動計算
-		MoveCalc();
+		NormalMoveCalc();
 	}
 	//重力処理がオフになったら
 	if (!m_IsGravity) {
@@ -328,9 +329,9 @@ void Player::Guard() {
 	//ガードアニメーションループ再生
 	RequestLoop(GUARD);
 	//通常移動方向設定
-	if (NormalMoveVec()) {
+	if (UpdateNormalMoveVec()) {
 		//移動計算
-		MoveCalc();
+		NormalMoveCalc();
 	}
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
@@ -448,7 +449,7 @@ void Player::SkillAttack() {
 			m_MoveVec.z = -1.0f;
 		}
 		//移動計算
-		MoveCalc();
+		NormalMoveCalc();
 		if (!m_IsEffect) {
 			//エフェクト発生判定オン
 			m_IsEffect = true;
@@ -498,6 +499,10 @@ void Player::NormalAttack1() {
 		m_Power = NORMAL_ATTACK1_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
+		////正規化された方向ベクトルを取得
+		//VECTOR DirToAttaxkTarget = GetDirectionNotY(m_Pos, m_AttackTargetPos, TRUE);
+		////攻撃対象との角度差を設定
+		//m_TargetAngle = atan2f(-DirToAttaxkTarget.x, -DirToAttaxkTarget.y);
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
@@ -505,6 +510,8 @@ void Player::NormalAttack1() {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
 		}
+		//攻撃移動計算
+		AttackMoveCalc(NORMAL_ATTACK1_NUMBER);
 	}
 	else if (m_IsAttackCollision) {
 		//攻撃の当たり判定消滅
@@ -523,7 +530,11 @@ void Player::NormalAttack1() {
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
-
+		//攻撃移動方向更新
+		if (!UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z = -1.0f;
+		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//通常攻撃２段目へ
@@ -566,6 +577,8 @@ void Player::NormalAttack2() {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
 		}
+		//攻撃移動計算
+		AttackMoveCalc(NORMAL_ATTACK2_NUMBER);
 	}
 	else if (m_IsAttackCollision) {
 		//攻撃の当たり判定消滅
@@ -584,6 +597,11 @@ void Player::NormalAttack2() {
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = true;
+		//攻撃移動方向更新
+		if (!UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z = -1.0f;
+		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER]) {
 		//待機状態へ
@@ -626,6 +644,8 @@ void Player::NormalAttack3() {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
 		}
+		//攻撃移動計算
+		AttackMoveCalc(NORMAL_ATTACK3_NUMBER);
 	}
 	else if (m_IsAttackCollision) {
 		//攻撃の当たり判定消滅
@@ -644,6 +664,11 @@ void Player::NormalAttack3() {
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
+		//攻撃移動方向更新
+		if (!UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
+		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER]) {
 		//通常攻撃１段目へ
@@ -667,8 +692,8 @@ void Player::NormalAttack3() {
 		m_IsEffect = false;
 	}
 }
-//通常移動方向設定
-bool Player::NormalMoveVec() {
+//移動方向設定
+bool Player::UpdateNormalMoveVec() {
 	bool IsMove = false;
 
 	m_MoveVec = VZERO;
@@ -716,7 +741,7 @@ bool Player::NormalMoveVec() {
 	return IsMove;
 }
 //移動計算
-void Player::MoveCalc() {
+void Player::NormalMoveCalc() {
 	VECTOR MoveVec = m_MoveVec;
 	//MoveVecを正規化
 	MoveVec = VNorm(MoveVec);
@@ -748,6 +773,71 @@ void Player::MoveCalc() {
 	}
 	m_Pos = VAdd(m_Pos, MoveVec);
 	m_Rot.y = atan2f(-MoveVec.x, -MoveVec.z);
+}
+//攻撃移動方向更新
+bool Player::UpdateAttackMoveVec(int _Index) {
+	bool IsMove = false;
+
+	m_AttackMoveVec[_Index] = VZERO;
+	//奥方向
+	if (InputKey::IsPushKeyRep(KEY_INPUT_W)) {
+		m_AttackMoveVec[_Index].z = -1.0f;
+		IsMove = true;
+	}
+	//手前方向
+	if (InputKey::IsPushKeyRep(KEY_INPUT_S)) {
+		m_AttackMoveVec[_Index].z = 1.0f;
+		IsMove = true;
+	}
+	//左方向
+	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
+		m_AttackMoveVec[_Index].x = 1.0f;
+		IsMove = true;
+	}
+	//右方向
+	if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
+		m_AttackMoveVec[_Index].x = -1.0f;
+		IsMove = true;
+	}
+
+	if (InputPad::GetLAnalogYInput() > 0) {
+		m_AttackMoveVec[_Index].z = -InputPad::GetLAnalogYInput();
+		IsMove = true;
+	}
+
+	if (InputPad::GetLAnalogYInput() < 0) {
+		m_AttackMoveVec[_Index].z = -InputPad::GetLAnalogYInput();
+		IsMove = true;
+	}
+
+	if (InputPad::GetLAnalogXInput() < 0) {
+		m_AttackMoveVec[_Index].x = -InputPad::GetLAnalogXInput();
+		IsMove = true;
+	}
+
+	if (InputPad::GetLAnalogXInput() > 0) {
+		m_AttackMoveVec[_Index].x = -InputPad::GetLAnalogXInput();
+		IsMove = true;
+	}
+
+	return IsMove;
+}
+//攻撃移動計算
+void Player::AttackMoveCalc(int _Index) {
+	VECTOR AttackMoveVec = m_AttackMoveVec[_Index];
+	AttackMoveVec = VNorm(AttackMoveVec);
+	//回転行列
+	MATRIX Mat1, Mat2;
+
+	Mat2 = MGetRotY(m_CamraRot.y);
+	Mat1 = MGetTranslate(AttackMoveVec);
+	Mat1 = MMult(Mat1, Mat2);
+	AttackMoveVec = VGet(Mat1.m[3][0], 0.0f, Mat1.m[3][2]);
+
+	AttackMoveVec.x = AttackMoveVec.x * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
+	AttackMoveVec.z = AttackMoveVec.z * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
+	m_Pos = VAdd(m_Pos, AttackMoveVec);
+	m_Rot.y = atan2f(-AttackMoveVec.x, -AttackMoveVec.z);
 }
 //スタミナ処理
 void Player::StaminaManager() {
@@ -840,6 +930,11 @@ void Player::ActionManager() {
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_State = NORMAL_ATTACK1;
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
+		//攻撃移動方向更新
+		if (!UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
+		}
 	}
 }
 //重力処理

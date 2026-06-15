@@ -24,9 +24,6 @@ void TargetCamera::Init() {
 	m_CameraPoint = { -0.5f,25.0f,52.5f };
 	m_CameraPos = { -0.5f,25.0f,52.5f };
 
-	m_IsCameraPosSetEnd = false;
-	m_IsTargetPosSetEnd = false;
-
 	Update();
 }
 //ロックオン
@@ -66,42 +63,8 @@ void TargetCamera::Step(Player& _Player) {
 	m_TargetPoint = _Player.GetAttackTargetPos();
 	m_TargetPoint.y -= 20.0f;
 
-	/*m_TargetPos = m_TargetPoint;
-	m_CameraPos = m_CameraPoint;*/
-
 	if (!_Player.GetIsAction(Player::TagState::SKILL_ATTACK)) {
 		m_CameraRot.y = m_CalcRot.y;
-	}
-
-	if (!m_IsCameraPosSetEnd || !m_IsTargetPosSetEnd) {
-		VECTOR v1 = VSub(m_CameraPoint, m_CameraPos);
-
-		float f1 = VSize(v1);
-		if (f1 > CALC_LEN) {
-			v1 = VNorm(v1);
-			v1 = VScale(v1, 5.0f);
-			m_CameraPos = VAdd(m_CameraPos, v1);
-		}
-		else {
-			m_IsCameraPosSetEnd = true;
-			m_CameraPos = m_CameraPoint;
-		}
-
-		VECTOR v2 = VSub(m_TargetPoint, m_TargetPos);
-		float f2 = VSize(v2);
-		if (f2 > CALC_LEN) {
-			v2 = VNorm(v2);
-			v2 = VScale(v2, 5.0f);
-			m_TargetPos = VAdd(m_TargetPos, v2);
-		}
-		else {
-			m_IsTargetPosSetEnd = true;
-			m_TargetPos = m_TargetPoint;
-		}
-	}
-	else {
-		m_TargetPos = m_TargetPoint;
-		m_CameraPos = m_CameraPoint;
 	}
 }
 //更新処理
