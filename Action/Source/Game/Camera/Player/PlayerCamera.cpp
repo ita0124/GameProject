@@ -1,8 +1,8 @@
 #include "PlayerCamera.h"
 
 namespace {
-	const VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	const float		LERP_RATE = 0.1f;				//１フレームの補完率
+	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
+	constexpr float		LERP_RATE = 0.1f;				//１フレームの補完率
 }
 
 //コンストラクタ

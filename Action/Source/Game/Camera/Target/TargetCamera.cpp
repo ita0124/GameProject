@@ -1,8 +1,8 @@
 #include "TargetCamera.h"
 
 namespace {
-	const VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	const float		LERP_RATE = 0.1f;				//１フレームの補完率
+	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
+	constexpr float		LERP_RATE = 0.1f;				//１フレームの補完率
 }
 
 //コンストラクタ
@@ -28,8 +28,7 @@ void TargetCamera::Init() {
 //ロックオン
 void TargetCamera::Step(Player& _Player) {
 	//プレイヤー→敵の方向から回転角を作る
-	/*VECTOR Dir = VSub(_Player.GetAttackTargetPos(), _Player.GetPos());*/
-	VECTOR Dir = VSub(VZERO, _Player.GetPos());
+	VECTOR Dir = VSub(_Player.GetAttackTargetPos(), _Player.GetPos());
 
 	Dir = VNorm(Dir);
 
@@ -61,11 +60,12 @@ void TargetCamera::Step(Player& _Player) {
 	}
 
 	//_TargetPos代入
-	/*m_TargetPoint = _Player.GetAttackTargetPos();*/
-	m_TargetPoint = VZERO;
+	m_TargetPoint = _Player.GetAttackTargetPos();
 	m_TargetPoint.y -= 20.0f;
 
-	m_CameraRot.y = m_CalcRot.y;
+	if (_Player.GetState() != Player::TagState::SKILL_ATTACK) {
+		m_CameraRot.y = m_CalcRot.y;
+	}
 
 	//補間
 	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);

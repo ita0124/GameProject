@@ -1,7 +1,7 @@
 #include "FPS.h"
 
-const int FRAME_RATE = 60;
-const int FRAME_RATE_MILLI_SECOND = 1000 / FRAME_RATE;
+constexpr int FRAME_RATE = 60;
+constexpr int FRAME_RATE_MILLI_SECOND = 1000 / FRAME_RATE;
 
 float DebugFPS::m_FrameRate;
 int DebugFPS::m_NowTime;

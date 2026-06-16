@@ -1,23 +1,23 @@
 #include "HitPoints.h"
 
 namespace {
-	const char* FILE_PATH[HitPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//画像パス
+	constexpr const char* FILE_PATH[HitPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//画像パス
 	"Data/UI/HitPoints.png",
 	"Data/UI/Gray.png",
 	};
 
-	const int DIVIDE_NUM[HitPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//画像の分割数
+	constexpr int DIVIDE_NUM[HitPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//画像の分割数
 		1,
 		1,
 	};
 
-	const int		GRAPHICS_SIZEX = 5;					//画像サイズ(X軸)
-	const int		GRAPHICS_SIZEY = 25;				//画像サイズ(Y軸)
+	constexpr int		GRAPHICS_SIZEX = 5;					//画像サイズ(X軸)
+	constexpr int		GRAPHICS_SIZEY = 25;				//画像サイズ(Y軸)
 
-	const VECTOR	HEAD_POS = { 50.0f,50.0f,0.0f };	//先頭座標
-	const int		MULT_X = 5;							//次の画像をどれだけ離すか(X軸)
+	constexpr VECTOR	HEAD_POS = { 50.0f,50.0f,0.0f };	//先頭座標
+	constexpr int		MULT_X = 5;							//次の画像をどれだけ離すか(X軸)
 
-	const int		MAX_NUM = 100;
+	constexpr int		MAX_NUM = 100;
 }
 
 //コンストラクタ

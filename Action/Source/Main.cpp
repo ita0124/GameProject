@@ -58,8 +58,8 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	float	pers = 60.0f * DX_PI_F / 180.0f;
 	SetupCamera_Perspective(pers);
 
-	const int EFFECTNUM = 10;
-	const int PARTICLENUM = 1000;
+	constexpr int EFFECTNUM = 10;
+	constexpr int PARTICLENUM = 1000;
 	//第一:エフェクト総数
 	//第二:パーティクル総数
 	MyEffeckseer::Init(EFFECTNUM, PARTICLENUM);

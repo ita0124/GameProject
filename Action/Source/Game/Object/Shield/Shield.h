@@ -4,8 +4,6 @@
 //盾クラス
 class Shield :public ObjectBase {
 public:
-
-
 	//コンストラクタ
 	Shield();
 	//デストラクタ

@@ -1,8 +1,8 @@
 #include "Result.h"
 
 namespace {
-	const int CHANGE_TIME = 180;
-	const int BLENDPARM_MAX = 255;
+	constexpr int CHANGE_TIME = 180;
+	constexpr int BLENDPARM_MAX = 255;
 }
 
 //コンストラクタ

@@ -2,61 +2,61 @@
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
 
 namespace {
-	const float		RAD = 5.0f;																//半径
-	const VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
+	constexpr float		RAD = 5.0f;																//半径
+	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	const VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
 
-	const float		HIT_POINTS = 100.0f;													//体力
-	const float		STAMINA = 75.0f;														//スタミナ
-	const int		SKILL_POINTS = 50;														//スキルポイント
-	const float		MAX_HITPOINTS = 100.0f;													//最大体力
-	const float		MAX_STAMINA = 100.0f;													//最大スタミナ
-	const int		MAX_SKILL_POINTS = 100;													//最大スキルポイント
+	constexpr float		HIT_POINTS = 100.0f;													//体力
+	constexpr float		STAMINA = 75.0f;														//スタミナ
+	constexpr int		SKILL_POINTS = 50;														//スキルポイント
+	constexpr float		MAX_HITPOINTS = 100.0f;													//最大体力
+	constexpr float		MAX_STAMINA = 100.0f;													//最大スタミナ
+	constexpr int		MAX_SKILL_POINTS = 100;													//最大スキルポイント
 
-	const float		ADD_STAMINA = 0.01f;													//プレイヤースタミナ回復量(１フレーム毎)
+	constexpr float		ADD_STAMINA = 0.01f;													//プレイヤースタミナ回復量(１フレーム毎)
 
-	const float		WALK_MOVE_MULT = 1.25f;													//歩き時の移動乗算値
-	const float		ROLLING_MOVE_MULT = 3.0f;												//ローリング時の移動乗算値
-	const float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
-	const float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
-	const float		SKILL_ATTACK_MOVE_MULT = 20.0f;											//スキル攻撃時の移動乗算値
-	const float		PLAYER_NORMAL_ATTACK_MOVE_MULT = 5.0f;									//通常攻撃時の移動乗算値
+	constexpr float		WALK_MOVE_MULT = 1.25f;													//歩き時の移動乗算値
+	constexpr float		ROLLING_MOVE_MULT = 3.0f;												//ローリング時の移動乗算値
+	constexpr float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
+	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
+	constexpr float		SKILL_ATTACK_MOVE_MULT = 20.0f;											//スキル攻撃時の移動乗算値
+	constexpr float		PLAYER_NORMAL_ATTACK_MOVE_MULT = 5.0f;									//通常攻撃時の移動乗算値
 
-	const float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
+	constexpr float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
-	const float		GUARD_MIN_STAMINA = 10.0f;												//ガード状態維持に必要な最低限のスタミナ量
-	const float		ROLLING_MIN_STAMINA = 10.0f;											//ローリング発動に必要な最低限のスタミナ量
+	constexpr float		GUARD_MIN_STAMINA = 10.0f;												//ガード状態維持に必要な最低限のスタミナ量
+	constexpr float		ROLLING_MIN_STAMINA = 10.0f;											//ローリング発動に必要な最低限のスタミナ量
 
-	const float		SKILL_ATTACK_COLLISION_START = 15.0f;									//スキル攻撃の当たり判定開始フレーム
-	const float		SKILL_ATTACK_COLLISION_END = 35.0f;										//スキル攻撃の当たり判定終了フレーム
-	const float		NORMAL_ATTACK1_COLLISION_START = 10.0f;									//通常攻撃１段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK1_COLLISION_END = 15.0f;									//通常攻撃１段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK1_TRANSITION = 17.0f;										//通常攻撃１段目から通常攻撃２段目に移行するフレーム
-	const float		NORMAL_ATTACK2_COLLISION_START = 10.0f;									//通常攻撃２段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK2_COLLISION_END = 15.0f;									//通常攻撃２段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK2_TRANSITION = 17.0f;										//通常攻撃２段目から通常攻撃３段目に移行するフレーム
-	const float		NORMAL_ATTACK3_COLLISION_START = 10.0f;									//通常攻撃３段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK3_COLLISION_END = 15.0f;									//通常攻撃３段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK3_TRANSITION = 17.0f;										//通常攻撃３段目から通常攻撃１段目に移行するフレーム
+	constexpr float		SKILL_ATTACK_COLLISION_START = 15.0f;									//スキル攻撃の当たり判定開始フレーム
+	constexpr float		SKILL_ATTACK_COLLISION_END = 35.0f;										//スキル攻撃の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK1_COLLISION_START = 10.0f;									//通常攻撃１段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK1_COLLISION_END = 15.0f;									//通常攻撃１段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK1_TRANSITION = 17.0f;										//通常攻撃１段目から通常攻撃２段目に移行するフレーム
+	constexpr float		NORMAL_ATTACK2_COLLISION_START = 10.0f;									//通常攻撃２段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK2_COLLISION_END = 15.0f;									//通常攻撃２段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK2_TRANSITION = 17.0f;										//通常攻撃２段目から通常攻撃３段目に移行するフレーム
+	constexpr float		NORMAL_ATTACK3_COLLISION_START = 10.0f;									//通常攻撃３段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK3_COLLISION_END = 15.0f;									//通常攻撃３段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK3_TRANSITION = 17.0f;										//通常攻撃３段目から通常攻撃１段目に移行するフレーム
 
-	const float		SKILL_ATTACKPOWER = 100.0f;												//スキル攻撃時の攻撃力
-	const float		NORMAL_ATTACK1_POWER = 10.0f;											//通常攻撃１段目時の攻撃力
-	const float		NORAML_ATTACK2_POWER = 15.0f;											//通常攻撃２段目時の攻撃力
-	const float		NORAML_ATTACK3_POWER = 20.0f;											//通常攻撃３段目時の攻撃力
+	constexpr float		SKILL_ATTACKPOWER = 100.0f;												//スキル攻撃時の攻撃力
+	constexpr float		NORMAL_ATTACK1_POWER = 10.0f;											//通常攻撃１段目時の攻撃力
+	constexpr float		NORAML_ATTACK2_POWER = 15.0f;											//通常攻撃２段目時の攻撃力
+	constexpr float		NORAML_ATTACK3_POWER = 20.0f;											//通常攻撃３段目時の攻撃力
 
-	const float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
+	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 
-	const float		PARRY_WINDOW_TIME = 10;													//ガードアクション実行後のパリィに移行できる許容時間
+	constexpr float		PARRY_WINDOW_TIME = 10;													//ガードアクション実行後のパリィに移行できる許容時間
 
-	const int		ROLLING_TIME = 20;														//ローリング持続時間
-	const float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
+	constexpr int		ROLLING_TIME = 20;														//ローリング持続時間
+	constexpr float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
 
-	const float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
+	constexpr float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
 
-	const float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
+	constexpr float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
 
-	const char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
+	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
 
 //コンストラクタ

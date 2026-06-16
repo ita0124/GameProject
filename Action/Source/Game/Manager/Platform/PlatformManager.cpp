@@ -1,8 +1,8 @@
 #include "PlatformManager.h"
 
 namespace {
-	const char CSV_PLATFORM_FILE_PATH[] = ("Data/CSV/Stage/Platform.csv");	//プラットフォームIDCSVファイルパス
-	const char CSV_STAGE_FILE_PATH[] = ("Data/CSV/Stage/Stage.csv");		//ステージCSVファイルパス
+	constexpr char CSV_PLATFORM_FILE_PATH[] = ("Data/CSV/Stage/Platform.csv");	//プラットフォームIDCSVファイルパス
+	constexpr char CSV_STAGE_FILE_PATH[] = ("Data/CSV/Stage/Stage.csv");		//ステージCSVファイルパス
 }
 
 //初期化処理

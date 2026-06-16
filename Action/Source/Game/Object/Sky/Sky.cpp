@@ -1,9 +1,9 @@
 #include "Sky.h"
 
 namespace {
-	const VECTOR	SCALE = { 2500.0f,2500.0f,2500.0f };		//初期スケール
-	const float		ROTY_SPEED = 0.001f;						//Y軸回転速度
-	const char		FILE_PATH[] = ("Data/Model/Sky/Sky.mv1");	//モデルファイルパス
+	constexpr VECTOR	SCALE = { 2500.0f,2500.0f,2500.0f };		//初期スケール
+	constexpr float		ROTY_SPEED = 0.001f;						//Y軸回転速度
+	constexpr char		FILE_PATH[] = ("Data/Model/Sky/Sky.mv1");	//モデルファイルパス
 }
 
 //コンストラクタ

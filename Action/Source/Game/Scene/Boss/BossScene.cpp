@@ -1,10 +1,10 @@
 #include "BossScene.h"
 
 namespace {
-	const int	LOAD_TIME = 60;			//非同期処理の最低時間
-	const float	HNDLNUM_ADD = 0.1f;		//HndlNumに１フレームずつ加算する
+	constexpr int	LOAD_TIME = 60;			//非同期処理の最低時間
+	constexpr float	HNDLNUM_ADD = 0.1f;		//HndlNumに１フレームずつ加算する
 
-	const char* FILE_PATH[HNDL_MAX] = {	//非同期中に表示する画像のファイルパス
+	constexpr const char* FILE_PATH[HNDL_MAX] = {	//非同期中に表示する画像のファイルパス
 	"Data/Load/Elephant1.png",			//象１頭
 	"Data/Load/Elephant2.png",			//象２頭
 	"Data/Load/Elephant3.png",			//象３頭

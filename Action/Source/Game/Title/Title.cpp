@@ -1,8 +1,8 @@
 #include "Title.h"
 
 namespace {
-	const int CHANGE_TIME = 90;
-	const int BLENDPARM_MAX = 255;
+	constexpr int CHANGE_TIME = 90;
+	constexpr int BLENDPARM_MAX = 255;
 }
 
 //コンストラクタ

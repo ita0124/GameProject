@@ -2,9 +2,9 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	const float		RAD = 10.0f;											//半径
+	constexpr float		RAD = 10.0f;											//半径
 
-	const char		FILE_PATH[] = ("Data/Model/Player/Shield/Shield.mv1");	//モデルファイルパス
+	constexpr char		FILE_PATH[] = ("Data/Model/Player/Shield/Shield.mv1");	//モデルファイルパス
 }
 
 //コンストラクタ

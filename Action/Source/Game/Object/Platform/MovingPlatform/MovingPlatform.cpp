@@ -1,9 +1,9 @@
 #include "MovingPlatform.h"
 
 namespace {
-	const float		MIN_LEN = 0.0f;
-	const VECTOR	INIT_POS = { 25.0f,0.0f,0.0f };
-	const char		FILE_PATH[] = ("Data/Model/Stage/MovingPlatform/MovingPlatform.mv1");	//モデルファイルパス
+	constexpr float		MIN_LEN = 0.0f;
+	constexpr VECTOR	INIT_POS = { 25.0f,0.0f,0.0f };
+	constexpr char		FILE_PATH[] = ("Data/Model/Stage/MovingPlatform/MovingPlatform.mv1");	//モデルファイルパス
 }
 
 //コンストラクタ

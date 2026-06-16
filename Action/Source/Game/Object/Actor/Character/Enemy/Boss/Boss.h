@@ -2,8 +2,8 @@
 #include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 
 namespace {
-	const int PATTERN_INDEX = 5;
-	const int ATTACK_INDEX = 7;
+	constexpr int PATTERN_INDEX = 5;
+	constexpr int ATTACK_INDEX = 7;
 }
 
 //ボスクラス

@@ -1,8 +1,8 @@
 #include "ObjectBase.h"
 
 namespace {
-	const float	GRAVITY = -0.1f;			//重力
-	const float	GRAVITY_MAX = -0.5f;		//最大重力
+	constexpr float	GRAVITY = -0.1f;			//重力
+	constexpr float	GRAVITY_MAX = -0.5f;		//最大重力
 }
 
 //コンストラクタ

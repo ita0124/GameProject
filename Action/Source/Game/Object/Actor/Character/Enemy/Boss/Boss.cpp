@@ -2,81 +2,81 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	const VECTOR	INIT_POS = { 0.0f,0.0f,-500.0f };												//初期座標
+	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,-500.0f };												//初期座標
 
-	const float		RAD = 50.0f;																	//半径
-	const VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
+	constexpr float		RAD = 50.0f;																	//半径
+	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	const float		HIT_POINTS = 1000.0f;															//体力
-	const float		MAX_HITPOINTS = 1000.0f;														//最大体力
+	constexpr float		HIT_POINTS = 1000.0f;															//体力
+	constexpr float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
-	const float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
-	const float		ACTION_ATTACK_DISTANCE = 75.0f;													//攻撃に移行するプレイヤーとの距離
+	constexpr float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
+	constexpr float		ACTION_ATTACK_DISTANCE = 75.0f;													//攻撃に移行するプレイヤーとの距離
 
-	const float		WALK_MULT = 5.0f;																//歩き時の移動乗算値
-	const float		REAR_ATTACK_MULT = -7.5f;														//後方攻撃の移動乗算値
-	const float		JUMP_MULT = 10.0f;																//ジャンプの移動乗算値
-	const float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
-	const float		SPECIALSTART_MULT = 10.0f;														//必殺開始の移動乗算値
+	constexpr float		WALK_MULT = 5.0f;																//歩き時の移動乗算値
+	constexpr float		REAR_ATTACK_MULT = -7.5f;														//後方攻撃の移動乗算値
+	constexpr float		JUMP_MULT = 10.0f;																//ジャンプの移動乗算値
+	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
+	constexpr float		SPECIALSTART_MULT = 10.0f;														//必殺開始の移動乗算値
 
-	const float		NORMAL_ATTACK1_CHANGE_MATERIAL_START = 7.0f;									//通常攻撃１段目のマテリアル変更開始フレーム
-	const float		NORMAL_ATTACK1_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃１段目のマテリアル変更終了フレーム
-	const float		NORMAL_ATTACK1_COLLISION_START = 10.0f;											//通常攻撃１段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK1_COLLISION_END = 15.0f;											//通常攻撃１段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK1_EFFECT_REQUEST = 12.0f;											//通常攻撃１段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK1_CHANGE_MATERIAL_START = 7.0f;									//通常攻撃１段目のマテリアル変更開始フレーム
+	constexpr float		NORMAL_ATTACK1_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃１段目のマテリアル変更終了フレーム
+	constexpr float		NORMAL_ATTACK1_COLLISION_START = 10.0f;											//通常攻撃１段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK1_COLLISION_END = 15.0f;											//通常攻撃１段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK1_EFFECT_REQUEST = 12.0f;											//通常攻撃１段目のエフェクト呼び出しフレーム
 
-	const float		NORMAL_ATTACK2_CHANGE_MATERIAL_START = 5.0f;									//通常攻撃２段目のマテリアル変更開始フレーム
-	const float		NORMAL_ATTACK2_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃２段目のマテリアル変更終了フレーム
-	const float		NORMAL_ATTACK2_COLLISION_START = 10.0f;											//通常攻撃２段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK2_COLLISION_END = 20.0f;											//通常攻撃２段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK2_EFFECT_REQUEST = 15.0f;											//通常攻撃２段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK2_CHANGE_MATERIAL_START = 5.0f;									//通常攻撃２段目のマテリアル変更開始フレーム
+	constexpr float		NORMAL_ATTACK2_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃２段目のマテリアル変更終了フレーム
+	constexpr float		NORMAL_ATTACK2_COLLISION_START = 10.0f;											//通常攻撃２段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK2_COLLISION_END = 20.0f;											//通常攻撃２段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK2_EFFECT_REQUEST = 15.0f;											//通常攻撃２段目のエフェクト呼び出しフレーム
 
-	const float		NORMAL_ATTACK3_CHANGE_MATERIAL_START = 25.0f;									//通常攻撃３段目のマテリアル変更開始フレーム
-	const float		NORMAL_ATTACK3_CHANGE_MATERIAL_END = 30.0f;										//通常攻撃３段目のマテリアル変更終了フレーム
-	const float		NORMAL_ATTACK3_COLLISION_START = 30.0f;											//通常攻撃３段目の当たり判定開始フレーム
-	const float		NORMAL_ATTACK3_COLLISION_END = 40.0f;											//通常攻撃３段目の当たり判定終了フレーム
-	const float		NORMAL_ATTACK3_EFFECT_REQUEST = 40.0f;											//通常攻撃３段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK3_CHANGE_MATERIAL_START = 25.0f;									//通常攻撃３段目のマテリアル変更開始フレーム
+	constexpr float		NORMAL_ATTACK3_CHANGE_MATERIAL_END = 30.0f;										//通常攻撃３段目のマテリアル変更終了フレーム
+	constexpr float		NORMAL_ATTACK3_COLLISION_START = 30.0f;											//通常攻撃３段目の当たり判定開始フレーム
+	constexpr float		NORMAL_ATTACK3_COLLISION_END = 40.0f;											//通常攻撃３段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK3_EFFECT_REQUEST = 40.0f;											//通常攻撃３段目のエフェクト呼び出しフレーム
 
-	const float		REAR_ATTACK_CHANGE_MATERIAL_START = 10.0f;										//後方攻撃のマテリアル変更開始フレーム
-	const float		REAR_ATTACK_CHANGE_MATERIAL_END = 15.0f;										//後方攻撃のマテリアル変更終了フレーム
-	const float		REAR_ATTACK_COLLISION_START = 15.0f;											//後方攻撃の当たり判定開始フレーム
-	const float		REAR_ATTACK_COLLISION_END = 25.0f;												//後方攻撃の当たり判定終了フレーム
+	constexpr float		REAR_ATTACK_CHANGE_MATERIAL_START = 10.0f;										//後方攻撃のマテリアル変更開始フレーム
+	constexpr float		REAR_ATTACK_CHANGE_MATERIAL_END = 15.0f;										//後方攻撃のマテリアル変更終了フレーム
+	constexpr float		REAR_ATTACK_COLLISION_START = 15.0f;											//後方攻撃の当たり判定開始フレーム
+	constexpr float		REAR_ATTACK_COLLISION_END = 25.0f;												//後方攻撃の当たり判定終了フレーム
 
-	const float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
+	constexpr float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
 
-	const float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
-	const float		CHARGE_END_LEN = RAD + 10.0f;													//突進アクションから次の状態に移行する最低距離
+	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
+	constexpr float		CHARGE_END_LEN = RAD + 10.0f;													//突進アクションから次の状態に移行する最低距離
 
-	const float		SPECIAL_START_END_LEN = 25.0f;													//必殺開始アクションから次の状態に移行する最低距離
+	constexpr float		SPECIAL_START_END_LEN = 25.0f;													//必殺開始アクションから次の状態に移行する最低距離
 
-	const float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025f;										//必殺チャージ中のアニメーション再生速度加算値
-	const int		SPECIAL_CHARGE_END_TIME = 1200;													//必殺チャージ終了フレーム
+	constexpr float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025f;										//必殺チャージ中のアニメーション再生速度加算値
+	constexpr int		SPECIAL_CHARGE_END_TIME = 1200;													//必殺チャージ終了フレーム
 
-	const VECTOR	SPECIAL_INIT_VECTOR = { 0.0f,500.0f,0.0f };										//必殺の初めに座標を変更するときの値
+	constexpr VECTOR	SPECIAL_INIT_VECTOR = { 0.0f,500.0f,0.0f };										//必殺の初めに座標を変更するときの値
 
-	const float		SPECIAL_POSY_CALC = -50.0f;														//必殺中のY座標計算値
+	constexpr float		SPECIAL_POSY_CALC = -50.0f;														//必殺中のY座標計算値
 
-	const float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
-	const float		NORMAL_ATTACK2_COLLISION_RAD = 20.0f;											//通常攻撃２段目の攻撃当たり判定の半径
-	const float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
-	const float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
+	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
+	constexpr float		NORMAL_ATTACK2_COLLISION_RAD = 20.0f;											//通常攻撃２段目の攻撃当たり判定の半径
+	constexpr float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
+	constexpr float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
 
-	const float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
-	const float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージ
+	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
+	constexpr float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージ
 
-	const float		NORMAL_ATTACK1_POWER = 10.0f;													//通常攻撃１段目時の攻撃力
-	const float		NORAML_ATTACK2_POWER = 15.0f;													//通常攻撃２段目時の攻撃力
-	const float		NORAML_ATTACK3_POWER = 20.0f;													//通常攻撃３段目時の攻撃力
-	const float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
-	const float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
+	constexpr float		NORMAL_ATTACK1_POWER = 10.0f;													//通常攻撃１段目時の攻撃力
+	constexpr float		NORAML_ATTACK2_POWER = 15.0f;													//通常攻撃２段目時の攻撃力
+	constexpr float		NORAML_ATTACK3_POWER = 20.0f;													//通常攻撃３段目時の攻撃力
+	constexpr float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
+	constexpr float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
 
-	const float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
+	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
-	const float		PARRY_DOWN_POWER_THRESHOLD = 17.0f;												//パリィされたときにダウンへ移行する攻撃力
-	const float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
+	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 17.0f;												//パリィされたときにダウンへ移行する攻撃力
+	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
-	const char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
-	const char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
+	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
+	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
 }
 
 //コンストラクタ

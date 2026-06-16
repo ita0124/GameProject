@@ -6,9 +6,9 @@
 #include "Game/Object/Platform/JumpPlatform/JumpPlatform.h"
 
 namespace {
-	const int PLATFORM_MAX = 100;
-	const int PLATFORM_ID = 1;
-	const int REQUEST_DATA_MAX = 16;
+	constexpr int PLATFORM_MAX = 100;
+	constexpr int PLATFORM_ID = 1;
+	constexpr int REQUEST_DATA_MAX = 16;
 }
 
 class PlatformManager {

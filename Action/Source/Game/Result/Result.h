@@ -3,7 +3,7 @@
 #include "ResultNum.h"
 
 namespace {
-	const int RESULTHANDL_MAX = 5;
+	constexpr int RESULTHANDL_MAX = 5;
 }
 
 class Result {       

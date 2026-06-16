@@ -1,8 +1,8 @@
 #include "NormalPlatform.h"
 
 namespace {
-	const VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
-	const char		FILE_PATH[] = ("Data/Model/Stage/NormalPlatform/NormalPlatform.mv1");	//モデルファイルパス
+	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
+	constexpr char		FILE_PATH[] = ("Data/Model/Stage/NormalPlatform/NormalPlatform.mv1");	//モデルファイルパス
 }
 
 //コンストラクタ

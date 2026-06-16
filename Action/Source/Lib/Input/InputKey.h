@@ -1,7 +1,7 @@
 #pragma once
 #include <DxLib.h>
 
-const int KEY_BUF_MAX = 256;
+constexpr int KEY_BUF_MAX = 256;
 
 //キーボード入力クラス
 class InputKey {

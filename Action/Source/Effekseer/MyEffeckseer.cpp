@@ -2,7 +2,7 @@
 
 MyEffeckseer::EFFECT_DATA MyEffeckseer::m_Effect[EFFECT_NUM];
 
-const char* FilePath[MyEffeckseer::EFFECTID::EFFECT_NUM] = {
+constexpr const char* FilePath[MyEffeckseer::EFFECTID::EFFECT_NUM] = {
 	"Data/Effect/Effect/0tktk01Blow7.efk",
 	"Data/Effect/Effect/1tktk01Blow3.efk",
 	"Data/Effect/Effect/2tktk01Blow9.efk",

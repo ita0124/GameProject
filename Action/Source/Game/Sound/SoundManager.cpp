@@ -5,7 +5,7 @@ using namespace std;
 vector<int>SoundManager::m_Hndl;
 vector<int>SoundManager::m_ThreeDimensionHndl;
 
-const char* FilePath1[SoundManager::TagID::NUM_MAX] = {
+constexpr const char* FilePath1[SoundManager::TagID::NUM_MAX] = {
 	"Data/Sound/SE/1.Sword.mp3",
 	"Data/Sound/SE/7.SwordMiss.mp3",
 	"Data/Sound/SE/8.FlashofLight.mp3",
@@ -23,7 +23,7 @@ const char* FilePath1[SoundManager::TagID::NUM_MAX] = {
 	"Data/Sound/BGM/GameClear.mp3",
 };
 
-const char* FilePath2[SoundManager::TagThreeDimensionID::THIRD_NUM_MAX] = {
+constexpr const char* FilePath2[SoundManager::TagThreeDimensionID::THIRD_NUM_MAX] = {
 	"Data/Sound/SE/100.Three.mp3",
 };
 

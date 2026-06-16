@@ -15,7 +15,7 @@
 
 
 namespace {
-	const int HNDL_MAX = 4;	//非同期処理時に表示する画像のハンドル総数
+	constexpr int HNDL_MAX = 4;	//非同期処理時に表示する画像のハンドル総数
 }
 
 class BossScene :public SceneBase {
