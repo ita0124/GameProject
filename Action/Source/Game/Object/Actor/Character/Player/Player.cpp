@@ -829,7 +829,7 @@ void Player::AttackMoveCalc(int _Index) {
 	//âÒì]çsóÒ
 	MATRIX Mat1, Mat2;
 
-	Mat2 = MGetRotY(m_CamraRot.y);
+	Mat2 = MGetRotY(m_Rot.y);
 	Mat1 = MGetTranslate(AttackMoveVec);
 	Mat1 = MMult(Mat1, Mat2);
 	AttackMoveVec = VGet(Mat1.m[3][0], 0.0f, Mat1.m[3][2]);
