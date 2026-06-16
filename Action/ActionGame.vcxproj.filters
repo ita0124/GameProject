@@ -75,9 +75,6 @@
     <Filter Include="ヘッダー ファイル\Effekseer">
       <UniqueIdentifier>{8961861d-57c6-425e-8042-3a5d1edf3de7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Item">
-      <UniqueIdentifier>{639d25d8-244b-44ee-808c-8bd2ab5f0893}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Base\ObjectBase">
       <UniqueIdentifier>{2e465ab9-8ea5-4b19-ad60-0384c68282ad}</UniqueIdentifier>
     </Filter>
@@ -167,12 +164,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Bace\SceneBase">
       <UniqueIdentifier>{89a2546e-8ddb-4873-bab9-4b3523fdfe37}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Item\HPItem">
-      <UniqueIdentifier>{716edf0b-d0db-4e41-9874-fcbd8192f37f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Item\StaminaItem">
-      <UniqueIdentifier>{4fa090e6-1e00-4379-ac4c-c8d863633035}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Manager\CameraManager">
       <UniqueIdentifier>{a3c73600-cf22-4d2b-8d80-4e9d95e0ed6c}</UniqueIdentifier>
@@ -309,9 +300,6 @@
     <Filter Include="ソース ファイル\Game\UI\Stamina">
       <UniqueIdentifier>{12d36e10-4506-4a38-8c02-c1c21b320b4d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Scene\ResultScene\SelectScene">
-      <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Camera\Player">
       <UniqueIdentifier>{a26b750a-1f50-4140-a6de-b20b28b29824}</UniqueIdentifier>
     </Filter>
@@ -324,6 +312,9 @@
     <Filter Include="ヘッダー ファイル\Game\Camera\Target">
       <UniqueIdentifier>{02efb31a-2cdc-4fee-b937-2a86a10ee9f9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Scene\SelectScene">
+      <UniqueIdentifier>{92962350-27e1-4f80-b46c-461d154a108a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -333,9 +324,6 @@
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputKey.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\Math\MyMath.cpp">
       <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputPad.cpp">
@@ -408,7 +396,7 @@
       <Filter>ソース ファイル\Game\Scene\ResultScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Scene\Select\SelectScene.cpp">
-      <Filter>ソース ファイル\Game\Scene\ResultScene\SelectScene</Filter>
+      <Filter>ソース ファイル\Game\Scene\SelectScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp">
       <Filter>ソース ファイル\Game\Scene\TitleScene</Filter>
@@ -484,9 +472,6 @@
     <ClInclude Include="Source\Lib\Input\InputKey.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Lib\Math\MyMath.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputPad.h">
       <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
@@ -525,12 +510,6 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Item\HP\HPItem.h">
-      <Filter>ヘッダー ファイル\Game\Item\HPItem</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h">
-      <Filter>ヘッダー ファイル\Game\Item\StaminaItem</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h">
       <Filter>ヘッダー ファイル\Game\Manager\CameraManager</Filter>

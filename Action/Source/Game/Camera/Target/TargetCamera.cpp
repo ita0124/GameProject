@@ -1,9 +1,8 @@
 #include "TargetCamera.h"
 
 namespace {
-	const float TARGET_POS = 50.0f;
-	const VECTOR UP_VEC = { 0.0f,10.0f,0.0f };
-	const float CALC_LEN = 5.0f;
+	const VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
+	const float		LERP_RATE = 0.1f;				//１フレームの補完率
 }
 
 //コンストラクタ
@@ -29,7 +28,9 @@ void TargetCamera::Init() {
 //ロックオン
 void TargetCamera::Step(Player& _Player) {
 	//プレイヤー→敵の方向から回転角を作る
-	VECTOR Dir = VSub(_Player.GetAttackTargetPos(), _Player.GetPos());
+	/*VECTOR Dir = VSub(_Player.GetAttackTargetPos(), _Player.GetPos());*/
+	VECTOR Dir = VSub(VZERO, _Player.GetPos());
+
 	Dir = VNorm(Dir);
 
 	//Y軸回転
@@ -39,7 +40,7 @@ void TargetCamera::Step(Player& _Player) {
 	m_CalcRot.x = atan2f(Dir.y, sqrtf(Dir.x * Dir.x + Dir.z * Dir.z));
 
 	//プレイヤー背面のオフセットを作る
-	VECTOR Offset = VGet(0.0f, 20.0f, 100.0f);
+	VECTOR Offset = VGet(0.0f, 25.0f, 100.0f);
 
 	//回転行列を作る
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
@@ -60,12 +61,15 @@ void TargetCamera::Step(Player& _Player) {
 	}
 
 	//_TargetPos代入
-	m_TargetPoint = _Player.GetAttackTargetPos();
+	/*m_TargetPoint = _Player.GetAttackTargetPos();*/
+	m_TargetPoint = VZERO;
 	m_TargetPoint.y -= 20.0f;
 
-	if (!_Player.GetIsAction(Player::TagState::SKILL_ATTACK)) {
-		m_CameraRot.y = m_CalcRot.y;
-	}
+	m_CameraRot.y = m_CalcRot.y;
+
+	//補間
+	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
 }
 //更新処理
 void TargetCamera::Update() {
@@ -91,4 +95,13 @@ void TargetCamera::Draw() {
 	DrawFormatString(50, 400, RED, "注視点座標X:%f", m_TargetPos.x);
 	DrawFormatString(50, 425, RED, "注視点座標Y:%f", m_TargetPos.y);
 	DrawFormatString(50, 450, RED, "注視点座標Z:%f", m_TargetPos.z);
+}
+//現在座標から目標座標へ線形補間した座標を返す
+VECTOR TargetCamera::CameraLerp(VECTOR _CurrentPos, VECTOR _TargetPos, float _LerpRate) {
+	//現在座標から目標座標への方向ベクトルを生成
+	VECTOR MoveVec = VSub(_TargetPos, _CurrentPos);
+	//移動量計算
+	VECTOR AddVec = VScale(MoveVec, _LerpRate);
+	//座標更新
+	return VAdd(_CurrentPos, AddVec);
 }

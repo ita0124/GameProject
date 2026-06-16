@@ -25,8 +25,8 @@ void ItemBase::Load(const char* FilePath) {
 
 //初期化処理
 void ItemBase::Init() {
-	m_PosX = FZERO;			//座標X
-	m_PosY = FZERO;			//座標Y
+	m_PosX = -1.0f;			//座標X
+	m_PosY = -1.0f;			//座標Y
 
 	m_Quantity = 0;			//アイテム個数
 	m_MaxQuantity = 0;		//アイテム最大個数

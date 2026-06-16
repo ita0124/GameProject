@@ -201,7 +201,6 @@
     <ClCompile Include="Source\Lib\Input\InputKey.cpp" />
     <ClCompile Include="Source\Lib\Input\InputPad.cpp" />
     <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp" />
-    <ClCompile Include="Source\Lib\Math\MyMath.cpp" />
     <ClCompile Include="Source\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -219,8 +218,6 @@
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h" />
     <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h" />
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
-    <ClInclude Include="Source\Game\Item\HP\HPItem.h" />
-    <ClInclude Include="Source\Game\Item\Stamina\StaminaItem.h" />
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />
     <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h" />
     <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h" />
@@ -254,7 +251,6 @@
     <ClInclude Include="Source\Lib\Input\InputKey.h" />
     <ClInclude Include="Source\Lib\Input\InputPad.h" />
     <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h" />
-    <ClInclude Include="Source\Lib\Math\MyMath.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,6 @@
 #pragma once
 #include "Comon.h"
+#include <vector>
 
 class SoundManager {
 public:
@@ -30,8 +31,8 @@ public:
 	};
 
 private:
-	static vector<int>m_Hndl;	//音楽ハンドル
-	static vector<int>m_ThreeDimensionHndl;
+	static std::vector<int>m_Hndl;	//音楽ハンドル
+	static std::vector<int>m_ThreeDimensionHndl;
 public:
 
 	//コンストラクタ・デストラクタ

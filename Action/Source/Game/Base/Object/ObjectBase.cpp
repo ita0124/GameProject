@@ -1,7 +1,7 @@
 #include "ObjectBase.h"
 
 namespace {
-	const float	GRAVITY = -0.05f;			//重力
+	const float	GRAVITY = -0.1f;			//重力
 	const float	GRAVITY_MAX = -0.5f;		//最大重力
 }
 
@@ -23,7 +23,7 @@ void ObjectBase::Init() {
 	m_Size = VZERO;			//サイズ
 	m_PrevPos = m_Pos;		//前フレーム座標
 	m_PlatformVec = VZERO;	//足場の動く移動方向
-	m_Rad = FZERO;			//半径
+	m_Rad = 0.0f;			//半径
 	m_IsActive = true;		//生存フラグオン
 	m_IsCollision = true;	//当たり判定を実行する
 	m_IsPush = false;		//押し出し判定を行わない

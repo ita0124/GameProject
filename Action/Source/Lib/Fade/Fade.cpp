@@ -4,7 +4,7 @@ Fade::TagFade Fade::m_State;
 int Fade::m_Count;
 bool Fade::m_Flg;
 
-static const int FADE_SPEED = 5;
+const int FADE_SPEED = 5;
 
 Fade::Fade() {
 	Init();

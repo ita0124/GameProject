@@ -15,6 +15,13 @@ private:
 
 	VECTOR	m_CameraPoint;		//移動先のカメラ座標
 	VECTOR	m_TargetPoint;		//移動先の注視点座標
+
+	//現在座標から目標座標へ線形補間した座標を返す
+	//_CurrentPos		:現在座標
+	//_TargetPos		:目標座標
+	//_LerpRate			:補間率 
+	//return			:VECTOR
+	VECTOR	CameraLerp(VECTOR _CurrentPos, VECTOR _TargetPos, float _LerpRate);
 public:
 	//コンストラクタ
 	TargetCamera();

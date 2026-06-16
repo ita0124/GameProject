@@ -2,7 +2,7 @@
 #include "Comon.h"
 
 namespace {
-	static constexpr int TAITLEHANDL_MAX = 3;
+	const int TAITLEHANDL_MAX = 3;
 }
 
 class Title {

@@ -1,5 +1,6 @@
 #pragma once
 #include "Comon.h"
+#include <vector>
 
 //2Dオブジェクトベースクラス
 class Object2DBase {
@@ -8,7 +9,7 @@ protected:
 	float					m_Rot;		//回転率
 	VECTOR					m_Scale;	//拡縮
 	VECTOR					m_Size;		//サイズ
-	vector<vector<int>>		m_Hndl;		//画像ハンドル
+	std::vector<std::vector<int>>		m_Hndl;		//画像ハンドル
 	float					m_Rad;		//半径
 	bool					m_IsActive;	//生存フラグ
 	bool					m_IsTurn;	//画像反転をさせるか

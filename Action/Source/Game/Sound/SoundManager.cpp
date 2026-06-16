@@ -1,5 +1,7 @@
 #include "SoundManager.h"
 
+using namespace std;
+
 vector<int>SoundManager::m_Hndl;
 vector<int>SoundManager::m_ThreeDimensionHndl;
 

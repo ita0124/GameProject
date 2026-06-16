@@ -1,13 +1,13 @@
 #pragma once
 #include "Comon.h"
 
-static const int USE_PAD_NUM = 1;				//使用するコントローラーの数
+const int USE_PAD_NUM = 1;				//使用するコントローラーの数
 
-static const short THUMB_MAX = 32767;		//アナログスティックの最大強度
+const short THUMB_MAX = 32767;		//アナログスティックの最大強度
 
-static const float TRIGGER_MAX = 255.0f;	//トリガーの最大強度
+const float TRIGGER_MAX = 255.0f;	//トリガーの最大強度
 
-static const float ANALOG_MIN = 0.05f;
+const float ANALOG_MIN = 0.05f;
 
 /*
 XInputボタン入力定義

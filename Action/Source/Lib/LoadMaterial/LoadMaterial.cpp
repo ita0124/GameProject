@@ -10,14 +10,14 @@ int LoadMaterial::MATERIAL_DAMAGE;
 int LoadMaterial::MATERIAL_GRAY;
 
 namespace {
-	static const char FILEPATH1[] = ("Data/Color/Black.png");
-	static const char FILEPATH2[] = ("Data/Color/Blue.png");
-	static const char FILEPATH3[] = ("Data/Color/Red.png");
-	static const char FILEPATH4[] = ("Data/Color/GraBlue.png");
-	static const char FILEPATH5[] = ("Data/Color/GraRed.png");
-	static const char FILEPATH6[] = ("Data/Color/Yellow.png");
-	static const char FILEPATH7[] = ("Data/Color/Damege.png");
-	static const char FILEPATH8[] = ("Data/Color/Dimgray.png");
+	const char FILEPATH1[] = ("Data/Color/Black.png");
+	const char FILEPATH2[] = ("Data/Color/Blue.png");
+	const char FILEPATH3[] = ("Data/Color/Red.png");
+	const char FILEPATH4[] = ("Data/Color/GraBlue.png");
+	const char FILEPATH5[] = ("Data/Color/GraRed.png");
+	const char FILEPATH6[] = ("Data/Color/Yellow.png");
+	const char FILEPATH7[] = ("Data/Color/Damege.png");
+	const char FILEPATH8[] = ("Data/Color/Dimgray.png");
 }
 
 //コンストラクタ・デストラクタ

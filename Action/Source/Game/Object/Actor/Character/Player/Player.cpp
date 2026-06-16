@@ -95,9 +95,9 @@ void Player::Init() {
 	m_JumpCalc = 0.0f;							//ジャンプ力計算
 
 	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
-	m_KnockBackDistance = FZERO;				//現在のノックバック量
-	m_KnockBackMaxDistance = FZERO;				//最大ノックバック量
-	m_KnockBackSub = FZERO;						//1フレーム毎のノックバック力減衰量
+	m_KnockBackDistance = 0.0f;				//現在のノックバック量
+	m_KnockBackMaxDistance = 0.0f;				//最大ノックバック量
+	m_KnockBackSub = 0.0f;						//1フレーム毎のノックバック力減衰量
 	m_KnockBackDuration = 0;					//ノックバック継続時間	
 	m_IsKnockBackCalcStart = true;				//ノックバック計算を始めるフラグ
 	m_IsKnockBack = false;						//ノックバック中フラグ

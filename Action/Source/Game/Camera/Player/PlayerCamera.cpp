@@ -1,8 +1,8 @@
 #include "PlayerCamera.h"
 
 namespace {
-	const VECTOR UP_VEC = { 0.0f,10.0f,0.0f };
-	const float CALC_LEN = 5.0f;
+	const VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
+	const float		LERP_RATE = 0.1f;				//１フレームの補完率
 }
 
 //コンストラクタ
@@ -89,6 +89,10 @@ void PlayerCamera::Step(Player& _Player) {
 	m_CameraPoint = VAdd(m_TargetPoint, CameraPosCalc);
 
 	m_CameraRot.y = m_CalcRot.y;
+
+	//補間
+	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
 }
 //更新処理
 void PlayerCamera::Update() {

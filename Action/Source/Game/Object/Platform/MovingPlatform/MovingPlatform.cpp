@@ -19,7 +19,7 @@ void MovingPlatform::Init() {
 	ObjectBase::Init();
 	m_IsEndPos = false;			//終端座標にたどり着いたか
 	m_MoveDir = VZERO;			//移動方向ベクトル
-	m_PrevLen = FZERO;			//前フレームの座標から終端座標までの距離を保存する
+	m_PrevLen = 0.0f;			//前フレームの座標から終端座標までの距離を保存する
 	m_PlatformKinds = MOVING;	//足場オブジェクト種類を再設定
 
 	m_IsHit = false;

@@ -1,5 +1,7 @@
 #include "Object2DBase.h"
 
+using namespace std;
+
 //コンストラクタ
 Object2DBase::Object2DBase() {
 	Init();
@@ -14,7 +16,7 @@ void Object2DBase::Init() {
 	m_Rot = 0.0f;								//回転率
 	m_Scale = VONE;								//拡縮
 	m_Size = VZERO;								//サイズ
-	m_Rad = FZERO;								//半径
+	m_Rad = 0.0f;								//半径
 	m_IsActive = true;							//生存フラグ
 	m_IsTurn = false;							//画像反転させるか
 

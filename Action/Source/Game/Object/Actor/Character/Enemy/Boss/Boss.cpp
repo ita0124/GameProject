@@ -52,7 +52,7 @@ namespace {
 	const float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025f;										//必殺チャージ中のアニメーション再生速度加算値
 	const int		SPECIAL_CHARGE_END_TIME = 1200;													//必殺チャージ終了フレーム
 
-	const VECTOR	SPECIAL_INIT_VECTOR = { FZERO,500.0f,FZERO };									//必殺の初めに座標を変更するときの値
+	const VECTOR	SPECIAL_INIT_VECTOR = { 0.0f,500.0f,0.0f };										//必殺の初めに座標を変更するときの値
 
 	const float		SPECIAL_POSY_CALC = -50.0f;														//必殺中のY座標計算値
 
@@ -110,13 +110,13 @@ void Boss::Init() {
 
 	for (int Index = 0; Index <= TOSEEND_RIGHT; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
-		m_FrameData[Index].Rad = FZERO;					//ボーン半径
+		m_FrameData[Index].Rad = 0.0f;					//ボーン半径
 		m_FrameData[Index].IsCollision = false;			//ボーン当たり判定
 		m_FrameData[Index].IsAttackFlg = false;			//ボーン攻撃判定
 	}
 
-	for (int Row = 0; Row < BOSS::PATTERN_INDEX; Row++) {
-		for (int Column = 0; Column < BOSS::ATTACK_INDEX; Column++) {
+	for (int Row = 0; Row < PATTERN_INDEX; Row++) {
+		for (int Column = 0; Column < ATTACK_INDEX; Column++) {
 			m_AttackPatterns[Row][Column] = -1;			//攻撃パターンの配列
 		}
 	}
@@ -133,8 +133,8 @@ void Boss::Load() {
 	//ファイルを開く　失敗したらこれ以降の処理を行わない
 	if (fopen_s(&AttackPatternsFile, ATTACK_CSV_FILE_PATH, "r") != 0)return;
 	//データ取得
-	for (int Column = 0; Column < BOSS::PATTERN_INDEX; Column++) {
-		for (int Row = 0; Row < BOSS::ATTACK_INDEX; Row++) {
+	for (int Column = 0; Column < PATTERN_INDEX; Column++) {
+		for (int Row = 0; Row < ATTACK_INDEX; Row++) {
 			//データ一つ分取得
 			fscanf_s(AttackPatternsFile, "%d", &m_AttackPatterns[Column][Row]);
 			//カンマor改行を飛ばす
@@ -864,13 +864,13 @@ void Boss::AttackPatternManager() {
 		//攻撃種配列を１つずらす
 		m_AttackIndex++;
 		//攻撃種配列の最大格納量より多ければ
-		if (m_AttackIndex >= BOSS::ATTACK_INDEX) {
+		if (m_AttackIndex >= ATTACK_INDEX) {
 			//先頭にリセット
 			m_AttackIndex = 0;
 			//攻撃パターン配列を1ずらす
 			m_PatternIndex++;
 			//攻撃パターン配列の最大格納量より多いなら
-			if (m_PatternIndex >= BOSS::PATTERN_INDEX) {
+			if (m_PatternIndex >= PATTERN_INDEX) {
 				//先頭にリセット
 				m_PatternIndex = 0;
 			}
@@ -883,7 +883,7 @@ void Boss::AttackPatternManager() {
 		//次の攻撃は何の予定か調べる
 		int NextAttackIndex = m_AttackIndex + 1;
 		//最大格納量より多ければ-1を入れておく
-		if (NextAttackIndex >= BOSS::ATTACK_INDEX) {
+		if (NextAttackIndex >= ATTACK_INDEX) {
 			m_NextAttack = -1;
 		}
 		else {
@@ -974,7 +974,7 @@ void Boss::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {
 //指定のボーン当たり判定を削除する
 void Boss::DeleteFrameDataIsCollision(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
-	m_FrameData[_FrameNamber].Rad = FZERO;
+	m_FrameData[_FrameNamber].Rad = 0.0f;
 	m_FrameData[_FrameNamber].IsCollision = false;
 }
 //全てのボーン当たり判定を削除する
@@ -993,7 +993,7 @@ void Boss::SetFrameDataIsAttackFlg(int _FrameNamber, float _Rad) {
 //指定のボーン攻撃判定を削除する
 void Boss::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
-	m_FrameData[_FrameNamber].Rad = FZERO;
+	m_FrameData[_FrameNamber].Rad = 0.0f;
 	m_FrameData[_FrameNamber].IsAttackFlg = false;
 }
 //全てのボーン攻撃判定を削除する
