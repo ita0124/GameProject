@@ -248,7 +248,7 @@ void Player::Death() {
 //歩き
 void Player::Walk() {
 	//歩きアニメーションループ再生
-	RequestLoop(WALK);
+	RequestLoop(2);
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定

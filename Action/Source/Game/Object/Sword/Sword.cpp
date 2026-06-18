@@ -42,21 +42,21 @@ void Sword::Step() {
 	//オーナー変数がnullじゃないなら
 	if (m_Owner != nullptr) {
 		//指定したフレームのローカル座標からワールド座標に変換する行列を取得
-		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), Player::FrameNamber::HANDEND_RIGHT);
+		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), 7);
 		//X軸回転行列を取得する
 		MATRIX RotXMat = MGetRotX(DX_PI_F);
 		//二つの行列を乗算
 		MATRIX MultMat = MMult(RotXMat, FrameLocalWorldMat);
 		//行列をセット
 		MV1SetMatrix(m_Hndl, MultMat);
-		//行列から座標に当たる部分を抜き取る
+		////行列から座標に当たる部分を抜き取る
 		m_Pos = VGet(MultMat.m[3][0], MultMat.m[3][1], MultMat.m[3][2]);
 	}
 }
 //初期化処理
 void Sword::Init() {
 	ObjectBase::Init();
-	
+
 	m_Rad = RAD;
 	m_Kinds = SWORD;		//種類設定
 }
