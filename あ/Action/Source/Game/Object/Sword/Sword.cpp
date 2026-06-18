@@ -42,18 +42,21 @@ void Sword::Step() {
 	//オーナー変数がnullじゃないなら
 	if (m_Owner != nullptr) {
 		//指定したフレームのローカル座標からワールド座標に変換する行列を取得
-		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), 24);
-		/*FrameLocalWorldMat.m[0][0] = FrameLocalWorldMat.m[1][1] = FrameLocalWorldMat.m[2][2] = 1.0f;*/
-		//X軸回転行列を取得する
-		MATRIX RotXMat = MGetRotY(DX_PI_F);
+		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), 22);
+
+		/*VECTOR Pos = VGet(FrameLocalWorldMat.m[3][0], FrameLocalWorldMat.m[3][1], FrameLocalWorldMat.m[3][2]);
+		MV1SetPosition(m_Hndl, Pos);*/
+		//FrameLocalWorldMat.m[0][0] = FrameLocalWorldMat.m[1][1] = FrameLocalWorldMat.m[2][2] = 1.0f;
+		//Y軸回転行列を取得する
+		MATRIX RotYMat = MGetRotY(90.0f*RADIAN_CALC);
 		//二つの行列を乗算
-		MATRIX MultMat = MMult(RotXMat, FrameLocalWorldMat);
+		MATRIX MultMat = MMult(RotYMat, FrameLocalWorldMat);
 		//行列をセット
 		MV1SetMatrix(m_Hndl, MultMat);
 		////行列から座標に当たる部分を抜き取る
 		m_Pos = VGet(MultMat.m[3][0], MultMat.m[3][1], MultMat.m[3][2]);
 
-		DrawSphere3D(m_Pos, 5.0f, DIV, RED, RED, TRUE);
+		/*DrawSphere3D(m_Pos, 5.0f, DIV, RED, RED, TRUE);*/
 
 		DrawFormatStringToHandle(50, 600, RED, DxLibFont::FONTHNDL_N20, "ソードX軸：%2f", m_Pos.x);
 		DrawFormatStringToHandle(50, 630, RED, DxLibFont::FONTHNDL_N20, "ソードY軸：%2f", m_Pos.y);
