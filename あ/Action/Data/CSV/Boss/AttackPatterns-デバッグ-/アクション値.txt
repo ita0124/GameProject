@@ -1,0 +1,34 @@
+対応値	State			攻撃名
+0	WAIT			待機
+
+1	DOWN			ダウン
+
+2	DEATH			死亡
+
+3	WALK			歩き
+
+4	BREAK_NORMAL_ATTACK1	通常攻撃１段目　攻撃終了(鼻)
+
+5	CHAIN_NORMAL_ATTACK1	通常攻撃１段目　攻撃継続(鼻)
+
+6	BREAK_NORMAL_ATTACK2	通常攻撃２段目　攻撃終了(牙振り上げ)
+
+7	CHAIN_NORMAL_ATTACK2	通常攻撃２段目　攻撃継続(牙振り上げ)
+
+8	BREAK_NORMAL_ATTACK3	通常攻撃３段目　攻撃終了(踏みつけ)
+
+9	REAR_ATTACK		後方攻撃
+
+10	JUMP			突進直前移動
+
+11	CHARGE_ATTACK_START	突進チャージ
+
+12	CHARGE			突進
+
+13	CHARGE_ATTACK		突進振り上げ
+
+14	SPECIAL_START		必殺開始
+
+15	SPECIAL_CHAGE		必殺チャージ
+
+16	SPECIAL			必殺

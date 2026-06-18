@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib">
+      <UniqueIdentifier>{3b102669-3262-49d1-a102-68feea9ff7ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib">
+      <UniqueIdentifier>{e9759d3f-5fa8-469b-bdcd-7672529003fd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Lib\Collision\Collision.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Fade\Fade.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputKey.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputPad.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\FPS\FPS.cpp">
+      <Filter>ソース ファイル\Lib</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Sword\Sword.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Sky\Sky.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Comon.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Collision\Collision.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Fade\Fade.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputKey.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputPad.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\FPS\FPS.h">
+      <Filter>ヘッダー ファイル\Lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\ObjectBase.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Sky\Sky.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Sword\Sword.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

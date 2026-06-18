@@ -149,6 +149,17 @@ void Player::Step() {
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
+
+	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "プレイヤーX軸：%2f", m_Pos.x);
+	DrawFormatStringToHandle(50, 430, RED, DxLibFont::FONTHNDL_N20, "プレイヤーY軸：%2f", m_Pos.y);
+	DrawFormatStringToHandle(50, 460, RED, DxLibFont::FONTHNDL_N20, "プレイヤーZ軸：%2f", m_Pos.z);
+
+	/*VECTOR Pos = GetFramePos(m_Hndl,15);*/
+	VECTOR Pos = GetFramePos(m_Hndl, 24);
+
+	DrawFormatStringToHandle(50, 500, RED, DxLibFont::FONTHNDL_N20, "ボーンX軸：%2f", Pos.x);
+	DrawFormatStringToHandle(50, 530, RED, DxLibFont::FONTHNDL_N20, "ボーンY軸：%2f", Pos.y);
+	DrawFormatStringToHandle(50, 560, RED, DxLibFont::FONTHNDL_N20, "ボーンZ軸：%2f", Pos.z);
 }
 //当たり判定後の処理(当たっている場合)
 void Player::HitCalc(ObjectBase* _Object) {
