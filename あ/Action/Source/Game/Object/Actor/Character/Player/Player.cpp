@@ -207,7 +207,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 //待機
 void Player::Wait() {
 	//待機アニメーションループ再生
-	RequestLoop(1);
+	RequestLoop(0);
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定

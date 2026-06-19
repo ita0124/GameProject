@@ -43,10 +43,6 @@ void Sword::Step() {
 	if (m_Owner != nullptr) {
 		//指定したフレームのローカル座標からワールド座標に変換する行列を取得
 		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), 22);
-
-		/*VECTOR Pos = VGet(FrameLocalWorldMat.m[3][0], FrameLocalWorldMat.m[3][1], FrameLocalWorldMat.m[3][2]);
-		MV1SetPosition(m_Hndl, Pos);*/
-		//FrameLocalWorldMat.m[0][0] = FrameLocalWorldMat.m[1][1] = FrameLocalWorldMat.m[2][2] = 1.0f;
 		//Y軸回転行列を取得する
 		MATRIX RotYMat = MGetRotY(90.0f*RADIAN_CALC);
 		//二つの行列を乗算

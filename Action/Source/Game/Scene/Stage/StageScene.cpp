@@ -84,9 +84,9 @@ int StageScene::Loop() {
 void StageScene::Draw() {
 	DrawFormatStringToHandle((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15, "ステージ");
 
-	//m_Sky.Draw();									//天球クラス
-	//m_PlatformManager.Draw();						//プラットフォームマネージャークラス
-	//m_Player.Draw();								//プレイヤークラス
+	m_Sky.Draw();									//天球クラス
+	m_PlatformManager.Draw();						//プラットフォームマネージャークラス
+	m_Player.Draw();								//プレイヤークラス
 	m_Sword.Draw();									//剣クラス
 	m_Shield.Draw();								//盾クラス
 	m_HitPoints.Draw();								//体力UIクラス
@@ -171,7 +171,7 @@ void StageScene::Update() {
 	m_Sky.Update();												//天球クラス
 	m_PlatformManager.Update();
 	m_Player.Update();
-	/*m_Sword.Update();*/
+	m_Sword.Update();
 	m_Shield.Update();
 	m_CameraManager.Update();									//カメラマネージャークラス
 }
