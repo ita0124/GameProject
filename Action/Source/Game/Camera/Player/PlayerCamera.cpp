@@ -29,7 +29,7 @@ void PlayerCamera::Init() {
 //ÉvÉåÉCÉÑÅ[
 void PlayerCamera::Step(Player& _Player) {
 	m_TargetPoint = _Player.GetPos();
-	float RotSpeed = 0.05f;
+	float RotSpeed = 0.01f;
 	float RotX = 0.0f;
 	float RotY = 0.0f;
 
@@ -40,10 +40,10 @@ void PlayerCamera::Step(Player& _Player) {
 		RotX += RotSpeed;
 	}
 
-	if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
 		RotY += -RotSpeed;
 	}
-	else if (InputKey::IsPushKeyRep(KEY_INPUT_RIGHT)) {
+	else if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
 		RotY += RotSpeed;
 	}
 
