@@ -2,7 +2,10 @@
 
 namespace {
 	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	constexpr float		LERP_RATE = 0.1f;				//１フレームの補完率
+	constexpr float		LERP_RATE = 0.2f;						//１フレームの補完率
+	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };	// プレイヤー基準のカメラ配置オフセット
+	constexpr float		CAMERA_MIN_HEIGHT = 20.0f;				// カメラの最低高度
+	constexpr float		TARGET_HEIGHT_OFFSET = -20.0f;			// ロックオン注視点の高さ補正
 }
 
 //コンストラクタ
@@ -19,9 +22,6 @@ void TargetCamera::Init() {
 	m_CameraRot = VZERO;
 	m_CameraPoint = VZERO;
 	m_CalcRot = VZERO;
-	//ゲーム開始時にプレイヤーの後頭部から始まるようにする
-	m_CameraPoint = { -0.5f,25.0f,52.5f };
-	m_CameraPos = { -0.5f,25.0f,52.5f };
 
 	Update();
 }
@@ -39,7 +39,7 @@ void TargetCamera::Step(Player& _Player) {
 	m_CalcRot.x = atan2f(Dir.y, sqrtf(Dir.x * Dir.x + Dir.z * Dir.z));
 
 	//プレイヤー背面のオフセットを作る
-	VECTOR Offset = VGet(0.0f, 25.0f, 100.0f);
+	VECTOR Offset = CAMERA_OFFSET;
 
 	//回転行列を作る
 	MATRIX MatRotX = MGetRotX(m_CalcRot.x);
@@ -55,13 +55,13 @@ void TargetCamera::Step(Player& _Player) {
 	m_CameraPoint = VAdd(_Player.GetPos(), Offset);
 
 	//地面めり込み防止
-	if (m_CameraPoint.y < 20.0f) {
-		m_CameraPoint.y = 20.0f;
+	if (m_CameraPoint.y < CAMERA_MIN_HEIGHT) {
+		m_CameraPoint.y = CAMERA_MIN_HEIGHT;
 	}
 
 	//_TargetPos代入
 	m_TargetPoint = _Player.GetAttackTargetPos();
-	m_TargetPoint.y -= 20.0f;
+	m_TargetPoint.y += TARGET_HEIGHT_OFFSET;
 
 	if (_Player.GetState() != Player::TagState::SKILL_ATTACK) {
 		m_CameraRot.y = m_CalcRot.y;

@@ -16,7 +16,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	// メモリリーク発見用
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	// スクリーン設定
-	ChangeWindowMode(TRUE);			// フルスクリーンorウィンドウモード
+	ChangeWindowMode(FALSE);			// フルスクリーンorウィンドウモード
 	SetGraphMode((int)SCREEN_MAX_X, (int)SCREEN_MAX_Y, 32);	// ウィンドウのサイズ
 
 #ifndef _DEBUG

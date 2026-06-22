@@ -42,9 +42,9 @@ void Sword::Step() {
 	//オーナー変数がnullじゃないなら
 	if (m_Owner != nullptr) {
 		//指定したフレームのローカル座標からワールド座標に変換する行列を取得
-		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), 22);
+		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), Player::FrameNamber::HANDEND_RIGHT);
 		//Y軸回転行列を取得する
-		MATRIX RotYMat = MGetRotY(90.0f * RADIAN_CALC);
+		MATRIX RotYMat = MGetRotY(RADIAN_CALC);
 		//二つの行列を乗算
 		MATRIX MultMat = MMult(RotYMat, FrameLocalWorldMat);
 		//行列をセット

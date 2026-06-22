@@ -2,7 +2,14 @@
 
 namespace {
 	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	constexpr float		LERP_RATE = 0.1f;				//１フレームの補完率
+	constexpr float		LERP_RATE = 0.05f;							//１フレームの補完率
+	constexpr float		PLAYER_FOLLOW_ROTY_SPEED = 0.015f;			//プレイヤー移動方向へのY軸回転スピード
+	constexpr float		CONTROL_ROTX_SPEED = 0.05f;					//X軸回転スピード
+	constexpr float		CONTROL_ROTY_SPEED = 0.05f;					//Y軸回転スピード
+	constexpr float		TARGET_HEIGHT_ADD = 25.0f;					// 注視点の高さ補正
+	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };	// ターゲットから見たカメラの相対位置
+	constexpr float		ROT_X_UP_LIMIT = 45.0f * RADIAN_CALC;		// カメラの上方向回転制限
+	constexpr float		ROT_X_DOWN_LIMIT = 45.0f * RADIAN_CALC;		// カメラの下方向回転制限
 }
 
 //コンストラクタ
@@ -17,55 +24,63 @@ void PlayerCamera::Init() {
 	m_TargetPos = VZERO;
 	m_UpVec = UP_VEC;			//？？？
 	m_CameraRot = VZERO;
-	m_CameraPoint = VZERO;
 	m_CalcRot = VZERO;
-
-	//ゲーム開始時にプレイヤーの後頭部から始まるようにする
-	m_CameraPoint = { -0.5f,25.0f,52.5f };
-	m_CameraPos = { -0.5f,25.0f,52.5f };
 
 	Update();
 }
 //プレイヤー
 void PlayerCamera::Step(Player& _Player) {
 	m_TargetPoint = _Player.GetPos();
-	float RotSpeed = 0.01f;
 	float RotX = 0.0f;
 	float RotY = 0.0f;
-
+	//キーボード
+	//X軸
 	if (InputKey::IsPushKeyRep(KEY_INPUT_UP)) {
-		RotX += -RotSpeed;
+		RotX = -CONTROL_ROTX_SPEED;
 	}
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_DOWN)) {
-		RotX += RotSpeed;
+		RotX = CONTROL_ROTX_SPEED;
 	}
-
+	//Y軸
+	//プレイヤーの左右移動に連動
 	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
-		RotY += -RotSpeed;
+		RotY = -PLAYER_FOLLOW_ROTY_SPEED;
 	}
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
-		RotY += RotSpeed;
+		RotY = PLAYER_FOLLOW_ROTY_SPEED;
 	}
-
-	if (InputPad::GetRAnalogYInput() > 0.0f) {
-		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
+	//自分で動かす
+	if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
+		RotY = -CONTROL_ROTY_SPEED;
 	}
-	else if (InputPad::GetRAnalogYInput() < 0.0f) {
-		RotX += (float)InputPad::GetRAnalogYInput() * 0.05f;
+	else if (InputKey::IsPushKeyRep(KEY_INPUT_RIGHT)) {
+		RotY = CONTROL_ROTY_SPEED;
 	}
-
+	//パッド
+	//X軸
+	RotX = (float)InputPad::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
+	//Y軸
+	//プレイヤーの左右移動に連動
+	if (InputPad::GetLAnalogXInput() < 0.0f) {
+		RotY = InputPad::GetLAnalogXInput() * PLAYER_FOLLOW_ROTY_SPEED;
+	}
+	else if (InputPad::GetLAnalogXInput() > 0.0f) {
+		RotY = InputPad::GetLAnalogXInput() * PLAYER_FOLLOW_ROTY_SPEED;
+	}
+	//自分で動かす
 	if (InputPad::GetRAnalogXInput() < 0.0f) {
-		RotY += InputPad::GetRAnalogXInput() * 0.05f;
+		RotY = InputPad::GetRAnalogXInput() * CONTROL_ROTY_SPEED;
 	}
 	else if (InputPad::GetRAnalogXInput() > 0.0f) {
-		RotY += InputPad::GetRAnalogXInput() * 0.05f;
+		RotY = InputPad::GetRAnalogXInput() * CONTROL_ROTY_SPEED;
 	}
 
 	m_CalcRot.x += RotX;
 	m_CalcRot.y += RotY;
 
-	float DownLimit = DX_PI_F * 90.0f / 180.0f;
-	float UpLimit = DX_PI_F * 90.0f / 180.0f;
+	float DownLimit = ROT_X_UP_LIMIT;
+	float UpLimit = ROT_X_DOWN_LIMIT;
+
 	if (m_CalcRot.x > DownLimit) {
 		m_CalcRot.x = DownLimit;
 	}
@@ -81,8 +96,8 @@ void PlayerCamera::Step(Player& _Player) {
 	MATRIX MatRot = MMult(MatRotX, MatRotY);
 
 	//相対ベクトル
-	m_TargetPoint.y += 25.0f;
-	VECTOR OffSet = VGet(0.0f, 25.0f, 100.0f);
+	m_TargetPoint.y += TARGET_HEIGHT_ADD;
+	VECTOR OffSet = CAMERA_OFFSET;
 
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);
@@ -91,8 +106,16 @@ void PlayerCamera::Step(Player& _Player) {
 	m_CameraRot.y = m_CalcRot.y;
 
 	//補間
-	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
-	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	if (!_Player.GetIsGravity()) {
+		m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+		m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	}
+	else {
+		m_CameraPoint.y = m_CameraPos.y;
+		m_TargetPoint.y = m_TargetPos.y;
+		m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+		m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	}
 }
 //更新処理
 void PlayerCamera::Update() {
@@ -128,3 +151,4 @@ VECTOR PlayerCamera::CameraLerp(VECTOR _CurrentPos, VECTOR _TargetPos, float _Le
 	//座標更新
 	return VAdd(_CurrentPos, AddVec);
 }
+
