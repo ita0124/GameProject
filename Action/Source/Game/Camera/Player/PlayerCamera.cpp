@@ -7,9 +7,10 @@ namespace {
 	constexpr float		CONTROL_ROTX_SPEED = 0.05f;					//X軸回転スピード
 	constexpr float		CONTROL_ROTY_SPEED = 0.05f;					//Y軸回転スピード
 	constexpr float		TARGET_HEIGHT_ADD = 25.0f;					// 注視点の高さ補正
-	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };	// ターゲットから見たカメラの相対位置
+	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };		// ターゲットから見たカメラの相対位置
 	constexpr float		ROT_X_UP_LIMIT = 45.0f * RADIAN_CALC;		// カメラの上方向回転制限
 	constexpr float		ROT_X_DOWN_LIMIT = 45.0f * RADIAN_CALC;		// カメラの下方向回転制限
+	constexpr float		POS_Y_HEIGHT_DEADZONE = 50.0f;				// Y座標追従を開始する高低差			
 }
 
 //コンストラクタ
@@ -58,7 +59,9 @@ void PlayerCamera::Step(Player& _Player) {
 	}
 	//パッド
 	//X軸
-	RotX = (float)InputPad::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
+	if (InputPad::GetRAnalogYInput() < 0.0f && InputPad::GetRAnalogYInput() > 0.0f) {
+		RotX = (float)InputPad::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
+	}
 	//Y軸
 	//プレイヤーの左右移動に連動
 	if (InputPad::GetLAnalogXInput() < 0.0f) {
@@ -102,19 +105,22 @@ void PlayerCamera::Step(Player& _Player) {
 	//カメラ位置
 	VECTOR CameraPosCalc = VTransform(OffSet, MatRot);
 	m_CameraPoint = VAdd(m_TargetPoint, CameraPosCalc);
-
+	//カメラのY軸回転角を設定
 	m_CameraRot.y = m_CalcRot.y;
-
-	//補間
-	if (!_Player.GetIsGravity()) {
-		m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
-		m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
-	}
-	else {
+	//現在の注視点と目標注視点の高低差を取得
+	float TargetPosYDif = fabsf(m_TargetPoint.y - m_TargetPos.y);
+	//空中にいるかつ高低差がデッドゾーン内ならY座標の追従を停止
+	if (_Player.GetIsGravity() && TargetPosYDif < POS_Y_HEIGHT_DEADZONE) {
 		m_CameraPoint.y = m_CameraPos.y;
 		m_TargetPoint.y = m_TargetPos.y;
-		m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
-		m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	}
+	//カメラ座標を目標座標へ補間
+	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+	//注視点座標を目標座標へ補間
+	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+
+	if (m_CameraPos.y <= 0.0f) {
+		m_CameraPos.y = 0.0f;
 	}
 }
 //更新処理
