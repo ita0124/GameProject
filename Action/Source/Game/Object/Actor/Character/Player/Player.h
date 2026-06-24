@@ -8,13 +8,16 @@ class Player :public CharacterBase {
 public:
 	//プレイヤーの状態を管理するタグ
 	enum TagState {
+		T_PAUSE,		//Tポーズ
 		WAIT,			//待機
 		DAMAGE,			//ダメージ
 		DEATH,			//死亡
 		WALK,			//歩き
 		ROLLING,		//ローリング
 		JUMP,			//ジャンプ
-		GUARD,			//ガード
+		GUARD_STARA,	//ガード
+		GUARD_WAIT,		//ガード
+		GUARD_END,		//ガード
 		PARRY,			//パリィ
 		SKILL_ATTACK,	//スキル攻撃
 		NORMAL_ATTACK1,	//通常攻撃１段目
