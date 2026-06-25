@@ -1,5 +1,9 @@
 #include "StageScene.h"
 
+namespace {
+	constexpr int	FADE_SPEED = 5;			//フェードスピード
+}
+
 //コンストラクタ
 StageScene::StageScene() {
 	//タグをINITに設定
@@ -34,7 +38,7 @@ int StageScene::Loop() {
 		//フェードイン処理を確実に行う	BGM再生なども
 	case  STARTWAIT:
 		//フェードイン関数を呼び出す
-		Fade::RequestIn();
+		Fade::RequestIn(FADE_SPEED);
 		//フェードインが終わったら
 		if (Fade::IsEndIn()) {
 			//タグをSTEPに設定
@@ -57,7 +61,7 @@ int StageScene::Loop() {
 		//フェードアウトを確実に行う
 	case ENDWAIT:
 		//フェードアウト関数を呼び出す
-		Fade::RequestOut();
+		Fade::RequestOut(FADE_SPEED);
 		//フェードアウトが終わったら
 		if (Fade::IsEndOut()) {
 			//タグをENDに設定

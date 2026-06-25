@@ -54,7 +54,7 @@ public:
 	};
 
 	//ボーン番号enum
-	enum FrameNamber {
+	enum FrameNumber {
 		ARMATURE,				//アーマチュア
 		//ここから骨
 		HIP,					//お尻
@@ -109,7 +109,7 @@ public:
 		LEFT_END,				//左方-終-
 		//これ以下は使うことがないと思うので省略
 
-		FARAM_NUM
+		FRAME_NUM
 	};
 
 	//マテリアルenum
@@ -124,7 +124,7 @@ private:
 	TagState	m_State;											//ボス状態変数
 	TagState	m_PrevState;										//１フレーム前の状態
 
-	FRAME_DATA	m_FrameData[FARAM_NUM];								//ボスのボーン分の情報を格納
+	FRAME_DATA	m_FrameData[FRAME_NUM];								//ボスのボーン分の情報を格納
 
 	bool		m_IsDamage;											//ダメージ処理中か
 	int			m_DamageTime;										//ダメージ処理の継続時間

@@ -42,7 +42,7 @@ void Shield::Step() {
 	//オーナー変数がnullじゃないなら
 	if (m_Owner != nullptr) {
 		//指定したフレームのローカル座標からワールド座標に変換する行列を取得
-		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), Player::FrameNamber::HANDEND_LEFT);
+		MATRIX FrameLocalWorldMat = MV1GetFrameLocalWorldMatrix(m_Owner->GetHndl(), Player::FrameNumber::SHIELD_SOCKET_END);
 		//X軸回転行列を取得する
 		MATRIX RotXMat = MGetRotX(DX_PI_F);
 		//二つの行列を乗算

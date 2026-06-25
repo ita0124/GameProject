@@ -3,6 +3,7 @@
 namespace {
 	constexpr int	LOAD_TIME = 60;			//非同期処理の最低時間
 	constexpr float	HNDLNUM_ADD = 0.1f;		//HndlNumに１フレームずつ加算する
+	constexpr int	FADE_SPEED = 5;			//フェードスピード
 
 	constexpr const char* FILE_PATH[HNDL_MAX] = {	//非同期中に表示する画像のファイルパス
 	"Data/Load/Elephant1.png",			//象１頭
@@ -33,7 +34,7 @@ int	BossScene::Loop() {
 		//初期化処理管理関数を呼び出す
 		Init();
 		//フェードイン関数を呼び出す
-		Fade::RequestIn();
+		Fade::RequestIn(FADE_SPEED);
 		//フェードインが終わったら
 		if (Fade::IsEndIn()) {
 			//状態をLOADに
@@ -52,7 +53,7 @@ int	BossScene::Loop() {
 		//フェードイン処理を確実に行う
 	case STARTWAIT:
 		//フェードイン関数を呼び出す
-		Fade::RequestIn();
+		Fade::RequestIn(FADE_SPEED);
 		//フェードインが終わったら
 		if (Fade::IsEndIn()) {
 			//状態をSTEPに
@@ -71,7 +72,7 @@ int	BossScene::Loop() {
 		//フェードアウトを確実に行う
 	case ENDWAIT:
 		//フェードアウト関数を呼び出す
-		Fade::RequestOut();
+		Fade::RequestOut(FADE_SPEED);
 		//フェードアウトが終わったら
 		if (Fade::IsEndOut()) {
 			//状態をENDに
@@ -242,7 +243,7 @@ void BossScene::PlayerStep() {
 	m_Sky.Step();										//天球クラス
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
-	m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(),Boss::FrameNamber::CHEST));
+	m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(),Boss::FrameNumber::CHEST));
 	m_Player.Step();
 	m_Sword.Step();
 	m_Shield.Step();

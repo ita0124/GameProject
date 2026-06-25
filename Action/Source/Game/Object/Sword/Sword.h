@@ -5,7 +5,7 @@
 class Sword :public ObjectBase {
 public:
 	//ボーン番号enum
-	enum FrameNamber {
+	enum FrameNumber {
 		ARMATURE,		//アーマチュア
 		//ここからボーン
 		POMMEL,			//柄頭
@@ -18,7 +18,7 @@ public:
 		VLADEEND,		//刃先
 		//これ以下は使うことがないと思うので省略
 
-		FARAM_NUM
+		FRAME_NUM
 	};
 
 	//コンストラクタ

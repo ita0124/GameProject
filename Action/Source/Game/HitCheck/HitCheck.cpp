@@ -80,13 +80,13 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		//ボスクラスをダウンキャスト
 		PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
 		//ボスのフレーム分
-		for (int FrameNum = 0;FrameNum < Boss::FrameNamber::FARAM_NUM;FrameNum++) {
+		for (int FrameNum = 0;FrameNum < Boss::FrameNumber::FRAME_NUM;FrameNum++) {
 			//フレームの攻撃判定がオフになっていたら次のフレームを見る
 			if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
 			//プレイヤーの座標を取得
 			VECTOR	PlayerPos1 = _Object.GetCenter();
 			//プレイヤーの頭の座標を取得
-			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNamber::HEAD);
+			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNumber::HEAD);
 			//プレイヤーの当たり判定半径を取得
 			float	PlayerRad = _Object.GetRad();
 			//ボスの座標を取得
@@ -125,7 +125,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//ボスクラスをダウンキャスト
 			PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
 			//ボスのフレーム分
-			for (int FrameNum = 0;FrameNum <= Boss::FrameNamber::TOSEEND_RIGHT;FrameNum++) {
+			for (int FrameNum = 0;FrameNum <= Boss::FrameNumber::TOSEEND_RIGHT;FrameNum++) {
 				//ガード成功フラグがオンになっていたら以降の処理は行わない
 				if (PointerPlayer->GetIsActionSuccess(Player::TagState::GUARD))return;
 				//パリィ成功フラグがオンになっていたら以降の処理は行わない
@@ -183,7 +183,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		//攻撃当たり判定を生成してよいか
 		if (PointerPlayer->GetIsAttackCollision()) {
 			//剣の指定したフレームの座標を取得
-			VECTOR	SwordPos = _AttackObject.GetFramePos(_AttackObject.GetHndl(), Sword::FrameNamber::BLADE002);
+			VECTOR	SwordPos = _AttackObject.GetFramePos(_AttackObject.GetHndl(), Sword::FrameNumber::BLADE002);
 			//剣の当たり判定半径を取得
 			float	SwordRad = _AttackObject.GetRad();
 			//オブジェクトの座標を取得
@@ -215,11 +215,11 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 		Boss* PointerBoss = nullptr;
 		//ボスクラスをダウンキャスト
 		PointerBoss = dynamic_cast<Boss*>(&_RelativePosObject);
-		for (int FrameNum = Boss::FrameNamber::FRONT;FrameNum < Boss::FrameNamber::FARAM_NUM;FrameNum++) {
+		for (int FrameNum = Boss::FrameNumber::FRONT;FrameNum < Boss::FrameNumber::FRAME_NUM;FrameNum++) {
 			//プレイヤーの座標を取得
 			VECTOR	PlayerPos1 = _Object.GetCenter();
 			//プレイヤーの頭の座標を取得
-			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNamber::HEAD);
+			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNumber::HEAD);
 			//プレイヤーの当たり判定半径を取得
 			float	PlayerRad = _Object.GetRad();
 			//ボスの座標を取得

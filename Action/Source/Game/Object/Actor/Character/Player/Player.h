@@ -8,23 +8,42 @@ class Player :public CharacterBase {
 public:
 	//プレイヤーの状態を管理するタグ
 	enum TagState {
-		T_PAUSE,		//Tポーズ
-		WAIT,			//待機
-		DAMAGE,			//ダメージ
-		DEATH,			//死亡
-		WALK,			//歩き
-		ROLLING,		//ローリング
-		JUMP,			//ジャンプ
-		GUARD_STARA,	//ガード
-		GUARD_WAIT,		//ガード
-		GUARD_END,		//ガード
-		PARRY,			//パリィ
-		SKILL_ATTACK,	//スキル攻撃
-		NORMAL_ATTACK1,	//通常攻撃１段目
-		NORMAL_ATTACK2,	//通常攻撃２段目
-		NORMAL_ATTACK3,	//通常攻撃３段目
+		T_PAUSE,			//Tポーズ
+		WAIT,				//待機
+		DAMAGE,				//ダメージ
+		DEATH,				//死亡
+		WALK,				//歩き
+		ROLLING,			//ローリング
+		JUMP,				//ジャンプ
+		GUARD,				//ガード
+		PARRY,				//パリィ
+		SKILL_ATTACK,		//スキル攻撃
+		NORMAL_ATTACK1,		//通常攻撃１段目
+		NORMAL_ATTACK2,		//通常攻撃２段目
+		NORMAL_ATTACK3,		//通常攻撃３段目
 
 		STATE_NUM
+	};
+
+	//プレイヤーのアニメーションを管理するタグ
+	enum TagAnime {
+		ANIME_T_POSE,			//Tポーズ
+		ANIME_IDEL,				//待機
+		ANIME_DAMAGE,			//ダメージ
+		ANIME_DEATH,			//死亡
+		ANIME_RUN,				//走り
+		ANIME_ROLLING,			//ローリング
+		ANIME_JUMP,
+		ANIME_GUARD_START,		//ガード開始
+		ANIME_GUARD_IDEL,		//ガード待機
+		ANIME_GUARD_EMD,		//ガード終了
+		ANIME_PARRY,			//パリィ
+		ANIME_SKILL_ATTACK,		//スキル攻撃
+		ANIME_NORMAL_ATTACK1,	//通常攻撃1段目
+		ANIME_NORMAL_ATTACK2,	//通常攻撃2段目
+		ANIME_NORMAL_ATTACK3,	//通常攻撃3段目
+
+		ANIME_NUM
 	};
 
 	enum {
@@ -36,37 +55,56 @@ public:
 	};
 
 	//ボーン番号enum
-	enum FrameNamber {
-		ARMATURE,		//アーマチュア
+	enum FrameNumber {
+		ARMATURE,				// アーマチュア
 		//ここからボーン
-		HIP,				//お尻
-		SPINE,				//脊髄
-		CHEST,				//胸骨
-		HEAD,				//頭蓋骨
-		HEADEND,			//頭の頂点
-		SHOULDER_LEFT,		//左鎖骨
-		UPPERARM_LEFT,		//左上腕骨
-		LOWERARM_LEFT,		//左尺骨
-		HAND_LEFT,			//左中手骨
-		HANDEND_LEFT,		//左指骨
-		SHOULDER_RIGHT,		//右鎖骨
-		UPPERARM_RIGHT,		//右上腕骨
-		LOWERARM_RIGHT,		//右尺骨
-		HAND_RIGHT,			//右中手骨
-		HANDEND_RIGHT,		//右指骨
-		PELVIS_LEFT,		//左骨盤
-		UPPERLEG_LEFT,		//左大腿骨
-		LOWERLRG_LEFT,		//左脛骨
-		TOES_LEFT,			//左中足骨
-		TOSEEND_LEFT,		//左指骨
-		PELVIS_RIGHT,		//右骨盤
-		UPPERLEG_RIGHT,		//右大腿骨
-		LOWERLRG_RIGHT,		//右脛骨
-		TOES_RIGHT,			//右足骨
-		TOSEEND_RIGHT,		//右指骨
+		HIPS,					// 腰
+		SPINE,					// 背骨下
+		SPINE1,					// 背骨中
+		SPINE2,					// 背骨上
+		NECK,					// 首
+		HEAD,					// 頭
+		HEADTOP,				// 頭頂
+		HEADTOP_END,			// 頭頂先端
+
+		LEFT_SHOULDER,			// 左肩
+		LEFT_UPPER_ARM,			// 左上腕
+		LEFT_LOWER_ARM,			// 左前腕
+		LEFT_HAND1,				// 左手ボーン1
+		LEFT_HAND2,				// 左手ボーン2
+		LEFT_HAND3,				// 左手ボーン3
+		LEFT_HAND4,				// 左手ボーン4
+		LEFT_HAND_END,			// 左手先
+
+		SHIELD_SOCKET,			// 盾ソケット
+		SHIELD_SOCKET_END,		// 盾ソケット先端
+
+		RIGHT_SHOULDER,			// 右肩
+		RIGHT_UPPER_ARM,		// 右上腕
+		RIGHT_LOWER_ARM,		// 右前腕
+		RIGHT_HAND1,			// 右手ボーン1
+		RIGHT_HAND2,			// 右手ボーン2
+		RIGHT_HAND3,			// 右手ボーン3
+		RIGHT_HAND4,			// 右手ボーン4
+		RIGHT_HAND5,			// 右手ボーン5
+		RIGHT_HAND_END,			// 右手先
+
+		LEFT_UPPER_LEG,			// 左太腿
+		LEFT_LOWER_LEG,			// 左脛
+		LEFT_FOOT,				// 左足首
+		LEFT_TOE,				// 左つま先
+		LEFT_TOE1,				// 左足指先
+		LEFT_TOE1_END,			// 左足指先端
+
+		RIGHT_UPPER_LEG,		// 右太腿
+		RIGHT_LOWER_LEG,		// 右脛
+		RIGHT_FOOT,				// 右足首
+		RIGHT_TOE,				// 右つま先
+		RIGHT_TOE1,				// 右足指先
+		RIGHT_TOE1_END,			// 右足指先端
 		//これ以下は使うことがないと思うので省略
 
-		FARAM_NUM
+		FRAME_NUM
 	};
 
 private:
@@ -98,6 +136,7 @@ private:
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
 	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
 	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//攻撃進行方向
+	float		m_AttackRot[NORMAL_ATTACK_MAX];				//攻撃方向角度
 	float		m_TargetAngle;								//攻撃対象との角度差
 
 

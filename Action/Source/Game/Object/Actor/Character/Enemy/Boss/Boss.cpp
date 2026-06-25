@@ -161,7 +161,7 @@ void Boss::Step() {
 		m_DamageTime--;
 	}
 	//当たり判定設定
-	for (int Index = FRONT; Index <= FARAM_NUM; Index++) {
+	for (int Index = FRONT; Index <= FRAME_NUM; Index++) {
 		SetFrameDataIsCollision(Index, 50.0f);
 	}
 	//状態遷移
@@ -979,7 +979,7 @@ void Boss::DeleteFrameDataIsCollision(int _FrameNamber) {
 }
 //全てのボーン当たり判定を削除する
 void Boss::AllDeleteFrameDataIsCollision() {
-	for (int Index = 0; Index < FARAM_NUM; Index++) {
+	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		//指定のボーン攻撃判定を削除する
 		DeleteFrameDataIsCollision(Index);
 	}
@@ -998,7 +998,7 @@ void Boss::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
 }
 //全てのボーン攻撃判定を削除する
 void Boss::AllDeleteFrameDataIsAttackFlg() {
-	for (int Index = 0; Index < FARAM_NUM; Index++) {
+	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		//指定のボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(Index);
 	}

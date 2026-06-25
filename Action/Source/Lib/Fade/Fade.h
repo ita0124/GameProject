@@ -12,9 +12,11 @@ private:
 		NUM
 	};
 
-	static TagFade m_State;
-	static int m_Count;
-	static bool m_Flg;
+	static TagFade	m_State;
+	static int		m_Count;
+	static bool		m_Flg;
+	static int		m_Speed;
+	static int		m_Color;
 
 public:
 	Fade();
@@ -25,9 +27,9 @@ public:
 
 	static void Draw();
 
-	static void RequestIn();
+	static void RequestIn(int _Speed, int _Color = WHITE);
 
-	static void RequestOut();
+	static void RequestOut(int _Speed, int _Color = WHITE);
 
 	static bool IsEndIn();
 
