@@ -249,7 +249,7 @@ void Player::Death() {
 //歩き
 void Player::Walk() {
 	//歩きアニメーションループ再生
-	RequestLoop(ANIME_RUN, 0.5f);
+	RequestLoop(ANIME_RUN);
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定
@@ -535,9 +535,9 @@ void Player::NormalAttack1() {
 		if (!UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z = -1.0f;
-			//
-			m_AttackRot[NORMAL_ATTACK2_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z);
 		}
+		//
+		m_AttackRot[NORMAL_ATTACK2_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//通常攻撃２段目へ
@@ -604,9 +604,9 @@ void Player::NormalAttack2() {
 		if (!UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z = -1.0f;
-			//
-			m_AttackRot[NORMAL_ATTACK3_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z);
 		}
+		//
+		m_AttackRot[NORMAL_ATTACK3_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER]) {
 		//待機状態へ
@@ -666,17 +666,6 @@ void Player::NormalAttack3() {
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
-	////通常攻撃ボタンが押されたら
-	//if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-	//	m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
-	//	//攻撃移動方向更新
-	//	if (!UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
-	//		//何も入力されていなけらば-Z軸方向に進む
-	//		m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
-	//		//
-	//		m_AttackRot[NORMAL_ATTACK1_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z);
-	//	}
-	//}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER]) {
 		//通常攻撃１段目へ
 		m_State = NORMAL_ATTACK1;
@@ -836,7 +825,7 @@ void Player::AttackMoveCalc(int _Index) {
 	//回転行列
 	MATRIX Mat1, Mat2;
 
-	Mat2 = MGetRotY(m_AttackRot[_Index]);
+	Mat2 = MGetRotY(m_CamraRot.y);
 	Mat1 = MGetTranslate(AttackMoveVec);
 	Mat1 = MMult(Mat1, Mat2);
 	AttackMoveVec = VGet(Mat1.m[3][0], 0.0f, Mat1.m[3][2]);
@@ -844,7 +833,7 @@ void Player::AttackMoveCalc(int _Index) {
 	AttackMoveVec.x = AttackMoveVec.x * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
 	AttackMoveVec.z = AttackMoveVec.z * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
 	m_Pos = VAdd(m_Pos, AttackMoveVec);
-	m_Rot.y = atan2f(-AttackMoveVec.x, -AttackMoveVec.z);
+	m_Rot.y = m_AttackRot[_Index];
 }
 //スタミナ処理
 void Player::StaminaManager() {
@@ -941,9 +930,9 @@ void Player::ActionManager() {
 		if (!UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
-			//
-			m_AttackRot[NORMAL_ATTACK1_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z);
 		}
+		//
+		m_AttackRot[NORMAL_ATTACK1_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z);
 	}
 }
 //重力処理
