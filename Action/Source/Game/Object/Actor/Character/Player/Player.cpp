@@ -536,8 +536,6 @@ void Player::NormalAttack1() {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z = -1.0f;
 		}
-		//
-		m_AttackRot[NORMAL_ATTACK2_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//通常攻撃２段目へ
@@ -605,8 +603,6 @@ void Player::NormalAttack2() {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z = -1.0f;
 		}
-		//
-		m_AttackRot[NORMAL_ATTACK3_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER]) {
 		//待機状態へ
@@ -821,19 +817,21 @@ bool Player::UpdateAttackMoveVec(int _Index) {
 //攻撃移動計算
 void Player::AttackMoveCalc(int _Index) {
 	VECTOR AttackMoveVec = m_AttackMoveVec[_Index];
+	//MoveVecを正規化
 	AttackMoveVec = VNorm(AttackMoveVec);
-	//回転行列
-	MATRIX Mat1, Mat2;
+	//MoveVecを行列化
+	MATRIX MatMoveVec = MGetTranslate(AttackMoveVec);
+	//カメラのY軸回転値を行列化
+	MATRIX MatRotY = MGetRotY(m_CamraRot.y);
+	//行列合成
+	MATRIX MatComposition = MMult(MatMoveVec, MatRotY);
+	//行列の座標情報部分を抜き取り
+	AttackMoveVec = VGet(MatComposition.m[3][0], 0.0f, MatComposition.m[3][2]);
 
-	Mat2 = MGetRotY(m_CamraRot.y);
-	Mat1 = MGetTranslate(AttackMoveVec);
-	Mat1 = MMult(Mat1, Mat2);
-	AttackMoveVec = VGet(Mat1.m[3][0], 0.0f, Mat1.m[3][2]);
+	AttackMoveVec = VScale(AttackMoveVec, PLAYER_NORMAL_ATTACK_MOVE_MULT);
 
-	AttackMoveVec.x = AttackMoveVec.x * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
-	AttackMoveVec.z = AttackMoveVec.z * (PLAYER_NORMAL_ATTACK_MOVE_MULT);
 	m_Pos = VAdd(m_Pos, AttackMoveVec);
-	m_Rot.y = m_AttackRot[_Index];
+	m_Rot.y = atan2f(-AttackMoveVec.x, -AttackMoveVec.z);
 }
 //スタミナ処理
 void Player::StaminaManager() {
@@ -931,8 +929,6 @@ void Player::ActionManager() {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
 		}
-		//
-		m_AttackRot[NORMAL_ATTACK1_NUMBER] = atan2f(-m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].x, -m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z);
 	}
 }
 //重力処理

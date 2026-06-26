@@ -8,8 +8,8 @@ namespace {
 	constexpr float		CONTROL_ROTY_SPEED = 0.05f;					//Y軸回転スピード
 	constexpr float		TARGET_HEIGHT_ADD = 25.0f;					// 注視点の高さ補正
 	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };		// ターゲットから見たカメラの相対位置
-	constexpr float		ROT_X_UP_LIMIT = 45.0f * RADIAN_CALC;		// カメラの上方向回転制限
-	constexpr float		ROT_X_DOWN_LIMIT = 45.0f * RADIAN_CALC;		// カメラの下方向回転制限
+	constexpr float		ROT_X_UP_LIMIT = 30.0f * RADIAN_CALC;		// カメラの上方向回転制限
+	constexpr float		ROT_X_DOWN_LIMIT = 60.0f * RADIAN_CALC;		// カメラの下方向回転制限
 	constexpr float		POS_Y_HEIGHT_DEADZONE = 50.0f;				// Y座標追従を開始する高低差			
 }
 
@@ -59,7 +59,7 @@ void PlayerCamera::Step(Player& _Player) {
 	}
 	//パッド
 	//X軸
-	if (InputPad::GetRAnalogYInput() < 0.0f && InputPad::GetRAnalogYInput() > 0.0f) {
+	if (InputPad::GetRAnalogYInput() < 0.0f || InputPad::GetRAnalogYInput() > 0.0f) {
 		RotX = (float)InputPad::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
 	}
 	//Y軸
