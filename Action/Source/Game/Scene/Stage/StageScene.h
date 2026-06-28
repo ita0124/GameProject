@@ -45,4 +45,8 @@ private:
 	void Update();
 	//カメラ関連Step
 	void CameraStep();
+	//プレイヤー関連Step
+	void PlayerStep();
+	//ステータス関連Step
+	void StatusStep();
 };

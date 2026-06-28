@@ -147,12 +147,9 @@ int StageScene::Step() {
 	m_Sky.Step();									//天球クラス
 	m_PlatformManager.Step();
 
-	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
-	m_Player.Step();
-	m_Sword.Step();
-	m_Shield.Step();
-
 	CameraStep();
+
+	PlayerStep();
 
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 
@@ -166,12 +163,7 @@ int StageScene::Step() {
 		Res = 1;
 	}
 
-	int HitPoints = (int)m_Player.GetHitPoints();
-	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
-	int SkillPoints = (int)m_Player.GetSkillPoints();
-	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
-	int Stamina = (int)m_Player.GetStamina();
-	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
+	StatusStep();
 
 	Update();
 
@@ -185,6 +177,22 @@ void StageScene::Update() {
 	m_Sword.Update();
 	m_Shield.Update();
 	m_CameraManager.Update();									//カメラマネージャークラス
+}
+//プレイヤー関連Step
+void StageScene::PlayerStep() {
+	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
+	m_Player.Step();
+	m_Sword.Step();
+	m_Shield.Step();
+}
+//ステータス関連Step
+void StageScene::StatusStep() {
+	int HitPoints = (int)m_Player.GetHitPoints();
+	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
+	int SkillPoints = (int)m_Player.GetSkillPoints();
+	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
+	int Stamina = (int)m_Player.GetStamina();
+	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
 }
 //カメラ関連Step
 void StageScene::CameraStep() {
