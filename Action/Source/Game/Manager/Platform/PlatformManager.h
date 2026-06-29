@@ -2,8 +2,8 @@
 #include "Game/Object/Platform/NormalPlatform/NormalPlatform.h"
 #include "Game/Object/Platform/MovingPlatform/MovingPlatform.h"
 #include "Game/Object/Platform/FallingPlatform/FallingPlatform.h"
-#include "Game/Object/Platform/BattlePlatform/BattlePlatform.h"
 #include "Game/Object/Platform/JumpPlatform/JumpPlatform.h"
+#include "Game/Object/Platform/RespawnPlatform/RespawnPlatform.h"
 
 namespace {
 	constexpr int PLATFORM_MAX = 100;

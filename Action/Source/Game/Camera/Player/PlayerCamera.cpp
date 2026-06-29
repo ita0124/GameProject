@@ -10,7 +10,7 @@ namespace {
 	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };		// ターゲットから見たカメラの相対位置
 	constexpr float		ROT_X_UP_LIMIT = 30.0f * RADIAN_CALC;		// カメラの上方向回転制限
 	constexpr float		ROT_X_DOWN_LIMIT = 60.0f * RADIAN_CALC;		// カメラの下方向回転制限
-	constexpr float		POS_Y_HEIGHT_DEADZONE = 50.0f;				// Y座標追従を開始する高低差			
+	constexpr float		POS_Y_HEIGHT_DEADZONE = 75.0f;				// Y座標追従を開始する高低差
 }
 
 //コンストラクタ

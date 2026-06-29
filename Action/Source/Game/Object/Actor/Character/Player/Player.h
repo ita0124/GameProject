@@ -109,12 +109,12 @@ public:
 
 private:
 	TagState	m_State;									//プレイヤー状態変数
+	TagState	m_PrevState;								//１フレーム前の状態
 
 	VECTOR		m_CamraRot;									//カメラの回転率を代入する
 
 	int			m_RollingTime;								//ローリング継続時間
 
-	bool		m_IsAction[STATE_NUM];						//アクションフラグ
 	bool		m_IsActionSuccess[STATE_NUM];				//アクション成功判定フラグ
 	int			m_ActionSuccessTime[STATE_NUM];				//アクション成功の継続時間
 
@@ -122,7 +122,7 @@ private:
 	int			m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
 	bool		m_IsParryWindo;								//パリィ許容フラグ
 
-	float		m_JumpCalc;									//ジャンプ力計算
+	float		m_JumpPower;								//ジャンプ力計算
 
 	VECTOR		m_KnockBackStartPos;						//ノックバック開始時の敵座標
 	float		m_KnockBackDistance;						//現在のノックバック量
@@ -139,6 +139,7 @@ private:
 	float		m_AttackRot[NORMAL_ATTACK_MAX];				//攻撃方向角度
 	float		m_TargetAngle;								//攻撃対象との角度差
 
+	bool		m_IsRespawn;								//リスポーン中か
 
 	//待機
 	void Wait();
@@ -164,10 +165,14 @@ private:
 	void NormalAttack2();
 	//通常攻撃３段目
 	void NormalAttack3();
-	//通常移動方向更新
-	bool UpdateNormalMoveVec();
+	//通常攻撃共通処理
+	void NormalAttack(int _Index);
+	//通常移動方向設定
+	bool SetNormalMoveVec();
 	//通常移動計算
 	void NormalMoveCalc();
+	//攻撃移動方向設定
+	bool SetAttackMoveVec(int _Index);
 	//攻撃移動方向更新
 	bool UpdateAttackMoveVec(int _Index);
 	//攻撃移動計算
@@ -177,17 +182,15 @@ private:
 	//状態遷移
 	void StateManager();
 	//動作管理
-	void ActionManager();
+	bool ActionManager();
 	//重力処理
 	void GravityManager();
-	//アクションフラグをリセット
-	void ResetIsAction();
 	//アクション成功フラグ管理
 	void ActionSuccessManager();
 	//ノックバック
 	void KnockBackManager();
 	//ノックバックデータ数値代入
-	void SetKnockBackData(float _Power,VECTOR _Pos);
+	void SetKnockBackData(float _Power, VECTOR _Pos);
 public:
 	//コンストラクタ
 	Player();
@@ -201,12 +204,12 @@ public:
 	void Step();
 	//当たり判定後の処理(当たっている場合)
 	void HitCalc(ObjectBase* _Object);
+	//リスポーン処理
+	void Respawn();
 
 	//Get
 	//プレイヤータグ
 	TagState	GetState() const { return m_State; }
-	//アクションフラグ
-	bool		GetIsAction(int _State)const { return m_IsAction[_State]; }
 	//アクション成功判定フラグ
 	bool		GetIsActionSuccess(int _State)const { return m_IsActionSuccess[_State]; }
 	//攻撃の当たり判定を発生させてよいか
@@ -217,10 +220,14 @@ public:
 	bool		GetIsParryWindo() { return m_IsParryWindo; }
 	//攻撃サーチを行う物体の座標
 	VECTOR		GetAttackTargetPos() { return m_AttackTargetPos; }
+	//リスポーン中か
+	bool		GetIsRespawn() { return m_IsRespawn; }
 
 	//Set
 	//カメラ回転率
 	void	SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
 	void	SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
+	//リスポーン中か
+	void	SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
 };

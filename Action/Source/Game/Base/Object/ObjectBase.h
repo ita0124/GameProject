@@ -34,6 +34,7 @@ protected:
 	VECTOR		m_Size;			//サイズ
 	VECTOR		m_PrevPos;		//前フレーム座標
 	VECTOR		m_PlatformVec;	//足場の動く移動方向
+	VECTOR		m_RespawnPos;	//リスポーン座標
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
@@ -98,13 +99,13 @@ public:
 	//押し出し判定を行うか
 	bool		GetIsPush()			const { return m_IsPush; }
 	//オーナーを渡す
-	ObjectBase	*GetOwner()			const {return m_Owner;}
+	ObjectBase* GetOwner()			const { return m_Owner; }
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る
-	VECTOR		GetCenter(TagShape _Shape= BALL);
+	VECTOR		GetCenter(TagShape _Shape = BALL);
 	//モデルの中心を取る
-	VECTOR		GetPrevCenter(TagShape _Shape= BALL);
+	VECTOR		GetPrevCenter(TagShape _Shape = BALL);
 
 	//Set
 	//座標
@@ -123,6 +124,8 @@ public:
 	void		SetIsGravity(bool _IsGravity) { m_IsGravity = _IsGravity; }
 	//足場の動く移動方向
 	void		SetPlatformVec(VECTOR _PlatformVec) { m_PlatformVec = _PlatformVec; }
+	//リスポーン座標
+	void		SetRespawnPos(VECTOR _RespawnPos) { m_RespawnPos = _RespawnPos; }
 
 	//Add
 	//座標加算

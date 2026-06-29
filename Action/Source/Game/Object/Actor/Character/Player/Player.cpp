@@ -5,7 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0.0f,50.0f,0.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,0.0f };										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -16,7 +16,7 @@ namespace {
 
 	constexpr float		ADD_STAMINA = 0.01f;													//プレイヤースタミナ回復量(１フレーム毎)
 
-	constexpr float		WALK_MOVE_MULT = 1.25f;													//歩き時の移動乗算値
+	constexpr float		WALK_MOVE_MULT = 1.75f;													//歩き時の移動乗算値
 	constexpr float		ROLLING_MOVE_MULT = 3.0f;												//ローリング時の移動乗算値
 	constexpr float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
 	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
@@ -38,7 +38,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK2_TRANSITION = 17.0f;										//通常攻撃２段目から通常攻撃３段目に移行するフレーム
 	constexpr float		NORMAL_ATTACK3_COLLISION_START = 25.0f;									//通常攻撃３段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK3_COLLISION_END = 30.0f;									//通常攻撃３段目の当たり判定終了フレーム
-	constexpr float		NORMAL_ATTACK3_TRANSITION = 60.0f;										//通常攻撃３段目から通常攻撃１段目に移行するフレーム
+	constexpr float		NORMAL_ATTACK3_TRANSITION = 40.0f;										//通常攻撃３段目から通常攻撃１段目に移行するフレーム
 
 	constexpr float		SKILL_ATTACKPOWER = 150.0f;												//スキル攻撃時の攻撃力
 	constexpr float		NORMAL_ATTACK1_POWER = 15.0f;											//通常攻撃１段目時の攻撃力
@@ -52,9 +52,37 @@ namespace {
 	constexpr int		ROLLING_TIME = 20;														//ローリング持続時間
 	constexpr float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
 
-	constexpr float		FIRST_JUMP_POWER = 5.5f;												//初回ジャンプ力
-
 	constexpr float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
+
+	constexpr float		ANIME_WALK_SPEED = 0.75f;												//歩きアニメーションの再生速度
+	constexpr float		ANIME_NORMAL_ATTACK1_SPEED = 1.0f;										//通常攻撃１段目アニメーションの再生速度
+	constexpr float		ANIME_NORMAL_ATTACK2_SPEED = 1.0f;										//通常攻撃２段目アニメーションの再生速度
+	constexpr float		ANIME_NORMAL_ATTACK3_SPEED = 1.25f;										//通常攻撃３段目アニメーションの再生速度
+
+	constexpr float		FIRST_JUMP_POWER = 3.7f;												//初回ジャンプ力
+	constexpr float		JUMP_POWER_MAX = -10.0f;												//ジャンプ速度の下限
+	constexpr float		GRAVITY = -0.025f;														//重力
+	constexpr float		GRAVITY_MAX = -0.25f;													//最大重力
+
+	enum {
+		NORMAL_ATTACK_ANIME,
+		NORMAL_ATTACK_SPEED,
+		NORMAL_ATTACK_POWER,
+		NORMAL_ATTACK_COLLISION_START,
+		NORMAL_ATTACK_COLLISION_END,
+		NORMAL_ATTACK_TRANSITION,
+		NEXT_NORMAL_ATTACK,
+		NEXT_STATE,
+		NORMAL_ATTACK_EFFECT,
+
+		NORMAL_ATTACK_MAX
+	};
+
+	const float			NORMAL_ATTACK[3][NORMAL_ATTACK_MAX] = {
+		{Player::TagAnime::ANIME_NORMAL_ATTACK1,ANIME_NORMAL_ATTACK1_SPEED,NORMAL_ATTACK1_POWER,NORMAL_ATTACK1_COLLISION_START,NORMAL_ATTACK1_COLLISION_END,NORMAL_ATTACK1_TRANSITION,2,Player::TagState::NORMAL_ATTACK2,MyEffeckseer::EFFECTID::TKTK01SWORD1_1},
+		{Player::TagAnime::ANIME_NORMAL_ATTACK2,ANIME_NORMAL_ATTACK2_SPEED,NORAML_ATTACK2_POWER,NORMAL_ATTACK2_COLLISION_START,NORMAL_ATTACK2_COLLISION_END,NORMAL_ATTACK2_TRANSITION,3,Player::TagState::NORMAL_ATTACK3,MyEffeckseer::EFFECTID::TKTK01SWORD1_2},
+		{Player::TagAnime::ANIME_NORMAL_ATTACK3,ANIME_NORMAL_ATTACK3_SPEED,NORAML_ATTACK3_POWER,NORMAL_ATTACK3_COLLISION_START,NORMAL_ATTACK3_COLLISION_END,NORMAL_ATTACK3_TRANSITION,1,Player::TagState::NORMAL_ATTACK1,MyEffeckseer::EFFECTID::TKTK01SWORD1_1}
+	};
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
@@ -73,6 +101,8 @@ void Player::Init() {
 
 	m_Kinds = PLAYER;
 
+	m_RespawnPos = RESPAWN_POS;					//リスポーン座標
+
 	m_IsPush = true;							//押し出し判定を行う
 
 	m_Rad = RAD;								//半径
@@ -83,16 +113,16 @@ void Player::Init() {
 	m_SkillPoints = SKILL_POINTS;				//スキルポイント
 
 	m_State = WAIT;								//プレイヤー状態変数
+	m_PrevState = m_State;								//１フレーム前の状態
 	m_RollingTime = 0;							//ローリング継続時間
 	for (int Index = 0; Index < STATE_NUM; Index++) {
-		m_IsAction[Index] = false;				//アクションフラグ
 		m_IsActionSuccess[Index] = false;		//アクション成功判定フラグ
 		m_ActionSuccessTime[Index] = 0;			//アクション成功の継続時間
 	}
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
 	m_ParryWindoeTime = 0;						//ガードアクション実行後のパリィに移行できる許容時間
 	m_IsParryWindo = true;						//パリィ許容フラグ
-	m_JumpCalc = 0.0f;							//ジャンプ力計算
+	m_JumpPower = 0.0f;							//ジャンプ力計算
 
 	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
 	m_KnockBackDistance = 0.0f;					//現在のノックバック量
@@ -110,6 +140,8 @@ void Player::Init() {
 		m_AttackRot[Index] = 0.0f;				//攻撃方向角度
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
+
+	m_IsRespawn = false;								//リスポーン中か
 }
 //データ読み込み処理
 void Player::Load() {
@@ -134,19 +166,21 @@ void Player::Step() {
 #endif // DEBUG
 
 	if (m_Pos.y <= -500) {
-		m_Pos = RESPAWN_POS;
+		m_IsRespawn = true;
+	}
+	if (!m_IsRespawn) {
+		//スタミナ処理
+		StaminaManager();
+		//状態遷移
+		StateManager();
+		//重力処理
+		GravityManager();
+		//アクション成功フラグ管理
+		ActionSuccessManager();
+	}
+	else {
 		GravityReset();
 	}
-
-	//スタミナ処理
-	StaminaManager();
-	//状態遷移
-	StateManager();
-	//重力処理
-	GravityManager();
-	//アクション成功フラグ管理
-	ActionSuccessManager();
-
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
@@ -194,14 +228,29 @@ void Player::HitCalc(ObjectBase* _Object) {
 		SetKnockBackData(KnockBackPower, PointerBoss->GetPos());
 	}
 }
+//リスポーン処理
+void Player::Respawn() {
+	m_Pos = m_RespawnPos;
+	//ジャンプ力リセット
+	m_JumpPower = 0.0f;
+	//ダメージ状態へ
+	m_State = WAIT;
+	//状態遷移
+	StateManager();
+}
 //待機
 void Player::Wait() {
 	//待機アニメーションループ再生
 	RequestLoop(ANIME_IDEL);
-	//スタミナを回復する
-	m_IsStaminaRecover = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//スタミナを回復する
+		m_IsStaminaRecover = true;
+	}
 	//通常移動方向設定
-	if (UpdateNormalMoveVec()) {
+	if (SetNormalMoveVec()) {
 		//歩き状態へ
 		m_State = WALK;
 	}
@@ -212,18 +261,21 @@ void Player::Wait() {
 void Player::Damage() {
 	//ダメージアニメーション再生
 	RequestEndLoop(ANIME_DAMAGE);
-	//スタミナを回復しない
-	m_IsStaminaRecover = false;
-	//当たり判定オフ
-	m_IsCollision = false;
-	//攻撃の当たり判定消滅
-	m_IsAttackCollision = false;
-	//ガードの当たり判定消失
-	m_IsGuardCollision = false;
-	//X軸回転率をリセット
-	m_Rot.x = 0.0f;
-	//アクションフラグをリセット
-	ResetIsAction();
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//スタミナを回復しない
+		m_IsStaminaRecover = false;
+		//当たり判定オフ
+		m_IsCollision = false;
+		//攻撃の当たり判定消滅
+		m_IsAttackCollision = false;
+		//ガードの当たり判定消失
+		m_IsGuardCollision = false;
+		//X軸回転率をリセット
+		m_Rot.x = 0.0f;
+	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
@@ -240,6 +292,8 @@ void Player::Death() {
 	RequestEndLoop(ANIME_DEATH);
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
+	//X軸回転率をリセット
+	m_Rot.x = 0.0f;
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//生存フラグをオフ
@@ -249,11 +303,11 @@ void Player::Death() {
 //歩き
 void Player::Walk() {
 	//歩きアニメーションループ再生
-	RequestLoop(ANIME_RUN);
+	RequestLoop(ANIME_RUN, ANIME_WALK_SPEED);
 	//スタミナを回復する
 	m_IsStaminaRecover = true;
 	//通常移動方向設定
-	if (UpdateNormalMoveVec()) {
+	if (SetNormalMoveVec()) {
 		//移動計算
 		NormalMoveCalc();
 	}
@@ -269,16 +323,16 @@ void Player::Rolling() {
 	//ローリングアニメーションループ再生
 	RequestLoop(ANIME_ROLLING);
 	//通常移動方向設定
-	if (UpdateNormalMoveVec()) {
+	if (SetNormalMoveVec()) {
 		//移動計算
 		NormalMoveCalc();
 	}
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
-
-	if (!m_IsAction[ROLLING]) {
-		//ローリングアクション中に変更
-		m_IsAction[ROLLING] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//スタミナを減らす
 		m_Stamina -= ROLLING_SUB_STAMINA;
 	}
@@ -289,8 +343,6 @@ void Player::Rolling() {
 		m_State = WAIT;
 		//X軸回転値を0に
 		m_Rot.x = 0.0f;
-		//ローリングアクション終了
-		m_IsAction[ROLLING] = false;
 	}
 	else {
 		//X軸回転値を計算
@@ -304,16 +356,17 @@ void Player::Jump() {
 	//ジャンプアニメーションループ再生
 	RequestEndLoop(ANIME_JUMP);
 
-	if (!m_IsAction[JUMP]) {
-		//ジャンプアクション中に変更
-		m_IsAction[JUMP] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//重力処理オン
 		m_IsGravity = true;
 		//初回ジャンプ力設定
-		m_JumpCalc = FIRST_JUMP_POWER;
+		m_JumpPower = FIRST_JUMP_POWER;
 	}
 	//通常移動方向設定
-	if (UpdateNormalMoveVec()) {
+	if (SetNormalMoveVec()) {
 		//移動計算
 		NormalMoveCalc();
 	}
@@ -321,8 +374,6 @@ void Player::Jump() {
 	if (!m_IsGravity) {
 		//待機状態へ
 		m_State = WAIT;
-		//ジャンプアクション終了
-		m_IsAction[JUMP] = false;
 	}
 }
 //ガード
@@ -330,7 +381,7 @@ void Player::Guard() {
 	//ガードアニメーションループ再生
 	RequestLoop(ANIME_GUARD_IDEL);
 	//通常移動方向設定
-	if (UpdateNormalMoveVec()) {
+	if (SetNormalMoveVec()) {
 		//移動計算
 		NormalMoveCalc();
 	}
@@ -339,9 +390,10 @@ void Player::Guard() {
 	//ノックバック
 	KnockBackManager();
 
-	if (!m_IsAction[GUARD]) {
-		//ガードアクション中に変更
-		m_IsAction[GUARD] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//当たり判定オフ
 		m_IsCollision = false;
 		//ガードの当たり判定発生
@@ -353,8 +405,6 @@ void Player::Guard() {
 		m_State = WAIT;
 		//当たり判定オン
 		m_IsCollision = true;
-		//ガードアクション終了
-		m_IsAction[GUARD] = false;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
 		//ガードアクション実行後のパリィに移行できる許容時間をリセット
@@ -368,8 +418,6 @@ void Player::Guard() {
 		m_State = WAIT;
 		//当たり判定オン
 		m_IsCollision = true;
-		//ガードアクション終了
-		m_IsAction[GUARD] = false;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
 		//ガードアクション実行後のパリィに移行できる許容時間をリセット
@@ -396,11 +444,10 @@ void Player::Parry() {
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
 
-	if (!m_IsAction[PARRY]) {
-		//ガードアクション終了
-		m_IsAction[GUARD] = false;
-		//パリィアクション中に変更
-		m_IsAction[PARRY] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//当たり判定オフ
 		m_IsCollision = false;
 		//ガードアクション実行後のパリィに移行できる許容時間をリセット
@@ -417,8 +464,6 @@ void Player::Parry() {
 		m_State = GUARD;
 		//当たり判定オン
 		m_IsCollision = true;
-		//パリィアクション終了
-		m_IsAction[PARRY] = false;
 		//パリィアクション成功フラグをオフに
 		m_IsActionSuccess[PARRY] = false;
 	}
@@ -428,9 +473,10 @@ void Player::SkillAttack() {
 	//スキル攻撃アニメーション再生
 	RequestEndLoop(ANIME_SKILL_ATTACK);
 
-	if (!m_IsAction[SKILL_ATTACK]) {
-		//通常攻撃１段目アクション中に変更
-		m_IsAction[SKILL_ATTACK] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//当たり判定オフ
 		m_IsCollision = false;
 		//押し出し判定オフ
@@ -480,8 +526,6 @@ void Player::SkillAttack() {
 		m_State = WAIT;
 		//当たり判定オン
 		m_IsCollision = true;
-		//スキル攻撃アクション終了
-		m_IsAction[SKILL_ATTACK] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 		//押し出し判定オン
@@ -490,96 +534,40 @@ void Player::SkillAttack() {
 }
 //通常攻撃１段目
 void Player::NormalAttack1() {
-	//通常攻撃１段目アニメーション再生
-	RequestEndLoop(ANIME_NORMAL_ATTACK1);
-
-	if (!m_IsAction[NORMAL_ATTACK1]) {
-		//通常攻撃１段目アクション中に変更
-		m_IsAction[NORMAL_ATTACK1] = true;
-		//攻撃力設定
-		m_Power = NORMAL_ATTACK1_POWER;
-		//サウンドリクエスト
-		SoundManager::Play(SoundManager::TagID::SE_ATK);
-		////正規化された方向ベクトルを取得
-		//VECTOR DirToAttaxkTarget = GetDirectionNotY(m_Pos, m_AttackTargetPos, TRUE);
-		////攻撃対象との角度差を設定
-		//m_TargetAngle = atan2f(-DirToAttaxkTarget.x, -DirToAttaxkTarget.y);
-	}
-	//指定フレームから指定フレームまでの間
-	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
-		if (!m_IsAttackCollision) {
-			//攻撃の当たり判定発生
-			m_IsAttackCollision = true;
-		}
-		//攻撃移動計算
-		AttackMoveCalc(NORMAL_ATTACK1_NUMBER);
-	}
-	else if (m_IsAttackCollision) {
-		//攻撃の当たり判定消滅
-		m_IsAttackCollision = false;
-	}
-	if (!m_IsEffect) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
-		//指定ボーンの座標取得
-		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-	}
-	//通常攻撃ボタンが押されたら
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
-		//攻撃移動方向更新
-		if (!UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
-			//何も入力されていなけらば-Z軸方向に進む
-			m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z = -1.0f;
-		}
-	}
-	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
-		//通常攻撃２段目へ
-		m_State = NORMAL_ATTACK2;
-		//通常攻撃１段目アクション終了
-		m_IsAction[NORMAL_ATTACK1] = false;
-		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
-	}
-	//アニメーションが終わったら
-	else if (m_AnimeData.EndFlg) {
-		//待機状態へ
-		m_State = WAIT;
-		//通常攻撃１段目アクション終了
-		m_IsAction[NORMAL_ATTACK1] = false;
-		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
-	}
+	NormalAttack(NORMAL_ATTACK1_NUMBER);
 }
 //通常攻撃２段目
 void Player::NormalAttack2() {
-	//通常攻撃２段目アニメーション再生
-	RequestEndLoop(ANIME_NORMAL_ATTACK2);
+	NormalAttack(NORMAL_ATTACK2_NUMBER);
+}
+//通常攻撃３段目
+void Player::NormalAttack3() {
+	NormalAttack(NORMAL_ATTACK3_NUMBER);
+}
+//通常攻撃共通処理
+void Player::NormalAttack(int _Index) {
+	//通常攻撃_Index段目アニメーション再生
+	RequestEndLoop(NORMAL_ATTACK[_Index][NORMAL_ATTACK_ANIME], NORMAL_ATTACK[_Index][NORMAL_ATTACK_SPEED]);
+	//攻撃移動方向更新
+	UpdateAttackMoveVec(_Index);
 
-	if (!m_IsAction[NORMAL_ATTACK2]) {
-		//通常攻撃２段目アクション中に変更
-		m_IsAction[NORMAL_ATTACK2] = true;
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
 		//攻撃力設定
-		m_Power = NORAML_ATTACK2_POWER;
+		m_Power = NORMAL_ATTACK[_Index][NORMAL_ATTACK_POWER];
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
 	//指定フレームから指定フレームまでの間
-	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
+	if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_COLLISION_START] && m_AnimeData.Frame < NORMAL_ATTACK[_Index][NORMAL_ATTACK_COLLISION_END]) {
 		if (!m_IsAttackCollision) {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
 		}
 		//攻撃移動計算
-		AttackMoveCalc(NORMAL_ATTACK2_NUMBER);
+		AttackMoveCalc(_Index);
 	}
 	else if (m_IsAttackCollision) {
 		//攻撃の当たり判定消滅
@@ -591,26 +579,38 @@ void Player::NormalAttack2() {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
+		m_EffectHndl = MyEffeckseer::Request((int)NORMAL_ATTACK[_Index][NORMAL_ATTACK_EFFECT], Pos, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = true;
+		m_IsNextNormalAttack[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]] = true;
 		//攻撃移動方向更新
-		if (!UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
+		if (!SetAttackMoveVec((int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK])) {
 			//何も入力されていなけらば-Z軸方向に進む
-			m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z = -1.0f;
+			m_AttackMoveVec[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]].z = -1.0f;
 		}
 	}
-	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER]) {
-		//待機状態へ
-		m_State = NORMAL_ATTACK3;
-		//通常攻撃２段目アクション終了
-		m_IsAction[NORMAL_ATTACK2] = false;
+	if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && m_IsNextNormalAttack[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]]) {
+		//次の攻撃状態へ
+		m_State = (TagState)NORMAL_ATTACK[_Index][NEXT_STATE];
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		m_IsNextNormalAttack[_Index] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && SetNormalMoveVec()) {
+		//歩き状態へ
+		m_State = WALK;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[_Index] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && ActionManager()) {
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[_Index] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -618,74 +618,14 @@ void Player::NormalAttack2() {
 	else if (m_AnimeData.EndFlg) {
 		//通常攻撃３段目へ
 		m_State = WAIT;
-		//通常攻撃２段目アクション終了
-		m_IsAction[NORMAL_ATTACK2] = false;
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		m_IsNextNormalAttack[_Index] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
 }
-//通常攻撃３段目
-void Player::NormalAttack3() {
-	//通常攻撃３段目アニメーション再生
-	RequestEndLoop(ANIME_NORMAL_ATTACK3);
-
-	if (!m_IsAction[NORMAL_ATTACK3]) {
-		//通常攻撃３段目アクション中に変更
-		m_IsAction[NORMAL_ATTACK3] = true;
-		//攻撃力設定
-		m_Power = NORAML_ATTACK3_POWER;
-		//サウンドリクエスト
-		SoundManager::Play(SoundManager::TagID::SE_ATK);
-	}
-	//指定フレームから指定フレームまでの間
-	if (m_AnimeData.Frame > NORMAL_ATTACK3_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK3_COLLISION_END) {
-		if (!m_IsAttackCollision) {
-			//攻撃の当たり判定発生
-			m_IsAttackCollision = true;
-		}
-		//攻撃移動計算
-		AttackMoveCalc(NORMAL_ATTACK3_NUMBER);
-	}
-	else if (m_IsAttackCollision) {
-		//攻撃の当たり判定消滅
-		m_IsAttackCollision = false;
-	}
-	if (!m_IsEffect) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
-		//指定ボーンの座標取得
-		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-	}
-	if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER]) {
-		//通常攻撃１段目へ
-		m_State = NORMAL_ATTACK1;
-		//通常攻撃３段目アクション終了
-		m_IsAction[NORMAL_ATTACK3] = false;
-		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
-	}
-	//アニメーションが終わったら
-	else if (m_AnimeData.EndFlg) {
-		//待機状態へ
-		m_State = WAIT;
-		//通常攻撃３段目アクション終了
-		m_IsAction[NORMAL_ATTACK3] = false;
-		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
-	}
-}
-//移動方向設定
-bool Player::UpdateNormalMoveVec() {
+//通常移動方向設定
+bool Player::SetNormalMoveVec() {
 	bool IsMove = false;
 
 	m_MoveVec = VZERO;
@@ -766,11 +706,19 @@ void Player::NormalMoveCalc() {
 	m_Pos = VAdd(m_Pos, MoveVec);
 	m_Rot.y = atan2f(-MoveVec.x, -MoveVec.z);
 }
-//攻撃移動方向更新
-bool Player::UpdateAttackMoveVec(int _Index) {
+//攻撃移動方向設定
+bool Player::SetAttackMoveVec(int _Index) {
 	bool IsMove = false;
 
 	m_AttackMoveVec[_Index] = VZERO;
+
+	IsMove = UpdateAttackMoveVec(_Index);
+
+	return IsMove;
+}
+//攻撃移動方向更新
+bool Player::UpdateAttackMoveVec(int _Index) {
+	bool IsMove = false;
 	//奥方向
 	if (InputKey::IsPushKeyRep(KEY_INPUT_W)) {
 		m_AttackMoveVec[_Index].z = -1.0f;
@@ -900,56 +848,67 @@ void Player::StateManager() {
 	}
 }
 //動作管理
-void Player::ActionManager() {
+bool Player::ActionManager() {
+	bool IsAction = false;
+
 	//スタミナが一定値を上回っていれば
 	if (m_Stamina > ROLLING_MIN_STAMINA) {
 		//ローリング
 		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_X) || InputKey::IsPushKeyTrg(KEY_INPUT_R)) {
 			m_State = ROLLING;
+			IsAction = true;
 		}
 	}
 	//ジャンプ
 	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_A) || InputKey::IsPushKeyTrg(KEY_INPUT_Z))) {
 		m_State = JUMP;
+		IsAction = true;
 	}
 	//ガード
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyTrg(KEY_INPUT_F)) {
+	if (InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyRep(KEY_INPUT_F)) {
 		m_State = GUARD;
+		IsAction = true;
 	}
 	//スキル攻撃
 	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q)) && m_SkillPoints > 0) {
 		m_State = SKILL_ATTACK;
+		IsAction = true;
 	}
 	//通常攻撃１段目
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
 		m_State = NORMAL_ATTACK1;
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
 		//攻撃移動方向更新
-		if (!UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
+		if (!SetAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
 			//何も入力されていなけらば-Z軸方向に進む
 			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
 		}
+		IsAction = true;
 	}
+
+	return IsAction;
 }
+
 //重力処理
 void Player::GravityManager() {
 	if (m_IsGravity) {
 		//現在のY座標にジャンプ力を加算
-		m_Pos.y += m_JumpCalc;
-		//重力処理
-		ObjectBase::GravityManager();
+		m_Pos.y += m_JumpPower;
+		//重力方向に加算
+		m_Gravity += GRAVITY;
+		//重力速度を制限
+		if (m_Gravity <= GRAVITY_MAX) {
+			m_Gravity = GRAVITY_MAX;
+		}
+		if (m_JumpPower <= JUMP_POWER_MAX) {
+			m_JumpPower = JUMP_POWER_MAX;
+		}
 		//ジャンプ力減衰
-		m_JumpCalc += m_Gravity;
+		m_JumpPower += m_Gravity;
 	}
 	else {
 		//ジャンプ力リセット
-		m_JumpCalc = 0.0f;
-	}
-}
-//アクションフラグをリセット
-void Player::ResetIsAction() {
-	for (int State = 0; State < STATE_NUM; State++) {
-		m_IsAction[State] = false;
+		m_JumpPower = 0.0f;
 	}
 }
 //アクション成功フラグ管理

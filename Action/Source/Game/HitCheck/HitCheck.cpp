@@ -454,6 +454,5 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (IsGravity) {
 		//d—Íˆ—‚ğs‚¤
 		_Object.SetIsGravity(true);
-
 	}
 }

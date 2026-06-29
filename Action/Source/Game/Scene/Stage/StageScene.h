@@ -22,6 +22,16 @@ private:
 	Stamina			m_Stamina;			//スタミナUIクラス
 	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
+
+	//ゲーム内の状態管理
+	enum TagGameState {
+		GAME_RESET,
+		GAME_START_WAIT,
+		GAME_STEP,
+		GAME_RESET_WAIT,
+	};
+	//ゲーム内の状態管理
+	TagGameState m_GameID;
 public:
 	//コンストラクタ・デストラクタ
 	StageScene();

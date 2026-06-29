@@ -40,10 +40,10 @@ void PlatformManager::Init() {
 			//落ちる足場クラスをnew
 			m_Platform[PlatformIndex] = new FallingPlatform;
 			break;
-		case PlatformBase::TagPlatformKinds::BATTLE:
-			//バトル足場クラスをnew
-			m_Platform[PlatformIndex] = new BattlePlatform;
-			break;
+		case PlatformBase::TagPlatformKinds::RESPAWN:
+			//リスポーン地点クラスをnew
+			m_Platform[PlatformIndex] = new RespawnPlatform;
+			break;   
 		case PlatformBase::TagPlatformKinds::JUMP:
 			//ジャンプ足場クラスをnew
 			m_Platform[PlatformIndex] = new JumpPlatform;

@@ -1,13 +1,17 @@
 #include "StageScene.h"
 
 namespace {
-	constexpr int	FADE_SPEED = 5;			//フェードスピード
+	constexpr int	FADE_SPEED = 5;					//フェードスピード
+	constexpr int	PLAYER_RESPAWN_FADE_SPEED = 5;	//リスポーン完了フェードスピード
+	constexpr int	PLAYER_DEATH_FADE_SPEED = 5;	//プレイヤー落下フェードスピード
 }
 
 //コンストラクタ
 StageScene::StageScene() {
 	//タグをINITに設定
 	m_ID = INIT;
+	//ゲーム内の状態を設定
+	m_GameID = GAME_STEP;
 }
 //デストラクタ
 StageScene::~StageScene() {
@@ -147,9 +151,45 @@ int StageScene::Step() {
 	m_Sky.Step();									//天球クラス
 	m_PlatformManager.Step();
 
-	CameraStep();
-
+	switch (m_GameID) {
+	case GAME_RESET:
+		//プレイヤーのリスポーン処理
+		m_Player.Respawn();
+		//カメラマネージャークラス
+		m_CameraManager.Init();
+		//開始待機へ
+		m_GameID = GAME_START_WAIT;
+		break;
+	case GAME_START_WAIT:
+		//フェードイン関数を呼び出す
+		Fade::RequestIn(PLAYER_RESPAWN_FADE_SPEED,BLACK);
+		//フェードインが終わったら
+		if (Fade::IsEndIn()) {
+			//プレイヤーが動けるように
+			m_GameID = GAME_STEP;
+			//リスポーン完了
+			m_Player.SetIsRespawn(false);
+		}
+		break;
+	case GAME_STEP:
+		//リスポーンが必要なら
+		if (m_Player.GetIsRespawn()) {
+			//リセット待機へ
+			m_GameID = GAME_RESET_WAIT;
+		}
+		break;
+	case GAME_RESET_WAIT:
+		//フェードアウト関数を呼び出す
+		Fade::RequestOut(PLAYER_DEATH_FADE_SPEED, BLACK);
+		//フェードアウトが終わったら
+		if (Fade::IsEndOut()) {
+			m_GameID = GAME_RESET;
+		}
+		break;
+	}
 	PlayerStep();
+
+	CameraStep();
 
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 

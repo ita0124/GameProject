@@ -301,9 +301,6 @@ void Boss::Walk() {
 		//Y軸回転値に代入
 		m_Rot.y = RotY;
 	}
-	else {
-
-	}
 }
 //通常攻撃１段目　攻撃終了(鼻)
 void Boss::BreakNormalAttack1() {

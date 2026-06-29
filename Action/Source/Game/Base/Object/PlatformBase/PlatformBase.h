@@ -9,7 +9,7 @@ public:
 		NORMAL,
 		MOVING,
 		FALLING,
-		BATTLE,
+		RESPAWN,
 		JUMP,
 
 		PLATFORM_NUM
