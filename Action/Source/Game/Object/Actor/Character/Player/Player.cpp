@@ -5,7 +5,8 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,0.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0	,1000	,450
+	};										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -63,26 +64,6 @@ namespace {
 	constexpr float		JUMP_POWER_MAX = -10.0f;												//ジャンプ速度の下限
 	constexpr float		GRAVITY = -0.025f;														//重力
 	constexpr float		GRAVITY_MAX = -0.25f;													//最大重力
-
-	enum {
-		NORMAL_ATTACK_ANIME,
-		NORMAL_ATTACK_SPEED,
-		NORMAL_ATTACK_POWER,
-		NORMAL_ATTACK_COLLISION_START,
-		NORMAL_ATTACK_COLLISION_END,
-		NORMAL_ATTACK_TRANSITION,
-		NEXT_NORMAL_ATTACK,
-		NEXT_STATE,
-		NORMAL_ATTACK_EFFECT,
-
-		NORMAL_ATTACK_MAX
-	};
-
-	const float			NORMAL_ATTACK[3][NORMAL_ATTACK_MAX] = {
-		{Player::TagAnime::ANIME_NORMAL_ATTACK1,ANIME_NORMAL_ATTACK1_SPEED,NORMAL_ATTACK1_POWER,NORMAL_ATTACK1_COLLISION_START,NORMAL_ATTACK1_COLLISION_END,NORMAL_ATTACK1_TRANSITION,2,Player::TagState::NORMAL_ATTACK2,MyEffeckseer::EFFECTID::TKTK01SWORD1_1},
-		{Player::TagAnime::ANIME_NORMAL_ATTACK2,ANIME_NORMAL_ATTACK2_SPEED,NORAML_ATTACK2_POWER,NORMAL_ATTACK2_COLLISION_START,NORMAL_ATTACK2_COLLISION_END,NORMAL_ATTACK2_TRANSITION,3,Player::TagState::NORMAL_ATTACK3,MyEffeckseer::EFFECTID::TKTK01SWORD1_2},
-		{Player::TagAnime::ANIME_NORMAL_ATTACK3,ANIME_NORMAL_ATTACK3_SPEED,NORAML_ATTACK3_POWER,NORMAL_ATTACK3_COLLISION_START,NORMAL_ATTACK3_COLLISION_END,NORMAL_ATTACK3_TRANSITION,1,Player::TagState::NORMAL_ATTACK1,MyEffeckseer::EFFECTID::TKTK01SWORD1_1}
-	};
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
@@ -230,7 +211,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 }
 //リスポーン処理
 void Player::Respawn() {
-	m_Pos = m_RespawnPos;
+	m_Pos = RESPAWN_POS;
 	//ジャンプ力リセット
 	m_JumpPower = 0.0f;
 	//ダメージ状態へ
@@ -534,40 +515,28 @@ void Player::SkillAttack() {
 }
 //通常攻撃１段目
 void Player::NormalAttack1() {
-	NormalAttack(NORMAL_ATTACK1_NUMBER);
-}
-//通常攻撃２段目
-void Player::NormalAttack2() {
-	NormalAttack(NORMAL_ATTACK2_NUMBER);
-}
-//通常攻撃３段目
-void Player::NormalAttack3() {
-	NormalAttack(NORMAL_ATTACK3_NUMBER);
-}
-//通常攻撃共通処理
-void Player::NormalAttack(int _Index) {
 	//通常攻撃_Index段目アニメーション再生
-	RequestEndLoop(NORMAL_ATTACK[_Index][NORMAL_ATTACK_ANIME], NORMAL_ATTACK[_Index][NORMAL_ATTACK_SPEED]);
+	RequestEndLoop(ANIME_NORMAL_ATTACK1, ANIME_NORMAL_ATTACK1_SPEED);
 	//攻撃移動方向更新
-	UpdateAttackMoveVec(_Index);
+	UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER);
 
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
 		//攻撃力設定
-		m_Power = NORMAL_ATTACK[_Index][NORMAL_ATTACK_POWER];
+		m_Power = NORMAL_ATTACK1_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
 	//指定フレームから指定フレームまでの間
-	if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_COLLISION_START] && m_AnimeData.Frame < NORMAL_ATTACK[_Index][NORMAL_ATTACK_COLLISION_END]) {
+	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
 		if (!m_IsAttackCollision) {
 			//攻撃の当たり判定発生
 			m_IsAttackCollision = true;
 		}
 		//攻撃移動計算
-		AttackMoveCalc(_Index);
+		AttackMoveCalc(NORMAL_ATTACK1_NUMBER);
 	}
 	else if (m_IsAttackCollision) {
 		//攻撃の当たり判定消滅
@@ -579,38 +548,38 @@ void Player::NormalAttack(int _Index) {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request((int)NORMAL_ATTACK[_Index][NORMAL_ATTACK_EFFECT], Pos, false);
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	//通常攻撃ボタンが押されたら
 	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-		m_IsNextNormalAttack[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]] = true;
+		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
 		//攻撃移動方向更新
-		if (!SetAttackMoveVec((int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK])) {
+		if (!SetAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
 			//何も入力されていなけらば-Z軸方向に進む
-			m_AttackMoveVec[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]].z = -1.0f;
+			m_AttackMoveVec[NORMAL_ATTACK2_NUMBER].z = -1.0f;
 		}
 	}
-	if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && m_IsNextNormalAttack[(int)NORMAL_ATTACK[_Index][NEXT_NORMAL_ATTACK]]) {
+	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER]) {
 		//次の攻撃状態へ
-		m_State = (TagState)NORMAL_ATTACK[_Index][NEXT_STATE];
+		m_State = NORMAL_ATTACK2;
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[_Index] = false;
+		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
-	else if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && SetNormalMoveVec()) {
+	else if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && SetNormalMoveVec()) {
 		//歩き状態へ
 		m_State = WALK;
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[_Index] = false;
+		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
-	else if (m_AnimeData.Frame > NORMAL_ATTACK[_Index][NORMAL_ATTACK_TRANSITION] && ActionManager()) {
+	else if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && ActionManager()) {
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[_Index] = false;
+		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -619,7 +588,167 @@ void Player::NormalAttack(int _Index) {
 		//通常攻撃３段目へ
 		m_State = WAIT;
 		//通常攻撃の段数判定をオフ
-		m_IsNextNormalAttack[_Index] = false;
+		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+}
+//通常攻撃２段目
+void Player::NormalAttack2() {
+	//通常攻撃_Index段目アニメーション再生
+	RequestEndLoop(ANIME_NORMAL_ATTACK2, ANIME_NORMAL_ATTACK2_SPEED);
+	//攻撃移動方向更新
+	UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER);
+
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//攻撃力設定
+		m_Power = NORMAL_ATTACK1_POWER;
+		//サウンドリクエスト
+		SoundManager::Play(SoundManager::TagID::SE_ATK);
+	}
+	//指定フレームから指定フレームまでの間
+	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
+		if (!m_IsAttackCollision) {
+			//攻撃の当たり判定発生
+			m_IsAttackCollision = true;
+		}
+		//攻撃移動計算
+		AttackMoveCalc(NORMAL_ATTACK2_NUMBER);
+	}
+	else if (m_IsAttackCollision) {
+		//攻撃の当たり判定消滅
+		m_IsAttackCollision = false;
+	}
+	if (!m_IsEffect) {
+		//エフェクト発生判定オン
+		m_IsEffect = true;
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
+	//通常攻撃ボタンが押されたら
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = true;
+		//攻撃移動方向更新
+		if (!SetAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK3_NUMBER].z = -1.0f;
+		}
+	}
+	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER]) {
+		//次の攻撃状態へ
+		m_State = NORMAL_ATTACK3;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION && SetNormalMoveVec()) {
+		//歩き状態へ
+		m_State = WALK;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION && ActionManager()) {
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	//アニメーションが終わったら
+	else if (m_AnimeData.EndFlg) {
+		//通常攻撃３段目へ
+		m_State = WAIT;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+}
+//通常攻撃３段目
+void Player::NormalAttack3() {
+	//通常攻撃_Index段目アニメーション再生
+	RequestEndLoop(ANIME_NORMAL_ATTACK3, ANIME_NORMAL_ATTACK3_SPEED);
+	//攻撃移動方向更新
+	UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER);
+
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//攻撃力設定
+		m_Power = NORMAL_ATTACK1_POWER;
+		//サウンドリクエスト
+		SoundManager::Play(SoundManager::TagID::SE_ATK);
+	}
+	//指定フレームから指定フレームまでの間
+	if (m_AnimeData.Frame > NORMAL_ATTACK3_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK3_COLLISION_END) {
+		if (!m_IsAttackCollision) {
+			//攻撃の当たり判定発生
+			m_IsAttackCollision = true;
+		}
+		//攻撃移動計算
+		AttackMoveCalc(NORMAL_ATTACK3_NUMBER);
+	}
+	else if (m_IsAttackCollision) {
+		//攻撃の当たり判定消滅
+		m_IsAttackCollision = false;
+	}
+	if (!m_IsEffect) {
+		//エフェクト発生判定オン
+		m_IsEffect = true;
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
+	//通常攻撃ボタンが押されたら
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
+		//攻撃移動方向更新
+		if (!SetAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
+			//何も入力されていなけらば-Z軸方向に進む
+			m_AttackMoveVec[NORMAL_ATTACK1_NUMBER].z = -1.0f;
+		}
+	}
+	if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION && m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER]) {
+		//次の攻撃状態へ
+		m_State = NORMAL_ATTACK1;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION && SetNormalMoveVec()) {
+		//歩き状態へ
+		m_State = WALK;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	else if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION && ActionManager()) {
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
+		//エフェクト発生判定オフ
+		m_IsEffect = false;
+	}
+	//アニメーションが終わったら
+	else if (m_AnimeData.EndFlg) {
+		//通常攻撃３段目へ
+		m_State = WAIT;
+		//通常攻撃の段数判定をオフ
+		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}

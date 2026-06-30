@@ -199,7 +199,7 @@ int StageScene::Step() {
 
 	//終了位置設定　後にゴールオブジェクトを追加する
 	VECTOR Pos = m_Player.GetPos();
-	if (Pos.x <= 30.0f && Pos.x >= -30.0f && Pos.y >= 1200 && Pos.z <= 670.0f && Pos.z >= 610.0f) {
+	if (Pos.x <= 30.0f && Pos.x >= -30.0f && Pos.y >= 1140 && Pos.z <= 670.0f && Pos.z >= 610.0f) {
 		Res = 1;
 	}
 
