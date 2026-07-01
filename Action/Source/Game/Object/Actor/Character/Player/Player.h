@@ -137,9 +137,14 @@ private:
 	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
 	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//攻撃進行方向
 	float		m_AttackRot[NORMAL_ATTACK_MAX];				//攻撃方向角度
+	bool		m_IsSetAttackMoveVec[NORMAL_ATTACK_MAX];	//攻撃信仰方向を設定したか
 	float		m_TargetAngle;								//攻撃対象との角度差
 
 	bool		m_IsRespawn;								//リスポーン中か
+
+	int			m_RecoveryTime;								//行動可能になるまでの硬直時間
+	bool		m_IsRecovery;								//硬直中かどうか
+	bool		m_IsSetRecovery;							//硬直を開始したか
 
 	//待機
 	void Wait();
@@ -165,8 +170,6 @@ private:
 	void NormalAttack2();
 	//通常攻撃３段目
 	void NormalAttack3();
-	//通常攻撃共通処理
-	void NormalAttack(int _Index);
 	//通常移動方向設定
 	bool SetNormalMoveVec();
 	//通常移動計算
@@ -191,6 +194,10 @@ private:
 	void KnockBackManager();
 	//ノックバックデータ数値代入
 	void SetKnockBackData(float _Power, VECTOR _Pos);
+	//アニメーションの硬直設定
+	void SetAnimeRecoveryManager(int _RecoveryTime);
+	//アニメーションの硬直更新
+	bool UpdateAnimeRecoveryManager(float _AnimeSpeed);
 public:
 	//コンストラクタ
 	Player();
