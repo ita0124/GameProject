@@ -182,29 +182,27 @@ void Boss::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		if (PointerPlayer->GetState() == Player::TagState::PARRY) {
-			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
-				//ダウン状態へ
-				m_State = DOWN;
-				//ダウン状態継続時間を設定
-				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
-			}
+		//if (PointerPlayer->GetState() == Player::TagState::PARRY) {
+		//	if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
+		//		//ダウン状態へ
+		//		m_State = DOWN;
+		//		//ダウン状態継続時間を設定
+		//		m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
+		//	}
+		//}
+			//ダウン状態の時
+		if (m_State == DOWN) {
+			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
 		}
 		else {
-			//ダウン状態の時
-			if (m_State == DOWN) {
-				//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
-				m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
-			}
-			else {
-				//HPを消費
-				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
-			}
-			////ダメージ処理の継続時間セット
-			m_DamageTime = 15;
-			//当たり判定オン
-			m_IsCollision = false;
+			//HPを消費
+			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
 		}
+		////ダメージ処理の継続時間セット
+		m_DamageTime = 15;
+		//当たり判定オン
+		m_IsCollision = false;
 	}
 }
 //方向判定ボーンと当たった場合

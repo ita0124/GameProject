@@ -9,14 +9,16 @@ public:
 	//プレイヤーの状態を管理するタグ
 	enum TagState {
 		T_PAUSE,			//Tポーズ
-		WAIT,				//待機
+		IDEL,				//待機
 		DAMAGE,				//ダメージ
 		DEATH,				//死亡
 		WALK,				//歩き
 		ROLLING,			//ローリング
 		JUMP,				//ジャンプ
-		GUARD,				//ガード
-		PARRY,				//パリィ
+		FALLING,			//落下
+		GUARD_START,		//ガード開始
+		GUARD,				//ガード待機
+		GUARD_EMD,			//ガード終了
 		SKILL_ATTACK,		//スキル攻撃
 		NORMAL_ATTACK1,		//通常攻撃１段目
 		NORMAL_ATTACK2,		//通常攻撃２段目
@@ -33,11 +35,11 @@ public:
 		ANIME_DEATH,			//死亡
 		ANIME_RUN,				//走り
 		ANIME_ROLLING,			//ローリング
-		ANIME_JUMP,
+		ANIME_JUMP,				//ジャンプ
+		ANIME_FALLING,			//落下
 		ANIME_GUARD_START,		//ガード開始
 		ANIME_GUARD_IDEL,		//ガード待機
 		ANIME_GUARD_EMD,		//ガード終了
-		ANIME_PARRY,			//パリィ
 		ANIME_SKILL_ATTACK,		//スキル攻撃
 		ANIME_NORMAL_ATTACK1,	//通常攻撃1段目
 		ANIME_NORMAL_ATTACK2,	//通常攻撃2段目

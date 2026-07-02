@@ -5,7 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,0.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0.0f,1000.0f,0.0f };									//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -24,7 +24,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;										//通常移動時の回転速度
-	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.1f;									//攻撃移動時の回転速度
+	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.2f;									//攻撃移動時の回転速度
 
 	constexpr float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
@@ -99,7 +99,7 @@ void Player::Init() {
 	m_Stamina = STAMINA;						//スタミナ
 	m_SkillPoints = SKILL_POINTS;				//スキルポイント
 
-	m_State = WAIT;								//プレイヤー状態変数
+	m_State = IDEL;								//プレイヤー状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_RollingTime = 0;							//ローリング継続時間
 	for (int Index = 0; Index < STATE_NUM; Index++) {
@@ -187,12 +187,12 @@ void Player::HitCalc(ObjectBase* _Object) {
 	if (m_State == GUARD) {
 		//パリィ許容フラグがオンなら
 		if (m_IsParryWindo) {
-			//パリィ状態に変更
-			m_State = PARRY;
-			//スタミナを回復
-			m_Stamina += PointerBoss->GetPower() / 2;
-			//パリィアクション成功
-			m_IsActionSuccess[PARRY] = true;
+			//////パリィ状態に変更
+			////m_State = PARRY;
+			////スタミナを回復
+			//m_Stamina += PointerBoss->GetPower() / 2;
+			////パリィアクション成功
+			//m_IsActionSuccess[PARRY] = true;
 		}
 		else {
 			//スタミナを消費
@@ -222,11 +222,12 @@ void Player::HitCalc(ObjectBase* _Object) {
 }
 //リスポーン処理
 void Player::Respawn() {
-	m_Pos = m_RespawnPos;
+	/*m_Pos = m_RespawnPos;*/
+	m_Pos = RESPAWN_POS;
 	//ジャンプ力リセット
 	m_JumpPower = 0.0f;
 	//ダメージ状態へ
-	m_State = WAIT;
+	m_State = IDEL;
 	//状態遷移
 	StateManager();
 }
@@ -271,7 +272,7 @@ void Player::Damage() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//当たり判定オン
 		m_IsCollision = true;
 	}
@@ -305,7 +306,7 @@ void Player::Walk() {
 	}
 	else {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 	}
 	//動作管理
 	ActionManager();
@@ -332,7 +333,7 @@ void Player::Rolling() {
 	if (m_RollingTime > ROLLING_TIME) {
 		m_RollingTime = 0;
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//X軸回転値を0に
 		m_Rot.x = 0.0f;
 	}
@@ -365,7 +366,7 @@ void Player::Jump() {
 	//重力処理がオフになったら
 	if (!m_IsGravity) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 	}
 }
 //ガード
@@ -394,28 +395,24 @@ void Player::Guard() {
 	//ガードボタンを離したら
 	if (!InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) && !InputKey::IsPushKeyRep(KEY_INPUT_F)) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//当たり判定オン
 		m_IsCollision = true;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
 		//ガードアクション実行後のパリィに移行できる許容時間をリセット
 		m_ParryWindoeTime = 0;
-		//パリィに移行してもよい
-		m_IsParryWindo = true;
 	}
 	//スタミナが一定値を下回れば
 	if (m_Stamina <= GUARD_MIN_STAMINA) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//当たり判定オン
 		m_IsCollision = true;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
 		//ガードアクション実行後のパリィに移行できる許容時間をリセット
 		m_ParryWindoeTime = 0;
-		//パリィに移行してもよい
-		m_IsParryWindo = true;
 	}
 	//ガードアクション実行後のパリィに移行できる許容時間が一定の値を超えていれば
 	if (m_ParryWindoeTime >= PARRY_WINDOW_TIME) {
@@ -429,37 +426,37 @@ void Player::Guard() {
 		m_IsParryWindo = true;
 	}
 }
-//パリィ
-void Player::Parry() {
-	//パリィアニメーション再生
-	RequestEndLoop(ANIME_PARRY);
-	//スタミナを回復しない
-	m_IsStaminaRecover = false;
-
-	//１フレーム前の状態と今のフレームの状態を比較
-	if (m_State != m_PrevState) {
-		//変更があった
-		m_PrevState = m_State;
-		//当たり判定オフ
-		m_IsCollision = false;
-		//ガードアクション実行後のパリィに移行できる許容時間をリセット
-		m_ParryWindoeTime = 0;
-		//パリィに移行してもよい
-		m_IsParryWindo = true;
-		//サウンドリクエスト
-		SoundManager::Play(SoundManager::TagID::SE_PARRY);
-	}
-
-	//アニメーションが終わったら
-	if (m_AnimeData.EndFlg) {
-		//待機状態へ
-		m_State = GUARD;
-		//当たり判定オン
-		m_IsCollision = true;
-		//パリィアクション成功フラグをオフに
-		m_IsActionSuccess[PARRY] = false;
-	}
-}
+////パリィ
+//void Player::Parry() {
+//	//パリィアニメーション再生
+//	RequestEndLoop(ANIME_PARRY);
+//	//スタミナを回復しない
+//	m_IsStaminaRecover = false;
+//
+//	//１フレーム前の状態と今のフレームの状態を比較
+//	if (m_State != m_PrevState) {
+//		//変更があった
+//		m_PrevState = m_State;
+//		//当たり判定オフ
+//		m_IsCollision = false;
+//		//ガードアクション実行後のパリィに移行できる許容時間をリセット
+//		m_ParryWindoeTime = 0;
+//		//パリィに移行してもよい
+//		m_IsParryWindo = true;
+//		//サウンドリクエスト
+//		SoundManager::Play(SoundManager::TagID::SE_PARRY);
+//	}
+//
+//	//アニメーションが終わったら
+//	if (m_AnimeData.EndFlg) {
+//		//待機状態へ
+//		m_State = GUARD;
+//		//当たり判定オン
+//		m_IsCollision = true;
+//		//パリィアクション成功フラグをオフに
+//		m_IsActionSuccess[PARRY] = false;
+//	}
+//}
 //スキル攻撃
 void Player::SkillAttack() {
 	//スキル攻撃アニメーション再生
@@ -515,7 +512,7 @@ void Player::SkillAttack() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//当たり判定オン
 		m_IsCollision = true;
 		//エフェクト発生判定オフ
@@ -620,7 +617,7 @@ void Player::NormalAttack1() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//通常攻撃の段数判定をオフ
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = false;
 		//エフェクト発生判定オフ
@@ -726,7 +723,7 @@ void Player::NormalAttack2() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//通常攻撃の段数判定をオフ
 		m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = false;
 		//エフェクト発生判定オフ
@@ -812,7 +809,7 @@ void Player::NormalAttack3() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//通常攻撃の段数判定をオフ
 		m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
 		//エフェクト発生判定オフ
@@ -996,13 +993,13 @@ void Player::UpdateRotation(VECTOR _MoveVec, float _RotSpeed) {
 	float RotDif = TargetRot - m_Rot.y;
 	//角度差を-π～-πの範囲に補正
 	//どっち回りをするべきか
-	if (RotDif > DX_PI)
+	if (RotDif > (float)DX_PI)
 	{
-		RotDif -= DX_TWO_PI;
+		RotDif -= (float)DX_TWO_PI;
 	}
-	else if (RotDif < -DX_PI)
+	else if (RotDif < -(float)DX_PI)
 	{
-		RotDif += DX_TWO_PI;
+		RotDif += (float)DX_TWO_PI;
 	}
 	//1フレームあたりの回転量
 	float RotSpeed = _RotSpeed;
@@ -1040,9 +1037,9 @@ void Player::StaminaManager() {
 //状態遷移
 void Player::StateManager() {
 	switch (m_State) {
-	case WAIT:				//待機
+	case IDEL:				//待機
 		Wait();
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "WAIT");
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "IDEL");
 		break;
 	case DAMAGE:			//ダメージ
 		Damage();
@@ -1067,10 +1064,6 @@ void Player::StateManager() {
 	case GUARD:				//ガード
 		Guard();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
-		break;
-	case PARRY:				//パリィ
-		Parry();
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "PARRY");
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();

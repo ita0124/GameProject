@@ -128,8 +128,6 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			for (int FrameNum = 0;FrameNum <= Boss::FrameNumber::TOSEEND_RIGHT;FrameNum++) {
 				//ガード成功フラグがオンになっていたら以降の処理は行わない
 				if (PointerPlayer->GetIsActionSuccess(Player::TagState::GUARD))return;
-				//パリィ成功フラグがオンになっていたら以降の処理は行わない
-				if (PointerPlayer->GetIsActionSuccess(Player::TagState::PARRY))return;
 				//フレームの攻撃判定がオフになっていたら次のフレームを見る
 				if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
 				//プレイヤーの座標を取得
