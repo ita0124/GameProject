@@ -137,7 +137,7 @@ private:
 	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
 	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//攻撃進行方向
 	float		m_AttackRot[NORMAL_ATTACK_MAX];				//攻撃方向角度
-	bool		m_IsSetAttackMoveVec[NORMAL_ATTACK_MAX];	//攻撃信仰方向を設定したか
+	bool		m_IsSetAttackMoveVec[NORMAL_ATTACK_MAX];	//攻撃進行方向を設定したか
 	float		m_TargetAngle;								//攻撃対象との角度差
 
 	bool		m_IsRespawn;								//リスポーン中か

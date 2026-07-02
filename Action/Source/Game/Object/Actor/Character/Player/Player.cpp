@@ -5,8 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0	,1000	,450
-	};										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,0.0f };										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -60,9 +59,9 @@ namespace {
 	constexpr float		ANIME_NORMAL_ATTACK2_SPEED = 1.0f;										//通常攻撃２段目アニメーションの再生速度
 	constexpr float		ANIME_NORMAL_ATTACK3_SPEED = 1.25f;										//通常攻撃３段目アニメーションの再生速度
 
-	constexpr int		NORMAL_ATTACK1_RECOVERY_TIME = 10;										//通常攻撃３段目の硬直フレーム数
-	constexpr int		NORMAL_ATTACK2_RECOVERY_TIME = 0;										//通常攻撃３段目の硬直フレーム数
-	constexpr int		NORMAL_ATTACK3_RECOVERY_TIME = 10;										//通常攻撃３段目の硬直フレーム数
+	constexpr int		NORMAL_ATTACK1_RECOVERY_TIME = 5;										//通常攻撃1段目の硬直フレーム数
+	constexpr int		NORMAL_ATTACK2_RECOVERY_TIME = 0;										//通常攻撃2段目の硬直フレーム数
+	constexpr int		NORMAL_ATTACK3_RECOVERY_TIME = 5;										//通常攻撃３段目の硬直フレーム数
 
 	constexpr float		FIRST_JUMP_POWER = 3.7f;												//初回ジャンプ力
 	constexpr float		JUMP_POWER_MAX = -10.0f;												//ジャンプ速度の下限
@@ -220,7 +219,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 }
 //リスポーン処理
 void Player::Respawn() {
-	m_Pos = RESPAWN_POS;
+	m_Pos = m_RespawnPos;
 	//ジャンプ力リセット
 	m_JumpPower = 0.0f;
 	//ダメージ状態へ
@@ -527,7 +526,9 @@ void Player::NormalAttack1() {
 	//通常攻撃_Index段目アニメーション再生
 	RequestEndLoop(ANIME_NORMAL_ATTACK1, ANIME_NORMAL_ATTACK1_SPEED);
 	//攻撃移動方向更新
-	UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER);
+	if (UpdateAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
+		m_IsSetAttackMoveVec[NORMAL_ATTACK1_NUMBER] = true;
+	}
 
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
@@ -568,11 +569,12 @@ void Player::NormalAttack1() {
 			//攻撃移動方向更新
 			if (!SetAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
 				//何も入力されなかった
-				m_IsSetAttackMoveVec[NORMAL_ATTACK1_NUMBER] = false;
+				m_IsSetAttackMoveVec[NORMAL_ATTACK2_NUMBER] = false;
 			}
 		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_TRANSITION) {
+		m_IsSetAttackMoveVec[NORMAL_ATTACK1_NUMBER] = true;
 		//硬直を設定していなければ
 		if (!m_IsSetRecovery) {
 			//硬直設定済みにする
@@ -629,7 +631,9 @@ void Player::NormalAttack2() {
 	//通常攻撃_Index段目アニメーション再生
 	RequestEndLoop(ANIME_NORMAL_ATTACK2, ANIME_NORMAL_ATTACK2_SPEED);
 	//攻撃移動方向更新
-	UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER);
+	if (UpdateAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
+		m_IsSetAttackMoveVec[NORMAL_ATTACK2_NUMBER] = true;
+	}
 
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
@@ -670,11 +674,13 @@ void Player::NormalAttack2() {
 			//攻撃移動方向更新
 			if (!SetAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
 				//何も入力されなかった
-				m_IsSetAttackMoveVec[NORMAL_ATTACK1_NUMBER] = false;
+				m_IsSetAttackMoveVec[NORMAL_ATTACK3_NUMBER] = false;
 			}
 		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_TRANSITION) {
+		//何も入力されなかった
+		m_IsSetAttackMoveVec[NORMAL_ATTACK2_NUMBER] = true;
 		//硬直を設定していなければ
 		if (!m_IsSetRecovery) {
 			//硬直設定済みにする
@@ -731,7 +737,10 @@ void Player::NormalAttack3() {
 	//通常攻撃_Index段目アニメーション再生
 	RequestEndLoop(ANIME_NORMAL_ATTACK3, ANIME_NORMAL_ATTACK3_SPEED);
 	//攻撃移動方向更新
-	UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER);
+	//攻撃移動方向更新
+	if (UpdateAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
+		m_IsSetAttackMoveVec[NORMAL_ATTACK3_NUMBER] = true;
+	}
 
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
@@ -765,18 +774,9 @@ void Player::NormalAttack3() {
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
-	//通常攻撃ボタンが押されたら
-	if (m_AnimeData.Frame < NORMAL_ATTACK3_TRANSITION) {
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-			m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
-			//攻撃移動方向更新
-			if (!SetAttackMoveVec(NORMAL_ATTACK1_NUMBER)) {
-				//何も入力されなかった
-				m_IsSetAttackMoveVec[NORMAL_ATTACK1_NUMBER] = false;
-			}
-		}
-	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_TRANSITION) {
+		//何も入力されなかった
+		m_IsSetAttackMoveVec[NORMAL_ATTACK3_NUMBER] = true;
 		//硬直を設定していなければ
 		if (!m_IsSetRecovery) {
 			//硬直設定済みにする
@@ -786,17 +786,7 @@ void Player::NormalAttack3() {
 		}
 		//アニメーションの硬直を更新
 		if (UpdateAnimeRecoveryManager(ANIME_NORMAL_ATTACK3_SPEED)) {
-			if (m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER]) {
-				//次の攻撃状態へ
-				m_State = NORMAL_ATTACK1;
-				//通常攻撃の段数判定をオフ
-				m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = false;
-				//エフェクト発生判定オフ
-				m_IsEffect = false;
-				//硬直設定をリセット
-				m_IsSetRecovery = false;
-			}
-			else if (SetNormalMoveVec()) {
+			if (SetNormalMoveVec()) {
 				//歩き状態へ
 				m_State = WALK;
 				//通常攻撃の段数判定をオフ
