@@ -21,7 +21,10 @@ namespace {
 	constexpr float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
 	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
 	constexpr float		SKILL_ATTACK_MOVE_MULT = 15.0f;											//スキル攻撃時の移動乗算値
-	constexpr float		PLAYER_NORMAL_ATTACK_MOVE_MULT = 3.0f;									//通常攻撃時の移動乗算値
+	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
+
+	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;										//通常移動時の回転速度
+	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.1f;									//攻撃移動時の回転速度
 
 	constexpr float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
@@ -897,8 +900,10 @@ void Player::NormalMoveCalc() {
 		MoveVec = VScale(MoveVec, SKILL_ATTACK_MOVE_MULT);
 		break;
 	}
+	//移動
 	m_Pos = VAdd(m_Pos, MoveVec);
-	m_Rot.y = atan2f(-MoveVec.x, -MoveVec.z);
+	//移動方向を向く
+	UpdateRotation(MoveVec, NORMAL_MOVE_ROTATE_SPEED);
 }
 //攻撃移動方向設定
 bool Player::SetAttackMoveVec(int _Index) {
@@ -977,11 +982,47 @@ void Player::AttackMoveCalc(int _Index) {
 	//合成した行列から移動方向を取得
 	AttackMoveVec = VGet(MatComposition.m[3][0], 0.0f, MatComposition.m[3][2]);
 	//攻撃移動速度を適用
-	AttackMoveVec = VScale(AttackMoveVec, PLAYER_NORMAL_ATTACK_MOVE_MULT);
+	AttackMoveVec = VScale(AttackMoveVec, NORMAL_ATTACK_MOVE_MULT);
 	//攻撃移動
 	m_Pos = VAdd(m_Pos, AttackMoveVec);
 	//移動方向を向く
-	m_Rot.y = atan2f(-AttackMoveVec.x, -AttackMoveVec.z);
+	UpdateRotation(AttackMoveVec, NORMAL_ATTACK_MOVE_ROTATE_SPEED);
+}
+//回転値更新
+void Player::UpdateRotation(VECTOR _MoveVec, float _RotSpeed) {
+	//移動方向から目標回転角を計算
+	float TargetRot = atan2f(-_MoveVec.x, -_MoveVec.z);
+	//現在の回転角との差を計算
+	float RotDif = TargetRot - m_Rot.y;
+	//角度差を-π～-πの範囲に補正
+	//どっち回りをするべきか
+	if (RotDif > DX_PI)
+	{
+		RotDif -= DX_TWO_PI;
+	}
+	else if (RotDif < -DX_PI)
+	{
+		RotDif += DX_TWO_PI;
+	}
+	//1フレームあたりの回転量
+	float RotSpeed = _RotSpeed;
+	//目標角度まで近ければそのまま合わせる
+	if (fabsf(RotDif) <= RotSpeed)
+	{
+		m_Rot.y = TargetRot;
+	}
+	//一定速度で目標方向へ回転
+	else
+	{
+		if (RotDif > 0.0f)
+		{
+			m_Rot.y += RotSpeed;
+		}
+		else
+		{
+			m_Rot.y -= RotSpeed;
+		}
+	}
 }
 //スタミナ処理
 void Player::StaminaManager() {
