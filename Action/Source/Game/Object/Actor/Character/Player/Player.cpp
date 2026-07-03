@@ -24,7 +24,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;										//通常移動時の回転速度
-	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.2f;									//攻撃移動時の回転速度
+	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.1f;									//攻撃移動時の回転速度
 
 	constexpr float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
