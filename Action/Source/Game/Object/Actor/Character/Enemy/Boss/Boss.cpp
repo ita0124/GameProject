@@ -75,7 +75,7 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 17.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
-	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/MainBody/Boss.mv1");				//モデルファイルパス
+	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/Boss.mv1");						//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
 }
 
