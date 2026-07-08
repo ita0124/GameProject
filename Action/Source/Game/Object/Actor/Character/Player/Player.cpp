@@ -236,6 +236,10 @@ void Player::Idel() {
 		m_PrevState = m_State;
 		//スタミナを回復する
 		m_IsStaminaRecover = true;
+		//ガード成功判定をオフ
+		m_IsGuardSuccess = false;
+		//パリィ成功判定をオフ
+		m_IsParrySucess = false;
 	}
 	//通常移動方向設定
 	if (SetNormalMoveVec()) {
@@ -390,7 +394,7 @@ void Player::GuardStart() {
 			m_State = IDEL;
 			//パリィを許容しない
 			m_IsParryWindo = true;
-			//当たり判定をオフ
+			//当たり判定をオン
 			m_IsCollision = true;
 			//パリィ成功判定をオフ
 			m_IsParrySucess = false;
