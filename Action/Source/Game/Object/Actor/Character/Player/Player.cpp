@@ -368,7 +368,7 @@ void Player::Falling() {
 //ガード開始
 void Player::GuardStart() {
 	//ガード開始アニメーション再生
-	RequestEndLoop(ANIME_GUARD_START);
+	RequestEndLoop(ANIME_GUARD_START,2.0f);
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -429,7 +429,7 @@ void Player::GuardIdel() {
 //ガード終了
 void Player::GuardEnd() {
 	//ガード開始アニメーションループ再生
-	RequestEndLoop(ANIME_GUARD_END);
+	RequestEndLoop(ANIME_GUARD_END,1.25);
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
