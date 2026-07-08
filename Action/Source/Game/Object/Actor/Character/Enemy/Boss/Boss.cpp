@@ -10,7 +10,7 @@ namespace {
 	constexpr float		HIT_POINTS = 1000.0f;															//体力
 	constexpr float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
-	constexpr float		ACTION_WAIT_DISTANCE = 750.0f;													//WAITに移行するプレイヤーとの距離
+	constexpr float		ACTION_IDEL_DISTANCE = 750.0f;													//IDELに移行するプレイヤーとの距離
 	constexpr float		ACTION_ATTACK_DISTANCE = 75.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 5.0f;																//歩き時の移動乗算値
@@ -72,7 +72,7 @@ namespace {
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
-	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 17.0f;												//パリィされたときにダウンへ移行する攻撃力
+	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/Boss.mv1");						//モデルファイルパス
@@ -99,7 +99,7 @@ void Boss::Init() {
 
 	m_HitPoints = HIT_POINTS;							//体力
 
-	m_State = WAIT;										//ボス状態変数
+	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_IsDamage = false;									//ダメージ処理中か
 	m_DamageTime = 0;									//ダメージ処理の継続時間
@@ -182,14 +182,14 @@ void Boss::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		//if (PointerPlayer->GetState() == Player::TagState::PARRY) {
-		//	if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
-		//		//ダウン状態へ
-		//		m_State = DOWN;
-		//		//ダウン状態継続時間を設定
-		//		m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
-		//	}
-		//}
+		if (PointerPlayer->GetIsParryWindo()) {
+			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
+				//ダウン状態へ
+				m_State = DOWN;
+				//ダウン状態継続時間を設定
+				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
+			}
+		}
 			//ダウン状態の時
 		if (m_State == DOWN) {
 			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
@@ -210,9 +210,9 @@ void Boss::HitFrame(int _FrameNum) {
 	m_DirectNum = _FrameNum;
 }
 //待機
-void Boss::Wait() {
+void Boss::Idel() {
 	//待機アニメーションループ再生
-	RequestLoop(ANIME_WAIT);
+	RequestLoop(ANIME_IDEL);
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -247,7 +247,7 @@ void Boss::Down() {
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 	}
@@ -309,7 +309,7 @@ void Boss::BreakNormalAttack1() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -377,7 +377,7 @@ void Boss::BreakNormalAttack2() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -498,7 +498,7 @@ void Boss::BreakNormalAttack3() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -550,7 +550,7 @@ void Boss::RearAttack() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 	}
@@ -559,7 +559,7 @@ void Boss::RearAttack() {
 //突進直前移動
 void Boss::Jump() {
 	//待機アニメーションループ再生
-	RequestLoop(ANIME_WAIT, ANIME_SPEED);
+	RequestLoop(ANIME_IDEL, ANIME_SPEED);
 
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
@@ -722,7 +722,7 @@ void Boss::ChargeAttack() {
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		//エフェクト発生判定オフ
 		m_IsEffect = false;
 		//ボーン攻撃判定を削除する
@@ -821,7 +821,7 @@ void Boss::Special() {
 		//初期化
 		m_Pos.y = 0.0;
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 	}
 	else {
 		//Y軸のみ計算をする
@@ -833,9 +833,9 @@ void Boss::ActionManager() {
 	VECTOR DistanceToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
 	float ToPlayerLen = VSize(DistanceToPlayer);
 
-	if (ToPlayerLen > ACTION_WAIT_DISTANCE) {
+	if (ToPlayerLen > ACTION_IDEL_DISTANCE) {
 		//待機状態へ
-		m_State = WAIT;
+		m_State = IDEL;
 		return;
 	}
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
@@ -903,8 +903,8 @@ void Boss::JumpPosManger() {
 //状態遷移
 void Boss::StateManager() {
 	switch (m_State) {
-	case WAIT:						//待機
-		Wait();
+	case IDEL:						//待機
+		Idel();
 		break;
 	case DOWN:						//ダウン
 		Down();

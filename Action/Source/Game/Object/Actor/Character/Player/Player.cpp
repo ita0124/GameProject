@@ -100,15 +100,10 @@ void Player::Init() {
 	m_SkillPoints = SKILL_POINTS;				//スキルポイント
 
 	m_State = IDEL;								//プレイヤー状態変数
-	m_PrevState = m_State;								//１フレーム前の状態
-	m_RollingTime = 0;							//ローリング継続時間
-	for (int Index = 0; Index < STATE_NUM; Index++) {
-		m_IsActionSuccess[Index] = false;		//アクション成功判定フラグ
-		m_ActionSuccessTime[Index] = 0;			//アクション成功の継続時間
-	}
+	m_PrevState = m_State;						//１フレーム前の状態
+
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
-	m_ParryWindoeTime = 0;						//ガードアクション実行後のパリィに移行できる許容時間
-	m_IsParryWindo = true;						//パリィ許容フラグ
+	m_IsParryWindo = false;						//パリィ許容フラグ
 	m_JumpPower = 0.0f;							//ジャンプ力計算
 
 	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
@@ -167,8 +162,6 @@ void Player::Step() {
 		StateManager();
 		//重力処理
 		GravityManager();
-		//アクション成功フラグ管理
-		ActionSuccessManager();
 	}
 	else {
 		GravityReset();
@@ -184,7 +177,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 	//ボスクラスをダウンキャスト
 	PointerBoss = dynamic_cast<Boss*>(_Object);
 	//ガード状態の時
-	if (m_State == GUARD) {
+	if (m_IsGuardCollision) {
 		//パリィ許容フラグがオンなら
 		if (m_IsParryWindo) {
 			//////パリィ状態に変更
@@ -199,8 +192,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 			m_Stamina -= PointerBoss->GetPower();
 			//敵のの攻撃力に被ダメ率を乗算後HPを消費
 			m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
-			//ガードアクション成功
-			m_IsActionSuccess[GUARD] = true;
+
 			//ノックバックの力を計算
 			float KnockBackPower = (PointerBoss->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
 			//ノックバックデータ数値代入
@@ -232,7 +224,7 @@ void Player::Respawn() {
 	StateManager();
 }
 //待機
-void Player::Wait() {
+void Player::Idel() {
 	//待機アニメーションループ再生
 	RequestLoop(ANIME_IDEL);
 	//１フレーム前の状態と今のフレームの状態を比較
@@ -266,8 +258,6 @@ void Player::Damage() {
 		m_IsAttackCollision = false;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
-		//X軸回転率をリセット
-		m_Rot.x = 0.0f;
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -285,8 +275,6 @@ void Player::Death() {
 	RequestEndLoop(ANIME_DEATH);
 	//スタミナを回復しない
 	m_IsStaminaRecover = false;
-	//X軸回転率をリセット
-	m_Rot.x = 0.0f;
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//生存フラグをオフ
@@ -329,19 +317,10 @@ void Player::Rolling() {
 		//スタミナを減らす
 		m_Stamina -= ROLLING_SUB_STAMINA;
 	}
-
-	if (m_RollingTime > ROLLING_TIME) {
-		m_RollingTime = 0;
+	//アニメーションが終わったら
+	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//X軸回転値を0に
-		m_Rot.x = 0.0f;
-	}
-	else {
-		//X軸回転値を計算
-		m_Rot.x -= ROLLING_ONEFRAM;
-		//ローリング継続時間を加算
-		m_RollingTime++;
 	}
 }
 //ジャンプ
@@ -369,94 +348,18 @@ void Player::Jump() {
 		m_State = IDEL;
 	}
 }
-//ガード
-void Player::Guard() {
-	//ガードアニメーションループ再生
-	RequestLoop(ANIME_GUARD_IDEL);
-	//通常移動方向設定
-	if (SetNormalMoveVec()) {
-		//移動計算
-		NormalMoveCalc();
-	}
-	//スタミナを回復しない
-	m_IsStaminaRecover = false;
-	//ノックバック
-	KnockBackManager();
+//ガード開始
+void Player::GuardStart() {
 
-	//１フレーム前の状態と今のフレームの状態を比較
-	if (m_State != m_PrevState) {
-		//変更があった
-		m_PrevState = m_State;
-		//当たり判定オフ
-		m_IsCollision = false;
-		//ガードの当たり判定発生
-		m_IsGuardCollision = true;
-	}
-	//ガードボタンを離したら
-	if (!InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) && !InputKey::IsPushKeyRep(KEY_INPUT_F)) {
-		//待機状態へ
-		m_State = IDEL;
-		//当たり判定オン
-		m_IsCollision = true;
-		//ガードの当たり判定消失
-		m_IsGuardCollision = false;
-		//ガードアクション実行後のパリィに移行できる許容時間をリセット
-		m_ParryWindoeTime = 0;
-	}
-	//スタミナが一定値を下回れば
-	if (m_Stamina <= GUARD_MIN_STAMINA) {
-		//待機状態へ
-		m_State = IDEL;
-		//当たり判定オン
-		m_IsCollision = true;
-		//ガードの当たり判定消失
-		m_IsGuardCollision = false;
-		//ガードアクション実行後のパリィに移行できる許容時間をリセット
-		m_ParryWindoeTime = 0;
-	}
-	//ガードアクション実行後のパリィに移行できる許容時間が一定の値を超えていれば
-	if (m_ParryWindoeTime >= PARRY_WINDOW_TIME) {
-		//パリィに移行することを許可しない
-		m_IsParryWindo = false;
-	}
-	else {
-		//ガードアクション実行後のパリィに移行できる許容時間を加算
-		m_ParryWindoeTime++;
-		//パリィに移行してもよい
-		m_IsParryWindo = true;
-	}
 }
-////パリィ
-//void Player::Parry() {
-//	//パリィアニメーション再生
-//	RequestEndLoop(ANIME_PARRY);
-//	//スタミナを回復しない
-//	m_IsStaminaRecover = false;
-//
-//	//１フレーム前の状態と今のフレームの状態を比較
-//	if (m_State != m_PrevState) {
-//		//変更があった
-//		m_PrevState = m_State;
-//		//当たり判定オフ
-//		m_IsCollision = false;
-//		//ガードアクション実行後のパリィに移行できる許容時間をリセット
-//		m_ParryWindoeTime = 0;
-//		//パリィに移行してもよい
-//		m_IsParryWindo = true;
-//		//サウンドリクエスト
-//		SoundManager::Play(SoundManager::TagID::SE_PARRY);
-//	}
-//
-//	//アニメーションが終わったら
-//	if (m_AnimeData.EndFlg) {
-//		//待機状態へ
-//		m_State = GUARD;
-//		//当たり判定オン
-//		m_IsCollision = true;
-//		//パリィアクション成功フラグをオフに
-//		m_IsActionSuccess[PARRY] = false;
-//	}
-//}
+//ガード待機
+void Player::GuardIdel() {
+
+}
+//ガード終了
+void Player::GuardEnd() {
+
+}
 //スキル攻撃
 void Player::SkillAttack() {
 	//スキル攻撃アニメーション再生
@@ -887,9 +790,6 @@ void Player::NormalMoveCalc() {
 	case ROLLING:		//ローリング
 		MoveVec = VScale(MoveVec, ROLLING_MOVE_MULT);
 		break;
-	case GUARD:			//ガード
-		MoveVec = VScale(MoveVec, GUARD_MOVE_MULT);
-		break;
 	case JUMP:			//ジャンプ
 		MoveVec = VScale(MoveVec, JUMP_MOVE_MULT);
 		break;
@@ -1038,7 +938,7 @@ void Player::StaminaManager() {
 void Player::StateManager() {
 	switch (m_State) {
 	case IDEL:				//待機
-		Wait();
+		Idel();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "IDEL");
 		break;
 	case DAMAGE:			//ダメージ
@@ -1061,9 +961,15 @@ void Player::StateManager() {
 		Jump();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "JUMP");
 		break;
-	case GUARD:				//ガード
-		Guard();
+	case GUARD_START:		//ガード開始
+		GuardStart();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
+		break;
+	case GUARD_IDEL:		//ガード待機
+		GuardIdel();
+		break;
+	case GUARD_EMD:			//ガード終了
+		GuardEnd();
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();
@@ -1102,7 +1008,7 @@ bool Player::ActionManager() {
 	}
 	//ガード
 	if (InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyRep(KEY_INPUT_F)) {
-		m_State = GUARD;
+		m_State = GUARD_START;
 		IsAction = true;
 	}
 	//スキル攻撃
@@ -1145,30 +1051,6 @@ void Player::GravityManager() {
 	else {
 		//ジャンプ力リセット
 		m_JumpPower = 0.0f;
-	}
-}
-//アクション成功フラグ管理
-void Player::ActionSuccessManager() {
-	for (int State = 0; State < STATE_NUM; State++) {
-		//アクション成功フラグがオンになっていなければ次の配列へ
-		if (!m_IsActionSuccess[State])continue;
-		//アクション成功フラグがオンになっているものはなにか
-		switch (State) {
-			//ガード
-		case GUARD:
-			//ガードアクション成功継続時間が一定の値以上になっていれば
-			if (m_ActionSuccessTime[GUARD] >= GUARD_SUCCESS_TIME) {
-				//ガードアクション成功継続時間をリセット
-				m_ActionSuccessTime[GUARD] = 0;
-				//ガードアクション成功フラグをオフに
-				m_IsActionSuccess[GUARD] = false;
-			}
-			else {
-				//ガードアクション成功継続時間を加算
-				m_ActionSuccessTime[GUARD]++;
-			}
-			break;
-		}
 	}
 }
 //ノックバック

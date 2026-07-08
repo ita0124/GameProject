@@ -17,7 +17,7 @@ public:
 		JUMP,				//ジャンプ
 		FALLING,			//落下
 		GUARD_START,		//ガード開始
-		GUARD,				//ガード待機
+		GUARD_IDEL,			//ガード待機
 		GUARD_EMD,			//ガード終了
 		SKILL_ATTACK,		//スキル攻撃
 		NORMAL_ATTACK1,		//通常攻撃１段目
@@ -115,13 +115,9 @@ private:
 
 	VECTOR		m_CamraRot;									//カメラの回転率を代入する
 
-	int			m_RollingTime;								//ローリング継続時間
-
-	bool		m_IsActionSuccess[STATE_NUM];				//アクション成功判定フラグ
-	int			m_ActionSuccessTime[STATE_NUM];				//アクション成功の継続時間
-
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
-	int			m_ParryWindoeTime;							//ガードアクション実行後のパリィに移行できる許容時間
+	bool		m_IsGuardSuccess;							//ガードに成功したか
+	int			m_GuardSuccessTime;							//ガードに成功してどれだけ経ったか
 	bool		m_IsParryWindo;								//パリィ許容フラグ
 
 	float		m_JumpPower;								//ジャンプ力計算
@@ -149,7 +145,7 @@ private:
 	bool		m_IsSetRecovery;							//硬直を開始したか
 
 	//待機
-	void Wait();
+	void Idel();
 	//ダメージ食らい
 	void Damage();
 	//死亡
@@ -160,10 +156,12 @@ private:
 	void Rolling();
 	//ジャンプ
 	void Jump();
-	//ガード
-	void Guard();
-	//パリィ
-	void Parry();
+	//ガード開始
+	void GuardStart();
+	//ガード待機
+	void GuardIdel();
+	//ガード終了
+	void GuardEnd();
 	//スキル攻撃
 	void SkillAttack();
 	//通常攻撃１段目
@@ -192,8 +190,6 @@ private:
 	bool ActionManager();
 	//重力処理
 	void GravityManager();
-	//アクション成功フラグ管理
-	void ActionSuccessManager();
 	//ノックバック
 	void KnockBackManager();
 	//ノックバックデータ数値代入
@@ -221,12 +217,12 @@ public:
 	//Get
 	//プレイヤータグ
 	TagState	GetState() const { return m_State; }
-	//アクション成功判定フラグ
-	bool		GetIsActionSuccess(int _State)const { return m_IsActionSuccess[_State]; }
 	//攻撃の当たり判定を発生させてよいか
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか
 	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
+	//
+	bool		GetIsGuardSuccess() { return m_IsGuardSuccess; }
 	//パリィ許容フラグ
 	bool		GetIsParryWindo() { return m_IsParryWindo; }
 	//攻撃サーチを行う物体の座標

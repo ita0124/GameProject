@@ -11,7 +11,7 @@ class Boss :public EnemyBase {
 public:
 	//ボス１の状態を管理するタグ
 	enum TagState {
-		WAIT,						//待機
+		IDEL,						//待機
 		DOWN,						//ダウン
 		DEATH,						//死亡
 		WALK,						//歩き
@@ -34,7 +34,7 @@ public:
 
 	//ボスのアニメーションを管理するタグ
 	enum TagAnime {
-		ANIME_WAIT,						//待機
+		ANIME_IDEL,						//待機
 		ANIME_DOWN,						//ダウン
 		ANIME_DEATH,					//死亡
 		ANIME_WALK,						//歩き
@@ -142,7 +142,7 @@ private:
 	int			m_NextAttack;										//次に行う予定の攻撃
 
 	//待機
-	void Wait();
+	void Idel();
 	//ダメージ
 	void Down();
 	//死亡
