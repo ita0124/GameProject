@@ -18,7 +18,7 @@ public:
 		FALLING,			//落下
 		GUARD_START,		//ガード開始
 		GUARD_IDEL,			//ガード待機
-		GUARD_EMD,			//ガード終了
+		GUARD_END,			//ガード終了
 		SKILL_ATTACK,		//スキル攻撃
 		NORMAL_ATTACK1,		//通常攻撃１段目
 		NORMAL_ATTACK2,		//通常攻撃２段目
@@ -39,7 +39,7 @@ public:
 		ANIME_FALLING,			//落下
 		ANIME_GUARD_START,		//ガード開始
 		ANIME_GUARD_IDEL,		//ガード待機
-		ANIME_GUARD_EMD,		//ガード終了
+		ANIME_GUARD_END,		//ガード終了
 		ANIME_SKILL_ATTACK,		//スキル攻撃
 		ANIME_NORMAL_ATTACK1,	//通常攻撃1段目
 		ANIME_NORMAL_ATTACK2,	//通常攻撃2段目
@@ -119,6 +119,7 @@ private:
 	bool		m_IsGuardSuccess;							//ガードに成功したか
 	int			m_GuardSuccessTime;							//ガードに成功してどれだけ経ったか
 	bool		m_IsParryWindo;								//パリィ許容フラグ
+	bool		m_IsParrySucess;							//パリィが成功したか
 
 	float		m_JumpPower;								//ジャンプ力計算
 
@@ -156,6 +157,8 @@ private:
 	void Rolling();
 	//ジャンプ
 	void Jump();
+	//落下
+	void Falling();
 	//ガード開始
 	void GuardStart();
 	//ガード待機
@@ -221,10 +224,12 @@ public:
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか
 	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
-	//
+	//ガードに成功したか
 	bool		GetIsGuardSuccess() { return m_IsGuardSuccess; }
 	//パリィ許容フラグ
 	bool		GetIsParryWindo() { return m_IsParryWindo; }
+	//パリィが成功したか
+	bool		GetIsParrySucess() { return m_IsParrySucess; }
 	//攻撃サーチを行う物体の座標
 	VECTOR		GetAttackTargetPos() { return m_AttackTargetPos; }
 	//リスポーン中か

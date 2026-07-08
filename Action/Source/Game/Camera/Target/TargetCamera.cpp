@@ -2,7 +2,8 @@
 
 namespace {
 	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	constexpr float		LERP_RATE = 0.2f;						//１フレームの補完率
+	constexpr float		CAMERA_POS_LERP_RATE = 0.2f;				//１フレームの補完率
+	constexpr float		TARGET_POS_LERP_RATE = 0.2f;				//１フレームの補完率
 	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };	// プレイヤー基準のカメラ配置オフセット
 	constexpr float		CAMERA_MIN_HEIGHT = 20.0f;				// カメラの最低高度
 	constexpr float		TARGET_HEIGHT_OFFSET = -20.0f;			// ロックオン注視点の高さ補正
@@ -68,8 +69,8 @@ void TargetCamera::Step(Player& _Player) {
 	}
 
 	//補間
-	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
-	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, CAMERA_POS_LERP_RATE);
+	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, TARGET_POS_LERP_RATE);
 }
 //更新処理
 void TargetCamera::Update() {

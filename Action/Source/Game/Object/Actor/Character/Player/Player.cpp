@@ -19,7 +19,7 @@ namespace {
 	constexpr float		WALK_MOVE_MULT = 1.75f;													//歩き時の移動乗算値
 	constexpr float		ROLLING_MOVE_MULT = 3.0f;												//ローリング時の移動乗算値
 	constexpr float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
-	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 5.0f;								//ガード時の移動乗算値(歩き/指定値)
+	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 2.5f;								//ガード時の移動乗算値(歩き/指定値)
 	constexpr float		SKILL_ATTACK_MOVE_MULT = 15.0f;											//スキル攻撃時の移動乗算値
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
 
@@ -67,7 +67,7 @@ namespace {
 	constexpr int		NORMAL_ATTACK3_RECOVERY_TIME = 5;										//通常攻撃３段目の硬直フレーム数
 
 	constexpr float		FIRST_JUMP_POWER = 3.7f;												//初回ジャンプ力
-	constexpr float		JUMP_POWER_MAX = -10.0f;												//ジャンプ速度の下限
+	constexpr float		JUMP_POWER_MAX = -7.5f;													//ジャンプ速度の下限
 	constexpr float		GRAVITY = -0.025f;														//重力
 	constexpr float		GRAVITY_MAX = -0.25f;													//最大重力
 
@@ -103,7 +103,11 @@ void Player::Init() {
 	m_PrevState = m_State;						//１フレーム前の状態
 
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
+	m_IsGuardSuccess = false;					//ガードに成功したか
+	m_GuardSuccessTime = 0;						//ガードに成功してどれだけ経ったか
 	m_IsParryWindo = false;						//パリィ許容フラグ
+	m_IsParrySucess = false;					//パリィが成功したか
+
 	m_JumpPower = 0.0f;							//ジャンプ力計算
 
 	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
@@ -180,19 +184,18 @@ void Player::HitCalc(ObjectBase* _Object) {
 	if (m_IsGuardCollision) {
 		//パリィ許容フラグがオンなら
 		if (m_IsParryWindo) {
-			//////パリィ状態に変更
-			////m_State = PARRY;
-			////スタミナを回復
-			//m_Stamina += PointerBoss->GetPower() / 2;
-			////パリィアクション成功
-			//m_IsActionSuccess[PARRY] = true;
+			//パリィ成功
+			m_IsParrySucess = true;
+			//スタミナを回復
+			m_Stamina += PointerBoss->GetPower() / 2;
 		}
 		else {
 			//スタミナを消費
 			m_Stamina -= PointerBoss->GetPower();
 			//敵のの攻撃力に被ダメ率を乗算後HPを消費
 			m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
-
+			//ガード成功
+			m_IsGuardSuccess = true;
 			//ノックバックの力を計算
 			float KnockBackPower = (PointerBoss->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
 			//ノックバックデータ数値代入
@@ -301,19 +304,19 @@ void Player::Walk() {
 }
 //ローリング
 void Player::Rolling() {
-	//ローリングアニメーションループ再生
-	RequestLoop(ANIME_ROLLING);
+	//ローリングアニメーション再生
+	RequestEndLoop(ANIME_ROLLING);
 	//通常移動方向設定
 	if (SetNormalMoveVec()) {
 		//移動計算
 		NormalMoveCalc();
 	}
-	//スタミナを回復しない
-	m_IsStaminaRecover = false;
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		//スタミナを回復しない
+		m_IsStaminaRecover = false;
 		//スタミナを減らす
 		m_Stamina -= ROLLING_SUB_STAMINA;
 	}
@@ -325,9 +328,8 @@ void Player::Rolling() {
 }
 //ジャンプ
 void Player::Jump() {
-	//ジャンプアニメーションループ再生
+	//ジャンプアニメーション再生
 	RequestEndLoop(ANIME_JUMP);
-
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -348,17 +350,96 @@ void Player::Jump() {
 		m_State = IDEL;
 	}
 }
+//落下
+void Player::Falling() {
+	//落下開始アニメーションループ再生
+	RequestLoop(ANIME_FALLING);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+	}
+	//重力処理がオフになったら
+	if (!m_IsGravity) {
+		//待機状態へ
+		m_State = IDEL;
+	}
+}
 //ガード開始
 void Player::GuardStart() {
-
+	//ガード開始アニメーション再生
+	RequestEndLoop(ANIME_GUARD_START);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//スタミナを回復しない
+		m_IsStaminaRecover = false;
+		//パリィを許容する
+		m_IsParryWindo = true;
+		//当たり判定をオフ
+		m_IsCollision = false;
+		//ガード当たり判定発生
+		m_IsGuardCollision = true;
+	}
+	//アニメーションが終わったら
+	else if (m_AnimeData.EndFlg) {
+		//パリィが成功していたら
+		if (m_IsParrySucess) {
+			//待機状態へ
+			m_State = IDEL;
+			//パリィを許容しない
+			m_IsParryWindo = true;
+			//当たり判定をオフ
+			m_IsCollision = true;
+			//パリィ成功判定をオフ
+			m_IsParrySucess = false;
+		}
+		else {
+			//ガード待機状態へ
+			m_State = GUARD_IDEL;
+			//パリィを許容しない
+			m_IsParryWindo = false;
+		}
+	}
 }
 //ガード待機
 void Player::GuardIdel() {
-
+	//ガード開始アニメーションループ再生
+	RequestLoop(ANIME_GUARD_START);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+	}
+	//ノックバック
+	KnockBackManager();
+	//ガードボタンを離したら
+	if (!InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) && !InputKey::IsPushKeyRep(KEY_INPUT_F)) {
+		//ガード終了状態へ
+		m_State = GUARD_END;
+		//ガード当たり判定消失
+		m_IsGuardCollision =false;
+		//当たり判定をオン
+		m_IsCollision = true;
+		//ガード成功判定をオフ
+		m_IsGuardSuccess = false;
+	}
 }
 //ガード終了
 void Player::GuardEnd() {
-
+	//ガード開始アニメーションループ再生
+	RequestEndLoop(ANIME_GUARD_END);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+	}
+	//アニメーションが終わったら
+	if (m_AnimeData.EndFlg) {
+		//待機状態へ
+		m_State = IDEL;
+	}
 }
 //スキル攻撃
 void Player::SkillAttack() {
@@ -961,15 +1042,21 @@ void Player::StateManager() {
 		Jump();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "JUMP");
 		break;
+	case FALLING:
+		Falling();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "FALLING");
+		break;
 	case GUARD_START:		//ガード開始
 		GuardStart();
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
 		break;
 	case GUARD_IDEL:		//ガード待機
 		GuardIdel();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
 		break;
-	case GUARD_EMD:			//ガード終了
+	case GUARD_END:			//ガード終了
 		GuardEnd();
+		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD");
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();
@@ -1007,7 +1094,7 @@ bool Player::ActionManager() {
 		IsAction = true;
 	}
 	//ガード
-	if (InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyRep(KEY_INPUT_F)) {
+	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyTrg(KEY_INPUT_F)) {
 		m_State = GUARD_START;
 		IsAction = true;
 	}
@@ -1044,6 +1131,8 @@ void Player::GravityManager() {
 		}
 		if (m_JumpPower <= JUMP_POWER_MAX) {
 			m_JumpPower = JUMP_POWER_MAX;
+			//落下状態へ
+			m_State = FALLING;
 		}
 		//ジャンプ力減衰
 		m_JumpPower += m_Gravity;

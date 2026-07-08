@@ -2,7 +2,8 @@
 
 namespace {
 	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
-	constexpr float		LERP_RATE = 0.05f;							//１フレームの補完率
+	constexpr float		CAMERA_POS_LERP_RATE = 0.05f;				//１フレームの補完率
+	constexpr float		TARGET_POS_LERP_RATE = 0.1f;				//１フレームの補完率
 	constexpr float		PLAYER_FOLLOW_ROTY_SPEED = 0.015f;			//プレイヤー移動方向へのY軸回転スピード
 	constexpr float		CONTROL_ROTX_SPEED = 0.05f;					//X軸回転スピード
 	constexpr float		CONTROL_ROTY_SPEED = 0.05f;					//Y軸回転スピード
@@ -115,9 +116,9 @@ void PlayerCamera::Step(Player& _Player) {
 		m_TargetPoint.y = m_TargetPos.y;
 	}
 	//カメラ座標を目標座標へ補間
-	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, LERP_RATE);
+	m_CameraPos = CameraLerp(m_CameraPos, m_CameraPoint, CAMERA_POS_LERP_RATE);
 	//注視点座標を目標座標へ補間
-	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, LERP_RATE);
+	m_TargetPos = CameraLerp(m_TargetPos, m_TargetPoint, TARGET_POS_LERP_RATE);
 
 	if (m_CameraPos.y <= 0.0f) {
 		m_CameraPos.y = 0.0f;
