@@ -17,4 +17,17 @@ void EnemyBase::Init() {
 
 	m_NextActionTime = 0;	//次の行動までの待機時間
 	m_DownTime = 0;			//ダウン状態継続時間
+	m_DamageTime = 0;		//ダメージ処理の継続時間
+}
+//ダメージ処理を管理
+void EnemyBase::DamageManager() {
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+	}
+	else {
+		m_DamageTime--;
+	}
 }

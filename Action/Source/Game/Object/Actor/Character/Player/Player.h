@@ -116,10 +116,12 @@ private:
 	VECTOR		m_CamraRot;									//カメラの回転率を代入する
 
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
+	bool		m_IsParryCollision;							//パリィの当たり判定を発生させてよいか
 	bool		m_IsGuardSuccess;							//ガードに成功したか
-	int			m_GuardSuccessTime;							//ガードに成功してどれだけ経ったか
-	bool		m_IsParryWindo;								//パリィ許容フラグ
 	bool		m_IsParrySucess;							//パリィが成功したか
+	int			m_GuardSuccessTime;							//ガードに成功してどれだけ経ったか
+	int			m_ParrySuccessTime;							//パリィに成功してどれだけ経ったか
+	int			m_GuardTimer;								//ガード入力を継続している時間
 
 	float		m_JumpPower;								//ジャンプ力計算
 
@@ -201,6 +203,10 @@ private:
 	void SetAnimeRecoveryManager(int _RecoveryTime);
 	//アニメーションの硬直更新
 	bool UpdateAnimeRecoveryManager(float _AnimeSpeed);
+	//ガードの成功判定を管理する
+	void IsGuardSuccessManager();
+	//パリィの成功判定を管理する
+	void IsParrySucessManager();
 public:
 	//コンストラクタ
 	Player();
@@ -224,10 +230,10 @@ public:
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか
 	bool		GetIsGuardCollision() { return m_IsGuardCollision; }
+	//パリィの当たり判定を発生させてよいか
+	bool		GetIsParryCollision() { return m_IsParryCollision; }
 	//ガードに成功したか
 	bool		GetIsGuardSuccess() { return m_IsGuardSuccess; }
-	//パリィ許容フラグ
-	bool		GetIsParryWindo() { return m_IsParryWindo; }
 	//パリィが成功したか
 	bool		GetIsParrySucess() { return m_IsParrySucess; }
 	//攻撃サーチを行う物体の座標

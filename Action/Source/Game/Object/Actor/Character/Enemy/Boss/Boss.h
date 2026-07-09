@@ -126,7 +126,6 @@ private:
 
 	FRAME_DATA	m_FrameData[FRAME_NUM];								//ボスのボーン分の情報を格納
 
-	bool		m_IsDamage;											//ダメージ処理中か
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
 	VECTOR		m_BeforJumpPos;										//ジャンプ直前の座標を保存

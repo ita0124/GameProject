@@ -70,6 +70,8 @@ namespace {
 	constexpr float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
 	constexpr float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
 
+	constexpr int		DAMAGE_TIME = 20;																//ダメージ状態の継続時間
+
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
@@ -101,7 +103,6 @@ void Boss::Init() {
 
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
-	m_IsDamage = false;									//ダメージ処理中か
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 	m_BeforJumpPos = VZERO;								//ジャンプ直前の座標を保存
 	m_PredictedLandingPos = VZERO;						//着地予定座標
@@ -161,11 +162,11 @@ void Boss::Step() {
 		m_DamageTime--;
 	}
 	//当たり判定設定
-	for (int Index = FRONT; Index <= FRAME_NUM; Index++) {
+	for (int Index = FRONT; Index < FRAME_NUM; Index++) {
 		SetFrameDataIsCollision(Index, 50.0f);
 	}
-	//状態遷移
-	StateManager();
+	////状態遷移
+	//StateManager();
 
 #ifdef _DEBUG
 	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "攻撃力:%.0f", m_Power);
@@ -173,6 +174,8 @@ void Boss::Step() {
 	DrawFormatStringToHandle(50, 480, RED, DxLibFont::FONTHNDL_N20, "攻撃種配列番号:%d", m_AttackIndex);
 	DrawFormatStringToHandle(50, 500, RED, DxLibFont::FONTHNDL_N20, "今の攻撃種:%d", m_State);
 	DrawFormatStringToHandle(50, 520, RED, DxLibFont::FONTHNDL_N20, "次の攻撃種:%d", m_NextAttack);
+	DrawFormatStringToHandle(50, 540, RED, DxLibFont::FONTHNDL_N20, "体力:%.0f", m_HitPoints);
+	DrawFormatStringToHandle(50, 560, RED, DxLibFont::FONTHNDL_N20, "%d", m_IsCollision);
 #endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
@@ -182,7 +185,7 @@ void Boss::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		if (PointerPlayer->GetIsParryWindo()) {
+		if (PointerPlayer->GetIsParryCollision()) {
 			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
 				//ダウン状態へ
 				m_State = DOWN;
@@ -199,10 +202,10 @@ void Boss::HitCalc(ObjectBase* _Object) {
 			//HPを消費
 			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
 		}
-		////ダメージ処理の継続時間セット
-		m_DamageTime = 15;
-		//当たり判定オン
-		m_IsCollision = false;
+		//ダメージ処理の継続時間セット
+		m_DamageTime = DAMAGE_TIME;
+		//当たり判定オフ
+ 		m_IsCollision = false;
 	}
 }
 //方向判定ボーンと当たった場合

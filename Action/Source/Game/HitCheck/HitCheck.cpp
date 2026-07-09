@@ -119,7 +119,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		//ガード成功フラグがオンになっていたら以降の処理は行わない
 		if (PointerPlayer->GetIsParrySucess()||PointerPlayer->GetIsGuardSuccess())return;
 		//攻撃当たり判定を生成してよいか
-		if (PointerPlayer->GetIsGuardCollision()) {
+		if (PointerPlayer->GetIsGuardCollision()|| PointerPlayer->GetIsParryCollision()) {
 			//ボスクラスデータを保存する変数
 			Boss* PointerBoss = nullptr;
 			//ボスクラスをダウンキャスト
@@ -140,7 +140,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 				float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
 #ifdef _DEBUG
 				//パリィ許容フラグがオンなら
-				if (PointerPlayer->GetIsParryWindo()) {
+				if (PointerPlayer->GetIsParryCollision()) {
 					DrawSphere3D(ShieldPos, ShieldRad, DIV, GREEN, GREEN, FALSE);
 					DrawSphere3D(BossPos, BossRad, DIV, GREEN, GREEN, FALSE);
 				}
@@ -154,7 +154,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 				//当たっていれば
 				if (IsHit) {
 					//パリィ許容フラグがオンなら
-					if (PointerPlayer->GetIsParryWindo()) {
+					if (PointerPlayer->GetIsParryCollision()) {
 						//パリィの処理
 						PointerPlayer->HitCalc(PointerBoss);
 						PointerBoss->HitCalc(PointerPlayer);
@@ -224,11 +224,6 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 			VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
 			//ボスの当たり判定半径を取得
 			float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
-#ifdef _DEBUG
-			DrawSphere3D(PlayerPos1, PlayerRad, DIV, RED, RED, FALSE);
-			DrawSphere3D(PlayerPos2, PlayerRad, DIV, RED, RED, FALSE);
-			DrawSphere3D(BossPos, BossRad, DIV, RED, RED, FALSE);
-#endif // DEBUG
 			//当たり判定
 			bool IsHit1 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
 			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
