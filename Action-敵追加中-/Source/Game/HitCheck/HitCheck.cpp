@@ -125,7 +125,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//ボスクラスをダウンキャスト
 			PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
 			//ボスのフレーム分
-			for (int FrameNum = 0;FrameNum <= Boss::FrameNumber::TOSEEND_RIGHT;FrameNum++) {
+			for (int FrameNum = 0;FrameNum <= Boss::FrameNumber::TOESEND_RIGHT;FrameNum++) {
 				//ガード成功フラグがオンになっていたら以降の処理は行わない
 				if (PointerPlayer->GetIsParrySucess() || PointerPlayer->GetIsGuardSuccess())return;
 				//フレームの攻撃判定がオフになっていたら次のフレームを見る

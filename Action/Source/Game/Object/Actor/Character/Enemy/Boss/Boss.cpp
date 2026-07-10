@@ -165,8 +165,8 @@ void Boss::Step() {
 	for (int Index = FRONT; Index < FRAME_NUM; Index++) {
 		SetFrameDataIsCollision(Index, 50.0f);
 	}
-	////ó‘Ô‘JˆÚ
-	//StateManager();
+	//ó‘Ô‘JˆÚ
+	StateManager();
 
 #ifdef _DEBUG
 	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "UŒ‚—Í:%.0f", m_Power);

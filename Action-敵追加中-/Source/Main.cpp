@@ -69,6 +69,10 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	DebugFPS::Init();
 	Fade::Init();
 
+	int Hndl = MakeShadowMap(4096, 4096);
+	SetShadowMapLightDirection(Hndl, { 1.0f, -1.0f, 0.0f });
+	SetShadowMapDrawArea(Hndl, { -500,-100,-500 }, { 500,1500,500 });
+
 	//ゲームメインループ
 	while (ProcessMessage() != -1)
 	{
@@ -89,7 +93,13 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		//シーン管理
 		SceneManager::Loop();
+		ShadowMap_DrawSetup(Hndl);
 		SceneManager::Draw();
+		ShadowMap_DrawEnd();
+
+		SetUseShadowMap(0, Hndl);
+		SceneManager::Draw();
+		SetUseShadowMap(0, -1);
 
 		MyEffeckseer::UpdateAutoCamera();
 		MyEffeckseer::Draw();
@@ -105,7 +115,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
 		ScreenFlip();		// 描画切り替え
 	}
-
+	DeleteShadowMap(Hndl);
 	LoadMaterial::Exit();
 
 	SceneManager::Exit();

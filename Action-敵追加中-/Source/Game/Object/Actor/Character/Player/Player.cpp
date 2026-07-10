@@ -51,10 +51,7 @@ namespace {
 	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 	constexpr float		PARRY_SUCCESS_TIME = 30;												//パリィアクション成功の継続時間
 	
-	constexpr int		GUARD_HOLD_TIME = 30;													//ガードアクションを最低限継続する時間
-
-	constexpr int		ROLLING_TIME = 20;														//ローリング持続時間
-	constexpr float		ROLLING_ONEFRAM = 180.0f * DX_PI_F / 2600.0f;							//１フレーム中に回転するX軸の値
+	constexpr int		GUARD_HOLD_TIME = 13;													//ガードアクションを最低限継続する時間
 
 	constexpr float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
 

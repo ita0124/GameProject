@@ -109,7 +109,7 @@ void Boss::Init() {
 	m_SpecialChargeTime = 0;							//必殺チャージの継続時間
 	m_DirectNum = 0;									//どの方向判定ボーンと当たったかを保存する
 
-	for (int Index = 0; Index <= TOSEEND_RIGHT; Index++) {
+	for (int Index = 0; Index <= TOESEND_RIGHT; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
 		m_FrameData[Index].Rad = 0.0f;					//ボーン半径
 		m_FrameData[Index].IsCollision = false;			//ボーン当たり判定
@@ -165,8 +165,8 @@ void Boss::Step() {
 	for (int Index = FRONT; Index < FRAME_NUM; Index++) {
 		SetFrameDataIsCollision(Index, 50.0f);
 	}
-	////状態遷移
-	//StateManager();
+	//状態遷移
+	StateManager();
 
 #ifdef _DEBUG
 	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "攻撃力:%.0f", m_Power);
@@ -532,8 +532,8 @@ void Boss::RearAttack() {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
 		}
 		//ボーンに攻撃判定を生成
-		SetFrameDataIsAttackFlg(TOSEEND_LEFT, REAR_ATTACK_COLLISION_RAD);
-		SetFrameDataIsAttackFlg(TOSEEND_RIGHT, REAR_ATTACK_COLLISION_RAD);
+		SetFrameDataIsAttackFlg(TOESEND_LEFT, REAR_ATTACK_COLLISION_RAD);
+		SetFrameDataIsAttackFlg(TOESEND_RIGHT, REAR_ATTACK_COLLISION_RAD);
 		//正規化された方向ベクトルを取得
 		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, GetFrameDataPos(FRONT), TRUE);
 		//1フレームで移動する距離を生成
@@ -547,8 +547,8 @@ void Boss::RearAttack() {
 	}
 	else {
 		//ボーン攻撃判定を削除する
-		DeleteFrameDataIsAttackFlg(TOSEEND_LEFT);
-		DeleteFrameDataIsAttackFlg(TOSEEND_RIGHT);
+		DeleteFrameDataIsAttackFlg(TOESEND_LEFT);
+		DeleteFrameDataIsAttackFlg(TOESEND_RIGHT);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

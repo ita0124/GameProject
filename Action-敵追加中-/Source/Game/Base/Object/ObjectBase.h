@@ -64,7 +64,7 @@ public:
 	virtual void Draw();
 	//継承先で使う
 	//データ読み込み処理
-	virtual void Load() = 0;
+	virtual void Load() {};
 	//毎フレーム呼び出す処理
 	virtual void Step() = 0;
 	//当たり判定後の処理(当たっている場合)

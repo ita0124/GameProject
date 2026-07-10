@@ -1,8 +1,8 @@
 #include "BossArea.h"
 
 namespace {
-	constexpr VECTOR	SCALE = { 20.0f,1.0f,20.0f };						//初期スケール
-	constexpr char		FILE_PATH[] = ("Data/Model/BossArea/BossArea.mv1");	//モデルファイルパス
+	constexpr VECTOR	SCALE = { 50.0f,1.0f,50.0f };						//初期スケール
+	constexpr char		FILE_PATH[] = ("Data/Model/Stage/NormalPlatform/NormalPlatform.mv1");	//モデルファイルパス
 }
 
 //コンストラクタ
