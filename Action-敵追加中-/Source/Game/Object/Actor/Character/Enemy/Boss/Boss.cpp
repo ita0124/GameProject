@@ -93,7 +93,7 @@ Boss::~Boss() {
 void Boss::Init() {
 	EnemyBase::Init();
 
-	m_Kinds = BOSS;
+	m_Kinds = ENEMY;
 
 	m_Pos = INIT_POS;									//座標
 	m_Rad = RAD;										//半径
@@ -106,6 +106,7 @@ void Boss::Init() {
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 	m_BeforJumpPos = VZERO;								//ジャンプ直前の座標を保存
 	m_PredictedLandingPos = VZERO;						//着地予定座標
+	m_SpecialChargeTime = 0;							//必殺チャージの継続時間
 	m_DirectNum = 0;									//どの方向判定ボーンと当たったかを保存する
 
 	for (int Index = 0; Index <= TOSEEND_RIGHT; Index++) {
@@ -151,8 +152,15 @@ void Boss::Step() {
 		m_State = DEATH;
 	}
 
-	DamageManager();
-
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+	}
+	else {
+		m_DamageTime--;
+	}
 	//当たり判定設定
 	for (int Index = FRONT; Index < FRAME_NUM; Index++) {
 		SetFrameDataIsCollision(Index, 50.0f);

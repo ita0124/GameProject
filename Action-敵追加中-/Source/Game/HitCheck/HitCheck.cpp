@@ -74,7 +74,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	if (!_Object.GetIsCollision())return;
 	/*===========================================================================*/
 	//オブジェクトがプレイヤーかつ攻撃オブジェクトがボスだった場合
-	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
+	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
 		//ボスクラスデータを保存する変数
 		Boss* PointerBoss = nullptr;
 		//ボスクラスをダウンキャスト
@@ -208,7 +208,7 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 	if (!_Object.GetIsActive() || !_RelativePosObject.GetIsActive())return;
 
 	//オブジェクトがプレイヤーかつ位置関係を判定するオブジェクトがボスなら
-	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _RelativePosObject.GetKinds() == ObjectBase::TagKinds::BOSS) {
+	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _RelativePosObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
 		//ボスクラスデータを保存する変数
 		Boss* PointerBoss = nullptr;
 		//ボスクラスをダウンキャスト

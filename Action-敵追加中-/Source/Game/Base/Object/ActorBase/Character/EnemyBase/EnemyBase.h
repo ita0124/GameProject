@@ -9,7 +9,6 @@ protected:
 
 	int		m_NextActionTime;	//次の行動までの待機時間
 	int		m_DownTime;			//ダウン状態継続時間
-	int		m_DamageTime;		//ダメージ処理の継続時間
 
 public:
 	//コンストラクタ
@@ -18,8 +17,6 @@ public:
 	~EnemyBase();
 	//初期化処理
 	virtual void Init();
-	//ダメージ処理を管理
-	void DamageManager();
 
 	//継承先で使う
 	//データ読み込み処理

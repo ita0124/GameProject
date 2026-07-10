@@ -171,6 +171,7 @@
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Scene\SceneManager.cpp" />
+    <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp" />
     <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />
     <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h" />
     <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h" />
+    <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h" />
     <ClInclude Include="Source\Game\Object\BossArea\BossArea.h" />

@@ -315,6 +315,18 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\RespawnPlatform">
       <UniqueIdentifier>{29fffe05-c6e5-424c-bce1-419336c8aa0b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Actor\Character\Enemy\Boar">
+      <UniqueIdentifier>{090f2fa6-57c3-4c0b-b750-5f9a3ccb6a94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Actor\Character\Enemy\Wolf">
+      <UniqueIdentifier>{08bf64a2-2d94-4595-ab8a-dcd6757b5f59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Boar">
+      <UniqueIdentifier>{43cebcc6-ab72-4d85-a20c-3814b4cf480a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Wolf">
+      <UniqueIdentifier>{b87e8d8e-8a0c-4d26-bcb3-f34d115756a6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -458,6 +470,9 @@
     <ClCompile Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\RespawnPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.cpp">
+      <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy\Boar</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -600,6 +615,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\RespawnPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.h">
+      <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Boar</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

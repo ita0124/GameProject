@@ -73,11 +73,11 @@ public:
 		FANG002_LEFT,			//左牙２
 		FANG003_LEFT,			//左牙３
 		FANG003END_LEFT,		//左牙先
-		FANG_RIGHT,				//左牙の根本
-		FANG001_RIGHT,			//左牙１
-		FANG002_RIGHT,			//左牙２
-		FANG003_RIGHT,			//左牙３
-		FANG003END_RIGHT,		//左牙先
+		FANG_RIGHT,				//右牙の根本
+		FANG001_RIGHT,			//右牙１
+		FANG002_RIGHT,			//右牙２
+		FANG003_RIGHT,			//右牙３
+		FANG003END_RIGHT,		//右牙先
 		SHOULDER_LEFT,			//左鎖骨
 		UPPERARM_LEFT,			//左上腕骨
 		LOWERARM_LEFT,			//左尺骨
@@ -90,14 +90,14 @@ public:
 		PALMEND_RIGHT,			//右指骨
 		PELVIS_LEFT,			//左骨盤
 		UPPERLEG_LEFT,			//左大腿骨
-		LOWERLRG_LEFT,			//左脛骨
+		LOWERLEG_LEFT,			//左脛骨
 		TOES_LEFT,				//左中足骨
-		TOSEEND_LEFT,			//左指骨
+		TOESEND_LEFT,			//左指骨
 		PELVIS_RIGHT,			//右骨盤
 		UPPERLEG_RIGHT,			//右大腿骨
-		LOWERLRG_RIGHT,			//右脛骨
+		LOWERLEG_RIGHT,			//右脛骨
 		TOES_RIGHT,				//右足骨
-		TOSEEND_RIGHT,			//右指骨
+		TOESEND_RIGHT,			//右指骨
 		//方向判定ボーン
 		FRONT,					//前方
 		FRONT_END,				//前方-終-
@@ -126,8 +126,12 @@ private:
 
 	FRAME_DATA	m_FrameData[FRAME_NUM];								//ボスのボーン分の情報を格納
 
+	int			m_DamageTime;										//ダメージ処理の継続時間
+
 	VECTOR		m_BeforJumpPos;										//ジャンプ直前の座標を保存
 	VECTOR		m_PredictedLandingPos;								//着地予定座標
+
+	int			m_SpecialChargeTime;								//必殺チャージの継続時間
 
 	int			m_DirectNum;										//どの方向判定ボーンと当たったかを保存する
 
