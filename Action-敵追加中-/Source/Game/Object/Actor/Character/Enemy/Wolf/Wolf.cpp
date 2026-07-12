@@ -1,8 +1,8 @@
-#include "Boar.h"
+#include "Wolf.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	constexpr VECTOR	INIT_POS = { -20.0f,0.0f,-80.0f };												//初期座標
+	constexpr VECTOR	INIT_POS = { 20.0f,0.0f,-80.0f };												//初期座標
 
 	constexpr float		RAD = 5.0f;																		//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
@@ -31,19 +31,19 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 5.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
-	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boar/Boar.mv1");							//モデルファイルパス
+	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Wolf/Wolf.mv1");							//モデルファイルパス
 }
 
 //コンストラクタ
-Boar::Boar() {
+Wolf::Wolf() {
 	Init();
 }
 //デストラクタ
-Boar::~Boar() {
+Wolf::~Wolf() {
 	Exit();
 }
 //初期化処理
-void Boar::Init() {
+void Wolf::Init() {
 	EnemyBase::Init();
 
 	m_Kinds = ENEMY;
@@ -66,11 +66,11 @@ void Boar::Init() {
 	}
 }
 //データ読み込み処理
-void Boar::Load() {
+void Wolf::Load() {
 	ObjectBase::Load(MODEL_FILE_PATH);
 }
 //毎フレーム呼び出す処理
-void Boar::Step() {
+void Wolf::Step() {
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
@@ -96,7 +96,7 @@ void Boar::Step() {
 #endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
-void Boar::HitCalc(ObjectBase* _Object) {
+void Wolf::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスデータを保存する変数
 	Player* PointerPlayer = nullptr;
 	//プレイヤークラスをダウンキャスト
@@ -126,7 +126,7 @@ void Boar::HitCalc(ObjectBase* _Object) {
 	}
 }
 //待機
-void Boar::Idel() {
+void Wolf::Idel() {
 	//待機アニメーションループ再生
 	RequestLoop(ANIME_IDEL);
 	//１フレーム前の状態と今のフレームの状態を比較
@@ -148,7 +148,7 @@ void Boar::Idel() {
 	}
 }
 //歩き
-void Boar::Walk() {
+void Wolf::Walk() {
 	//歩きアニメーションループ再生
 	RequestLoop(ANIME_WALK);
 	//１フレーム前の状態と今のフレームの状態を比較
@@ -172,11 +172,11 @@ void Boar::Walk() {
 	}
 }
 //攻撃
-void Boar::Attack() {
+void Wolf::Attack() {
 
 }
 //ダウン
-void Boar::Down() {
+void Wolf::Down() {
 	//ダウンアニメーションループ再生
 	RequestLoop(ANIME_DOWN);
 
@@ -201,7 +201,7 @@ void Boar::Down() {
 	}
 }
 //死亡
-void Boar::Death() {
+void Wolf::Death() {
 	//死亡アニメーション再生
 	RequestEndLoop(ANIME_DEATH, ANIME_SPEED);
 
@@ -221,7 +221,7 @@ void Boar::Death() {
 	}
 }
 //行動管理
-void Boar::ActionManager() {
+void Wolf::ActionManager() {
 	VECTOR DistanceToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
 	float ToPlayerLen = VSize(DistanceToPlayer);
 
@@ -236,7 +236,7 @@ void Boar::ActionManager() {
 	}
 }
 //状態遷移
-void Boar::StateManager() {
+void Wolf::StateManager() {
 	switch (m_State) {
 	case IDEL:						//待機
 		Idel();
@@ -256,38 +256,38 @@ void Boar::StateManager() {
 #endif // DEBUG
 }
 //当たり判定設定
-void Boar::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {
+void Wolf::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {
 	m_FrameData[_FrameNamber].Pos = GetFramePos(m_Hndl, _FrameNamber);
 	m_FrameData[_FrameNamber].Rad = _Rad;
 	m_FrameData[_FrameNamber].IsCollision = true;
 }
 //指定のボーン当たり判定を削除する
-void Boar::DeleteFrameDataIsCollision(int _FrameNamber) {
+void Wolf::DeleteFrameDataIsCollision(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
 	m_FrameData[_FrameNamber].Rad = 0.0f;
 	m_FrameData[_FrameNamber].IsCollision = false;
 }
 //全てのボーン当たり判定を削除する
-void Boar::AllDeleteFrameDataIsCollision() {
+void Wolf::AllDeleteFrameDataIsCollision() {
 	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		//指定のボーン攻撃判定を削除する
 		DeleteFrameDataIsCollision(Index);
 	}
 }
 //指定のボーン攻撃判定を設定
-void Boar::SetFrameDataIsAttackFlg(int _FrameNamber, float _Rad) {
+void Wolf::SetFrameDataIsAttackFlg(int _FrameNamber, float _Rad) {
 	m_FrameData[_FrameNamber].Pos = GetFramePos(m_Hndl, _FrameNamber);
 	m_FrameData[_FrameNamber].Rad = _Rad;
 	m_FrameData[_FrameNamber].IsAttackFlg = true;
 }
 //指定のボーン攻撃判定を削除する
-void Boar::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
+void Wolf::DeleteFrameDataIsAttackFlg(int _FrameNamber) {
 	m_FrameData[_FrameNamber].Pos = VZERO;
 	m_FrameData[_FrameNamber].Rad = 0.0f;
 	m_FrameData[_FrameNamber].IsAttackFlg = false;
 }
 //全てのボーン攻撃判定を削除する
-void Boar::AllDeleteFrameDataIsAttackFlg() {
+void Wolf::AllDeleteFrameDataIsAttackFlg() {
 	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		//指定のボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(Index);

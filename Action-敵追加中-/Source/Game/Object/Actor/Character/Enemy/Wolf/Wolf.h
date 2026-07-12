@@ -1,8 +1,8 @@
 #pragma once
 #include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 
-//イノシシクラス
-class Boar :public EnemyBase {
+//オオカミクラス
+class Wolf :public EnemyBase {
 public:
 	//ボス１の状態を管理するタグ
 	enum TagState {
@@ -32,22 +32,23 @@ public:
 		//ここから骨
 		ROOT,					//ルート
 		HITPS,					//お尻
-		SPINE,					//背骨
+		SPINE001,				//背骨１
+		SPINE002,				//背骨２
 		CHEST,					//胸骨
 		NECK,					//首
-		HEAD001,				//頭１
-		HEAD002,				//頭２
-		HEAD003,				//頭３
-		HEAD004,				//頭４
-		HEAD004_END,			//鼻先
-		FANG_BASE_LEFT,			//左牙の根元
-		FANG001_LEFT,			//左牙１
-		FANG002_LEFT,			//左牙２
-		FANG002_END_LEFT,		//左牙先
-		FANG_BASE_RIGHT,		//右牙の根元
-		FANG001_RIGHT,			//右牙１
-		FANG002_RIGHT,			//右牙２
-		FANG002_END_RIGHT,		//右牙先
+		HEAD,					//頭
+		JAW_UPPER001,			
+		JAW_UPPER002,
+		JAW_UPPER002_END,
+		JAW_LOWER001,
+		JAW_LOWER002,
+		JAW_LOWER002_END,
+		EAR_BASE_LEFT,
+		EAR_TIP_LEFT,
+		EAR_TIP_END_LEFT,
+		EAR_BASE_RIGHT,
+		EAR_TIP_RIGHT,
+		EAR_TIP_END_RIGHT,
 		FRONT_UPPER_LEG_LEFT,	//左前脚上部
 		FRONT_LOWER_LEG_LEFT,	//左前脚下部
 		FRONT_PAW_LEFT,			//左前足
@@ -67,12 +68,10 @@ public:
 		BACK_PAW_RIGHT,			//右後足
 		BACK_PAW_END_RIGHT,		//右後足先
 		TAIL_BASE,				//尻尾の根元
-		TAIL001,				//尻尾１
-		TAIL002,				//尻尾２
-		TAIL003,				//尻尾３
-		TAIL004,				//尻尾４
-		TAIL005,				//尻尾５
-		TAIL005_END,			//尻尾先
+		TAIL_MID001,			//尻尾１
+		TAIL_MID002,			//尻尾２
+		TAIL_TIP,				//尻尾３
+		TAIL_TIP_END,			//尻尾４
 		//これ以下は使うことがないと思うので省略
 
 		FRAME_NUM
@@ -81,7 +80,6 @@ public:
 	//マテリアルenum
 	enum Material {
 		BODY,					//体
-		FANG,					//牙
 		OUTLINE,
 
 		MATERIAL_NUM
@@ -122,9 +120,9 @@ private:
 	void AllDeleteFrameDataIsAttackFlg();
 public:
 	//コンストラクタ
-	Boar();
+	Wolf();
 	//デストラクタ
-	~Boar();
+	~Wolf();
 	//初期化処理
 	void Init();
 	//データ読み込み処理

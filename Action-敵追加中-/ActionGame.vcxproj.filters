@@ -473,6 +473,9 @@
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.cpp">
       <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy\Boar</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.cpp">
+      <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy\Wolf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -618,6 +621,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.h">
       <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Boar</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.h">
+      <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Wolf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

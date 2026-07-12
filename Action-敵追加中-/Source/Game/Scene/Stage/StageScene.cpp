@@ -92,19 +92,21 @@ int StageScene::Loop() {
 void StageScene::Draw() {
 	switch (m_ID) {
 	case STARTWAIT:
-		m_Sky.Draw();									//天球クラス
-		m_PlatformManager.Draw();						//プラットフォームマネージャークラス
+		m_Sky.Draw();								//天球クラス
+		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();									//天球クラス
-		m_PlatformManager.Draw();						//プラットフォームマネージャークラス
-		m_Player.Draw();								//プレイヤークラス
-		m_Sword.Draw();									//剣クラス
-		m_Shield.Draw();								//盾クラス
-		m_HitPoints.Draw();								//体力UIクラス
-		m_SkillPoints.Draw();							//スキルポイントUIクラス
-		m_Stamina.Draw();								//スタミナUIクラス
+		m_Sky.Draw();								//天球クラス
+		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
+		m_Player.Draw();							//プレイヤークラス
+		m_Sword.Draw();								//剣クラス
+		m_Shield.Draw();							//盾クラス
+		m_Boar.Draw();								//イノシシクラス
+		m_Wolf.Draw();								//オオカミクラス
+		m_HitPoints.Draw();							//体力UIクラス
+		m_SkillPoints.Draw();						//スキルポイントUIクラス
+		m_Stamina.Draw();							//スタミナUIクラス
 		break;
 	}
 }
@@ -116,6 +118,8 @@ void StageScene::Init() {
 	m_Sword.Init(&m_Player);						//剣クラス
 	//オーナーを設定
 	m_Shield.Init(&m_Player);						//盾クラス
+	m_Boar.Init();									//イノシシクラス
+	m_Wolf.Init();									//オオカミクラス
 	m_HitPoints.Init();								//体力UIクラス
 	m_SkillPoints.Init();							//スキルポイントUIクラス
 	m_Stamina.Init();								//スタミナUIクラス
@@ -128,6 +132,8 @@ void StageScene::Exit() {
 	m_Player.Exit();								//プレイヤークラス
 	m_Sword.Exit();									//剣クラス
 	m_Shield.Exit();								//盾クラス
+	m_Boar.Exit();									//イノシシクラス
+	m_Wolf.Exit();									//オオカミクラス
 	m_HitPoints.Exit();								//体力UIクラス
 	m_SkillPoints.Exit();							//スキルポイントUIクラス
 	m_Stamina.Exit();								//スタミナUIクラス
@@ -139,6 +145,8 @@ void StageScene::Load() {
 	m_Player.Load();								//プレイヤークラス
 	m_Sword.Load();									//剣クラス
 	m_Shield.Load();								//盾クラス
+	m_Boar.Load();									//イノシシクラス
+	m_Wolf.Load();									//オオカミクラス
 	m_HitPoints.Load();								//体力UIクラス
 	m_SkillPoints.Load();							//スキルポイントUIクラス
 	m_Stamina.Load();								//スタミナUIクラス
@@ -189,6 +197,11 @@ int StageScene::Step() {
 	}
 	PlayerStep();
 
+	m_Boar.SetPlayerPos(m_Player.GetPos());
+	m_Boar.Step();									//イノシシクラス
+	m_Wolf.SetPlayerPos(m_Player.GetPos());
+	m_Wolf.Step();									//オオカミクラス
+
 	CameraStep();
 
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
@@ -211,12 +224,14 @@ int StageScene::Step() {
 }
 //モデル更新処理
 void StageScene::Update() {
-	m_Sky.Update();												//天球クラス
+	m_Sky.Update();										//天球クラス
 	m_PlatformManager.Update();
 	m_Player.Update();
 	m_Sword.Update();
 	m_Shield.Update();
-	m_CameraManager.Update();									//カメラマネージャークラス
+	m_Boar.Update();									//イノシシクラス
+	m_Wolf.Update();									//オオカミクラス
+	m_CameraManager.Update();							//カメラマネージャークラス
 }
 //プレイヤー関連Step
 void StageScene::PlayerStep() {
