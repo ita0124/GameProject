@@ -27,6 +27,8 @@ private:
 	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 
+	int m_ShadowHndl;					//影生成用のハンドル
+
 	//ゲーム内の状態管理
 	enum TagGameState {
 		GAME_RESET,

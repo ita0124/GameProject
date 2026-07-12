@@ -12,6 +12,10 @@ StageScene::StageScene() {
 	m_ID = INIT;
 	//ゲーム内の状態を設定
 	m_GameID = GAME_STEP;
+	//影生成用のハンドル
+	m_ShadowHndl = MakeShadowMap(4096, 4096);
+	//影用ライト
+	SetShadowMapLightDirection(m_ShadowHndl, { 1.0f, -1.0f, 0.0f });
 }
 //デストラクタ
 StageScene::~StageScene() {
@@ -99,11 +103,26 @@ void StageScene::Draw() {
 	case ENDWAIT:
 		m_Sky.Draw();								//天球クラス
 		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
+
+		//影生成セットアップ
+		ShadowMap_DrawSetup(m_ShadowHndl);
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
 		m_Boar.Draw();								//イノシシクラス
 		m_Wolf.Draw();								//オオカミクラス
+		//影設定終了
+		ShadowMap_DrawEnd();
+		//影生成
+		SetUseShadowMap(0, m_ShadowHndl);
+		m_Player.Draw();							//プレイヤークラス
+		m_Sword.Draw();								//剣クラス
+		m_Shield.Draw();							//盾クラス
+		m_Boar.Draw();								//イノシシクラス
+		m_Wolf.Draw();								//オオカミクラス
+		//影生成終了
+		SetUseShadowMap(0, -1);
+
 		m_HitPoints.Draw();							//体力UIクラス
 		m_SkillPoints.Draw();						//スキルポイントUIクラス
 		m_Stamina.Draw();							//スタミナUIクラス
@@ -138,6 +157,8 @@ void StageScene::Exit() {
 	m_SkillPoints.Exit();							//スキルポイントUIクラス
 	m_Stamina.Exit();								//スタミナUIクラス
 	m_PlatformManager.Exit();						//プラットフォームマネージャークラス
+
+	DeleteShadowMap(m_ShadowHndl);
 }
 //データ読み込み処理管理関数
 void StageScene::Load() {
@@ -196,6 +217,11 @@ int StageScene::Step() {
 		break;
 	}
 	PlayerStep();
+
+	float ShadowPos = 500.0f;
+
+	/*SetShadowMapDrawArea(m_ShadowHndl, { m_Player.GetPos().x- ShadowPos,m_Player.GetPos().y- ShadowPos,m_Player.GetPos().z - ShadowPos }, { m_Player.GetPos().x + ShadowPos,m_Player.GetPos().y + ShadowPos,m_Player.GetPos().z + ShadowPos });*/
+	SetShadowMapDrawArea(m_ShadowHndl, { -ShadowPos,-100,-ShadowPos }, { ShadowPos,1500,ShadowPos });
 
 	m_Boar.SetPlayerPos(m_Player.GetPos());
 	m_Boar.Step();									//イノシシクラス
