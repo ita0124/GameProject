@@ -15,7 +15,7 @@ StageScene::StageScene() {
 	//影生成用のハンドル
 	m_ShadowHndl = MakeShadowMap(4096, 4096);
 	//影用ライト
-	SetShadowMapLightDirection(m_ShadowHndl, { 0.5f, -0.5f, 0.0f });
+	SetShadowMapLightDirection(m_ShadowHndl, { 1.0f, -1.0f, 0.0f });
 }
 //デストラクタ
 StageScene::~StageScene() {
@@ -126,9 +126,7 @@ void StageScene::Draw() {
 
 		m_HitPoints.Draw();							//体力UIクラス
 		m_SkillPoints.Draw();						//スキルポイントUIクラス
-		m_Stamina.Draw();							//スタミナUIクラス
-
-		m_CameraManager.Draw();
+		m_Stamina.Draw();							//スタミナUIクラス	
 		break;
 	}
 }
@@ -180,11 +178,11 @@ void StageScene::Load() {
 int StageScene::Step() {
 	int Res = 0;
 
-	m_Sky.Step();									//天球クラス
+	m_Sky.Step(m_Player.GetPos());					//天球クラス
 	m_PlatformManager.Step();
 
 	switch (m_GameID) {
-	case GAME_RESET:
+	case GAME_RESET:	
 		//プレイヤーのリスポーン処理
 		m_Player.Respawn();
 		//カメラマネージャークラス
@@ -221,12 +219,10 @@ int StageScene::Step() {
 	}
 	PlayerStep();
 
-	float ShadowPos = 500.0f;
-	/*VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
-	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);*/
+	float ShadowPos = 200.0f;
+	VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
+	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);
 
-	VECTOR MinShadow = VGet(-ShadowPos,-100.0f,-ShadowPos);
-	VECTOR MaxShadow = VGet(ShadowPos,1500.0f, ShadowPos);
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow,MaxShadow);
 
 	m_Boar.SetPlayerPos(m_Player.GetPos());

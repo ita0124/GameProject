@@ -28,3 +28,9 @@ void Sky::Load() {
 void Sky::Step() {
 	m_Rot.y += ROTY_SPEED;
 }
+//–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
+void Sky::Step(VECTOR _Pos) {
+	m_Pos = _Pos;
+	m_Pos.y = 0.0f;
+	Step();
+}

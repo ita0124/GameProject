@@ -2,7 +2,7 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,-500.0f };												//初期座標
+	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,-400.0f };												//初期座標
 
 	constexpr float		RAD = 50.0f;																	//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定

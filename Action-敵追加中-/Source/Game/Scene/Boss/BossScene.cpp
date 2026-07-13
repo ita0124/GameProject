@@ -23,6 +23,10 @@ BossScene::BossScene() {
 
 	//ゲーム内の状態を設定
 	m_GameID = GAME_STEP;
+	//影生成用のハンドル
+	m_ShadowHndl = MakeShadowMap(4096, 4096);
+	//影用ライト
+	SetShadowMapLightDirection(m_ShadowHndl, { 0.5f, -0.5f, 0.0f });
 }
 //デストラクタ
 BossScene::~BossScene() {
@@ -110,17 +114,29 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		//m_Sky.Draw();				//天球クラス
+		m_Sky.Draw();				//天球クラス
+		m_BossArea.Draw();			//ボス戦の足場クラス
+		//影生成セットアップ
+		ShadowMap_DrawSetup(m_ShadowHndl);
+		m_Player.Draw();			//プレイヤークラス
+		m_Sword.Draw();				//剣クラス
+		m_Shield.Draw();			//盾クラス
+		m_Boss.Draw();				//ボスクラス
+		//影設定終了
+		ShadowMap_DrawEnd();
+		//影生成
+		SetUseShadowMap(0, m_ShadowHndl);
 		m_BossArea.Draw();			//ボス戦の足場クラス
 		m_Player.Draw();			//プレイヤークラス
 		m_Sword.Draw();				//剣クラス
 		m_Shield.Draw();			//盾クラス
 		m_Boss.Draw();				//ボスクラス
+		//影生成終了
+		SetUseShadowMap(0, -1);
+
 		m_HitPoints.Draw();			//体力UIクラス
 		m_SkillPoints.Draw();		//スキルポイントUIクラス
 		m_Stamina.Draw();			//スタミナUIクラス
-
-		m_CameraManager.Draw();
 		break;
 	}
 }
@@ -155,6 +171,8 @@ void BossScene::Exit() {
 	m_SkillPoints.Exit();			//スキルポイントUIクラス
 	m_Stamina.Exit();				//スタミナUIクラス
 	m_Boss.Exit();					//ボスクラス
+
+	DeleteShadowMap(m_ShadowHndl);
 }
 //データ読み込み処理管理関数
 void BossScene::Load() {
@@ -246,6 +264,13 @@ int BossScene::Step() {
 		break;
 	}
 	PlayerStep();
+
+	float ShadowPos = 500.0f;
+	VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
+	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);
+
+	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
+
 	//EnemyStep();
 	HitCheck();
 
@@ -284,7 +309,7 @@ void BossScene::Update() {
 //プレイヤー関連Step
 void BossScene::PlayerStep() {
 	m_BossArea.Step();									//ボス戦の足場クラス
-	m_Sky.Step();										//天球クラス
+	m_Sky.Step(m_Player.GetPos());						//天球クラス
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
 	m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(),Boss::FrameNumber::CHEST));

@@ -6,7 +6,7 @@
 #include "Game/Object/Platform/RespawnPlatform/RespawnPlatform.h"
 
 namespace {
-	constexpr int PLATFORM_MAX = 100;
+	constexpr int PLATFORM_MAX = 100			;
 	constexpr int PLATFORM_ID = 1;
 	constexpr int REQUEST_DATA_MAX = 16;
 }

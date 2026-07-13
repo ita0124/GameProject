@@ -14,4 +14,6 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+	//毎フレーム呼び出す処理
+	void Step(VECTOR _Pos);
 };
