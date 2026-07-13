@@ -5,7 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,-0.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 730.0f,320.0f,-3030.0f };										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -17,8 +17,8 @@ namespace {
 	constexpr float		ADD_STAMINA = 0.01f;													//プレイヤースタミナ回復量(１フレーム毎)
 
 	constexpr float		WALK_MOVE_MULT = 1.75f;													//歩き時の移動乗算値
-	constexpr float		ROLLING_MOVE_MULT = 3.0f;												//ローリング時の移動乗算値
-	constexpr float		JUMP_MOVE_MULT = 2.0f;													//ジャンプ時の移動乗算値
+	constexpr float		ROLLING_MOVE_MULT = 5.0f;												//ローリング時の移動乗算値
+	constexpr float		JUMP_MOVE_MULT = 5.0f;													//ジャンプ時の移動乗算値
 	constexpr float		GUARD_MOVE_MULT = WALK_MOVE_MULT / 2.5f;								//ガード時の移動乗算値(歩き/指定値)
 	constexpr float		SKILL_ATTACK_MOVE_MULT = 15.0f;											//スキル攻撃時の移動乗算値
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
@@ -88,6 +88,7 @@ void Player::Init() {
 
 	m_Kinds = PLAYER;
 
+	m_Pos = RESPAWN_POS;
 	m_RespawnPos = RESPAWN_POS;					//リスポーン座標
 
 	m_IsPush = true;							//押し出し判定を行う
