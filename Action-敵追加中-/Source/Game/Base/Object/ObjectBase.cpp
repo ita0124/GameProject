@@ -87,6 +87,12 @@ VECTOR ObjectBase::GetCenter(TagShape _Shape) {
 		//Y軸をY軸サイズの半分あげる
 		Res.y += m_Size.y * 0.5f;
 	}
+	else if(_Shape == FIELD) {
+		//Y軸をYサイズの半分下げる
+		Res.y -= m_Size.y * 0.5f;
+
+		return Res;
+	}
 	return Res;
 }
 //モデルの中心を取る

@@ -50,7 +50,7 @@ namespace {
 
 	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 	constexpr float		PARRY_SUCCESS_TIME = 30;												//パリィアクション成功の継続時間
-	
+
 	constexpr int		GUARD_HOLD_TIME = 13;													//ガードアクションを最低限継続する時間
 
 	constexpr float		GUARD_DAMAGE_TAKEN_MULT = 0.2f;											//ガード時の被ダメ軽減量
@@ -180,6 +180,10 @@ void Player::Step() {
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
+
+	DrawFormatStringToHandle(10, 500, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.x);
+	DrawFormatStringToHandle(10, 520, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.y);
+	DrawFormatStringToHandle(10, 540, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.z);
 }
 //当たり判定後の処理(当たっている場合)
 void Player::HitCalc(ObjectBase* _Object) {

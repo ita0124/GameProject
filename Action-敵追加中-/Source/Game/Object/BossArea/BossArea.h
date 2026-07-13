@@ -16,4 +16,6 @@ public:
 	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
+	//モデルの中心を取る
+	VECTOR GetCenter();
 };

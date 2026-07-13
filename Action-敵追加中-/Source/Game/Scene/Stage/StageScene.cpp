@@ -15,7 +15,7 @@ StageScene::StageScene() {
 	//影生成用のハンドル
 	m_ShadowHndl = MakeShadowMap(4096, 4096);
 	//影用ライト
-	SetShadowMapLightDirection(m_ShadowHndl, { 1.0f, -1.0f, 0.0f });
+	SetShadowMapLightDirection(m_ShadowHndl, { 0.5f, -0.5f, 0.0f });
 }
 //デストラクタ
 StageScene::~StageScene() {
@@ -115,6 +115,7 @@ void StageScene::Draw() {
 		ShadowMap_DrawEnd();
 		//影生成
 		SetUseShadowMap(0, m_ShadowHndl);
+		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
@@ -126,6 +127,8 @@ void StageScene::Draw() {
 		m_HitPoints.Draw();							//体力UIクラス
 		m_SkillPoints.Draw();						//スキルポイントUIクラス
 		m_Stamina.Draw();							//スタミナUIクラス
+
+		m_CameraManager.Draw();
 		break;
 	}
 }
@@ -191,7 +194,7 @@ int StageScene::Step() {
 		break;
 	case GAME_START_WAIT:
 		//フェードイン関数を呼び出す
-		Fade::RequestIn(PLAYER_RESPAWN_FADE_SPEED,BLACK);
+		Fade::RequestIn(PLAYER_RESPAWN_FADE_SPEED, BLACK);
 		//フェードインが終わったら
 		if (Fade::IsEndIn()) {
 			//プレイヤーが動けるように
@@ -219,9 +222,12 @@ int StageScene::Step() {
 	PlayerStep();
 
 	float ShadowPos = 500.0f;
+	/*VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
+	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);*/
 
-	/*SetShadowMapDrawArea(m_ShadowHndl, { m_Player.GetPos().x- ShadowPos,m_Player.GetPos().y- ShadowPos,m_Player.GetPos().z - ShadowPos }, { m_Player.GetPos().x + ShadowPos,m_Player.GetPos().y + ShadowPos,m_Player.GetPos().z + ShadowPos });*/
-	SetShadowMapDrawArea(m_ShadowHndl, { -ShadowPos,-100,-ShadowPos }, { ShadowPos,1500,ShadowPos });
+	VECTOR MinShadow = VGet(-ShadowPos,-100.0f,-ShadowPos);
+	VECTOR MaxShadow = VGet(ShadowPos,1500.0f, ShadowPos);
+	SetShadowMapDrawArea(m_ShadowHndl, MinShadow,MaxShadow);
 
 	m_Boar.SetPlayerPos(m_Player.GetPos());
 	m_Boar.Step();									//イノシシクラス

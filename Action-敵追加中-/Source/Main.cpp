@@ -90,7 +90,6 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//ÉVÅ[Éìä«óù
 		SceneManager::Loop();
 		SceneManager::Draw();
-		SceneManager::Draw();
 
 		MyEffeckseer::UpdateAutoCamera();
 		MyEffeckseer::Draw();

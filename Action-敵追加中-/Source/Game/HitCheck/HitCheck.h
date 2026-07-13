@@ -12,8 +12,8 @@ public:
 	static void ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObject);
 	//オブジェクトの位置関係判定
 	static void ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _RelativePosObject);
-	//Collとオブジェクトの当たり判定
-	static void CollToObject(ObjectBase& _CollObject, ObjectBase& _Object);
+	//オブジェクトとフィールドの当たり判定
+	static void ObjectToField(ObjectBase& _Object, ObjectBase& _Field);
 	//オブジェクトと足場の当たり判定
 	static void ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager);
 };

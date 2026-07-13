@@ -3,7 +3,6 @@
 namespace {
 	constexpr int	LOAD_TIME = 60;			//非同期処理の最低時間
 	constexpr float	HNDLNUM_ADD = 0.1f;		//HndlNumに１フレームずつ加算する
-	constexpr int	FADE_SPEED = 5;			//フェードスピード
 
 	constexpr const char* FILE_PATH[HNDL_MAX] = {	//非同期中に表示する画像のファイルパス
 	"Data/Load/Elephant1.png",			//象１頭
@@ -11,12 +10,19 @@ namespace {
 	"Data/Load/Elephant3.png",			//象３頭
 	"Data/Load/Elephant4.png",			//象４頭
 	};
+
+	constexpr int	FADE_SPEED = 5;					//フェードスピード
+	constexpr int	PLAYER_RESPAWN_FADE_SPEED = 5;	//リスポーン完了フェードスピード
+	constexpr int	PLAYER_DEATH_FADE_SPEED = 5;	//プレイヤー落下フェードスピード
 }
 
 //コンストラクタ
 BossScene::BossScene() {
 	//タグをINITに設定
 	m_ID = INIT;
+
+	//ゲーム内の状態を設定
+	m_GameID = GAME_STEP;
 }
 //デストラクタ
 BossScene::~BossScene() {
@@ -104,7 +110,7 @@ void BossScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();				//天球クラス
+		//m_Sky.Draw();				//天球クラス
 		m_BossArea.Draw();			//ボス戦の足場クラス
 		m_Player.Draw();			//プレイヤークラス
 		m_Sword.Draw();				//剣クラス
@@ -113,6 +119,8 @@ void BossScene::Draw() {
 		m_HitPoints.Draw();			//体力UIクラス
 		m_SkillPoints.Draw();		//スキルポイントUIクラス
 		m_Stamina.Draw();			//スタミナUIクラス
+
+		m_CameraManager.Draw();
 		break;
 	}
 }
@@ -201,8 +209,44 @@ bool BossScene::LoadASync() {
 int BossScene::Step() {
 	int Res = 0;
 
+	switch (m_GameID) {
+	case GAME_RESET:
+		//プレイヤーのリスポーン処理
+		m_Player.Respawn();
+		//カメラマネージャークラス
+		m_CameraManager.Init();
+		//開始待機へ
+		m_GameID = GAME_START_WAIT;
+		break;
+	case GAME_START_WAIT:
+		//フェードイン関数を呼び出す
+		Fade::RequestIn(PLAYER_RESPAWN_FADE_SPEED, BLACK);
+		//フェードインが終わったら
+		if (Fade::IsEndIn()) {
+			//プレイヤーが動けるように
+			m_GameID = GAME_STEP;
+			//リスポーン完了
+			m_Player.SetIsRespawn(false);
+		}
+		break;
+	case GAME_STEP:
+		//リスポーンが必要なら
+		if (m_Player.GetIsRespawn()) {
+			//リセット待機へ
+			m_GameID = GAME_RESET_WAIT;
+		}
+		break;
+	case GAME_RESET_WAIT:
+		//フェードアウト関数を呼び出す
+		Fade::RequestOut(PLAYER_DEATH_FADE_SPEED, BLACK);
+		//フェードアウトが終わったら
+		if (Fade::IsEndOut()) {
+			m_GameID = GAME_RESET;
+		}
+		break;
+	}
 	PlayerStep();
-	EnemyStep();
+	//EnemyStep();
 	HitCheck();
 
 	CameraStep();
@@ -305,5 +349,5 @@ void BossScene::HitCheck() {
 	//プレイヤーとボスの位置関係判定
 	HitCheck::ObjectToObjectRelativePos(m_Player, m_Boss);
 	//ステージとプレイヤーの当たり判定
-	HitCheck::CollToObject(m_BossArea, m_Player);
+	HitCheck::ObjectToField(m_Player,m_BossArea);
 }

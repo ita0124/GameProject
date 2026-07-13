@@ -117,9 +117,9 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		//プレイヤークラスをダウンキャスト
 		PointerPlayer = dynamic_cast<Player*>(Owner);
 		//ガード成功フラグがオンになっていたら以降の処理は行わない
-		if (PointerPlayer->GetIsParrySucess()||PointerPlayer->GetIsGuardSuccess())return;
+		if (PointerPlayer->GetIsParrySucess() || PointerPlayer->GetIsGuardSuccess())return;
 		//攻撃当たり判定を生成してよいか
-		if (PointerPlayer->GetIsGuardCollision()|| PointerPlayer->GetIsParryCollision()) {
+		if (PointerPlayer->GetIsGuardCollision() || PointerPlayer->GetIsParryCollision()) {
 			//ボスクラスデータを保存する変数
 			Boss* PointerBoss = nullptr;
 			//ボスクラスをダウンキャスト
@@ -235,47 +235,152 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 	}
 
 }
-//Collとオブジェクトの当たり判定
-void HitCheck::CollToObject(ObjectBase& _CollObject, ObjectBase& _Object) {
-	//当たり判定が格納される構造体
-	MV1_COLL_RESULT_POLY_DIM Col;
-	//当たり判定を行い、その結果を構造体に格納
-	Col = MV1CollCheck_Sphere(_CollObject.GetHndl(), -1, _Object.GetCenter(ObjectBase::TagShape::BALL), _Object.GetRad());
-	//ポリゴンと当たっていたか
-	if (Col.HitNum != 0) {
-		for (int Index = 0; Index < Col.HitNum; Index++) {
-			//まず中心点から最近点を引き算
-			VECTOR Vec = VSub(_Object.GetCenter(ObjectBase::TagShape::BALL), Col.Dim[Index].HitPosition);
-			//取得したベクトルを三平方の定理で長さに変換
-			float Len = VSize(Vec);
-			//法線をめり込んだ距離分掛け算する
-			Len = _Object.GetRad() - Len;
-			//法線をめり込んだ距離分掛け算する
-			Vec = VScale(Col.Dim[Index].Normal, Len);
-			//オブジェクトの座標を計算した分だけ移動させる
-			_Object.SetPos(VAdd(_Object.GetPos(), Vec));
-			//法線を取得
-			VECTOR Normal = Col.Dim[Index].Normal;
-			//法線の角度を取得
-			float Angle = atan2f(Normal.y, Normal.x);
-			//角度が90度の場合足元にあるかを判断する
-			if (Angle == 90.0f * (DX_PI_F / 180.0f)) {
-				float fLenY = _Object.GetCenter(ObjectBase::TagShape::BALL).y - Col.Dim[Index].HitPosition.y;
-				//着地した場合重力をリセットする
-				if (_Object.GetPos().y - Col.Dim[Index].HitPosition.y < 5.0f)
-				{
-					//重力をリセット
-					_Object.GravityReset();
-				}
+//オブジェクトとフィールドの当たり判定
+void HitCheck::ObjectToField(ObjectBase& _Object, ObjectBase& _Field) {
+	//オブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsActive())return;
+	//オブジェクトの座標取得
+	VECTOR	ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
+	//オブジェクトの１フレーム前の座標取得
+	VECTOR PrevPos = _Object.GetPrevCenter(ObjectBase::TagShape::BOX);
+	//オブジェクトのサイズを取得
+	VECTOR	ObjectSize = _Object.GetSize();
+	//足場クラスの座標取得
+	VECTOR PlatformPos = _Field.GetCenter(ObjectBase::TagShape::FIELD);
+	//足場クラスのサイズを取得
+	VECTOR PlatformSize = _Field.GetSize();
+
+	float Pos1X = PlatformPos.x + PlatformSize.x * 0.5f;
+	float Pos1Y = PlatformPos.y + PlatformSize.y * 0.5f;
+	float Pos1Z = PlatformPos.z + PlatformSize.z * 0.5f;
+
+	float Pos2X = PlatformPos.x - PlatformSize.x * 0.5f;
+	float Pos2Y = PlatformPos.y - PlatformSize.y * 0.5f;
+	float Pos2Z = PlatformPos.z - PlatformSize.z * 0.5f;
+
+	VECTOR PlatformPos1 = VGet(Pos1X, Pos1Y, Pos1Z);
+	VECTOR PlatformPos2 = VGet(Pos2X, Pos2Y, Pos2Z);
+	//当たり判定
+	bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, PlatformPos, PlatformSize);
+	//当たっていれば
+	if (IsHit) {
+		//面座標計算
+		//オブジェクト
+		//上方向
+		float ObjectUP = ObjectPos.y + ObjectSize.y * 0.5f;
+		//下方向
+		float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
+		//左方向
+		float ObjectLeft = ObjectPos.x - ObjectSize.x * 0.5f;
+		//右方向
+		float ObjectRight = ObjectPos.x + ObjectSize.x * 0.5f;
+		//前方向
+		float ObjectFlont = ObjectPos.z - ObjectSize.z * 0.5f;
+		//奥方向
+		float ObjectBack = ObjectPos.z + ObjectSize.z * 0.5f;
+		//１フレーム前
+		//上方向
+		float PrevObjectUp = PrevPos.y + ObjectSize.y * 0.5f;
+		//下方向
+		float PrevObjectDown = PrevPos.y - ObjectSize.y * 0.5f;
+		//足場
+		//上方向
+		float PlatformUp = PlatformPos.y + PlatformSize.y * 0.5f;
+		//下方向
+		float PlatformDown = PlatformPos.y - PlatformSize.y * 0.5f;
+		//左方向
+		float PlatformLeft = PlatformPos.x - PlatformSize.x * 0.5f;
+		//右方向
+		float PlatformRight = PlatformPos.x + PlatformSize.x * 0.5f;
+		//前方向
+		float PlatformFlont = PlatformPos.z - PlatformSize.z * 0.5f;
+		//奥方向
+		float PlatformBack = PlatformPos.z + PlatformSize.z * 0.5f;
+
+		//押し戻し方向設定
+		VECTOR PushVec = VZERO;
+		//着地しているか
+		bool IsLanding = false;
+		//着地
+		if (PrevObjectDown >= PlatformUp || ObjectDown >= PlatformUp) {
+			//押し戻し量計算
+			//上方向
+			float PushUp = PlatformUp - ObjectDown;
+			//押し戻し方向再設定
+			PushVec = VGet(0.0f, PushUp, 0.0f);
+			//重力をリセット
+			_Object.GravityReset();
+			//着地フラグをオン
+			IsLanding = true;
+		}
+		//天井ヒット
+		else if (PrevObjectUp <= PlatformDown) {
+			//押し戻し量計算
+			//下方向
+			float PushDown = PlatformDown - ObjectUP;
+			//押し戻し方向再設定
+			PushVec = VGet(0.0f, PushDown, 0.0f);
+		}
+		else {
+			//押し戻し量計算
+			//左方向
+			float PushLeft = PlatformRight - ObjectLeft;
+			//右方向
+			float PushRight = PlatformLeft - ObjectRight;
+			//前方向
+			float PushFront = PlatformBack - ObjectFlont;
+			//奥方向
+			float PushBack = PlatformFlont - ObjectBack;
+
+			//最も押し戻し量の小さい方向を探す
+			//角方向の値を絶対値に変換
+			//左方向
+			float PushLeftAbs = fabsf(PushLeft);
+			//右方向
+			float PushRightAbs = fabsf(PushRight);
+			//前方向
+			float PushFrontAbs = fabsf(PushFront);
+			//奥方向
+			float PushBackAbs = fabsf(PushBack);
+
+			//一旦上方向が最も小さいと仮定する
+			float MinPush = PushLeftAbs;
+			//押し戻し方向再設定
+			PushVec = VGet(PushLeft, 0.0f, 0.0f);
+			//右方向と比較
+			//小さければ
+			if (PushRightAbs < MinPush) {
+				//最小を更新
+				MinPush = PushRightAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(PushRight, 0.0f, 0.0f);
+			}
+			//前方向と比較
+			//小さければ
+			if (PushFrontAbs < MinPush) {
+				//最小を更新
+				MinPush = PushFrontAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, 0.0f, PushFront);
+			}
+			//奥方向と比較
+			//小さければ
+			if (PushBackAbs < MinPush) {
+				//最小を更新
+				MinPush = PushBackAbs;
+				//押し戻し方向再設定
+				PushVec = VGet(0.0f, 0.0f, PushBack);
 			}
 		}
+		//押し戻し計算
+		_Object.AddPos(PushVec);
+		//オブジェクトの座標を更新
+		ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
 	}
 	else {
-		//何も触れていなければ重力処理をオンにする
+		//重力処理を行う
 		_Object.SetIsGravity(true);
 	}
-	//毎回データを削除
-	MV1CollResultPolyDimTerminate(Col);
 }
 //オブジェクトと足場の当たり判定
 void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager) {

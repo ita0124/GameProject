@@ -39,6 +39,18 @@ private:
 	}LOAD_DATA;
 
 	LOAD_DATA		m_Load;
+
+	int m_ShadowHndl;					//影生成用のハンドル
+
+	//ゲーム内の状態管理
+	enum TagGameState {
+		GAME_RESET,
+		GAME_START_WAIT,
+		GAME_STEP,
+		GAME_RESET_WAIT,
+	};
+	//ゲーム内の状態管理
+	TagGameState m_GameID;
 public:
 	//コンストラクタ
 	BossScene();

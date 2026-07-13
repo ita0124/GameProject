@@ -21,6 +21,7 @@ public:
 	enum TagShape {
 		BALL,
 		BOX,
+		FIELD,
 
 		SHAPE_NUM
 	};
