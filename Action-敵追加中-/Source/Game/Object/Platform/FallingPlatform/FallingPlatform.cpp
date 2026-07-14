@@ -21,10 +21,11 @@ FallingPlatform::~FallingPlatform() {
 void FallingPlatform::Init() {
 	ObjectBase::Init();
 
-	m_FallWait = 0;			//落ち始めるまでの待機時間
-	m_FallingTime = 0;		//落ち続ける時間
-	m_RespawnWait = 0;		//再生成までの時間
-	m_IsFalling = false;	//落ちてよいか判断する
+	m_FallWait = 0;				//落ち始めるまでの待機時間
+	m_FallingTime = 0;			//落ち続ける時間
+	m_RespawnWait = 0;			//再生成までの時間
+	m_IsFalling = false;		//落ちてよいか判断する
+	m_IsHit = false;			//乗られたか
 	m_PlatformKinds = FALLING;	//足場オブジェクト種類を再設定
 }
 //データ読み込み処理
@@ -34,6 +35,17 @@ void FallingPlatform::Load() {
 }
 //毎フレーム呼び出す処理
 void FallingPlatform::Step() {
+	//乗られて一定時間経過したら
+	if (m_FallWait >= FALL_WAIT_MAX) {
+		//落ちてよい
+		m_IsFalling = true;
+		//待機時間をリセット
+		m_FallWait = 0;
+	}
+	else {
+		//待機時間を加算
+		m_FallWait++;
+	}
 	if (m_RespawnWait >= RESPAWAN_WAIT_MAX) {
 		m_IsActive = true;
 		m_IsFalling = false;
@@ -60,21 +72,7 @@ void FallingPlatform::Step() {
 }
 //当たり判定後の処理(当たっている場合)
 void FallingPlatform::HitCalc(ObjectBase* _Object) {
-	//一定以上乗られていたら
-	if (m_FallWait >= FALL_WAIT_MAX) {
-		//落ちてよい
-		m_IsFalling = true;
-		//待機時間をリセット
-		m_FallWait = 0;
-	}
-	else {
-		//待機時間を加算
-		m_FallWait++;
-	}
+	//乗られた
+	m_IsHit=true;			
 	m_Object = _Object;
-}
-//当たり判定後の処理(当たっていない場合)
-void FallingPlatform::NotHitCalc(ObjectBase* _Object) {
-	//待機時間をリセット
-	m_FallWait = 0;
 }

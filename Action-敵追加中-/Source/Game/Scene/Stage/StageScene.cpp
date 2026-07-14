@@ -15,7 +15,7 @@ StageScene::StageScene() {
 	//影生成用のハンドル
 	m_ShadowHndl = MakeShadowMap(4096, 4096);
 	//影用ライト
-	SetShadowMapLightDirection(m_ShadowHndl, { 1.0f, -1.0f, 0.0f });
+	SetShadowMapLightDirection(m_ShadowHndl, { 1.0f, -1.0f, 1.0f });
 }
 //デストラクタ
 StageScene::~StageScene() {
@@ -101,11 +101,12 @@ void StageScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();								//天球クラス
-		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
+		//m_Sky.Draw();								//天球クラス
+		
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);
+		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス

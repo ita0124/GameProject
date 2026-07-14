@@ -8,6 +8,7 @@ private:
 	int		m_FallingTime;		//—‚¿‘±‚¯‚éŠÔ
 	int		m_RespawnWait;		//Ä¶¬‚Ü‚Å‚ÌŠÔ
 	bool	m_IsFalling;		//—‚¿‚Ä‚æ‚¢‚©”»’f‚·‚é
+	bool	m_IsHit;			//æ‚ç‚ê‚½‚©
 	VECTOR	m_FirstPos;			//‰ŠúÀ•W
 	ObjectBase* m_Object;
 public:
@@ -23,8 +24,6 @@ public:
 	void Step();
 	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 	void HitCalc(ObjectBase* _Object);
-	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
-	void NotHitCalc(ObjectBase* _Object);
 };
 
 
