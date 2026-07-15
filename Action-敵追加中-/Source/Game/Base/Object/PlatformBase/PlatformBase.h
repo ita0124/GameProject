@@ -10,6 +10,7 @@ public:
 		MOVING,
 		FALLING,
 		RESPAWN,
+		GOAL,
 		JUMP,
 
 		PLATFORM_NUM

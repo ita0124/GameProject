@@ -3,11 +3,22 @@
 
 //動く足場
 class MovingPlatform :public PlatformBase {
+public:
+	//足場の状態を管理するタグ
+	enum TagState {
+		MOVE,				//移動中
+		STOP,				//停止
+
+		STATE_NUM
+	};
 private:
-	bool	m_IsEndPos;	//終端座標にたどり着いたか
-	VECTOR	m_MoveDir;	//移動方向ベクトル
-	float	m_PrevLen;	//前フレームの座標から終端座標までの距離を保存する
-	bool	m_IsHit;
+	TagState	m_State;			//状態変数
+
+	bool		m_IsEndPos;			//終端座標にたどり着いたか
+	VECTOR		m_MoveDir;			//移動方向ベクトル
+	float		m_PrevLen;			//前フレームの座標から終端座標までの距離を保存する
+	int			m_StopTime;			//到着したら一度止まる継続時間
+	bool		m_IsHit;
 	ObjectBase *m_Object;
 public:
 	//コンストラクタ

@@ -5,7 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 3030.0f,420.0f,-3030.0f };										//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 0.0f,0.0f,0.0f };										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
@@ -90,6 +90,7 @@ void Player::Init() {
 
 	m_Pos = RESPAWN_POS;
 	m_RespawnPos = RESPAWN_POS;					//リスポーン座標
+	m_IsGoal = false;		//ゴールしたか
 
 	m_IsPush = true;							//押し出し判定を行う
 
@@ -227,8 +228,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 }
 //リスポーン処理
 void Player::Respawn() {
-	/*m_Pos = m_RespawnPos;*/
-	m_Pos = RESPAWN_POS;
+	m_Pos = m_RespawnPos;
 	//ジャンプ力リセット
 	m_JumpPower = 0.0f;
 	//ダメージ状態へ

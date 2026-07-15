@@ -13,7 +13,7 @@ public:
 		STATE_NUM
 	};
 private:
-	TagState	m_State;			//プレイヤー状態変数
+	TagState	m_State;			//状態変数
 
 	int			m_FallWait;			//落ち始めるまでの待機時間
 	int			m_FallingTime;		//落ち続ける時間

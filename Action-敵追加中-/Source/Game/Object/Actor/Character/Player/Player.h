@@ -243,9 +243,9 @@ public:
 
 	//Set
 	//カメラ回転率
-	void	SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
+	void		SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
-	void	SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
+	void		SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
 	//リスポーン中か
-	void	SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
+	void		SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
 };

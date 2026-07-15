@@ -327,6 +327,12 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Wolf">
       <UniqueIdentifier>{b87e8d8e-8a0c-4d26-bcb3-f34d115756a6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\GoalPlatform">
+      <UniqueIdentifier>{dc40dcd2-ec7e-4020-8ee8-9782fba44a62}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\GoalPlatform">
+      <UniqueIdentifier>{cea57df5-82c6-4c9f-b3fe-1039e268289c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -476,6 +482,9 @@
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.cpp">
       <Filter>ソース ファイル\Game\Object\Actor\Character\Enemy\Wolf</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\GoalPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -624,6 +633,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.h">
       <Filter>ヘッダー ファイル\Game\Object\Actor\Character\Enemy\Wolf</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\GoalPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

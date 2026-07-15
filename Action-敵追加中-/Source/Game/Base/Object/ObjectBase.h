@@ -35,6 +35,7 @@ protected:
 	VECTOR		m_PrevPos;		//前フレーム座標
 	VECTOR		m_PlatformVec;	//足場の動く移動方向
 	VECTOR		m_RespawnPos;	//リスポーン座標
+	bool		m_IsGoal;		//ゴールしたか
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
@@ -106,6 +107,8 @@ public:
 	VECTOR		GetCenter(TagShape _Shape = BALL);
 	//モデルの中心を取る
 	VECTOR		GetPrevCenter(TagShape _Shape = BALL);
+	//ゴールしたか
+	bool		GetIsGoal() { return m_IsGoal; }
 
 	//Set
 	//座標
@@ -126,6 +129,8 @@ public:
 	void		SetPlatformVec(VECTOR _PlatformVec) { m_PlatformVec = _PlatformVec; }
 	//リスポーン座標
 	void		SetRespawnPos(VECTOR _RespawnPos) { m_RespawnPos = _RespawnPos; }
+	//ゴールしたか
+	void		SetIsGoal(bool _IsGoal) { m_IsGoal = _IsGoal; }
 
 	//Add
 	//座標加算

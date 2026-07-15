@@ -43,7 +43,11 @@ void PlatformManager::Init() {
 		case PlatformBase::TagPlatformKinds::RESPAWN:
 			//リスポーン地点クラスをnew
 			m_Platform[PlatformIndex] = new RespawnPlatform;
-			break;   
+			break;
+		case PlatformBase::TagPlatformKinds::GOAL:
+			//ゴール地点クラスをnew
+			m_Platform[PlatformIndex] = new GoalPlatform;
+			break;
 		case PlatformBase::TagPlatformKinds::JUMP:
 			//ジャンプ足場クラスをnew
 			m_Platform[PlatformIndex] = new JumpPlatform;

@@ -1,7 +1,7 @@
 #include "JumpPlatform.h"
 
 namespace {
-	constexpr VECTOR	INIT_POS = { 50.0f,0.0f,0.0f };
+	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
 	constexpr char		FILE_PATH[] = ("Data/Model/Stage/JumpPlatform/JumpPlatform.mv1");	//モデルファイルパス
 }
 

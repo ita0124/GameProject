@@ -1,10 +1,10 @@
 #include "FallingPlatform.h"
 
 namespace {
-	constexpr VECTOR	INIT_POS = { 75.0f,0.0f,0.0f };
+	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
 	constexpr char		FILE_PATH[] = ("Data/Model/Stage/FallingPlatform/FallingPlatform.mv1");	//モデルファイルパス
-	constexpr int		FALL_WAIT_MAX = 15;		//落ち始めるまでの最大待機時間
-	constexpr int		FALL_TIME_MAX = 30;		//落ち続ける最大時間
+	constexpr int		FALL_WAIT_MAX = 60;		//落ち始めるまでの最大待機時間
+	constexpr int		FALL_TIME_MAX = 180;	//落ち続ける最大時間
 	constexpr int		RESPAWAN_WAIT_MAX = 60;	//復活までの待機時間
 	constexpr float		FALLING_POSY = -1.0f;	//1フレームに落ちるY軸ベクトル
 }
