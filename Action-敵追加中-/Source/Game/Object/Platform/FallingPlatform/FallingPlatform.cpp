@@ -24,9 +24,9 @@ void FallingPlatform::Init() {
 	m_FallWait = 0;				//落ち始めるまでの待機時間
 	m_FallingTime = 0;			//落ち続ける時間
 	m_RespawnWait = 0;			//再生成までの時間
-	m_IsFalling = false;		//落ちてよいか判断する
 	m_IsHit = false;			//乗られたか
 	m_PlatformKinds = FALLING;	//足場オブジェクト種類を再設定
+	m_State = NORMAL;			//プレイヤー状態変数
 }
 //データ読み込み処理
 void FallingPlatform::Load() {
@@ -35,44 +35,59 @@ void FallingPlatform::Load() {
 }
 //毎フレーム呼び出す処理
 void FallingPlatform::Step() {
-	//乗られて一定時間経過したら
-	if (m_FallWait >= FALL_WAIT_MAX) {
-		//落ちてよい
-		m_IsFalling = true;
-		//待機時間をリセット
-		m_FallWait = 0;
-	}
-	else {
-		//待機時間を加算
-		m_FallWait++;
-	}
-	if (m_RespawnWait >= RESPAWAN_WAIT_MAX) {
-		m_IsActive = true;
-		m_IsFalling = false;
-		m_RespawnWait = 0;
-		m_Pos = m_FirstPos;
-	}
-	else if (!m_IsActive) {
-		m_RespawnWait++;
-	}
-	else if (m_FallingTime >= FALL_TIME_MAX) {
-		m_IsActive = false;
-		m_FallingTime = 0;
-	}
-	else if (m_IsFalling) {
-		m_FallingTime++;
-		m_Pos.y += FALLING_POSY;
-
-		if (m_Object != nullptr) {
-			VECTOR MoveDir = VGet(0.0f, FALLING_POSY, 0.0f);
-			m_Object->SetPlatformVec(MoveDir);
-			m_Object = nullptr;
+	switch (m_State) {
+	case NORMAL:			//通常
+		if (m_IsHit) {
+			if (m_FallWait >= FALL_WAIT_MAX) {
+				//状態変更
+				m_State = FALL;
+				//待機時間をリセット
+				m_FallWait = 0;
+			}
+			else {
+				//待機時間を加算
+				m_FallWait++;
+			}
 		}
+		break;
+	case FALL:				//落下
+		if (m_FallingTime >= FALL_TIME_MAX) {
+			//状態変更
+			m_State = DEATH;
+			m_IsActive = false;
+			m_FallingTime = 0;
+		}
+		else {
+			m_FallingTime++;
+			m_Pos.y += FALLING_POSY;
+
+			if (m_Object != nullptr) {
+				VECTOR MoveDir = VGet(0.0f, FALLING_POSY, 0.0f);
+				m_Object->SetPlatformVec(MoveDir);
+				m_Object = nullptr;
+			}
+		}
+		break;
+	case DEATH:				//消滅
+		if (m_RespawnWait >= RESPAWAN_WAIT_MAX) {
+			//状態変更
+			m_State = NORMAL;
+			m_IsActive = true;
+			m_RespawnWait = 0;
+			m_Pos = m_FirstPos;
+			m_IsHit = false;
+		}
+		else {
+			m_RespawnWait++;
+		}
+		break;
 	}
 }
 //当たり判定後の処理(当たっている場合)
 void FallingPlatform::HitCalc(ObjectBase* _Object) {
-	//乗られた
-	m_IsHit=true;			
-	m_Object = _Object;
+	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+		//乗られた
+		m_IsHit = true;
+		m_Object = _Object;
+	}
 }

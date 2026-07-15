@@ -3,13 +3,23 @@
 
 //落ちる足場
 class FallingPlatform :public PlatformBase {
+public:
+	//足場の状態を管理するタグ
+	enum TagState {
+		NORMAL,				//通常
+		FALL,				//落下
+		DEATH,				//消滅
+
+		STATE_NUM
+	};
 private:
-	int		m_FallWait;			//落ち始めるまでの待機時間
-	int		m_FallingTime;		//落ち続ける時間
-	int		m_RespawnWait;		//再生成までの時間
-	bool	m_IsFalling;		//落ちてよいか判断する
-	bool	m_IsHit;			//乗られたか
-	VECTOR	m_FirstPos;			//初期座標
+	TagState	m_State;			//プレイヤー状態変数
+
+	int			m_FallWait;			//落ち始めるまでの待機時間
+	int			m_FallingTime;		//落ち続ける時間
+	int			m_RespawnWait;		//再生成までの時間
+	bool		m_IsHit;			//乗られたか
+	VECTOR		m_FirstPos;			//初期座標
 	ObjectBase* m_Object;
 public:
 	//コンストラクタ

@@ -5,7 +5,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																//半径
 	constexpr VECTOR	PLAYER_SIZE = { RAD,20.0f,RAD };										//ボックス当たり判定
 
-	constexpr VECTOR	RESPAWN_POS = { 0.0f,400.0f,-3030.0f };									//落下後のリスポーン座標
+	constexpr VECTOR	RESPAWN_POS = { 3030.0f,420.0f,-3030.0f };										//落下後のリスポーン座標
 
 	constexpr float		HIT_POINTS = 100.0f;													//体力
 	constexpr float		STAMINA = 75.0f;														//スタミナ
