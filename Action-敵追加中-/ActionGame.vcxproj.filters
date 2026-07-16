@@ -333,6 +333,18 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\GoalPlatform">
       <UniqueIdentifier>{cea57df5-82c6-4c9f-b3fe-1039e268289c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase\MobEnemyBase">
+      <UniqueIdentifier>{695b219f-adff-43bd-85c3-db71050df8ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase\MobEnemyBase">
+      <UniqueIdentifier>{907253c0-8a3b-463d-aa61-5e26a3116d9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\MobEnemyManager">
+      <UniqueIdentifier>{f6dbcd61-cbdd-45ea-a922-cb84a803146c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\MobEnemyManager">
+      <UniqueIdentifier>{3b2095fe-1f1b-4386-a518-78bebbac95c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Lib\Collision\Collision.cpp">
@@ -485,6 +497,12 @@
     <ClCompile Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\GoalPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase\MobEnemyBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\MobEnemy\MobEnemyManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\MobEnemyManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -636,6 +654,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\GoalPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase\MobEnemyBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\MobEnemy\MobEnemyManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\MobEnemyManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

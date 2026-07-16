@@ -39,12 +39,6 @@ public:
 	//モデル更新処理
 	virtual void Update();
 
-	//継承先で使う
-	//データ読み込み処理
-	virtual void Load() = 0;
-	//毎フレーム呼び出す処理
-	virtual void Step() = 0;
-
 	//アニメリクエスト
 	//アニメーションループ再生
 	//_ID		:どのアニメーションを再生するか

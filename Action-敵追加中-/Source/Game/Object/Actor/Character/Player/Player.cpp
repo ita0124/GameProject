@@ -182,10 +182,11 @@ void Player::Step() {
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
-
-	DrawFormatStringToHandle(10, 500, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.x);
-	DrawFormatStringToHandle(10, 520, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.y);
-	DrawFormatStringToHandle(10, 540, RED, DxLibFont::FONTHNDL_N20, "%f", m_Pos.z);
+#ifdef _DEBUG
+	DrawFormatStringToHandle(10, 600, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標X:%.1f", m_Pos.x);
+	DrawFormatStringToHandle(10, 620, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Y:%.1f", m_Pos.y);
+	DrawFormatStringToHandle(10, 640, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Z:%.1f", m_Pos.z);
+#endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
 void Player::HitCalc(ObjectBase* _Object) {
@@ -890,6 +891,8 @@ void Player::NormalMoveCalc() {
 	}
 	//移動
 	m_Pos = VAdd(m_Pos, MoveVec);
+	//方向ベクトルを反転
+	MoveVec = VScale(MoveVec, -1.0f);
 	//移動方向を向く
 	UpdateRotation(MoveVec, NORMAL_MOVE_ROTATE_SPEED);
 }
@@ -973,44 +976,10 @@ void Player::AttackMoveCalc(int _Index) {
 	AttackMoveVec = VScale(AttackMoveVec, NORMAL_ATTACK_MOVE_MULT);
 	//攻撃移動
 	m_Pos = VAdd(m_Pos, AttackMoveVec);
+	//方向ベクトルを反転
+	AttackMoveVec = VScale(AttackMoveVec, -1.0f);
 	//移動方向を向く
 	UpdateRotation(AttackMoveVec, NORMAL_ATTACK_MOVE_ROTATE_SPEED);
-}
-//回転値更新
-void Player::UpdateRotation(VECTOR _MoveVec, float _RotSpeed) {
-	//移動方向から目標回転角を計算
-	float TargetRot = atan2f(-_MoveVec.x, -_MoveVec.z);
-	//現在の回転角との差を計算
-	float RotDif = TargetRot - m_Rot.y;
-	//角度差を-π～-πの範囲に補正
-	//どっち回りをするべきか
-	if (RotDif > (float)DX_PI)
-	{
-		RotDif -= (float)DX_TWO_PI;
-	}
-	else if (RotDif < -(float)DX_PI)
-	{
-		RotDif += (float)DX_TWO_PI;
-	}
-	//1フレームあたりの回転量
-	float RotSpeed = _RotSpeed;
-	//目標角度まで近ければそのまま合わせる
-	if (fabsf(RotDif) <= RotSpeed)
-	{
-		m_Rot.y = TargetRot;
-	}
-	//一定速度で目標方向へ回転
-	else
-	{
-		if (RotDif > 0.0f)
-		{
-			m_Rot.y += RotSpeed;
-		}
-		else
-		{
-			m_Rot.y -= RotSpeed;
-		}
-	}
 }
 //スタミナ処理
 void Player::StaminaManager() {
@@ -1030,59 +999,87 @@ void Player::StateManager() {
 	switch (m_State) {
 	case IDEL:				//待機
 		Idel();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "IDEL");
+#endif // DEBUG
 		break;
 	case DAMAGE:			//ダメージ
 		Damage();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DAMAGE");
+#endif // DEBUG
 		break;
 	case DEATH:				//死亡
 		Death();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DEATH");
+#endif // DEBUG
 		break;
 	case WALK:				//歩き
 		Walk();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "WALK");
+#endif // DEBUG
 		break;
 	case ROLLING:			//ローリング
 		Rolling();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "ROLLING");
+#endif // DEBUG
 		break;
 	case JUMP:				//ジャンプ
 		Jump();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "JUMP");
+#endif // DEBUG
 		break;
 	case FALLING:
 		Falling();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "FALLING");
+#endif // DEBUG
 		break;
 	case GUARD_START:		//ガード開始
 		GuardStart();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_START");
+#endif // DEBUG
 		break;
 	case GUARD_IDEL:		//ガード待機
 		GuardIdel();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_IDEL");
+#endif // DEBUG	
 		break;
 	case GUARD_END:			//ガード終了
 		GuardEnd();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_END");
+#endif // DEBUG
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "SKILL_ATTACK");
+#endif // DEBUG
 		break;
 	case NORMAL_ATTACK1:	//通常攻撃１段目
 		NormalAttack1();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK1");
+#endif // DEBUG
 		break;
 	case NORMAL_ATTACK2:	//通常攻撃２段目
 		NormalAttack2();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK2");
+#endif // DEBUG
 		break;
 	case NORMAL_ATTACK3:	//通常攻撃３段目
 		NormalAttack3();
+#ifdef _DEBUG
 		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK3");
+#endif // DEBUG
 		break;
 	}
 }

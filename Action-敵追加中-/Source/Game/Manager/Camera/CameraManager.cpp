@@ -55,38 +55,40 @@ void CameraManager::ChangeCamera(TagCamera _Camera) {
 	}
 }
 VECTOR CameraManager::GetCameraRot() {
+	VECTOR Rot = VZERO;
 	switch (m_Camera) {
 	case PLAYER:
-		return m_PlayCamera.GetCameraRot();
+		Rot = m_PlayCamera.GetCameraRot();
 		break;
 	case TARGET:
-		return m_TargetCamera.GetCameraRot();
+		Rot = m_TargetCamera.GetCameraRot();
 		break;
 	}
+	return Rot;
 }
 VECTOR CameraManager::GetCameraPos() {
+	VECTOR Pos = VZERO;
 	switch (m_Camera) {
 	case PLAYER:
-		return m_PlayCamera.GetCameraPos();
+		Pos = m_PlayCamera.GetCameraPos();
 		break;
 	case TARGET:
-		return m_TargetCamera.GetCameraPos();
+		Pos = m_TargetCamera.GetCameraPos();
 		break;
-	default:
-		return VZERO;
 	}
+	return Pos;
 }
 VECTOR CameraManager::GetTargetPos() {
+	VECTOR Pos = VZERO;
 	switch (m_Camera) {
 	case PLAYER:
-		return m_PlayCamera.GetTargetPos();
+		Pos = m_PlayCamera.GetTargetPos();
 		break;
 	case TARGET:
-		return m_TargetCamera.GetTargetPos();
+		Pos = m_TargetCamera.GetTargetPos();
 		break;
-	default:
-		return VZERO;
 	}
+	return Pos;
 }
 void CameraManager::Draw() {
 	switch (m_Camera) {

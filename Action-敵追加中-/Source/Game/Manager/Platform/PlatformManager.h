@@ -9,15 +9,15 @@
 namespace {
 	constexpr int PLATFORM_MAX = 100;
 	constexpr int PLATFORM_ID = 1;
-	constexpr int REQUEST_DATA_MAX = 16;
+	constexpr int PLATFORM_REQUEST_DATA_MAX = 16;
 }
 
 class PlatformManager {
 private:
 	PlatformBase* m_Platform[PLATFORM_MAX];
 
-	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];				//出現させるプラットフォームを指定するデータをcsvから受け取り保存する
-	float	m_RequestData[PLATFORM_MAX][REQUEST_DATA_MAX];			//リクエスト時に必要なデータをcsvから受け取り保存する
+	int		m_PlatformID[PLATFORM_MAX][PLATFORM_ID];						//出現させるプラットフォームを指定するデータをcsvから受け取り保存する
+	float	m_RequestData[PLATFORM_MAX][PLATFORM_REQUEST_DATA_MAX];			//リクエスト時に必要なデータをcsvから受け取り保存する
 public:
 	//初期化処理
 	void Init();

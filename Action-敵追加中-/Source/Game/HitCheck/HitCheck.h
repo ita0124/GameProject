@@ -2,6 +2,7 @@
 #include "Lib/Collision/Collision.h"
 #include "Game/Base/Object/ObjectBase.h"
 #include "Game/Manager/Platform/PlatformManager.h"
+#include "Game/Manager/MobEnemy/MobEnemyManager.h"
 #include "Lib/DxLibFont/DxLibFont.h"
 
 class HitCheck {
@@ -16,4 +17,6 @@ public:
 	static void ObjectToField(ObjectBase& _Object, ObjectBase& _Field);
 	//オブジェクトと足場の当たり判定
 	static void ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager);
+	//モブ敵と足場の当たり判定
+	static void MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformManager& _PlatformManager);
 };

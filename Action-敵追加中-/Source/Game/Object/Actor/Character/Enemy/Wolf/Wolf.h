@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
+#include "Game/Base/Object/ActorBase/Character/EnemyBase/MobEnemyBase/MobEnemyBase.h"
 
 //オオカミクラス
-class Wolf :public EnemyBase {
+class Wolf :public MobEnemyBase {
 public:
 	//ボス１の状態を管理するタグ
 	enum TagState {

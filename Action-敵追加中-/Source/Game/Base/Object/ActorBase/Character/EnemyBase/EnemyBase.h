@@ -18,12 +18,6 @@ public:
 	//初期化処理
 	virtual void Init();
 
-	//継承先で使う
-	//データ読み込み処理
-	virtual void Load() = 0;
-	//毎フレーム呼び出す処理
-	virtual void Step() = 0;
-
 	//Set
 	//プレイヤー座標
 	void SetPlayerPos(VECTOR _PlayerPos) { m_PlayerPos = _PlayerPos; }

@@ -1,8 +1,8 @@
 #include "PlatformManager.h"
 
 namespace {
-	constexpr char CSV_PLATFORM_FILE_PATH[] = ("Data/CSV/Stage/Platform.csv");	//プラットフォームIDCSVファイルパス
-	constexpr char CSV_STAGE_FILE_PATH[] = ("Data/CSV/Stage/Stage.csv");		//ステージCSVファイルパス
+	constexpr char PLATFORM_ID_FILE_CSV_PATH[] = ("Data/CSV/Platform/PlatformId.csv");		//プラットフォームIDCSVファイルパス
+	constexpr char PLATFORM_DATA_FILE_CSV_PATH[] = ("Data/CSV/Platform/PlatformData.csv");	//プラットフォームデータCSVファイルパス
 }
 
 //初期化処理
@@ -15,7 +15,7 @@ void PlatformManager::Init() {
 	//CSVファイルからデータを読む込む
 	FILE* PlatformIdFile;
 	//ファイルを開く
-	if (fopen_s(&PlatformIdFile, CSV_PLATFORM_FILE_PATH, "r") != 0)return;
+	if (fopen_s(&PlatformIdFile, PLATFORM_ID_FILE_CSV_PATH, "r") != 0)return;
 	//データ取得
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		fscanf_s(PlatformIdFile, "%d", &m_PlatformID[PlatformIndex][0]);
@@ -62,22 +62,22 @@ void PlatformManager::Init() {
 		}
 	}
 	//CSVファイルからデータを読む込む
-	FILE* StageFile;
+	FILE* PlatformDataFile;
 	//ファイルを開く
-	if (fopen_s(&StageFile, CSV_STAGE_FILE_PATH, "r") != 0)return;
+	if (fopen_s(&PlatformDataFile, PLATFORM_DATA_FILE_CSV_PATH, "r") != 0)return;
 	//データ取得
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
-		for (int RequestDataIndex = 0; RequestDataIndex < REQUEST_DATA_MAX; RequestDataIndex++) {
+		for (int RequestDataIndex = 0; RequestDataIndex < PLATFORM_REQUEST_DATA_MAX; RequestDataIndex++) {
 			//データ一つ分取得
-			if (fscanf_s(StageFile, "%f", &m_RequestData[PlatformIndex][RequestDataIndex]) == 0) {
+			if (fscanf_s(PlatformDataFile, "%f", &m_RequestData[PlatformIndex][RequestDataIndex]) == 0) {
 				m_RequestData[PlatformIndex][RequestDataIndex] = 0;
 			}
 			//カンマor改行を飛ばす
-			fgetc(StageFile);
+			fgetc(PlatformDataFile);
 		}
 	}
 	//開いたファイルを閉じる
-	fclose(StageFile);
+	fclose(PlatformDataFile);
 
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない

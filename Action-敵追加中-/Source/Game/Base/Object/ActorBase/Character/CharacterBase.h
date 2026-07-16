@@ -19,7 +19,8 @@ protected:
 
 	bool	m_IsStaminaRecover;	//スタミナを回復させてよいか
 
-
+	//回転値更新
+	void UpdateRotation(VECTOR _MoveVec, float _RotSpeed);
 public:
 	//コンストラクタ
 	CharacterBase();
@@ -27,12 +28,6 @@ public:
 	virtual ~CharacterBase();
 	//初期化処理
 	virtual void Init();
-
-	//継承先で使う
-	//データ読み込み処理
-	virtual void Load() = 0;
-	//毎フレーム呼び出す処理
-	virtual void Step() = 0;
 
 	//Get
 	//攻撃力

@@ -405,7 +405,7 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
 		if (!OnePlatform.GetIsActive())continue;
 		//足場クラスの座標取得
-		VECTOR PlatformPos = OnePlatform.GetCenter();
+		VECTOR PlatformPos = OnePlatform.GetCenter(ObjectBase::TagShape::FIELD);
 		//足場クラスのサイズを取得
 		VECTOR PlatformSize = OnePlatform.GetSize();
 
@@ -552,5 +552,16 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (IsGravity) {
 		//重力処理を行う
 		_Object.SetIsGravity(true);
+	}
+}
+//モブ敵と足場の当たり判定
+void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformManager& _PlatformManager) {
+	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
+		//モブ敵マネージャークラスから一つ取得
+		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive())continue;
+		//オブジェクトと足場の当たり判定
+		ObjectToPlatform(OneMobEnemy, _PlatformManager);
 	}
 }

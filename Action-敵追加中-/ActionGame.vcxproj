@@ -162,6 +162,7 @@
     <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp" />
+    <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp" />
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp" />
     <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp" />
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
+    <ClCompile Include="Source\Game\Manager\MobEnemy\MobEnemyManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Scene\SceneManager.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.cpp" />
@@ -215,6 +217,7 @@
     <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h" />
+    <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ObjectBase.h" />
     <ClInclude Include="Source\Game\Base\Object\PlatformBase\PlatformBase.h" />
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h" />
@@ -222,6 +225,7 @@
     <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h" />
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />
+    <ClInclude Include="Source\Game\Manager\MobEnemy\MobEnemyManager.h" />
     <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h" />
     <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.h" />

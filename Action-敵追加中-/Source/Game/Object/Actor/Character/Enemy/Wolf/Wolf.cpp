@@ -10,11 +10,13 @@ namespace {
 	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
-	constexpr float		ACTION_IDEL_DISTANCE = 750.0f;													//IDELに移行するプレイヤーとの距離
-	constexpr float		ACTION_ATTACK_DISTANCE = 200.0f;												//攻撃に移行するプレイヤーとの距離
+	constexpr float		ACTION_IDEL_DISTANCE = 200.0f;													//IDELに移行するプレイヤーとの距離
+	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
 	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
+
+	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
 	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
 
@@ -71,6 +73,8 @@ void Wolf::Load() {
 }
 //毎フレーム呼び出す処理
 void Wolf::Step() {
+	m_PrevPos = m_Pos;
+
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
@@ -86,7 +90,9 @@ void Wolf::Step() {
 		m_DamageTime--;
 	}
 	//状態遷移
-	//StateManager();
+	StateManager();
+	//重力処理
+	GravityManager();
 
 #ifdef _DEBUG
 	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "攻撃力:%.0f", m_Power);
@@ -137,7 +143,7 @@ void Wolf::Idel() {
 		AllDeleteFrameDataIsAttackFlg();
 	}
 	//設定した時間分待機を続けたら
-	if (m_NextActionTime >= 0) {
+	if (m_NextActionTime <= 0) {
 		//歩き状態へ
 		m_State = WALK;
 		//初期化
@@ -165,15 +171,14 @@ void Wolf::Walk() {
 		DirToPlayer = VScale(DirToPlayer, WALK_MULT);
 		//座標に加算
 		m_Pos = VAdd(m_Pos, DirToPlayer);
-		//角度を計算
-		float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
-		//Y軸回転値に代入
-		m_Rot.y = RotY;
+		//移動方向を向く
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
 //攻撃
 void Wolf::Attack() {
-
+	m_NextActionTime = 300;
+	m_State = IDEL;
 }
 //ダウン
 void Wolf::Down() {
@@ -231,7 +236,8 @@ void Wolf::ActionManager() {
 		return;
 	}
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
-		
+		//攻撃へ
+		m_State = ATTACK;
 		return;
 	}
 }
@@ -241,14 +247,18 @@ void Wolf::StateManager() {
 	case IDEL:						//待機
 		Idel();
 		break;
+		break;
+	case WALK:						//歩き
+		Walk();
+		break;
+	case ATTACK:					//攻撃
+		Attack();
+		break;
 	case DOWN:						//ダウン
 		Down();
 		break;
 	case DEATH:						//死亡
 		Death();
-		break;
-	case WALK:						//歩き
-		Walk();
 		break;
 	}
 #ifdef _DEBUG

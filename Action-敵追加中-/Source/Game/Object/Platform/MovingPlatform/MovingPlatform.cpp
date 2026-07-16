@@ -48,6 +48,7 @@ void MovingPlatform::Step() {
 			VECTOR MoveDir = VScale(m_MoveDir, m_MovingPlatformRequestData.MoveSpeed);
 			m_Object->SetPlatformVec(MoveDir);
 			m_Object = nullptr;
+			m_IsHit = false;
 		}
 	}
 		//I’[À•W‚É‚½‚Ç‚è’…‚¢‚Ä‚È‚¯‚ê‚Î
@@ -160,5 +161,6 @@ void MovingPlatform::HitCalc(ObjectBase* _Object) {
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
 void MovingPlatform::NotHitCalc(ObjectBase* _Object) {
+	if (m_IsHit)return;
 	m_IsHit = false;
 }

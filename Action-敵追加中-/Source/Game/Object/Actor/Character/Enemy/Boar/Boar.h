@@ -1,8 +1,8 @@
 #pragma once
-#include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
+#include "Game/Base/Object/ActorBase/Character/EnemyBase/MobEnemyBase/MobEnemyBase.h"
 
 //イノシシクラス
-class Boar :public EnemyBase {
+class Boar :public MobEnemyBase {
 public:
 	//ボス１の状態を管理するタグ
 	enum TagState {

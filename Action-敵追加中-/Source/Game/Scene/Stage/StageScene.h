@@ -4,12 +4,11 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 #include "Game/Object/Sword/Sword.h"
 #include "Game/Object/Shield/Shield.h"
-#include "Game/Object/Actor/Character/Enemy/Boar/Boar.h"
-#include "Game/Object/Actor/Character/Enemy/Wolf/Wolf.h"
 #include "Game/UI/HitPoints/HitPoints.h"
 #include "Game/UI/SkillPoints/SkillPoints.h"
 #include "Game/UI/Stamina/Stamina.h"
 #include "Game/Manager/Platform/PlatformManager.h"
+#include "Game/Manager/MobEnemy/MobEnemyManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/HitCheck/HitCheck.h"
 
@@ -19,12 +18,11 @@ private:
 	Player			m_Player;			//プレイヤークラス
 	Sword			m_Sword;			//剣クラス
 	Shield			m_Shield;			//盾クラス
-	Boar			m_Boar;				//イノシシクラス
-	Wolf			m_Wolf;				//オオカミクラス
 	HitPoints		m_HitPoints;		//体力UIクラス
 	SkillPoints		m_SkillPoints;		//スキルポイントUIクラス
 	Stamina			m_Stamina;			//スタミナUIクラス
 	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
+	MobEnemyManager	m_MobEnemyManager;	//モブ敵マネージャークラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 
 	int m_ShadowHndl;					//影生成用のハンドル

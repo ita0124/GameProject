@@ -47,8 +47,6 @@ protected:
 
 	int			m_EffectHndl;	//エフェクトハンドル
 	bool		m_IsEffect;		//エフェクト出現判定
-	//重力処理
-	virtual void GravityManager();
 public:
 	//コンストラクタ
 	ObjectBase();

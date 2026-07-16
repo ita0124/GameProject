@@ -271,7 +271,7 @@ int BossScene::Step() {
 
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
 
-	//EnemyStep();
+	EnemyStep();
 	HitCheck();
 
 	CameraStep();

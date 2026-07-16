@@ -110,8 +110,7 @@ void StageScene::Draw() {
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
-		m_Boar.Draw();								//イノシシクラス
-		m_Wolf.Draw();								//オオカミクラス
+		m_MobEnemyManager.Draw();					//モブ敵マネージャークラス
 		//影設定終了
 		ShadowMap_DrawEnd();
 		//影生成
@@ -120,8 +119,7 @@ void StageScene::Draw() {
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
-		m_Boar.Draw();								//イノシシクラス
-		m_Wolf.Draw();								//オオカミクラス
+		m_MobEnemyManager.Draw();					//モブ敵マネージャークラス
 		//影生成終了
 		SetUseShadowMap(0, -1);
 
@@ -139,12 +137,11 @@ void StageScene::Init() {
 	m_Sword.Init(&m_Player);						//剣クラス
 	//オーナーを設定
 	m_Shield.Init(&m_Player);						//盾クラス
-	m_Boar.Init();									//イノシシクラス
-	m_Wolf.Init();									//オオカミクラス
 	m_HitPoints.Init();								//体力UIクラス
 	m_SkillPoints.Init();							//スキルポイントUIクラス
 	m_Stamina.Init();								//スタミナUIクラス
 	m_PlatformManager.Init();						//プラットフォームマネージャークラス
+	m_MobEnemyManager.Init();						//モブ敵マネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
 }
 //データ破棄処理管理関数
@@ -153,12 +150,11 @@ void StageScene::Exit() {
 	m_Player.Exit();								//プレイヤークラス
 	m_Sword.Exit();									//剣クラス
 	m_Shield.Exit();								//盾クラス
-	m_Boar.Exit();									//イノシシクラス
-	m_Wolf.Exit();									//オオカミクラス
 	m_HitPoints.Exit();								//体力UIクラス
 	m_SkillPoints.Exit();							//スキルポイントUIクラス
 	m_Stamina.Exit();								//スタミナUIクラス
 	m_PlatformManager.Exit();						//プラットフォームマネージャークラス
+	m_MobEnemyManager.Exit();						//モブ敵マネージャークラス
 
 	DeleteShadowMap(m_ShadowHndl);
 }
@@ -168,12 +164,11 @@ void StageScene::Load() {
 	m_Player.Load();								//プレイヤークラス
 	m_Sword.Load();									//剣クラス
 	m_Shield.Load();								//盾クラス
-	m_Boar.Load();									//イノシシクラス
-	m_Wolf.Load();									//オオカミクラス
 	m_HitPoints.Load();								//体力UIクラス
 	m_SkillPoints.Load();							//スキルポイントUIクラス
 	m_Stamina.Load();								//スタミナUIクラス
 	m_PlatformManager.Load();						//プラットフォームマネージャークラス
+	m_MobEnemyManager.Load();						//モブ敵マネージャークラス
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
@@ -226,14 +221,13 @@ int StageScene::Step() {
 
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow,MaxShadow);
 
-	m_Boar.SetPlayerPos(m_Player.GetPos());
-	m_Boar.Step();									//イノシシクラス
-	m_Wolf.SetPlayerPos(m_Player.GetPos());
-	m_Wolf.Step();									//オオカミクラス
+	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
+	m_MobEnemyManager.Step();							//モブ敵マネージャークラス
 
 	CameraStep();
 
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
+	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 
 	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
 		Res = 1;
@@ -257,10 +251,9 @@ void StageScene::Update() {
 	m_PlatformManager.Update();
 	m_Player.Update();
 	m_Sword.Update();
-	m_Shield.Update();
-	m_Boar.Update();									//イノシシクラス
-	m_Wolf.Update();									//オオカミクラス
+	m_Shield.Update();									
 	m_CameraManager.Update();							//カメラマネージャークラス
+	m_MobEnemyManager.Update();							//モブ敵マネージャークラス
 }
 //プレイヤー関連Step
 void StageScene::PlayerStep() {

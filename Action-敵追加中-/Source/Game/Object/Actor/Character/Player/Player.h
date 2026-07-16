@@ -185,8 +185,6 @@ private:
 	bool UpdateAttackMoveVec(int _Index);
 	//攻撃移動計算
 	void AttackMoveCalc(int _Index);
-	//回転値更新
-	void UpdateRotation(VECTOR _MoveVec,float _RotSpeed);
 	//スタミナ処理
 	void StaminaManager();
 	//状態遷移

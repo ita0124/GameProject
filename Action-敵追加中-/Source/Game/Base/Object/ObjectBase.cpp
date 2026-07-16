@@ -1,10 +1,5 @@
 #include "ObjectBase.h"
 
-namespace {
-	constexpr float	GRAVITY = -0.1f;			//重力
-	constexpr float	GRAVITY_MAX = -0.5f;		//最大重力
-}
-
 //コンストラクタ
 ObjectBase::ObjectBase() {
 	m_Hndl = -1;		//画像ハンドル
@@ -65,16 +60,6 @@ void ObjectBase::Update() {
 void ObjectBase::Draw() {
 	if (!m_IsActive)return;
 	MV1DrawModel(m_Hndl);				//モデル描画
-}
-//重力処理
-void ObjectBase::GravityManager() {
-	if (!m_IsGravity)return;
-	//重力方向に加算
-	m_Gravity += GRAVITY;
-	//重力速度を制限
-	if (m_Gravity <= GRAVITY_MAX) {
-		m_Gravity = GRAVITY_MAX;
-	}
 }
 //モデルの中心を取る
 VECTOR ObjectBase::GetCenter(TagShape _Shape) {

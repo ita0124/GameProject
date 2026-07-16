@@ -30,12 +30,3 @@ void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
 	//サイズ情報設定
 	m_Size = _NormalRequestData.Size;
 }
-//モデルの中心を取る
-VECTOR PlatformBase::GetCenter() {
-	VECTOR Res = m_Pos;
-
-	//Y軸をYサイズの半分下げる
-	Res.y -= m_Size.y*0.5f;
-
-	return Res;
-}

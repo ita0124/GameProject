@@ -20,4 +20,39 @@ void CharacterBase::Init() {
 
 	m_IsStaminaRecover = true;	//ƒXƒ^ƒ~ƒi‚ð‰ñ•œ‚³‚¹‚Ä‚æ‚¢‚©
 }
-
+//‰ñ“]’lXV
+void CharacterBase::UpdateRotation(VECTOR _MoveVec, float _RotSpeed) {
+	//ˆÚ“®•ûŒü‚©‚ç–Ú•W‰ñ“]Šp‚ðŒvŽZ
+	float TargetRot = atan2f(_MoveVec.x, _MoveVec.z);
+	//Œ»Ý‚Ì‰ñ“]Šp‚Æ‚Ì·‚ðŒvŽZ
+	float RotDif = TargetRot - m_Rot.y;
+	//Šp“x·‚ð-ƒÎ`-ƒÎ‚Ì”ÍˆÍ‚É•â³
+	//‚Ç‚Á‚¿‰ñ‚è‚ð‚·‚é‚×‚«‚©
+	if (RotDif > (float)DX_PI)
+	{
+		RotDif -= (float)DX_TWO_PI;
+	}
+	else if (RotDif < -(float)DX_PI)
+	{
+		RotDif += (float)DX_TWO_PI;
+	}
+	//1ƒtƒŒ[ƒ€‚ ‚½‚è‚Ì‰ñ“]—Ê
+	float RotSpeed = _RotSpeed;
+	//–Ú•WŠp“x‚Ü‚Å‹ß‚¯‚ê‚Î‚»‚Ì‚Ü‚Ü‡‚í‚¹‚é
+	if (fabsf(RotDif) <= RotSpeed)
+	{
+		m_Rot.y = TargetRot;
+	}
+	//ˆê’è‘¬“x‚Å–Ú•W•ûŒü‚Ö‰ñ“]
+	else
+	{
+		if (RotDif > 0.0f)
+		{
+			m_Rot.y += RotSpeed;
+		}
+		else
+		{
+			m_Rot.y -= RotSpeed;
+		}
+	}
+}

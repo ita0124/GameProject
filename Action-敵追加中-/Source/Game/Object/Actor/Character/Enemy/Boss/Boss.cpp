@@ -19,6 +19,8 @@ namespace {
 	constexpr float		CHARGE_MULT = 25.0f;															//“Ëi‚ÌˆÚ“®æŽZ’l
 	constexpr float		SPECIALSTART_MULT = 10.0f;														//•KŽEŠJŽn‚ÌˆÚ“®æŽZ’l
 
+	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.2f;												//’ÊíˆÚ“®Žž‚Ì‰ñ“]‘¬“x
+
 	constexpr float		NORMAL_ATTACK1_CHANGE_MATERIAL_START = 7.0f;									//’ÊíUŒ‚‚P’i–Ú‚Ìƒ}ƒeƒŠƒAƒ‹•ÏXŠJŽnƒtƒŒ[ƒ€
 	constexpr float		NORMAL_ATTACK1_CHANGE_MATERIAL_END = 10.0f;										//’ÊíUŒ‚‚P’i–Ú‚Ìƒ}ƒeƒŠƒAƒ‹•ÏXI—¹ƒtƒŒ[ƒ€
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 10.0f;											//’ÊíUŒ‚‚P’i–Ú‚Ì“–‚½‚è”»’èŠJŽnƒtƒŒ[ƒ€
@@ -98,6 +100,7 @@ void Boss::Init() {
 	m_Pos = INIT_POS;									//À•W
 	m_Rad = RAD;										//”¼Œa
 	m_Size = BOSS_SIZE;									//ƒ{ƒbƒNƒX“–‚½‚è”»’è
+	m_Rot.y = m_Rot.y * -1.0f;							//YŽ²‰ñ“]’l‚ð”½“]
 
 	m_HitPoints = HIT_POINTS;							//‘Ì—Í
 
@@ -224,7 +227,7 @@ void Boss::Idel() {
 		AllDeleteFrameDataIsAttackFlg();
 	}
 	//Ý’è‚µ‚½ŽžŠÔ•ª‘Ò‹@‚ð‘±‚¯‚½‚ç
-	if (m_NextActionTime >= 0) {
+	if (m_NextActionTime <= 0) {
 		//•à‚«ó‘Ô‚Ö
 		m_State = WALK;
 		//‰Šú‰»
@@ -297,10 +300,10 @@ void Boss::Walk() {
 		DirToPlayer = VScale(DirToPlayer, WALK_MULT);
 		//À•W‚É‰ÁŽZ
 		m_Pos = VAdd(m_Pos, DirToPlayer);
-		//Šp“x‚ðŒvŽZ
-		float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
-		//YŽ²‰ñ“]’l‚É‘ã“ü
-		m_Rot.y = RotY;
+		//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+		DirToPlayer = VScale(DirToPlayer, -1.0f);
+		//ˆÚ“®•ûŒü‚ðŒü‚­
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
 //’ÊíUŒ‚‚P’i–Ú@UŒ‚I—¹(•@)
@@ -540,10 +543,10 @@ void Boss::RearAttack() {
 		DirToPlayer = VScale(DirToPlayer, REAR_ATTACK_MULT);
 		//À•W‚É‰ÁŽZ
 		m_Pos = VAdd(m_Pos, DirToPlayer);
-		//Šp“x‚ðŒvŽZ
-		float RotY = atan2f(DirToPlayer.x, DirToPlayer.z);
-		//YŽ²‰ñ“]’l‚É‘ã“ü
-		m_Rot.y = RotY;
+		//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+		DirToPlayer = VScale(DirToPlayer, -1.0f);
+		//ˆÚ“®•ûŒü‚ðŒü‚­
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 	else {
 		//ƒ{[ƒ“UŒ‚”»’è‚ðíœ‚·‚é
@@ -609,10 +612,10 @@ void Boss::ChargeAttackStart() {
 	RequestEndLoop(ANIME_CHARGE_ATTACK_START, CHARGE_START_ANIME_SPEED);
 	//³‹K‰»‚³‚ê‚½•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
 	VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
-	//Šp“x‚ðŒvŽZ
-	float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
-	//YŽ²‰ñ“]’l‚É‘ã“ü
-	m_Rot.y = RotY;
+	//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+	DirToPlayer = VScale(DirToPlayer, -1.0f);
+	//ˆÚ“®•ûŒü‚ðŒü‚­
+	UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 
 	//‚PƒtƒŒ[ƒ€‘O‚Ìó‘Ô‚Æ¡‚ÌƒtƒŒ[ƒ€‚Ìó‘Ô‚ð”äŠr
 	if (m_State != m_PrevState) {
@@ -670,10 +673,10 @@ void Boss::Charge() {
 		DirToPlayer = VScale(DirToPlayer, CHARGE_MULT);
 		//À•W‚É‰ÁŽZ
 		m_Pos = VAdd(m_Pos, DirToPlayer);
-		//Šp“x‚ðŒvŽZ
-		float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
-		//YŽ²‰ñ“]’l‚É‘ã“ü
-		m_Rot.y = RotY;
+		//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+		DirToPlayer = VScale(DirToPlayer, -1.0f);
+		//ˆÚ“®•ûŒü‚ðŒü‚­
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 	else {
 		//“ËiU‚èã‚°ó‘Ô‚Ö
@@ -768,10 +771,10 @@ void Boss::SpecialStart() {
 		DirToZero = VScale(DirToZero, SPECIALSTART_MULT);
 		//À•W‚É‰ÁŽZ
 		m_Pos = VAdd(m_Pos, DirToZero);
-		//Šp“x‚ðŒvŽZ
-		float RotY = atan2f(-DirToZero.x, -DirToZero.z);
-		//YŽ²‰ñ“]’l‚É‘ã“ü
-		m_Rot.y = RotY;
+		//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+		DirToZero = VScale(DirToZero, -1.0f);
+		//ˆÚ“®•ûŒü‚ðŒü‚­
+		UpdateRotation(DirToZero, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
 //•KŽEƒ`ƒƒ[ƒW
@@ -892,10 +895,10 @@ void Boss::AttackPatternManager() {
 		}
 		//³‹K‰»‚³‚ê‚½•ûŒüƒxƒNƒgƒ‹‚ðŽæ“¾
 		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
-		//Šp“x‚ðŒvŽZ
-		float RotY = atan2f(-DirToPlayer.x, -DirToPlayer.z);
-		//YŽ²‰ñ“]’l‚É‘ã“ü
-		m_Rot.y = RotY;
+		//•ûŒüƒxƒNƒgƒ‹‚ð”½“]
+		DirToPlayer = VScale(DirToPlayer, -1.0f);
+		//ˆÚ“®•ûŒü‚ðŒü‚­
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 		break;
 	}
 }

@@ -51,8 +51,6 @@ public:
 	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() const { return m_MovingPlatformRequestData; }
 	//足場オブジェクト種類
 	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
-	//モデルの中心を取る
-	VECTOR GetCenter();
 
 	//Set
 	//基本データ構造体 座標
