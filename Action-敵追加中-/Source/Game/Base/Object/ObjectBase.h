@@ -35,7 +35,6 @@ protected:
 	VECTOR		m_PrevPos;		//前フレーム座標
 	VECTOR		m_PlatformVec;	//足場の動く移動方向
 	VECTOR		m_RespawnPos;	//リスポーン座標
-	bool		m_IsGoal;		//ゴールしたか
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
@@ -43,6 +42,7 @@ protected:
 	bool		m_IsPush;		//押し出し判定を行うか
 	float		m_Gravity;		//重力
 	bool		m_IsGravity;	//重力処理をするか
+	bool		m_IsGoal;		//ゴールしたか
 	ObjectBase* m_Owner;		//オーナーオブジェクト
 
 	int			m_EffectHndl;	//エフェクトハンドル
