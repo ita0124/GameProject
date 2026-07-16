@@ -1,6 +1,7 @@
 #pragma once
 #include "Comon.h"
 #include <vector>
+#include <iterator>
 
 class SoundManager {
 public:

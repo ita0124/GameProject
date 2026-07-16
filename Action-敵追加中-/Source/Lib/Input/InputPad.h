@@ -1,5 +1,5 @@
 #pragma once
-#include "Comon.h"
+#include <DxLib.h>
 
 constexpr int USE_PAD_NUM = 1;				//使用するコントローラーの数
 
@@ -38,19 +38,19 @@ public:
 	//パッド入力情報を更新
 	static void Update();
 
-	//キーリピート入力情報取得
+	//パッドリピート入力情報取得
 	//_Button	:チェックするボタン
 	//_Num		:コントローラーのナンバー
 	//@return	:ボタン押したか
 	static bool IsPushPadRep(unsigned char _Button, unsigned int _Num = 0);
 
-	//キートリガー入力情報取得
+	//パッドトリガー入力情報取得
 	//_Button	:チェックするボタン
 	//_Num		:コントローラーのナンバー
 	//@return	:ボタンを一度だけ押したか
 	static bool	IsPushPadTrg(unsigned char _Button, unsigned int _Num = 0);
 
-	//キーを離したかの情報取得
+	//パッドを離したかの情報取得
 	//_Button	:チェックするボタン
 	//_Num		:コントローラーのナンバー
 	//@return	:ボタンを離したか

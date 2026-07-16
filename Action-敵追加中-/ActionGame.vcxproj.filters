@@ -345,20 +345,44 @@
     <Filter Include="ヘッダー ファイル\Game\Manager\MobEnemyManager">
       <UniqueIdentifier>{3b2095fe-1f1b-4386-a518-78bebbac95c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Lib\Collision">
+      <UniqueIdentifier>{758ac4be-0aae-424a-8463-8beeb92f0d25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib\DxLibFont">
+      <UniqueIdentifier>{e880dcac-d5fa-433b-8ef0-4e79c9c86c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib\Fade">
+      <UniqueIdentifier>{949169e8-3867-4e0f-8b99-93765581cacc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib\FPS">
+      <UniqueIdentifier>{67ac4621-6b18-4c09-ab6c-5dff327208c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib\Input">
+      <UniqueIdentifier>{b76e3e3c-50b5-40ba-b0bc-312b997da6e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Lib\LoadMaterial">
+      <UniqueIdentifier>{21baca9f-2e4f-41a0-af36-dfb6b642bf89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\Collision">
+      <UniqueIdentifier>{09a3b61b-4d87-43ea-bd5d-403ca490a15a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\DxLibFont">
+      <UniqueIdentifier>{d6080fc4-ffa1-4023-9986-71ae24d6400b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\Fade">
+      <UniqueIdentifier>{cf86b8b4-008b-4101-b3c6-ea923c20a2ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\FPS">
+      <UniqueIdentifier>{4acd5206-b7a0-41b3-848e-8455398f37d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\Input">
+      <UniqueIdentifier>{958c0a36-9375-42b3-9b56-47c6102498f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\LoadMaterial">
+      <UniqueIdentifier>{6ed90c92-d75e-47f6-a679-362d01a01993}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Lib\Collision\Collision.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\Fade\Fade.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\Input\InputKey.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\Input\InputPad.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -367,12 +391,6 @@
     </ClCompile>
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp">
       <Filter>ソース ファイル\Game\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Title\Title.cpp">
       <Filter>ソース ファイル\Game\Title</Filter>
@@ -482,9 +500,6 @@
     <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp">
       <Filter>ソース ファイル\Game\Camera\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Lib\FPS\FPS.cpp">
-      <Filter>ソース ファイル\Lib</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\RespawnPlatform</Filter>
     </ClCompile>
@@ -503,34 +518,40 @@
     <ClCompile Include="Source\Game\Manager\MobEnemy\MobEnemyManager.cpp">
       <Filter>ソース ファイル\Game\Manager\MobEnemyManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Lib\Collision\Collision.cpp">
+      <Filter>ソース ファイル\Lib\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\DxLibFont\DxLibFont.cpp">
+      <Filter>ソース ファイル\Lib\DxLibFont</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Fade\Fade.cpp">
+      <Filter>ソース ファイル\Lib\Fade</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\FPS\FPS.cpp">
+      <Filter>ソース ファイル\Lib\FPS</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputKey.cpp">
+      <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputPad.cpp">
+      <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp">
+      <Filter>ソース ファイル\Lib\LoadMaterial</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputManager.cpp">
+      <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\Collision\Collision.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\Fade\Fade.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\Input\InputKey.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\Input\InputPad.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Sound\SoundManager.h">
       <Filter>ヘッダー ファイル\Game\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Source\Effekseer\effekseer.h">
       <Filter>ヘッダー ファイル\Effekseer</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Title\Title.h">
       <Filter>ヘッダー ファイル\Game\Title</Filter>
@@ -640,9 +661,6 @@
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera\Player</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Lib\FPS\FPS.h">
-      <Filter>ヘッダー ファイル\Lib</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\RespawnPlatform</Filter>
     </ClInclude>
@@ -660,6 +678,30 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Manager\MobEnemy\MobEnemyManager.h">
       <Filter>ヘッダー ファイル\Game\Manager\MobEnemyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Collision\Collision.h">
+      <Filter>ヘッダー ファイル\Lib\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\DxLibFont\DxLibFont.h">
+      <Filter>ヘッダー ファイル\Lib\DxLibFont</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Fade\Fade.h">
+      <Filter>ヘッダー ファイル\Lib\Fade</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\FPS\FPS.h">
+      <Filter>ヘッダー ファイル\Lib\FPS</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputKey.h">
+      <Filter>ヘッダー ファイル\Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputPad.h">
+      <Filter>ヘッダー ファイル\Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h">
+      <Filter>ヘッダー ファイル\Lib\LoadMaterial</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputManager.h">
+      <Filter>ヘッダー ファイル\Lib\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
