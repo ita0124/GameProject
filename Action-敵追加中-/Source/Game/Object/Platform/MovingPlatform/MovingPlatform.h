@@ -1,5 +1,7 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
+#include <vector>
+#include <iterator>
 
 //動く足場
 class MovingPlatform :public PlatformBase {
@@ -19,7 +21,7 @@ private:
 	float		m_PrevLen;			//前フレームの座標から終端座標までの距離を保存する
 	int			m_StopTime;			//到着したら一度止まる継続時間
 	bool		m_IsHit;
-	ObjectBase *m_Object;
+	std::vector<ObjectBase*> m_Object;
 public:
 	//コンストラクタ
 	MovingPlatform();

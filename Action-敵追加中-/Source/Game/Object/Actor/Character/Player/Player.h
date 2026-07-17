@@ -1,7 +1,5 @@
 #pragma once
 #include "Game/Base/Object/ActorBase/Character/CharacterBase.h"
-#include "Lib/Input/InputKey.h"
-#include "Lib/Input/InputPad.h"
 
 //プレイヤークラス
 class Player :public CharacterBase {

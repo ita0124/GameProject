@@ -174,7 +174,7 @@ void StageScene::Load() {
 int StageScene::Step() {
 	int Res = 0;
 
-	m_Sky.Step(m_Player.GetPos());					//天球クラス
+	//m_Sky.Step(m_Player.GetPos());					//天球クラス
 	m_PlatformManager.Step();
 
 	switch (m_GameID) {
@@ -228,10 +228,6 @@ int StageScene::Step() {
 
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
-
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_N)) {
-		Res = 1;
-	}
 
 	//終了位置設定　後にゴールオブジェクトを追加する
 	VECTOR Pos = m_Player.GetPos();
@@ -298,7 +294,7 @@ void StageScene::CameraStep() {
 	}
 
 	if (Dot < 90.0f) {
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_THUMB) || InputPad::IsPushPadTrg(XINPUT_BUTTON_LEFT_THUMB) || InputKey::IsPushKeyTrg(KEY_INPUT_C)) {
+		if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_CAMERA_CHANGE)) {
 			if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
 				m_CameraManager.ChangeCamera(CameraManager::TagCamera::PLAYER);
 			}

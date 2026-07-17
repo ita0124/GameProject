@@ -349,7 +349,7 @@ void BossScene::CameraStep() {
 	}
 
 	if (Dot < 90.0f) {
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_THUMB) || InputPad::IsPushPadTrg(XINPUT_BUTTON_LEFT_THUMB) || InputKey::IsPushKeyTrg(KEY_INPUT_C)) {
+		if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_CAMERA_CHANGE)) {
 			if (m_CameraManager.GetID() == CameraManager::TagCamera::TARGET) {
 				m_CameraManager.ChangeCamera(CameraManager::TagCamera::PLAYER);
 			}

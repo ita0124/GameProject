@@ -1,13 +1,13 @@
 #pragma once
 #include <DxLib.h>
 
-constexpr int KEY_BUF_MAX = 256;
+constexpr int KEY_MAX = 256;
 
 //キーボード入力クラス
 class InputKey {
 protected:
-	static char m_NowBuf[KEY_BUF_MAX];	//今フレームのキー情報
-	static char m_OldBuf[KEY_BUF_MAX];	//前フレームのキー情報
+	static char m_NowKey[KEY_MAX];	//今フレームのキー情報
+	static char m_OldKey[KEY_MAX];	//前フレームのキー情報
 public:
 	//コンストラクタ
 	InputKey();

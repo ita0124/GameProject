@@ -1,7 +1,5 @@
 #pragma once
 #include "Game/Object/Actor/Character/Player/Player.h"
-#include "Lib/Input/InputKey.h"
-#include "Lib/Input/InputPad.h"
 
 class ItemBase {
 protected:

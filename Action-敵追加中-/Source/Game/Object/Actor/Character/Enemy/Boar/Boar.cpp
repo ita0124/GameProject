@@ -75,6 +75,11 @@ void Boar::Load() {
 void Boar::Step() {
 	m_PrevPos = m_Pos;
 
+	if (m_PlatformVec.x != 0.0f || m_PlatformVec.y != 0.0f || m_PlatformVec.z != 0.0f) {
+		m_Pos = VAdd(m_Pos, m_PlatformVec);
+	}
+	m_PlatformVec = VZERO;
+
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;

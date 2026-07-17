@@ -2,12 +2,11 @@
 #include "Comon.h"
 #include "Lib/FPS/FPS.h"
 #include "Lib/Fade/Fade.h"
-#include "Lib/Input/InputKey.h"
-#include "Lib/Input/InputPad.h"
 #include "Lib/LoadMaterial/LoadMaterial.h"
 #include "Game/Manager/Scene/SceneManager.h"
 #include "Game/Sound/SoundManager.h"
 #include "Effekseer/MyEffeckseer.h"
+#include "Lib/Input/InputManager.h"
 
  //プログラムは WinMain から始まります
 int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -37,7 +36,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	SetWriteZBuffer3D(TRUE);
 
 	//入力
-	InputKey::Init();
+	InputManager::Init();
 
 	//フォントをハンドルとして保存する
 	DxLibFont::Init();
@@ -84,8 +83,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		//FPS管理
 		DebugFPS::Step();
 		//インプット情報を更新
-		InputKey::Update();
-		InputPad::Update();
+		InputManager::Update();
 
 		//シーン管理
 		SceneManager::Loop();

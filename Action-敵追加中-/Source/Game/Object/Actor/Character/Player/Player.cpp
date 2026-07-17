@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
+#include "Lib/Input/InputManager.h"
 
 namespace {
 	constexpr float		RAD = 5.0f;																//半径
@@ -424,7 +425,7 @@ void Player::GuardIdel() {
 	//ガード入力を継続している時間を加算
 	m_GuardTimer++;
 	//ガードボタンを離したら
-	if (!InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) && !InputKey::IsPushKeyRep(KEY_INPUT_F)) {
+	if (!InputManager::IsPushRep(InputManager::TagInput::INPUT_GUARD)) {
 		if (m_GuardTimer >= GUARD_HOLD_TIME) {
 			//ガード終了状態へ
 			m_State = GUARD_END;
@@ -559,7 +560,7 @@ void Player::NormalAttack1() {
 	}
 	//通常攻撃ボタンが押されたら
 	if (m_AnimeData.Frame < NORMAL_ATTACK1_TRANSITION) {
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+		if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
 			m_IsNextNormalAttack[NORMAL_ATTACK2_NUMBER] = true;
 			//攻撃移動方向更新
 			if (!SetAttackMoveVec(NORMAL_ATTACK2_NUMBER)) {
@@ -664,7 +665,7 @@ void Player::NormalAttack2() {
 	}
 	//通常攻撃ボタンが押されたら
 	if (m_AnimeData.Frame < NORMAL_ATTACK2_TRANSITION) {
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+		if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
 			m_IsNextNormalAttack[NORMAL_ATTACK3_NUMBER] = true;
 			//攻撃移動方向更新
 			if (!SetAttackMoveVec(NORMAL_ATTACK3_NUMBER)) {
@@ -818,47 +819,14 @@ bool Player::SetNormalMoveVec() {
 	bool IsMove = false;
 
 	m_MoveVec = VZERO;
-	//奥方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_W)) {
-		m_MoveVec.z = -1.0f;
+	if (InputManager::GetLAnalogYInput() != 0.0f) {
+		m_MoveVec.z = -InputManager::GetLAnalogYInput();
 		IsMove = true;
 	}
-	//手前方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_S)) {
-		m_MoveVec.z = 1.0f;
+	if (InputManager::GetLAnalogXInput() != 0.0f) {
+		m_MoveVec.x = -InputManager::GetLAnalogXInput();
 		IsMove = true;
 	}
-	//左方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
-		m_MoveVec.x = 1.0f;
-		IsMove = true;
-	}
-	//右方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
-		m_MoveVec.x = -1.0f;
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogYInput() > 0) {
-		m_MoveVec.z = -InputPad::GetLAnalogYInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogYInput() < 0) {
-		m_MoveVec.z = -InputPad::GetLAnalogYInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogXInput() < 0) {
-		m_MoveVec.x = -InputPad::GetLAnalogXInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogXInput() > 0) {
-		m_MoveVec.x = -InputPad::GetLAnalogXInput();
-		IsMove = true;
-	}
-
 	return IsMove;
 }
 //移動計算
@@ -909,47 +877,14 @@ bool Player::SetAttackMoveVec(int _Index) {
 //攻撃移動方向更新
 bool Player::UpdateAttackMoveVec(int _Index) {
 	bool IsMove = false;
-	//奥方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_W)) {
-		m_AttackMoveVec[_Index].z = -1.0f;
+	if (InputManager::GetLAnalogYInput() != 0.0f) {
+		m_AttackMoveVec[_Index].z = -InputManager::GetLAnalogYInput();
 		IsMove = true;
 	}
-	//手前方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_S)) {
-		m_AttackMoveVec[_Index].z = 1.0f;
+	if (InputManager::GetLAnalogXInput() != 0.0f) {
+		m_AttackMoveVec[_Index].x = -InputManager::GetLAnalogXInput();
 		IsMove = true;
 	}
-	//左方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
-		m_AttackMoveVec[_Index].x = 1.0f;
-		IsMove = true;
-	}
-	//右方向
-	if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
-		m_AttackMoveVec[_Index].x = -1.0f;
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogYInput() > 0) {
-		m_AttackMoveVec[_Index].z = -InputPad::GetLAnalogYInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogYInput() < 0) {
-		m_AttackMoveVec[_Index].z = -InputPad::GetLAnalogYInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogXInput() < 0) {
-		m_AttackMoveVec[_Index].x = -InputPad::GetLAnalogXInput();
-		IsMove = true;
-	}
-
-	if (InputPad::GetLAnalogXInput() > 0) {
-		m_AttackMoveVec[_Index].x = -InputPad::GetLAnalogXInput();
-		IsMove = true;
-	}
-
 	return IsMove;
 }
 //攻撃移動計算
@@ -1090,28 +1025,28 @@ bool Player::ActionManager() {
 	//スタミナが一定値を上回っていれば
 	if (m_Stamina > ROLLING_MIN_STAMINA) {
 		//ローリング
-		if (InputPad::IsPushPadTrg(XINPUT_BUTTON_X) || InputKey::IsPushKeyTrg(KEY_INPUT_R)) {
+		if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_ROLLING)) {
 			m_State = ROLLING;
 			IsAction = true;
 		}
 	}
 	//ジャンプ
-	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_A) || InputKey::IsPushKeyTrg(KEY_INPUT_Z))) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_JUMP)) {
 		m_State = JUMP;
 		IsAction = true;
 	}
 	//ガード
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_RIGHT_SHOULDER) || InputKey::IsPushKeyTrg(KEY_INPUT_F)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_GUARD)) {
 		m_State = GUARD_START;
 		IsAction = true;
 	}
 	//スキル攻撃
-	if ((InputPad::IsPushPadTrg(XINPUT_BUTTON_Y) || InputKey::IsPushKeyTrg(KEY_INPUT_Q)) && m_SkillPoints > 0) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_SKILL_ATTACK)&& m_SkillPoints > 0) {
 		m_State = SKILL_ATTACK;
 		IsAction = true;
 	}
 	//通常攻撃１段目
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B) || InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
 		m_State = NORMAL_ATTACK1;
 		m_IsNextNormalAttack[NORMAL_ATTACK1_NUMBER] = true;
 		//攻撃移動方向更新

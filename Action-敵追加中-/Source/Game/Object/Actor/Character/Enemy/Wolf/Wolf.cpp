@@ -11,7 +11,7 @@ namespace {
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 200.0f;													//IDELに移行するプレイヤーとの距離
-	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
+	constexpr float		ACTION_ATTACK_DISTANCE = 0.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
 	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
@@ -74,6 +74,11 @@ void Wolf::Load() {
 //毎フレーム呼び出す処理
 void Wolf::Step() {
 	m_PrevPos = m_Pos;
+
+	if (m_PlatformVec.x != 0.0f || m_PlatformVec.y != 0.0f || m_PlatformVec.z != 0.0f) {
+		m_Pos = VAdd(m_Pos, m_PlatformVec);
+	}
+	m_PlatformVec = VZERO;
 
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;

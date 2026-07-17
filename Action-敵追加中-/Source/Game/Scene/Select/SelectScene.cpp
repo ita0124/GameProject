@@ -1,4 +1,5 @@
 #include "SelectScene.h"
+#include "Lib/Input/InputManager.h"
 
 namespace {
 	constexpr int	FADE_SPEED = 5;			//フェードスピード
@@ -118,24 +119,13 @@ int SelectScene::Step() {
 
 	m_Sky.Step();
 
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_RIGHT)) {
+	if (InputManager::GetLAnalogXInput() > 0.0f) {
 		m_SelectNum++;
 	}
-	else if (InputKey::IsPushKeyTrg(KEY_INPUT_LEFT)) {
+	else if (InputManager::GetLAnalogXInput() < 0.0f) {
 		m_SelectNum--;
 	}
-
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_RIGHT)) {
-		m_SelectNum++;
-	}
-	else if (InputPad::IsPushPadTrg(XINPUT_BUTTON_DPAD_LEFT)) {
-		m_SelectNum--;
-	}
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
-		Res = 1;
-	}
-
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
 		Res = 1;
 	}
 

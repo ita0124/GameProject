@@ -35,48 +35,15 @@ void PlayerCamera::Step(Player& _Player) {
 	m_TargetPoint = _Player.GetPos();
 	float RotX = 0.0f;
 	float RotY = 0.0f;
-	//キーボード
-	//X軸
-	if (InputKey::IsPushKeyRep(KEY_INPUT_UP)) {
-		RotX = -CONTROL_ROTX_SPEED;
+
+	if (InputManager::GetRAnalogYInput() != 0.0f) {
+		RotX = (float)InputManager::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
 	}
-	else if (InputKey::IsPushKeyRep(KEY_INPUT_DOWN)) {
-		RotX = CONTROL_ROTX_SPEED;
+	if (InputManager::GetLAnalogXInput() != 0.0f) {
+		RotY = InputManager::GetLAnalogXInput() * PLAYER_FOLLOW_ROTY_SPEED;
 	}
-	//Y軸
-	//プレイヤーの左右移動に連動
-	if (InputKey::IsPushKeyRep(KEY_INPUT_A)) {
-		RotY = -PLAYER_FOLLOW_ROTY_SPEED;
-	}
-	else if (InputKey::IsPushKeyRep(KEY_INPUT_D)) {
-		RotY = PLAYER_FOLLOW_ROTY_SPEED;
-	}
-	//自分で動かす
-	if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
-		RotY = -CONTROL_ROTY_SPEED;
-	}
-	else if (InputKey::IsPushKeyRep(KEY_INPUT_RIGHT)) {
-		RotY = CONTROL_ROTY_SPEED;
-	}
-	//パッド
-	//X軸
-	if (InputPad::GetRAnalogYInput() < 0.0f || InputPad::GetRAnalogYInput() > 0.0f) {
-		RotX = (float)InputPad::GetRAnalogYInput() * CONTROL_ROTX_SPEED;
-	}
-	//Y軸
-	//プレイヤーの左右移動に連動
-	if (InputPad::GetLAnalogXInput() < 0.0f) {
-		RotY = InputPad::GetLAnalogXInput() * PLAYER_FOLLOW_ROTY_SPEED;
-	}
-	else if (InputPad::GetLAnalogXInput() > 0.0f) {
-		RotY = InputPad::GetLAnalogXInput() * PLAYER_FOLLOW_ROTY_SPEED;
-	}
-	//自分で動かす
-	if (InputPad::GetRAnalogXInput() < 0.0f) {
-		RotY = InputPad::GetRAnalogXInput() * CONTROL_ROTY_SPEED;
-	}
-	else if (InputPad::GetRAnalogXInput() > 0.0f) {
-		RotY = InputPad::GetRAnalogXInput() * CONTROL_ROTY_SPEED;
+	if (InputManager::GetRAnalogXInput() != 0.0f) {
+		RotY = InputManager::GetRAnalogXInput() * CONTROL_ROTY_SPEED;
 	}
 
 	m_CalcRot.x += RotX;

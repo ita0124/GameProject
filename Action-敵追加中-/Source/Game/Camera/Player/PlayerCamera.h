@@ -1,8 +1,7 @@
 #pragma once
 #include "Comon.h"
-#include "Lib/Input/InputKey.h"
-#include "Lib/Input/InputPad.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
+#include "Lib/Input/InputManager.h"
 
 //ゲームプレイ中に使うカメラクラス
 class PlayerCamera {

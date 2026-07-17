@@ -34,8 +34,6 @@ void InputPad::Update() {
 
 //キーリピート入力情報取得
 bool InputPad::IsPushPadRep(unsigned char _Button, unsigned int _Num) {
-	/*return m_NowInput[_Num].Buttons[_Button] == 1;*/
-
 	if (m_NowInput[_Num].Buttons[_Button] == 1) {
 		return true;
 	}
@@ -62,7 +60,6 @@ bool InputPad::IsPushPadLet(unsigned char _Button, unsigned int _Num) {
 	else {
 		return false;
 	}
-	/*return (m_NowInput[_Num].Buttons[_Button] != 1 && m_OldInput[_Num].Buttons[_Button] == 1);*/
 }
 
 //左アナログスティックのX軸の入力

@@ -35,6 +35,7 @@ protected:
 	VECTOR		m_PrevPos;		//前フレーム座標
 	VECTOR		m_PlatformVec;	//足場の動く移動方向
 	VECTOR		m_RespawnPos;	//リスポーン座標
+	VECTOR		m_MoveVec;		//移動方向
 	int			m_Hndl;			//画像ハンドル
 	float		m_Rad;			//半径
 	bool		m_IsActive;		//生存フラグ
@@ -85,6 +86,8 @@ public:
 	VECTOR		GetSize()			const { return m_Size; }
 	//前フレーム座標
 	VECTOR		GetPrevPos()		const { return m_PrevPos; }
+	//移動方向
+	VECTOR	GetMoveVec()	const { return m_MoveVec; }
 	//ハンドル
 	int			GetHndl()			const { return m_Hndl; }
 	//半径
@@ -117,6 +120,8 @@ public:
 	void		SetScale(VECTOR _Scale) { m_Scale = _Scale; }
 	//サイズ
 	void		SetSize(VECTOR _Size) { m_Size = _Size; }
+	//移動方向
+	void		SetMoveVec(VECTOR _MoveVec) { m_MoveVec = _MoveVec; }
 	//半径
 	void		SetRad(float _Rad) { m_Rad = _Rad; }
 	//生存フラグ

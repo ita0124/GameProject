@@ -1,5 +1,7 @@
 #include "MovingPlatform.h"
 
+using namespace std;
+
 namespace {
 	constexpr float		MIN_LEN = 0.0f;
 	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
@@ -26,7 +28,7 @@ void MovingPlatform::Init() {
 	m_StopTime = 0;				//到着したら一度止まる継続時間
 
 	m_IsHit = false;
-	m_Object = nullptr;
+	m_Object.clear();
 }
 //データ読み込み処理
 void MovingPlatform::Load() {
@@ -44,13 +46,15 @@ void MovingPlatform::Step() {
 	switch (m_State) {
 	case MOVE:				//移動中
 		if (m_IsHit) {
-		if (m_Object != nullptr) {
-			VECTOR MoveDir = VScale(m_MoveDir, m_MovingPlatformRequestData.MoveSpeed);
-			m_Object->SetPlatformVec(MoveDir);
-			m_Object = nullptr;
+			for (int Index = 0;Index < m_Object.size();Index++) {
+				if (m_Object[Index] != nullptr) {
+					VECTOR MoveDir = VScale(m_MoveDir, m_MovingPlatformRequestData.MoveSpeed);
+					m_Object[Index]->SetPlatformVec(MoveDir);
+				}
+			}
+			m_Object.clear();
 			m_IsHit = false;
 		}
-	}
 		//終端座標にたどり着いてなければ
 		if (!m_IsEndPos) {
 			//正規化された方向ベクトルを取得
@@ -157,7 +161,7 @@ void MovingPlatform::Step() {
 //当たり判定後の処理(当たっている場合)
 void MovingPlatform::HitCalc(ObjectBase* _Object) {
 	m_IsHit = true;
-	m_Object = _Object;
+	m_Object.push_back(_Object);
 }
 //当たり判定後の処理(当たっていない場合)
 void MovingPlatform::NotHitCalc(ObjectBase* _Object) {

@@ -1,4 +1,5 @@
 #include "ResultScene.h"
+#include "Lib/Input/InputManager.h"
 
 namespace {
 	constexpr int	FADE_SPEED = 5;			//フェードスピード
@@ -124,13 +125,8 @@ int ResultScene::Step() {
 
 	m_Result.Step();
 
-	if (InputKey::IsPushKeyTrg(KEY_INPUT_SPACE)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
 		Res = 1;
 	}
-
-	if (InputPad::IsPushPadTrg(XINPUT_BUTTON_B)) {
-		Res = 1;
-	}
-
 	return Res;
 }

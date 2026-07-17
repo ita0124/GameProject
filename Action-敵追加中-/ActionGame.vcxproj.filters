@@ -372,14 +372,14 @@
     <Filter Include="ヘッダー ファイル\Lib\Fade">
       <UniqueIdentifier>{cf86b8b4-008b-4101-b3c6-ea923c20a2ef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Lib\FPS">
-      <UniqueIdentifier>{4acd5206-b7a0-41b3-848e-8455398f37d4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Lib\Input">
       <UniqueIdentifier>{958c0a36-9375-42b3-9b56-47c6102498f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Lib\LoadMaterial">
       <UniqueIdentifier>{6ed90c92-d75e-47f6-a679-362d01a01993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Lib\FPS">
+      <UniqueIdentifier>{4acd5206-b7a0-41b3-848e-8455398f37d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

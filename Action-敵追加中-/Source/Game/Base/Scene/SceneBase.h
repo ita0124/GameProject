@@ -1,7 +1,5 @@
 #pragma once
 #include "Comon.h"
-#include "Lib/Input/InputKey.h"
-#include "Lib/Input/InputPad.h"
 #include "Lib/Fade/Fade.h"
 #include "Game/Sound/SoundManager.h"
 

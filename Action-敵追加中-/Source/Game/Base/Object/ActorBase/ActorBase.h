@@ -24,8 +24,6 @@ protected:
 		ANIME_ENDLOOP
 	};
 
-	VECTOR	m_MoveVec;		//移動方向
-
 	//アニメーション更新
 	void AnimeUpdate();
 
@@ -51,8 +49,6 @@ public:
 	void RequestEndLoop(int _ID, float _Speed = 1.0f);
 
 	//Get
-	//移動方向
-	VECTOR	GetMoveVec()	const { return m_MoveVec; }
 	///Y軸を考慮しない座標Aから座標Bへの方向ベクトルを取得する
 	//_VectorA		:基準となる座標
 	//_VectorB		:目標になる座標
@@ -62,8 +58,6 @@ public:
 	VECTOR GetDirectionNotY(VECTOR _VectorA, VECTOR _VectorB, bool _IsNorm = FALSE);
 
 	//Set
-	//移動方向
-	void	UpdateMoveVec(VECTOR _MoveVec) { m_MoveVec = _MoveVec; }
 	//アニメーションのスピード変化
 	void	SetAnimeSpeed(float _AnimeSpeed) { m_AnimeData.Speed = _AnimeSpeed; }
 };
