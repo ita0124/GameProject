@@ -94,6 +94,8 @@ private:
 
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
+	bool		m_IsClose;											//近いかどうか
+
 	//待機
 	void Idel();
 	//歩き

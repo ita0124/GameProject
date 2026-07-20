@@ -11,7 +11,7 @@ namespace {
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 200.0f;													//IDELに移行するプレイヤーとの距離
-	constexpr float		ACTION_ATTACK_DISTANCE = 0.0f;													//攻撃に移行するプレイヤーとの距離
+	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
 	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
@@ -182,7 +182,7 @@ void Wolf::Walk() {
 }
 //攻撃
 void Wolf::Attack() {
-	m_NextActionTime = 300;
+	m_NextActionTime = 60;
 	m_State = IDEL;
 }
 //ダウン

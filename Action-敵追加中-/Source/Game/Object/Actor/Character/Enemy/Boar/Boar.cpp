@@ -10,11 +10,11 @@ namespace {
 	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
-	constexpr float		ACTION_IDEL_DISTANCE = 300.0f;													//IDELに移行するプレイヤーとの距離
-	constexpr float		ACTION_ATTACK_DISTANCE = 250.0f;												//攻撃に移行するプレイヤーとの距離
+	constexpr float		ACTION_IDEL_DISTANCE = 400.0f;													//IDELに移行するプレイヤーとの距離
+	constexpr float		ACTION_ATTACK_DISTANCE = 200.0f;												//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
-	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
+	constexpr float		CHARGE_MULT = 5.0f;																//突進の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
@@ -59,6 +59,8 @@ void Boar::Init() {
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
+
+	m_IsClose = false;									//近いかどうか
 
 	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
@@ -121,7 +123,7 @@ void Boar::HitCalc(ObjectBase* _Object) {
 				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
 			}
 		}
-			//ダウン状態の時
+		//ダウン状態の時
 		if (m_State == DOWN) {
 			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
 			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
@@ -133,7 +135,7 @@ void Boar::HitCalc(ObjectBase* _Object) {
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;
 		//当たり判定オフ
- 		m_IsCollision = false;
+		m_IsCollision = false;
 	}
 }
 //待機
@@ -182,8 +184,52 @@ void Boar::Walk() {
 }
 //攻撃
 void Boar::Attack() {
-	m_NextActionTime = 300;
-	m_State = IDEL;
+	//突進アニメーションループ再生
+	RequestLoop(ANIME_ATTACK, ANIME_SPEED);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
+			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		}
+		//エフェクト発生判定オン
+		m_IsEffect = true;
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
+	if (!m_IsClose)
+	{
+		//方向ベクトルを取得
+		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
+		DirToPlayer.y = 0.0f;
+		//サイズ取得
+		float Len = VSize(DirToPlayer);
+
+		// 十分近づいたら追尾終了
+		if (Len < 50.0f)
+		{
+			m_IsClose = true;
+			m_MoveVec = VNorm(DirToPlayer);    // 最後の方向を保存
+		}
+		else
+		{
+			m_MoveVec = VNorm(DirToPlayer);
+		}
+		//1フレームで移動する距離を生成
+		m_MoveVec = VScale(m_MoveVec, CHARGE_MULT);
+	}
+	//座標に加算
+	m_Pos = VAdd(m_Pos, m_MoveVec);
+	//方向ベクトルを反転
+	m_MoveVec = VScale(m_MoveVec, -1.0f);
+	//移動方向を向く
+	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
 }
 //ダウン
 void Boar::Down() {

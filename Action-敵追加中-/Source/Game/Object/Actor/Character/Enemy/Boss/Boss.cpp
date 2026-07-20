@@ -546,7 +546,7 @@ void Boss::RearAttack() {
 		//方向ベクトルを反転
 		DirToPlayer = VScale(DirToPlayer, -1.0f);
 		//移動方向を向く
-		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
+		UpdateRotation(DirToPlayer, 1.0f);
 	}
 	else {
 		//ボーン攻撃判定を削除する
