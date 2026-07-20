@@ -10,11 +10,17 @@ namespace {
 	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
-	constexpr float		ACTION_IDEL_DISTANCE = 400.0f;													//IDELに移行するプレイヤーとの距離
+	constexpr float		ACTION_IDEL_DISTANCE = 300.0f;													//IDELに移行するプレイヤーとの距離
 	constexpr float		ACTION_ATTACK_DISTANCE = 200.0f;												//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
-	constexpr float		CHARGE_MULT = 5.0f;																//突進の移動乗算値
+	constexpr float		CHARGE_MULT = 3.0f;																//突進の移動乗算値
+
+	constexpr float		CHARGE_END_DISTANCE = 50.0f;													//突進の追尾を終了する距離
+
+	constexpr int		CHARGE_END_TIME = 60;															//接近後に突進を終了するまでの時間
+
+	constexpr int		NEXT_ACTION_WAIT_TIME = 60;														//次の行動までの待機時間
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
@@ -61,6 +67,7 @@ void Boar::Init() {
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 
 	m_IsClose = false;									//近いかどうか
+	m_CloseTime = 0;									//近い状態になってからの経過時間
 
 	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
@@ -185,11 +192,15 @@ void Boar::Walk() {
 //攻撃
 void Boar::Attack() {
 	//突進アニメーションループ再生
-	RequestLoop(ANIME_ATTACK, ANIME_SPEED);
+	RequestLoop(ANIME_ATTACK);
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		//接近判定をオフ
+		m_IsClose = false;
+		//接近後の経過フレームを初期化
+		m_CloseTime = 0;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
@@ -212,10 +223,11 @@ void Boar::Attack() {
 		float Len = VSize(DirToPlayer);
 
 		// 十分近づいたら追尾終了
-		if (Len < 50.0f)
+		if (Len < CHARGE_END_DISTANCE)
 		{
 			m_IsClose = true;
-			m_MoveVec = VNorm(DirToPlayer);    // 最後の方向を保存
+			// 最後の方向を保存
+			m_MoveVec = VNorm(DirToPlayer);
 		}
 		else
 		{
@@ -224,12 +236,20 @@ void Boar::Attack() {
 		//1フレームで移動する距離を生成
 		m_MoveVec = VScale(m_MoveVec, CHARGE_MULT);
 	}
+	else {
+		m_CloseTime++;
+	}
 	//座標に加算
 	m_Pos = VAdd(m_Pos, m_MoveVec);
-	//方向ベクトルを反転
-	m_MoveVec = VScale(m_MoveVec, -1.0f);
 	//移動方向を向く
 	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
+	//一定時間経過したら突進終了
+	if (m_CloseTime > CHARGE_END_TIME) {
+		//待機状態へ
+		m_State = IDEL;
+		//次の行動までの待機時間を設定
+		m_NextActionTime = NEXT_ACTION_WAIT_TIME;
+	}
 }
 //ダウン
 void Boar::Down() {

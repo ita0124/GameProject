@@ -14,7 +14,7 @@ namespace {
 	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
-	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
+	constexpr float		ORBIT_MOVE_SPEED = 2.0f;														// プレイヤーの周囲を旋回する移動速度
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
@@ -121,7 +121,7 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
 			}
 		}
-			//ダウン状態の時
+		//ダウン状態の時
 		if (m_State == DOWN) {
 			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
 			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
@@ -133,7 +133,7 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;
 		//当たり判定オフ
- 		m_IsCollision = false;
+		m_IsCollision = false;
 	}
 }
 //待機
@@ -182,8 +182,23 @@ void Wolf::Walk() {
 }
 //攻撃
 void Wolf::Attack() {
-	m_NextActionTime = 60;
-	m_State = IDEL;
+	//歩きアニメーションループ再生
+	RequestLoop(ANIME_WALK);
+
+	//上方向ベクトル
+	VECTOR UpVec = { 0.0f, 1.0f, 0.0f };
+	//正規化されたプレイヤーから自身へのベクトルを取得
+	VECTOR DistanceToMy = GetDirectionNotY(m_PlayerPos, m_Pos);
+	//プレイヤーを中心に回転する方向を算出
+	VECTOR OrbitDir = VCross(DistanceToMy, UpVec);
+	//正規化
+	OrbitDir = VNorm(OrbitDir);
+	//旋回速度を適用
+	OrbitDir = VScale(OrbitDir, ORBIT_MOVE_SPEED);
+	//旋回方向へ移動
+	m_Pos = VAdd(m_Pos, OrbitDir);
+	//移動方向を向く
+	UpdateRotation(OrbitDir, NORMAL_MOVE_ROTATE_SPEED);
 }
 //ダウン
 void Wolf::Down() {

@@ -95,6 +95,7 @@ private:
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
 	bool		m_IsClose;											//近いかどうか
+	int			m_CloseTime;										//近い状態になってからの経過時間
 
 	//待機
 	void Idel();
