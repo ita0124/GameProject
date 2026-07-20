@@ -8,6 +8,7 @@ public:
 	enum TagState {
 		IDEL,					//待機
 		WALK,					//歩き
+		ATTACK_IDEL,			//攻撃待機
 		ATTACK,					//攻撃
 		DOWN,					//ダウン
 		DEATH,					//死亡
@@ -92,10 +93,17 @@ private:
 
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
+	bool		m_IsClose;											//近いかどうか
+	int			m_CloseTime;										//近い状態になってからの経過時間
+
+	int			m_AttackIdelTime;									//攻撃へ移行するまでの経過時間
+
 	//待機
 	void Idel();
 	//歩き
 	void Walk();
+	//攻撃待機
+	void AttackIdel();
 	//攻撃
 	void Attack();
 	//ダメージ

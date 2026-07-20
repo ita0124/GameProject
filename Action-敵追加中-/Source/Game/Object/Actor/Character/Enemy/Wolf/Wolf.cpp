@@ -14,11 +14,18 @@ namespace {
 	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
-	constexpr float		ORBIT_MOVE_SPEED = 2.0f;														// プレイヤーの周囲を旋回する移動速度
+	constexpr float		ORBIT_MOVE_MULT = 2.0f;															//プレイヤーの周囲を旋回する移動速度
+	constexpr float		ATTACK_MULT = 3.0f;
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
+	
+	constexpr int		ATTACK_IDEL_TIME = 60;															// 攻撃へ移行するまでの待機時間
 
-	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
+	constexpr float		CHARGE_END_DISTANCE = 50.0f;													//突進の追尾を終了する距離
+
+	constexpr int		CHARGE_END_TIME = 30;															//接近後に突進を終了するまでの時間
+
+	constexpr int		NEXT_ACTION_WAIT_TIME = 60;														//次の行動までの待機時間
 
 	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
 
@@ -59,6 +66,11 @@ void Wolf::Init() {
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
+
+	m_IsClose = false;									//近いかどうか
+	m_CloseTime = 0;									//近い状態になってからの経過時間
+
+	m_AttackIdelTime = 0;								//攻撃へ移行するまでの経過時間
 
 	for (int Index = 0; Index < FRAME_NUM; Index++) {
 		m_FrameData[Index].Pos = VZERO;					//ボーン座標
@@ -180,25 +192,105 @@ void Wolf::Walk() {
 		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
-//攻撃
-void Wolf::Attack() {
+//攻撃待機
+void Wolf::AttackIdel() {
 	//歩きアニメーションループ再生
 	RequestLoop(ANIME_WALK);
-
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//経過時間を初期化
+		m_AttackIdelTime = 0;
+	}
 	//上方向ベクトル
 	VECTOR UpVec = { 0.0f, 1.0f, 0.0f };
 	//正規化されたプレイヤーから自身へのベクトルを取得
-	VECTOR DistanceToMy = GetDirectionNotY(m_PlayerPos, m_Pos);
+	//(自身からプレイヤーへのベクトルにすることで旋回方向を変更可能)
+	VECTOR DistanceToMy = GetDirectionNotY(m_PlayerPos, m_Pos, true);
 	//プレイヤーを中心に回転する方向を算出
 	VECTOR OrbitDir = VCross(DistanceToMy, UpVec);
 	//正規化
 	OrbitDir = VNorm(OrbitDir);
 	//旋回速度を適用
-	OrbitDir = VScale(OrbitDir, ORBIT_MOVE_SPEED);
+	OrbitDir = VScale(OrbitDir, ATTACK_MULT);
 	//旋回方向へ移動
 	m_Pos = VAdd(m_Pos, OrbitDir);
 	//移動方向を向く
 	UpdateRotation(OrbitDir, NORMAL_MOVE_ROTATE_SPEED);
+	//一定時間経過したら攻撃
+	if (m_AttackIdelTime > ATTACK_IDEL_TIME) {
+		//攻撃へ
+		m_State = ATTACK;
+		//経過時間を初期化
+		m_AttackIdelTime = 0;
+	}
+	else {
+		//経過時間を加算
+		m_AttackIdelTime++;
+	}
+}
+//攻撃
+void Wolf::Attack() {
+	//突進アニメーションループ再生
+	RequestLoop(ANIME_ATTACK);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//接近判定をオフ
+		m_IsClose = false;
+		//接近後の経過フレームを初期化
+		m_CloseTime = 0;
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
+			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		}
+		//エフェクト発生判定オン
+		m_IsEffect = true;
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
+	if (!m_IsClose)
+	{
+		//方向ベクトルを取得
+		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
+		DirToPlayer.y = 0.0f;
+		//サイズ取得
+		float Len = VSize(DirToPlayer);
+
+		// 十分近づいたら追尾終了
+		if (Len < CHARGE_END_DISTANCE)
+		{
+			m_IsClose = true;
+			// 最後の方向を保存
+			m_MoveVec = VNorm(DirToPlayer);
+		}
+		else
+		{
+			m_MoveVec = VNorm(DirToPlayer);
+		}
+		//1フレームで移動する距離を生成
+		m_MoveVec = VScale(m_MoveVec, ATTACK_MULT);
+	}
+	else {
+		m_CloseTime++;
+	}
+	//座標に加算
+	m_Pos = VAdd(m_Pos, m_MoveVec);
+	//移動方向を向く
+	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
+	//一定時間経過したら突進終了
+	if (m_CloseTime > CHARGE_END_TIME) {
+		//待機状態へ
+		m_State = IDEL;
+		//次の行動までの待機時間を設定
+		m_NextActionTime = NEXT_ACTION_WAIT_TIME;
+	}
 }
 //ダウン
 void Wolf::Down() {
@@ -257,7 +349,7 @@ void Wolf::ActionManager() {
 	}
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
 		//攻撃へ
-		m_State = ATTACK;
+		m_State = ATTACK_IDEL;
 		return;
 	}
 }
@@ -270,6 +362,9 @@ void Wolf::StateManager() {
 		break;
 	case WALK:						//歩き
 		Walk();
+		break;
+	case ATTACK_IDEL:				//攻撃待機
+		AttackIdel();
 		break;
 	case ATTACK:					//攻撃
 		Attack();
