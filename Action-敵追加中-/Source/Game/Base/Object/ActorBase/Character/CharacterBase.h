@@ -14,13 +14,27 @@ protected:
 
 	float	m_Power;			//攻撃力
 	float	m_HitPoints;		//体力
+	float   m_MaxHitPoints;		//最大体力
 	float	m_Stamina;			//スタミナ
+	float	m_MaxStamina;		//最大スタミナ
 	int		m_SkillPoints;		//スキルポイント
 
 	bool	m_IsStaminaRecover;	//スタミナを回復させてよいか
 
+	VECTOR		m_KnockBackStartPos;						//ノックバック開始時の敵座標
+	float		m_KnockBackDistance;						//現在のノックバック量
+	float		m_KnockBackMaxDistance;						//最大ノックバック量
+	float		m_KnockBackSub;								//1フレーム毎のノックバック力減衰量
+	int			m_KnockBackDuration;						//ノックバック継続時間
+	bool		m_IsKnockBackCalcStart;						//ノックバック計算を始めるフラグ
+	bool		m_IsKnockBack;								//ノックバック中フラグ
+
 	//回転値更新
 	void UpdateRotation(VECTOR _MoveVec, float _RotSpeed);
+	//ノックバック
+	void KnockBackManager();
+	//ノックバックデータ数値代入
+	void SetKnockBackData(float _Power, VECTOR _Pos) {};
 public:
 	//コンストラクタ
 	CharacterBase();

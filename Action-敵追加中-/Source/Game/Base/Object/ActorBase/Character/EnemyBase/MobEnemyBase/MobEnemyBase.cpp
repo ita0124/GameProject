@@ -18,7 +18,7 @@ void MobEnemyBase::Init() {
 	ObjectBase::Init();
 
 	memset(&m_NormalRequestData, 0, sizeof(REQUEST_DATA));					//リクエスト時に最低限必要なデータ構造体を初期化
-	
+
 	m_MobEnemyKinds = BOAR;														//足場オブジェクト種類を設定
 }
 //リクエスト
@@ -45,4 +45,12 @@ void MobEnemyBase::GravityManager() {
 	}
 	//座標に加算
 	m_Pos.y += m_Gravity;
+}
+//ノックバックデータ数値代入
+void MobEnemyBase::SetKnockBackData(float _Power, VECTOR _Pos) {
+	m_KnockBackDistance = _Power;
+	//ノックバック計算を始める
+	m_IsKnockBackCalcStart = false;
+	//ノックバック開始時の敵座標
+	m_KnockBackStartPos = _Pos;
 }

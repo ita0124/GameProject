@@ -200,14 +200,16 @@ void Boss::HitCalc(ObjectBase* _Object) {
 				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
 			}
 		}
-		//ダウン状態の時
-		if (m_State == DOWN) {
-			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
-			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
-		}
 		else {
-			//HPを消費
-			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			//ダウン状態の時
+			if (m_State == DOWN) {
+				//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+				m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
+			}
+			else {
+				//HPを消費
+				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			}
 		}
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;
@@ -547,10 +549,8 @@ void Boss::RearAttack() {
 		DirToPlayer = VScale(DirToPlayer, REAR_ATTACK_MULT);
 		//座標に加算
 		m_Pos = VAdd(m_Pos, DirToPlayer);
-		//方向ベクトルを反転
-		DirToPlayer = VScale(DirToPlayer, -1.0f);
 		//移動方向を向く
-		UpdateRotation(DirToPlayer, 1.0f);
+		m_Rot.y = atan2f(DirToPlayer.x, DirToPlayer.z);
 	}
 	else {
 		//ボーン攻撃判定を削除する
