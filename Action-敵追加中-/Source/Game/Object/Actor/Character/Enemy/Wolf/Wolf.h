@@ -38,18 +38,18 @@ public:
 		CHEST,					//胸骨
 		NECK,					//首
 		HEAD,					//頭
-		JAW_UPPER001,			
-		JAW_UPPER002,
-		JAW_UPPER002_END,
-		JAW_LOWER001,
-		JAW_LOWER002,
-		JAW_LOWER002_END,
-		EAR_BASE_LEFT,
-		EAR_TIP_LEFT,
-		EAR_TIP_END_LEFT,
-		EAR_BASE_RIGHT,
-		EAR_TIP_RIGHT,
-		EAR_TIP_END_RIGHT,
+		JAW_UPPER001,			//上顎の付け根
+		JAW_UPPER002,			//上顎中間
+		JAW_UPPER002_END,		//上顎先端
+		JAW_LOWER001,			//下顎の付け根
+		JAW_LOWER002,			//下顎中間
+		JAW_LOWER002_END,		//下顎先端
+		EAR_BASE_LEFT,			//左耳付け根
+		EAR_TIP_LEFT,			//左耳中間
+		EAR_TIP_END_LEFT,		//左耳先端
+		EAR_BASE_RIGHT,			//右耳付け根
+		EAR_TIP_RIGHT,			//右耳中間
+		EAR_TIP_END_RIGHT,		//右耳先端
 		FRONT_UPPER_LEG_LEFT,	//左前脚上部
 		FRONT_LOWER_LEG_LEFT,	//左前脚下部
 		FRONT_PAW_LEFT,			//左前足
@@ -92,7 +92,6 @@ private:
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
 	bool		m_IsClose;											//近いかどうか
-	int			m_CloseTime;										//近い状態になってからの経過時間
 
 	int			m_AttackIdelTime;									//攻撃へ移行するまでの経過時間
 

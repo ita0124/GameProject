@@ -75,7 +75,6 @@ void Wolf::Init() {
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 
 	m_IsClose = false;									//近いかどうか
-	m_CloseTime = 0;									//近い状態になってからの経過時間
 
 	m_AttackIdelTime = 0;								//攻撃へ移行するまでの経過時間
 
@@ -242,7 +241,7 @@ void Wolf::AttackIdel() {
 //攻撃
 void Wolf::Attack() {
 	//突進アニメーションループ再生
-	RequestLoop(ANIME_ATTACK);
+	RequestEndLoop(ANIME_ATTACK);
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -251,8 +250,6 @@ void Wolf::Attack() {
 		m_IsClose = false;
 		//押し出し判定オフ
 		m_IsPush = false;
-		//接近後の経過フレームを初期化
-		m_CloseTime = 0;
 		//攻撃力設定
 		m_Power = ATTACK_POWER;
 	}
@@ -278,9 +275,6 @@ void Wolf::Attack() {
 		//1フレームで移動する距離を生成
 		m_MoveVec = VScale(m_MoveVec, ATTACK_MULT);
 	}
-	else {
-		m_CloseTime++;
-	}
 	//座標に加算
 	m_Pos = VAdd(m_Pos, m_MoveVec);
 	//移動方向を向く
@@ -300,7 +294,7 @@ void Wolf::Attack() {
 		DeleteFrameDataIsAttackFlg(JAW_LOWER002_END);
 	}
 	//一定時間経過したら突進終了
-	if (m_CloseTime > CHARGE_END_TIME) {
+	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
 		//次の行動までの待機時間を設定

@@ -35,11 +35,9 @@ public:
 		SPINE,					//背骨
 		CHEST,					//胸骨
 		NECK,					//首
-		HEAD001,				//頭１
-		HEAD002,				//頭２
-		HEAD003,				//頭３
-		HEAD004,				//頭４
-		HEAD004_END,			//鼻先
+		HEAD,					//頭
+		NOSE,					//鼻
+		NOSE_END,				//鼻先
 		FANG_BASE_LEFT,			//左牙の根元
 		FANG001_LEFT,			//左牙１
 		FANG002_LEFT,			//左牙２
@@ -48,10 +46,12 @@ public:
 		FANG001_RIGHT,			//右牙１
 		FANG002_RIGHT,			//右牙２
 		FANG002_END_RIGHT,		//右牙先
+		SHOULDER_LEFT,			//左肩
 		FRONT_UPPER_LEG_LEFT,	//左前脚上部
 		FRONT_LOWER_LEG_LEFT,	//左前脚下部
 		FRONT_PAW_LEFT,			//左前足
 		FRONT_PAW_END_LEFT,		//左前足先
+		SHOULDER_RIGHT,			//右肩
 		FRONT_UPPER_LEG_RIGHT,	//右前脚上部
 		FRONT_LOWER_LEG_RIGHT,	//右前脚下部
 		FRONT_PAW_RIGHT,		//右前足
