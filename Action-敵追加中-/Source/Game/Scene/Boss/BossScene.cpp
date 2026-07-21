@@ -363,12 +363,12 @@ void BossScene::CameraStep() {
 }
 //当たり判定関係
 void BossScene::HitCheck() {
+	//プレイヤーとボスの押し合い当たり判定
+	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
 	//ボスと剣の攻撃当たり判定
 	HitCheck::ObjectToObjectAttack(m_Boss, m_Sword);
 	//盾とボスの攻撃当たり判定
 	HitCheck::ObjectToObjectAttack(m_Shield, m_Boss);
-	//プレイヤーとボスの押し合い当たり判定
-	HitCheck::ObjectToObjectPush(m_Player, m_Boss);
 	//プレイヤーとボスの攻撃当たり判定
 	HitCheck::ObjectToObjectAttack(m_Player, m_Boss);
 	//プレイヤーとボスの位置関係判定

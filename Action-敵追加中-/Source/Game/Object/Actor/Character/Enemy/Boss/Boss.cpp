@@ -104,6 +104,8 @@ void Boss::Init() {
 
 	m_HitPoints = HIT_POINTS;							//体力
 
+	m_FrameNumber = FRAME_NUM;							//最大ボーン数を保存
+
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
@@ -112,11 +114,13 @@ void Boss::Init() {
 	m_SpecialChargeTime = 0;							//必殺チャージの継続時間
 	m_DirectNum = 0;									//どの方向判定ボーンと当たったかを保存する
 
-	for (int Index = 0; Index <= TOESEND_RIGHT; Index++) {
-		m_FrameData[Index].Pos = VZERO;					//ボーン座標
-		m_FrameData[Index].Rad = 0.0f;					//ボーン半径
-		m_FrameData[Index].IsCollision = false;			//ボーン当たり判定
-		m_FrameData[Index].IsAttackFlg = false;			//ボーン攻撃判定
+	for (int Index = 0; Index <= FRAME_NUM; Index++) {
+		FRAME_DATA FrameData;
+		FrameData.Pos = VZERO;					//ボーン座標
+		FrameData.Rad = 0.0f;					//ボーン半径
+		FrameData.IsCollision = false;			//ボーン当たり判定
+		FrameData.IsAttackFlg = false;			//ボーン攻撃判定
+		m_FrameData.push_back(FrameData);
 	}
 
 	for (int Row = 0; Row < PATTERN_INDEX; Row++) {
@@ -196,7 +200,7 @@ void Boss::HitCalc(ObjectBase* _Object) {
 				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
 			}
 		}
-			//ダウン状態の時
+		//ダウン状態の時
 		if (m_State == DOWN) {
 			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
 			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
@@ -208,7 +212,7 @@ void Boss::HitCalc(ObjectBase* _Object) {
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;
 		//当たり判定オフ
- 		m_IsCollision = false;
+		m_IsCollision = false;
 	}
 }
 //方向判定ボーンと当たった場合

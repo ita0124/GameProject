@@ -17,4 +17,6 @@ void EnemyBase::Init() {
 
 	m_NextActionTime = 0;	//次の行動までの待機時間
 	m_DownTime = 0;			//ダウン状態継続時間
+
+	m_FrameData.clear();	//ボーン分の情報を一度クリア
 }

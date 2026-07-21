@@ -89,8 +89,6 @@ private:
 	TagState	m_State;											//ボス状態変数
 	TagState	m_PrevState;										//１フレーム前の状態
 
-	FRAME_DATA	m_FrameData[FRAME_NUM];								//ボスのボーン分の情報を格納
-
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
 	bool		m_IsClose;											//近いかどうか

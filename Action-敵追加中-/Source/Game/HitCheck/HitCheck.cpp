@@ -1,6 +1,7 @@
 #include "HitCheck.h"
 #include "Game/Object/Actor/Character/Player/Player.h"
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
+#include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 #include "Game/Object/Sword/Sword.h"
 
 //オブジェクト同士の押し合い当たり判定
@@ -72,14 +73,14 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	/*===========================================================================*/
 	//オブジェクトがプレイヤーかつ攻撃オブジェクトがボスだった場合
 	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
-		//ボスクラスデータを保存する変数
-		Boss* PointerBoss = nullptr;
-		//ボスクラスをダウンキャスト
-		PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
+		//エネミーベースクラスデータを保存する変数
+		EnemyBase* PointerEnemy = nullptr;
+		//エネミーベースクラスをダウンキャスト
+		PointerEnemy = dynamic_cast<EnemyBase*>(&_AttackObject);
 		//ボスのフレーム分
-		for (int FrameNum = 0;FrameNum < Boss::FrameNumber::FRAME_NUM;FrameNum++) {
+		for (int FrameNum = 0;FrameNum < PointerEnemy->GetFrameNumber();FrameNum++) {
 			//フレームの攻撃判定がオフになっていたら次のフレームを見る
-			if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
+			if (!PointerEnemy->GetFrameDataIsAttackFlg(FrameNum))continue;
 			//プレイヤーの座標を取得
 			VECTOR	PlayerPos1 = _Object.GetCenter();
 			//プレイヤーの頭の座標を取得
@@ -87,9 +88,9 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//プレイヤーの当たり判定半径を取得
 			float	PlayerRad = _Object.GetRad();
 			//ボスの座標を取得
-			VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
+			VECTOR	BossPos = PointerEnemy->GetFrameDataPos(FrameNum);
 			//ボスの当たり判定半径を取得
-			float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
+			float	BossRad = PointerEnemy->GetFrameDataRad(FrameNum);
 #ifdef _DEBUG
 			DrawSphere3D(PlayerPos1, PlayerRad, DIV, RED, RED, FALSE);
 			DrawSphere3D(PlayerPos2, PlayerRad, DIV, RED, RED, FALSE);
@@ -100,7 +101,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos2, PlayerRad, BossPos, BossRad);
 			//当たっていれば
 			if (IsHit1 || IsHit2) {
-				_Object.HitCalc(PointerBoss);
+				_Object.HitCalc(PointerEnemy);
 			}
 		}
 	}
@@ -117,24 +118,24 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 		if (PointerPlayer->GetIsParrySucess() || PointerPlayer->GetIsGuardSuccess())return;
 		//攻撃当たり判定を生成してよいか
 		if (PointerPlayer->GetIsGuardCollision() || PointerPlayer->GetIsParryCollision()) {
-			//ボスクラスデータを保存する変数
-			Boss* PointerBoss = nullptr;
-			//ボスクラスをダウンキャスト
-			PointerBoss = dynamic_cast<Boss*>(&_AttackObject);
+			//エネミーベースクラスデータを保存する変数
+			EnemyBase* PointerEnemy = nullptr;
+			//エネミーベースクラスをダウンキャスト
+			PointerEnemy = dynamic_cast<EnemyBase*>(&_AttackObject);
 			//ボスのフレーム分
-			for (int FrameNum = 0;FrameNum <= Boss::FrameNumber::TOESEND_RIGHT;FrameNum++) {
+			for (int FrameNum = 0;FrameNum < PointerEnemy->GetFrameNumber();FrameNum++) {
 				//ガード成功フラグがオンになっていたら以降の処理は行わない
 				if (PointerPlayer->GetIsParrySucess() || PointerPlayer->GetIsGuardSuccess())return;
 				//フレームの攻撃判定がオフになっていたら次のフレームを見る
-				if (!PointerBoss->GetFrameDataIsAttackFlg(FrameNum))continue;
+				if (!PointerEnemy->GetFrameDataIsAttackFlg(FrameNum))continue;
 				//プレイヤーの座標を取得
 				VECTOR	ShieldPos = _Object.GetPos();
 				//プレイヤーの当たり判定半径を取得
 				float	ShieldRad = _Object.GetRad();
 				//ボスの座標を取得
-				VECTOR	BossPos = PointerBoss->GetFrameDataPos(FrameNum);
+				VECTOR	BossPos = PointerEnemy->GetFrameDataPos(FrameNum);
 				//ボスの当たり判定半径を取得
-				float	BossRad = PointerBoss->GetFrameDataRad(FrameNum);
+				float	BossRad = PointerEnemy->GetFrameDataRad(FrameNum);
 #ifdef _DEBUG
 				//パリィ許容フラグがオンなら
 				if (PointerPlayer->GetIsParryCollision()) {
@@ -153,12 +154,12 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 					//パリィ許容フラグがオンなら
 					if (PointerPlayer->GetIsParryCollision()) {
 						//パリィの処理
-						PointerPlayer->HitCalc(PointerBoss);
-						PointerBoss->HitCalc(PointerPlayer);
+						PointerPlayer->HitCalc(PointerEnemy);
+						PointerEnemy->HitCalc(PointerPlayer);
 					}
 					else {
 						//ガードの処理1
-						PointerPlayer->HitCalc(PointerBoss);
+						PointerPlayer->HitCalc(PointerEnemy);
 					}
 				}
 			}
@@ -551,6 +552,39 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		_Object.SetIsGravity(true);
 	}
 }
+//モブ敵とオブジェクトの押し合い当たり判定
+void HitCheck::MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object) {
+	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
+		//モブ敵マネージャークラスから一つ取得
+		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive())continue;
+		//オブジェクト同士の押し合い当たり判定
+		ObjectToObjectPush(OneMobEnemy, _Object);
+	}
+}
+//モブ敵に対するオブジェクトの攻撃当たり判定
+void HitCheck::MobEnemyToObjectAttack(MobEnemyManager& _MobEnemyManager, ObjectBase& _AttackObject) {
+	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
+		//モブ敵マネージャークラスから一つ取得
+		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive())continue;
+		//オブジェクトの攻撃当たり判定
+		ObjectToObjectAttack(OneMobEnemy, _AttackObject);
+	}
+}
+//モブ敵に対するオブジェクトの攻撃当たり判定
+void HitCheck::ObjectToMobEnemyAttack(ObjectBase& _Object, MobEnemyManager& _MobEnemyManager) {
+	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
+		//モブ敵マネージャークラスから一つ取得
+		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive())continue;
+		//オブジェクトの攻撃当たり判定
+		ObjectToObjectAttack(_Object, OneMobEnemy);
+	}
+}
 //モブ敵と足場の当たり判定
 void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformManager& _PlatformManager) {
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
@@ -560,16 +594,5 @@ void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformMan
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクトと足場の当たり判定
 		ObjectToPlatform(OneMobEnemy, _PlatformManager);
-	}
-}
-//モブ敵とオブジェクトの押し合い当たり判定
-void HitCheck::MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object) {
-	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
-		//モブ敵マネージャークラスから一つ取得
-		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
-		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
-		if (!OneMobEnemy.GetIsActive())continue;
-		//オブジェクトと足場の当たり判定
-		ObjectToObjectPush(OneMobEnemy, _Object);
 	}
 }

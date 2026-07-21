@@ -7,7 +7,7 @@ namespace {
 	constexpr float		RAD = 5.0f;																		//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	constexpr float		HIT_POINTS = 50.0f;																//体力
+	constexpr float		HIT_POINTS = 10.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 200.0f;													//IDELに移行するプレイヤーとの距離
@@ -18,8 +18,11 @@ namespace {
 	constexpr float		ATTACK_MULT = 3.0f;
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
+
+	constexpr float		ATTACK_COLLISION_START = 15.0f;													//通常攻撃１段目の当たり判定開始フレーム
+	constexpr float		ATTACK_COLLISION_END = 30.0f;													//通常攻撃１段目の当たり判定終了フレーム
 	
-	constexpr int		ATTACK_IDEL_TIME = 60;															// 攻撃へ移行するまでの待機時間
+	constexpr int		ATTACK_IDEL_TIME = 60;															//攻撃へ移行するまでの待機時間
 
 	constexpr float		CHARGE_END_DISTANCE = 50.0f;													//突進の追尾を終了する距離
 
@@ -27,11 +30,11 @@ namespace {
 
 	constexpr int		NEXT_ACTION_WAIT_TIME = 60;														//次の行動までの待機時間
 
-	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
+	constexpr float		ATTACK_COLLISION_RAD = 15.0f;													//通常攻撃１段目の攻撃当たり判定の半径
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 
-	constexpr float		NORMAL_ATTACK1_POWER = 10.0f;													//通常攻撃１段目時の攻撃力
+	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
 
 	constexpr int		DAMAGE_TIME = 20;																//ダメージ状態の継続時間
 
@@ -65,6 +68,8 @@ void Wolf::Init() {
 
 	m_IsPush = true;									//押し出し判定を行う
 
+	m_FrameNumber = FRAME_NUM;							//最大ボーン数を保存
+
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
@@ -74,11 +79,13 @@ void Wolf::Init() {
 
 	m_AttackIdelTime = 0;								//攻撃へ移行するまでの経過時間
 
-	for (int Index = 0; Index < FRAME_NUM; Index++) {
-		m_FrameData[Index].Pos = VZERO;					//ボーン座標
-		m_FrameData[Index].Rad = 0.0f;					//ボーン半径
-		m_FrameData[Index].IsCollision = false;			//ボーン当たり判定
-		m_FrameData[Index].IsAttackFlg = false;			//ボーン攻撃判定
+	for (int Index = 0; Index <= FRAME_NUM; Index++) {
+		FRAME_DATA FrameData;
+		FrameData.Pos = VZERO;					//ボーン座標
+		FrameData.Rad = 0.0f;					//ボーン半径
+		FrameData.IsCollision = false;			//ボーン当たり判定
+		FrameData.IsAttackFlg = false;			//ボーン攻撃判定
+		m_FrameData.push_back(FrameData);
 	}
 }
 //データ読み込み処理
@@ -132,7 +139,7 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 				//ダウン状態へ
 				m_State = DOWN;
 				//ダウン状態継続時間を設定
-				m_DownTime = (int)(m_Power * PARRY_DOWN_TIME_MULT);
+				m_DownTime = 120;
 			}
 		}
 		//ダウン状態の時
@@ -246,18 +253,8 @@ void Wolf::Attack() {
 		m_IsPush = false;
 		//接近後の経過フレームを初期化
 		m_CloseTime = 0;
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
-		}
-		//エフェクト発生判定オン
-		m_IsEffect = true;
-		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//攻撃力設定
+		m_Power = ATTACK_POWER;
 	}
 	if (!m_IsClose)
 	{
@@ -288,6 +285,20 @@ void Wolf::Attack() {
 	m_Pos = VAdd(m_Pos, m_MoveVec);
 	//移動方向を向く
 	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
+	if (m_AnimeData.Frame > ATTACK_COLLISION_START && m_AnimeData.Frame < ATTACK_COLLISION_END) {
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_WEAKATK)) {
+			SoundManager::Play(SoundManager::TagID::SE_WEAKATK);
+		}
+		//ボーンに攻撃判定を生成
+		SetFrameDataIsAttackFlg(JAW_UPPER002_END, ATTACK_COLLISION_RAD);
+		SetFrameDataIsAttackFlg(JAW_LOWER002_END, ATTACK_COLLISION_RAD);
+	}
+	else {
+		//ボーン攻撃判定を削除する
+		DeleteFrameDataIsAttackFlg(JAW_UPPER002_END);
+		DeleteFrameDataIsAttackFlg(JAW_LOWER002_END);
+	}
 	//一定時間経過したら突進終了
 	if (m_CloseTime > CHARGE_END_TIME) {
 		//待機状態へ

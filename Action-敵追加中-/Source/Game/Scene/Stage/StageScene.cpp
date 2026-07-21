@@ -226,14 +226,25 @@ int StageScene::Step() {
 
 	CameraStep();
 
+	//プレイヤーとモブ敵の押し合い当たり判定
 	HitCheck::MobEnemyToObjectPush(m_MobEnemyManager, m_Player);
-
+	//モブ敵に対する剣の攻撃当たり判定
+	HitCheck::MobEnemyToObjectAttack(m_MobEnemyManager,m_Sword);
+	//盾とのモブ敵の攻撃当たり判定
+	HitCheck::ObjectToMobEnemyAttack(m_Shield, m_MobEnemyManager);
+	//プレイヤーとモブ敵の攻撃当たり判定
+	HitCheck::ObjectToMobEnemyAttack(m_Player, m_MobEnemyManager);
+	//プレイヤーと足場の当たり判定
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
+	//モブ敵と足場の当たり判定
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 
 	//終了位置設定　後にゴールオブジェクトを追加する
 	VECTOR Pos = m_Player.GetPos();
 	if (m_Player.GetIsGoal()) {
+		Res = 1;
+	}
+	if (CheckHitKey(KEY_INPUT_N)) {
 		Res = 1;
 	}
 

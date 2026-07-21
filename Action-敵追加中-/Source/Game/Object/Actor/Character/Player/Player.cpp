@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
+#include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 #include "Lib/Input/InputManager.h"
 
 namespace {
@@ -191,41 +191,41 @@ void Player::Step() {
 }
 //当たり判定後の処理(当たっている場合)
 void Player::HitCalc(ObjectBase* _Object) {
-	//ボスクラスデータを保存する変数
-	Boss* PointerBoss = nullptr;
-	//ボスクラスをダウンキャスト
-	PointerBoss = dynamic_cast<Boss*>(_Object);
+	//エネミーベースクラスデータを保存する変数
+	EnemyBase* PointerEnemy = nullptr;
+	//エネミーベースクラスをダウンキャスト
+	PointerEnemy = dynamic_cast<EnemyBase*>(_Object);
 	//パリィの当たりがオン
 	if (m_IsParryCollision) {
 		//パリィ成功
 		m_IsParrySucess = true;
 		//スタミナを回復
-		m_Stamina += PointerBoss->GetPower() / 2;
+		m_Stamina += PointerEnemy->GetPower() / 2;
 	}
 	//ガードの当たりがオン
 	else if (m_IsGuardCollision) {
 		//スタミナを消費
-		m_Stamina -= PointerBoss->GetPower();
+		m_Stamina -= PointerEnemy->GetPower();
 		//敵のの攻撃力に被ダメ率を乗算後HPを消費
-		m_HitPoints = m_HitPoints - (PointerBoss->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
+		m_HitPoints = m_HitPoints - (PointerEnemy->GetPower() * GUARD_DAMAGE_TAKEN_MULT);
 		//ガード成功
 		m_IsGuardSuccess = true;
 		//ノックバックの力を計算
-		float KnockBackPower = (PointerBoss->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
+		float KnockBackPower = (PointerEnemy->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
 		//ノックバックデータ数値代入
-		SetKnockBackData(KnockBackPower, PointerBoss->GetPos());
+		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
 	}
 	else {
 		//HPを消費
-		m_HitPoints = m_HitPoints - PointerBoss->GetPower();
+		m_HitPoints = m_HitPoints - PointerEnemy->GetPower();
 		//当たり判定オフ
 		m_IsCollision = false;
 		//ダメージ状態へ
 		m_State = DAMAGE;
 		//ノックバックの力を計算
-		float KnockBackPower = PointerBoss->GetPower() * 0.5f;
+		float KnockBackPower = PointerEnemy->GetPower() * 0.5f;
 		//ノックバックデータ数値代入
-		SetKnockBackData(KnockBackPower, PointerBoss->GetPos());
+		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
 	}
 }
 //リスポーン処理
@@ -248,6 +248,8 @@ void Player::Idel() {
 		m_PrevState = m_State;
 		//スタミナを回復する
 		m_IsStaminaRecover = true;
+		//攻撃力設定
+		m_Power = 0.0f;
 	}
 	//通常移動方向設定
 	if (SetNormalMoveVec()) {
@@ -636,7 +638,7 @@ void Player::NormalAttack2() {
 		//変更があった
 		m_PrevState = m_State;
 		//攻撃力設定
-		m_Power = NORMAL_ATTACK1_POWER;
+		m_Power = NORAML_ATTACK2_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -743,7 +745,7 @@ void Player::NormalAttack3() {
 		//変更があった
 		m_PrevState = m_State;
 		//攻撃力設定
-		m_Power = NORMAL_ATTACK1_POWER;
+		m_Power = NORAML_ATTACK3_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
