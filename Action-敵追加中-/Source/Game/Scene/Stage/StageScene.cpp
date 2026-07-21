@@ -226,6 +226,8 @@ int StageScene::Step() {
 
 	CameraStep();
 
+	HitCheck::MobEnemyToObjectPush(m_MobEnemyManager, m_Player);
+
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 

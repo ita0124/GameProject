@@ -91,7 +91,7 @@ void Player::Init() {
 
 	m_Pos = RESPAWN_POS;
 	m_RespawnPos = RESPAWN_POS;					//リスポーン座標
-	m_IsGoal = false;		//ゴールしたか
+	m_IsGoal = false;							//ゴールしたか
 
 	m_IsPush = true;							//押し出し判定を行う
 

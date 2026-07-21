@@ -16,9 +16,6 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	float	ObjectARad = _ObjectA.GetRad();
 	//Bの半径取得
 	float	ObjectBRad = _ObjectB.GetRad();
-	//Y軸を0.0fに固定
-	ObjectAPos.y = 0.0f;
-	ObjectBPos.y = 0.0f;
 	//当たり判定
 	bool IsHit = Collision::CheckHitSphereToSphere(ObjectAPos, ObjectARad, ObjectBPos, ObjectBRad);
 	//当たっていれば
@@ -563,5 +560,16 @@ void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformMan
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクトと足場の当たり判定
 		ObjectToPlatform(OneMobEnemy, _PlatformManager);
+	}
+}
+//モブ敵とオブジェクトの押し合い当たり判定
+void HitCheck::MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object) {
+	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
+		//モブ敵マネージャークラスから一つ取得
+		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive())continue;
+		//オブジェクトと足場の当たり判定
+		ObjectToObjectPush(OneMobEnemy, _Object);
 	}
 }

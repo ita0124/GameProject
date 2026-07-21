@@ -62,6 +62,8 @@ void Boar::Init() {
 
 	m_HitPoints = HIT_POINTS;							//体力
 
+	m_IsPush = true;									//押し出し判定を行う
+
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
@@ -199,6 +201,8 @@ void Boar::Attack() {
 		m_PrevState = m_State;
 		//接近判定をオフ
 		m_IsClose = false;
+		//押し出し判定オフ
+		m_IsPush = false;
 		//接近後の経過フレームを初期化
 		m_CloseTime = 0;
 		//サウンドリクエスト
@@ -249,6 +253,8 @@ void Boar::Attack() {
 		m_State = IDEL;
 		//次の行動までの待機時間を設定
 		m_NextActionTime = NEXT_ACTION_WAIT_TIME;
+		//押し出し判定オン
+		m_IsPush = true;
 	}
 }
 //ダウン

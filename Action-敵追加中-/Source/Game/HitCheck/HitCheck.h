@@ -17,6 +17,8 @@ public:
 	static void ObjectToField(ObjectBase& _Object, ObjectBase& _Field);
 	//オブジェクトと足場の当たり判定
 	static void ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager);
+	//モブ敵とオブジェクトの押し合い当たり判定
+	static void MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object);
 	//モブ敵と足場の当たり判定
 	static void MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformManager& _PlatformManager);
 };
