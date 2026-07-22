@@ -8,9 +8,11 @@ public:
 	enum TagState {
 		IDEL,					//待機
 		WALK,					//歩き
+		ATTACK_IDEL,			//攻撃待機
 		ATTACK,					//攻撃
 		DOWN,					//ダウン
 		DEATH,					//死亡
+		DAMAGE,					//ダメージ
 
 		STATE_NUM
 	};
@@ -19,9 +21,11 @@ public:
 	enum TagAnime {
 		ANIME_IDEL,				//待機
 		ANIME_WALK,				//歩き
+		ANIME_ATTACK_IDEL,		//攻撃待機
 		ANIME_ATTACK,			//攻撃
 		ANIME_DOWN,				//ダウン
 		ANIME_DEATH,			//死亡
+		ANIME_DAMAGE,			//ダメージ
 
 		ANIME_NUM
 	};
