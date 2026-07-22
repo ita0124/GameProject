@@ -43,6 +43,11 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 5.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
+	constexpr float		FIRST_JUMP_POWER = 2.0f;														//初回ジャンプ力
+	constexpr float		JUMP_POWER_MAX = -7.5f;															//ジャンプ速度の下限
+	constexpr float		GRAVITY = -0.025f;																//重力
+	constexpr float		GRAVITY_MAX = -0.25f;															//最大重力
+
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Wolf/Wolf.mv1");							//モデルファイルパス
 }
 
@@ -78,6 +83,8 @@ void Wolf::Init() {
 
 	m_AttackIdelTime = 0;								//攻撃へ移行するまでの経過時間
 
+	m_JumpPower = 0;									//ジャンプ力計算
+
 	for (int Index = 0; Index <= FRAME_NUM; Index++) {
 		FRAME_DATA FrameData;
 		FrameData.Pos = VZERO;					//ボーン座標
@@ -104,18 +111,6 @@ void Wolf::Step() {
 		m_HitPoints = 0;
 		m_State = DEATH;
 	}
-
-	if (m_DamageTime <= 0) {
-		//当たり判定オン
-		m_IsCollision = true;
-		//ダメージ処理の継続時間をリセット
-		m_DamageTime = 0;
-	}
-	else {
-		m_DamageTime--;
-		//ノックバック
-		KnockBackManager();
-	}
 	//状態遷移
 	StateManager();
 	//重力処理
@@ -135,7 +130,15 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		if (PointerPlayer->GetIsParryCollision()) {
+		if (PointerPlayer->GetState() == Player::TagState::DAMAGE) {
+			//ダウン状態へ
+			m_State = IDEL;
+			//次の行動までの待機時間を設定
+			m_NextActionTime = NEXT_ACTION_WAIT_TIME;
+			//押し出し判定オン
+			m_IsPush = true;
+		}
+		else if (PointerPlayer->GetIsParryCollision()) {
 			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
 				//ダウン状態へ
 				m_State = DOWN;
@@ -154,14 +157,14 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
 			}
 			//ノックバックの力を計算
-			float KnockBackPower = PointerPlayer->GetPower();
+			float KnockBackPower = PointerPlayer->GetPower() * 0.5f;
 			//ノックバックデータ数値代入
 			SetKnockBackData(KnockBackPower, PointerPlayer->GetPos());
+			//ダメージ処理の継続時間セット
+			m_DamageTime = DAMAGE_TIME;
+			//ダメージ状態へ
+			m_State = DAMAGE;
 		}
-		//ダメージ処理の継続時間セット
-		m_DamageTime = DAMAGE_TIME;
-		//当たり判定オフ
-		m_IsCollision = false;
 	}
 }
 //待機
@@ -208,8 +211,8 @@ void Wolf::Walk() {
 		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
-//攻撃待機
-void Wolf::AttackIdel() {
+//旋回
+void Wolf::Orbit() {
 	//歩きアニメーションループ再生
 	RequestLoop(ANIME_WALK);
 	//１フレーム前の状態と今のフレームの状態を比較
@@ -237,13 +240,32 @@ void Wolf::AttackIdel() {
 	//一定時間経過したら攻撃
 	if (m_AttackIdelTime > ATTACK_IDEL_TIME) {
 		//攻撃へ
-		m_State = ATTACK;
+		m_State = ATTACK_IDEL;
 		//経過時間を初期化
 		m_AttackIdelTime = 0;
 	}
 	else {
 		//経過時間を加算
 		m_AttackIdelTime++;
+	}
+}
+//攻撃待機
+void Wolf::AttackIdel() {
+	//攻撃待機アニメーションループ再生
+	RequestEndLoop(ANIME_ATTACK_IDEL, 0.5f);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+	}
+	//方向ベクトルを取得
+	VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, true);
+	//移動方向を向く
+	UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
+	//アニメーションが終わったら
+	if (m_AnimeData.EndFlg) {
+		//攻撃状態へ
+		m_State = ATTACK;
 	}
 }
 //攻撃
@@ -260,6 +282,10 @@ void Wolf::Attack() {
 		m_IsPush = false;
 		//攻撃力設定
 		m_Power = ATTACK_POWER;
+		//重力処理オン
+		m_IsGravity = true;
+		//ジャンプ力設定
+		m_JumpPower = FIRST_JUMP_POWER;
 	}
 	if (!m_IsClose)
 	{
@@ -356,6 +382,33 @@ void Wolf::Death() {
 		m_IsActive = false;
 	}
 }
+//ダメージ
+void Wolf::Damage() {
+	//ダウンアニメーションループ再生
+	RequestLoop(ANIME_DAMAGE);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//当たり判定オフ
+		m_IsCollision = false;
+		//全てのボーン攻撃判定を削除する
+		AllDeleteFrameDataIsAttackFlg();
+	}
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+		//待機丈太へ
+		m_State = IDEL;
+	}
+	else {
+		m_DamageTime--;
+		//ノックバック
+		KnockBackManager();
+	}
+}
 //行動管理
 void Wolf::ActionManager() {
 	VECTOR DistanceToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
@@ -368,7 +421,7 @@ void Wolf::ActionManager() {
 	}
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
 		//攻撃へ
-		m_State = ATTACK_IDEL;
+		m_State = ORBIT;
 		return;
 	}
 }
@@ -378,9 +431,11 @@ void Wolf::StateManager() {
 	case IDEL:						//待機
 		Idel();
 		break;
-		break;
 	case WALK:						//歩き
 		Walk();
+		break;
+	case ORBIT:						//旋回
+		Orbit();
 		break;
 	case ATTACK_IDEL:				//攻撃待機
 		AttackIdel();
@@ -394,10 +449,35 @@ void Wolf::StateManager() {
 	case DEATH:						//死亡
 		Death();
 		break;
+	case DAMAGE:					//ダメージ
+		Damage();
+		break;
 	}
 #ifdef _DEBUG
 	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "%d", (int)m_State);
 #endif // DEBUG
+}
+//重力処理
+void Wolf::GravityManager() {
+	if (m_IsGravity) {
+		//現在のY座標にジャンプ力を加算
+		m_Pos.y += m_JumpPower;
+		//重力方向に加算
+		m_Gravity += GRAVITY;
+		//重力速度を制限
+		if (m_Gravity <= GRAVITY_MAX) {
+			m_Gravity = GRAVITY_MAX;
+		}
+		if (m_JumpPower <= JUMP_POWER_MAX) {
+			m_JumpPower = JUMP_POWER_MAX;
+		}
+		//ジャンプ力減衰
+		m_JumpPower += m_Gravity;
+	}
+	else {
+		//ジャンプ力リセット
+		m_JumpPower = 0.0f;
+	}
 }
 //当たり判定設定
 void Wolf::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {

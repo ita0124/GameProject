@@ -96,19 +96,22 @@ private:
 
 	int			m_DamageTime;										//ダメージ処理の継続時間
 
-	bool		m_IsClose;											//近いかどうか
-	int			m_CloseTime;										//近い状態になってからの経過時間
+	int			m_AttackTime;										//攻撃継続時間
 
 	//待機
 	void Idel();
 	//歩き
 	void Walk();
+	//攻撃待機
+	void AttackIdel();
 	//攻撃
 	void Attack();
-	//ダメージ
+	//ダウン
 	void Down();
 	//死亡
 	void Death();
+	//ダメージ
+	void Damage();
 	//行動管理
 	void ActionManager();
 	//状態遷移

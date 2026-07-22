@@ -48,9 +48,9 @@ void MobEnemyBase::GravityManager() {
 }
 //ノックバックデータ数値代入
 void MobEnemyBase::SetKnockBackData(float _Power, VECTOR _Pos) {
-	m_KnockBackDistance = _Power;
-	//ノックバック計算を始める
-	m_IsKnockBackCalcStart = false;
+	m_KnockBackMaxDistance = _Power;
 	//ノックバック開始時の敵座標
 	m_KnockBackStartPos = _Pos;
+	//
+	m_KnockBackState = KNOCKBACK_START;
 }

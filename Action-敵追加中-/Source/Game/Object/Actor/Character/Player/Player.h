@@ -184,7 +184,7 @@ private:
 	//重力処理
 	void GravityManager();
 	//ノックバックデータ数値代入
-	void SetKnockBackData(float _Power, VECTOR _Pos);
+	void SetKnockBackData(VECTOR _Pos);
 	//アニメーションの硬直設定
 	void SetAnimeRecoveryManager(int _RecoveryTime);
 	//アニメーションの硬直更新

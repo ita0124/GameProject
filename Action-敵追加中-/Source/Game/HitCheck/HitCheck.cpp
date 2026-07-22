@@ -71,7 +71,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	//オブジェクトの当たり判定フラグがオフになっていれば以降の処理をしない
 	if (!_Object.GetIsCollision())return;
 	/*===========================================================================*/
-	//オブジェクトがプレイヤーかつ攻撃オブジェクトがボスだった場合
+	//オブジェクトがプレイヤーかつ攻撃オブジェクトが敵だった場合
 	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
 		//エネミーベースクラスデータを保存する変数
 		EnemyBase* PointerEnemy = nullptr;
@@ -102,6 +102,11 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//当たっていれば
 			if (IsHit1 || IsHit2) {
 				_Object.HitCalc(PointerEnemy);
+				//プレイヤークラスデータを保存する変数
+				Player* PointerPlayer = nullptr;
+				//プレイヤークラスをダウンキャスト
+				PointerPlayer = dynamic_cast<Player*>(&_Object);
+				_AttackObject.HitCalc(PointerPlayer);
 			}
 		}
 	}

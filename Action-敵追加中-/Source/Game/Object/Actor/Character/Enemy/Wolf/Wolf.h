@@ -8,6 +8,7 @@ public:
 	enum TagState {
 		IDEL,					//待機
 		WALK,					//歩き
+		ORBIT,					//旋回
 		ATTACK_IDEL,			//攻撃待機
 		ATTACK,					//攻撃
 		DOWN,					//ダウン
@@ -98,22 +99,30 @@ private:
 
 	int			m_AttackIdelTime;									//攻撃へ移行するまでの経過時間
 
+	float		m_JumpPower;										//ジャンプ力計算
+
 	//待機
 	void Idel();
 	//歩き
 	void Walk();
+	//旋回
+	void Orbit();
 	//攻撃待機
 	void AttackIdel();
 	//攻撃
 	void Attack();
-	//ダメージ
+	//ダウン
 	void Down();
 	//死亡
 	void Death();
+	//ダメージ
+	void Damage();
 	//行動管理
 	void ActionManager();
 	//状態遷移
 	void StateManager();
+	//重力処理
+	void GravityManager();
 	//指定のボーン当たり判定を設定設定
 	void SetFrameDataIsCollision(int _FrameNamber, float _Rad);
 	//指定のボーン当たり判定を削除する

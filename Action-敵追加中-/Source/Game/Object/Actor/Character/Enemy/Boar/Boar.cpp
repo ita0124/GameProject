@@ -34,7 +34,7 @@ namespace {
 
 	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
 
-	constexpr int		DAMAGE_TIME = 20;																//ダメージ状態の継続時間
+	constexpr int		DAMAGE_TIME = 60;																//ダメージ状態の継続時間
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
@@ -72,8 +72,7 @@ void Boar::Init() {
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 
-	m_IsClose = false;									//近いかどうか
-	m_CloseTime = 0;									//近い状態になってからの経過時間
+	m_AttackTime = 0;									//攻撃継続時間
 
 	for (int Index = 0; Index <= FRAME_NUM; Index++) {
 		FRAME_DATA FrameData;
@@ -132,7 +131,15 @@ void Boar::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		if (PointerPlayer->GetIsParryCollision()) {
+		if (PointerPlayer->GetState() == Player::TagState::DAMAGE) {
+			//ダウン状態へ
+			m_State = IDEL;
+			//次の行動までの待機時間を設定
+			m_NextActionTime = NEXT_ACTION_WAIT_TIME;
+			//押し出し判定オン
+			m_IsPush = true;
+		}
+		else if (PointerPlayer->GetIsParryCollision()) {
 			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
 				//ダウン状態へ
 				m_State = DOWN;
@@ -151,14 +158,14 @@ void Boar::HitCalc(ObjectBase* _Object) {
 				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
 			}
 			//ノックバックの力を計算
-			float KnockBackPower = PointerPlayer->GetPower();
+			float KnockBackPower = PointerPlayer->GetPower() * 0.5f;
 			//ノックバックデータ数値代入
 			SetKnockBackData(KnockBackPower, PointerPlayer->GetPos());
+			//ダメージ処理の継続時間セット
+			m_DamageTime = DAMAGE_TIME;
+			//ダメージ状態へ
+			m_State = DAMAGE;
 		}
-		//ダメージ処理の継続時間セット
-		m_DamageTime = DAMAGE_TIME;
-		//当たり判定オフ
-		m_IsCollision = false;
 	}
 }
 //待機
@@ -205,6 +212,25 @@ void Boar::Walk() {
 		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
 	}
 }
+//攻撃待機
+void Boar::AttackIdel() {
+	//攻撃待機アニメーションループ再生
+	RequestEndLoop(ANIME_ATTACK_IDEL, 0.5f);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+	}
+	//方向ベクトルを取得
+	VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, true);
+	//移動方向を向く
+	UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
+	//アニメーションが終わったら
+	if (m_AnimeData.EndFlg) {
+		//攻撃状態へ
+		m_State = ATTACK;
+	}
+}
 //攻撃
 void Boar::Attack() {
 	//突進アニメーションループ再生
@@ -213,12 +239,10 @@ void Boar::Attack() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
-		//接近判定をオフ
-		m_IsClose = false;
 		//押し出し判定オフ
 		m_IsPush = false;
 		//接近後の経過フレームを初期化
-		m_CloseTime = 0;
+		m_AttackTime = 0;
 		//攻撃力設定
 		m_Power = ATTACK_POWER;
 		//サウンドリクエスト
@@ -233,31 +257,12 @@ void Boar::Attack() {
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-	}
-	if (!m_IsClose)
-	{
 		//方向ベクトルを取得
 		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
-		DirToPlayer.y = 0.0f;
-		//サイズ取得
-		float Len = VSize(DirToPlayer);
-
-		// 十分近づいたら追尾終了
-		if (Len < CHARGE_END_DISTANCE)
-		{
-			m_IsClose = true;
-			// 最後の方向を保存
-			m_MoveVec = VNorm(DirToPlayer);
-		}
-		else
-		{
-			m_MoveVec = VNorm(DirToPlayer);
-		}
+		// 最後の方向を保存
+		m_MoveVec = VNorm(DirToPlayer);
 		//1フレームで移動する距離を生成
 		m_MoveVec = VScale(m_MoveVec, CHARGE_MULT);
-	}
-	else {
-		m_CloseTime++;
 	}
 	//ボーンに攻撃判定を生成
 	SetFrameDataIsAttackFlg(FANG001_LEFT, ATTACK_COLLISION_RAD);
@@ -267,7 +272,7 @@ void Boar::Attack() {
 	//移動方向を向く
 	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
 	//一定時間経過したら突進終了
-	if (m_CloseTime > CHARGE_END_TIME) {
+	if (m_AttackTime > CHARGE_END_TIME) {
 		//ボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(FANG001_LEFT);
 		DeleteFrameDataIsAttackFlg(FANG001_RIGHT);
@@ -277,6 +282,9 @@ void Boar::Attack() {
 		m_NextActionTime = NEXT_ACTION_WAIT_TIME;
 		//押し出し判定オン
 		m_IsPush = true;
+	}
+	else {
+		m_AttackTime++;
 	}
 }
 //ダウン
@@ -324,6 +332,33 @@ void Boar::Death() {
 		m_IsActive = false;
 	}
 }
+//ダメージ
+void Boar::Damage() {
+	//ダウンアニメーションループ再生
+	RequestLoop(ANIME_DAMAGE);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//当たり判定オフ
+		m_IsCollision = false;
+		//全てのボーン攻撃判定を削除する
+		AllDeleteFrameDataIsAttackFlg();
+	}
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+		//待機丈太へ
+		m_State = IDEL;
+	}
+	else {
+		m_DamageTime--;
+		//ノックバック
+		KnockBackManager();
+	}
+}
 //行動管理
 void Boar::ActionManager() {
 	VECTOR DistanceToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
@@ -336,7 +371,7 @@ void Boar::ActionManager() {
 	}
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
 		//攻撃へ
-		m_State = ATTACK;
+		m_State = ATTACK_IDEL;
 		return;
 	}
 }
@@ -346,9 +381,11 @@ void Boar::StateManager() {
 	case IDEL:						//待機
 		Idel();
 		break;
-		break;
 	case WALK:						//歩き
 		Walk();
+		break;
+	case ATTACK_IDEL:
+		AttackIdel();
 		break;
 	case ATTACK:					//攻撃
 		Attack();
@@ -358,6 +395,9 @@ void Boar::StateManager() {
 		break;
 	case DEATH:						//死亡
 		Death();
+		break;
+	case DAMAGE:					//ダメージ
+		Damage();
 		break;
 	}
 #ifdef _DEBUG

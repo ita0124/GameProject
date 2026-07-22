@@ -63,6 +63,7 @@ namespace {
 	constexpr float		ANIME_NORMAL_ATTACK2_SPEED = 1.0f;										//通常攻撃２段目アニメーションの再生速度
 	constexpr float		ANIME_NORMAL_ATTACK3_SPEED = 1.25f;										//通常攻撃３段目アニメーションの再生速度
 
+	constexpr int		DAMAGE_RECOVERY_TIME = 0;												//ダメージの硬直フレーム数
 	constexpr int		NORMAL_ATTACK1_RECOVERY_TIME = 5;										//通常攻撃1段目の硬直フレーム数
 	constexpr int		NORMAL_ATTACK2_RECOVERY_TIME = 0;										//通常攻撃2段目の硬直フレーム数
 	constexpr int		NORMAL_ATTACK3_RECOVERY_TIME = 5;										//通常攻撃３段目の硬直フレーム数
@@ -207,7 +208,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ノックバックの力を計算
 		float KnockBackPower = PointerEnemy->GetPower() * GUARD_DAMAGE_TAKEN_MULT;
 		//ノックバックデータ数値代入
-		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
+		SetKnockBackData(PointerEnemy->GetPos());
 	}
 	else {
 		//HPを消費
@@ -219,7 +220,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ノックバックの力を計算
 		float KnockBackPower = PointerEnemy->GetPower();
 		//ノックバックデータ数値代入
-		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
+		SetKnockBackData(PointerEnemy->GetPos());
 	}
 }
 //リスポーン処理
@@ -272,6 +273,8 @@ void Player::Damage() {
 		//押し出し判定オフ
 		m_IsPush = false;
 	}
+	//ノックバック
+	KnockBackManager();
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
@@ -281,8 +284,6 @@ void Player::Damage() {
 		//押し出し判定オン
 		m_IsPush = true;
 	}
-	//ノックバック
-	KnockBackManager();
 }
 //死亡
 void Player::Death() {
@@ -1084,14 +1085,16 @@ void Player::GravityManager() {
 	}
 }
 //ノックバックデータ数値代入
-void Player::SetKnockBackData(float _Power, VECTOR _Pos) {
+void Player::SetKnockBackData(VECTOR _Pos) {
 	//スタミナ残量が少ないほどノックバック量が大きくる
-	float Calc = (m_MaxHitPoints - m_Stamina) * 0.01f;
-	m_KnockBackDistance = _Power + Calc;
-	//ノックバック計算を始める
-	m_IsKnockBackCalcStart = false;
+	float Calc = (m_MaxHitPoints - m_Stamina) * 0.1f;
+	m_KnockBackMaxDistance = 5.0f + Calc;
 	//ノックバック開始時の敵座標
 	m_KnockBackStartPos = _Pos;
+	//
+	m_KnockBackState = KNOCKBACK_START;
+	//重力処理オン
+	m_IsGravity = true;
 }
 //アニメーションの硬直設定
 void Player::SetAnimeRecoveryManager(int _RecoveryTime) {
