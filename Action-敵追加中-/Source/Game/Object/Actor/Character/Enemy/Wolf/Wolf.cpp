@@ -130,21 +130,19 @@ void Wolf::HitCalc(ObjectBase* _Object) {
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
-		if (PointerPlayer->GetState() == Player::TagState::DAMAGE) {
+		if (PointerPlayer->GetIsParryCollision()) {
+			//ダウン状態へ
+			m_State = DOWN;
+			//ダウン状態継続時間を設定
+			m_DownTime = 120;
+		}
+		else if (PointerPlayer->GetIsHit()) {
 			//ダウン状態へ
 			m_State = IDEL;
 			//次の行動までの待機時間を設定
 			m_NextActionTime = NEXT_ACTION_WAIT_TIME;
 			//押し出し判定オン
 			m_IsPush = true;
-		}
-		else if (PointerPlayer->GetIsParryCollision()) {
-			if (m_Power >= PARRY_DOWN_POWER_THRESHOLD) {
-				//ダウン状態へ
-				m_State = DOWN;
-				//ダウン状態継続時間を設定
-				m_DownTime = 120;
-			}
 		}
 		else {
 			//ダウン状態の時

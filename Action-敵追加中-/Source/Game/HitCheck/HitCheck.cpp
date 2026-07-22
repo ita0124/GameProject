@@ -29,8 +29,6 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 		if (_ObjectA.GetIsPush()) {
 			//BからAへの方向ベクトルを生成
 			VECTOR Dir = VSub(ObjectAPos, ObjectBPos);
-			//Y軸は考えない
-			Dir.y = 0.0f;
 			//長さ取得
 			float Len = VSize(Dir);
 			//正規化
@@ -39,16 +37,12 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 			Len = (ObjectARad + ObjectBRad) - Len;
 			//方向ベクトルに押し出す長さを掛ける
 			Dir = VScale(Dir, Len);
-			//念のためY軸を0に
-			Dir.y = 0.0f;
 			//現在の座標に加算
 			_ObjectA.AddPos(Dir);
 		}
 		if (_ObjectB.GetIsPush()) {
 			//AからBへの方向ベクトルを生成
 			VECTOR Dir = VSub(ObjectBPos, ObjectAPos);
-			//Y軸は考えない
-			Dir.y = 0.0f;
 			//長さ取得
 			float Len = VSize(Dir);
 			//正規化
@@ -57,8 +51,6 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 			Len = (ObjectARad + ObjectBRad) - Len;
 			//方向ベクトルに押し出す長さを掛ける
 			Dir = VScale(Dir, Len);
-			//念のためY軸を0に
-			Dir.y = 0.0f;
 			//現在の座標に加算
 			_ObjectB.AddPos(Dir);
 		}
@@ -156,16 +148,9 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 				bool IsHit = Collision::CheckHitSphereToSphere(ShieldPos, ShieldRad, BossPos, BossRad);
 				//当たっていれば
 				if (IsHit) {
-					//パリィ許容フラグがオンなら
-					if (PointerPlayer->GetIsParryCollision()) {
-						//パリィの処理
-						PointerPlayer->HitCalc(PointerEnemy);
-						PointerEnemy->HitCalc(PointerPlayer);
-					}
-					else {
-						//ガードの処理1
-						PointerPlayer->HitCalc(PointerEnemy);
-					}
+					//パリィの処理
+					PointerPlayer->HitCalc(PointerEnemy);
+					PointerEnemy->HitCalc(PointerPlayer);
 				}
 			}
 		}

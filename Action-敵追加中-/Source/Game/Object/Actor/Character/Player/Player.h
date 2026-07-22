@@ -113,6 +113,8 @@ private:
 
 	VECTOR		m_CamraRot;									//カメラの回転率を代入する
 
+	bool		m_IsHit;									//何かに当たった
+
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
 	bool		m_IsParryCollision;							//パリィの当たり判定を発生させてよいか
 	bool		m_IsGuardSuccess;							//ガードに成功したか
@@ -212,6 +214,8 @@ public:
 	//Get
 	//プレイヤータグ
 	TagState	GetState() const { return m_State; }
+	//何かに当たった
+	bool		GetIsHit() { return m_IsHit; }
 	//攻撃の当たり判定を発生させてよいか
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか

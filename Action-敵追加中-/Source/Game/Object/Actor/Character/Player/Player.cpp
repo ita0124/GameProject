@@ -108,6 +108,8 @@ void Player::Init() {
 	m_State = IDEL;								//プレイヤー状態変数
 	m_PrevState = m_State;						//１フレーム前の状態
 
+	m_IsHit = false;							//何かに当たった
+
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
 	m_IsParryCollision = false;					//パリィ許容フラグ
 	m_IsGuardSuccess = false;					//ガードに成功したか
@@ -222,6 +224,8 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ノックバックデータ数値代入
 		SetKnockBackData(PointerEnemy->GetPos());
 	}
+	//当たった
+	m_IsHit = true;
 }
 //リスポーン処理
 void Player::Respawn() {
@@ -283,6 +287,8 @@ void Player::Damage() {
 		m_IsCollision = true;
 		//押し出し判定オン
 		m_IsPush = true;
+		//当たってない
+		m_IsHit = false;
 	}
 }
 //死亡
@@ -452,6 +458,8 @@ void Player::GuardEnd() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
+		//当たってない
+		m_IsHit = false;
 	}
 }
 //スキル攻撃
