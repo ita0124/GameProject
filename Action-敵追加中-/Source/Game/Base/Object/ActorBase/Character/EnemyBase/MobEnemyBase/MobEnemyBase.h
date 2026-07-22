@@ -25,6 +25,8 @@ protected:
 	TagMobEnemyKinds		m_MobEnemyKinds;				//足場オブジェクト種類
 	//重力処理
 	virtual void GravityManager();
+	//ノックバックデータ数値代入
+	void SetKnockBackData(float _Power, VECTOR _Pos);
 public:
 	//コンストラクタ
 	MobEnemyBase();

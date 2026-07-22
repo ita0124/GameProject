@@ -4,10 +4,10 @@
 namespace {
 	constexpr VECTOR	INIT_POS = { -20.0f,0.0f,-80.0f };												//初期座標
 
-	constexpr float		RAD = 5.0f;																		//半径
+	constexpr float		RAD = 10.0f;																		//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	constexpr float		HIT_POINTS = 10.0f;																//体力
+	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 300.0f;													//IDELに移行するプレイヤーとの距離
@@ -110,6 +110,8 @@ void Boar::Step() {
 	}
 	else {
 		m_DamageTime--;
+		//ノックバック
+		KnockBackManager();
 	}
 	//状態遷移
 	StateManager();
@@ -138,14 +140,20 @@ void Boar::HitCalc(ObjectBase* _Object) {
 				m_DownTime = 120;
 			}
 		}
-		//ダウン状態の時
-		if (m_State == DOWN) {
-			//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
-			m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
-		}
 		else {
-			//HPを消費
-			m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			//ダウン状態の時
+			if (m_State == DOWN) {
+				//プレイヤーの攻撃力に被ダメ率を乗算後HPを消費
+				m_HitPoints = m_HitPoints - (PointerPlayer->GetPower() * DOWN_DAMAGE_TAKEN_MULT);
+			}
+			else {
+				//HPを消費
+				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
+			}
+			//ノックバックの力を計算
+			float KnockBackPower = PointerPlayer->GetPower();
+			//ノックバックデータ数値代入
+			SetKnockBackData(KnockBackPower, PointerPlayer->GetPos());
 		}
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;

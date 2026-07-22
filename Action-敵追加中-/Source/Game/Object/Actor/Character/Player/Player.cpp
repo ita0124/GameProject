@@ -99,7 +99,9 @@ void Player::Init() {
 	m_Size = PLAYER_SIZE;						//ボックス当たり判定
 
 	m_HitPoints = HIT_POINTS;					//体力
+	m_MaxHitPoints = MAX_HITPOINTS;				//最大体力
 	m_Stamina = STAMINA;						//スタミナ
+	m_MaxStamina = MAX_STAMINA;					//最大スタミナ
 	m_SkillPoints = SKILL_POINTS;				//スキルポイント
 
 	m_State = IDEL;								//プレイヤー状態変数
@@ -115,14 +117,6 @@ void Player::Init() {
 	m_IsParrySucess = false;					//パリィが成功したか
 
 	m_JumpPower = 0.0f;							//ジャンプ力計算
-
-	m_KnockBackStartPos = VZERO;				//ノックバック開始時の敵座標
-	m_KnockBackDistance = 0.0f;					//現在のノックバック量
-	m_KnockBackMaxDistance = 0.0f;				//最大ノックバック量
-	m_KnockBackSub = 0.0f;						//1フレーム毎のノックバック力減衰量
-	m_KnockBackDuration = 0;					//ノックバック継続時間	
-	m_IsKnockBackCalcStart = true;				//ノックバック計算を始めるフラグ
-	m_IsKnockBack = false;						//ノックバック中フラグ
 
 	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
 	m_TargetAngle = 0.0f;						// 攻撃対象との角度差
@@ -211,7 +205,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ガード成功
 		m_IsGuardSuccess = true;
 		//ノックバックの力を計算
-		float KnockBackPower = (PointerEnemy->GetPower() * 0.5f) * GUARD_DAMAGE_TAKEN_MULT;
+		float KnockBackPower = PointerEnemy->GetPower() * GUARD_DAMAGE_TAKEN_MULT;
 		//ノックバックデータ数値代入
 		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
 	}
@@ -223,7 +217,7 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ダメージ状態へ
 		m_State = DAMAGE;
 		//ノックバックの力を計算
-		float KnockBackPower = PointerEnemy->GetPower() * 0.5f;
+		float KnockBackPower = PointerEnemy->GetPower();
 		//ノックバックデータ数値代入
 		SetKnockBackData(KnockBackPower, PointerEnemy->GetPos());
 	}
@@ -275,6 +269,8 @@ void Player::Damage() {
 		m_IsAttackCollision = false;
 		//ガードの当たり判定消失
 		m_IsGuardCollision = false;
+		//押し出し判定オフ
+		m_IsPush = false;
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -282,6 +278,8 @@ void Player::Damage() {
 		m_State = IDEL;
 		//当たり判定オン
 		m_IsCollision = true;
+		//押し出し判定オン
+		m_IsPush = true;
 	}
 	//ノックバック
 	KnockBackManager();
@@ -1043,7 +1041,7 @@ bool Player::ActionManager() {
 		IsAction = true;
 	}
 	//スキル攻撃
-	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_SKILL_ATTACK)&& m_SkillPoints > 0) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_SKILL_ATTACK) && m_SkillPoints > 0) {
 		m_State = SKILL_ATTACK;
 		IsAction = true;
 	}
@@ -1061,7 +1059,6 @@ bool Player::ActionManager() {
 
 	return IsAction;
 }
-
 //重力処理
 void Player::GravityManager() {
 	if (m_IsGravity) {
@@ -1086,44 +1083,10 @@ void Player::GravityManager() {
 		m_JumpPower = 0.0f;
 	}
 }
-//ノックバック
-void Player::KnockBackManager() {
-	if (!m_IsKnockBackCalcStart) {
-		//ノックバック計算を開始
-		m_IsKnockBackCalcStart = true;
-		//ノックバック中フラグをオン
-		m_IsKnockBack = true;
-		//最大ノックバック量を保存
-		m_KnockBackMaxDistance = m_KnockBackDistance;
-		//１フレーム当たりの移動量を設定
-		m_KnockBackSub = m_KnockBackMaxDistance * 0.1f;
-	}
-	//ノックバック中なら
-	if (m_IsKnockBack) {
-		//ノックバック継続時間を加算
-		m_KnockBackDuration++;
-		//方向ベクトルを取得(正規化済み)
-		VECTOR DirToPlayerPos = GetDirectionNotY(m_KnockBackStartPos, m_Pos, true);
-		if (m_KnockBackDuration <= 10) {
-			//移動量を計算
-			VECTOR KnockBackSpeed = VScale(DirToPlayerPos, m_KnockBackDistance);
-			//座標に加算
-			m_Pos = VAdd(m_Pos, KnockBackSpeed);
-			//ノックバック量を1フレーム毎の減衰量分減らす
-			m_KnockBackDistance -= m_KnockBackSub;
-		}
-		else {
-			//ノックバック中フラグをオフ
-			m_IsKnockBack = false;
-			//ノックバック継続時間をリセット
-			m_KnockBackDuration = 0;
-		}
-	}
-}
 //ノックバックデータ数値代入
 void Player::SetKnockBackData(float _Power, VECTOR _Pos) {
 	//スタミナ残量が少ないほどノックバック量が大きくる
-	float Calc = (MAX_STAMINA - m_Stamina) * 0.01f;
+	float Calc = (m_MaxHitPoints - m_Stamina) * 0.01f;
 	m_KnockBackDistance = _Power + Calc;
 	//ノックバック計算を始める
 	m_IsKnockBackCalcStart = false;

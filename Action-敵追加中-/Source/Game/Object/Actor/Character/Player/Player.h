@@ -123,14 +123,6 @@ private:
 
 	float		m_JumpPower;								//ジャンプ力計算
 
-	VECTOR		m_KnockBackStartPos;						//ノックバック開始時の敵座標
-	float		m_KnockBackDistance;						//現在のノックバック量
-	float		m_KnockBackMaxDistance;						//最大ノックバック量
-	float		m_KnockBackSub;								//1フレーム毎のノックバック力減衰量
-	int			m_KnockBackDuration;						//ノックバック継続時間
-	bool		m_IsKnockBackCalcStart;						//ノックバック計算を始めるフラグ
-	bool		m_IsKnockBack;								//ノックバック中フラグ
-
 	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
 	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
@@ -191,8 +183,6 @@ private:
 	bool ActionManager();
 	//重力処理
 	void GravityManager();
-	//ノックバック
-	void KnockBackManager();
 	//ノックバックデータ数値代入
 	void SetKnockBackData(float _Power, VECTOR _Pos);
 	//アニメーションの硬直設定
