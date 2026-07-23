@@ -294,16 +294,12 @@ void Boar::Down() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
-		//輪郭線のマテリアルをマテリアル青に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
 		m_State = IDEL;
-		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 	}
 	else {
 		//ダウン状態継続時間を減算
@@ -319,8 +315,6 @@ void Boar::Death() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
-		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 	}
