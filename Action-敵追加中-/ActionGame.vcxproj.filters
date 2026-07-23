@@ -219,9 +219,6 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\MovingPlatform">
       <UniqueIdentifier>{ae379be5-88b4-47b5-a5c1-e3922850b02b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Platform\JumpPlatform">
-      <UniqueIdentifier>{fee22d41-ba9b-4720-8981-5d5d0bae6ac6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Object\Platform\FallingPlatform">
       <UniqueIdentifier>{76bedb8b-dd8e-43c0-8a92-3dd75c2cff25}</UniqueIdentifier>
     </Filter>
@@ -242,9 +239,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\FallingPlatform">
       <UniqueIdentifier>{86da3dd2-0813-4058-8601-d1307aaeba8b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Platform\JumpPlatform">
-      <UniqueIdentifier>{fe5e43ea-5bda-4a20-9424-957e4aa1f01b}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\MovingPlatform">
       <UniqueIdentifier>{8dd4be55-d769-46b2-9318-7aab7f48d543}</UniqueIdentifier>
@@ -381,6 +375,12 @@
     <Filter Include="ヘッダー ファイル\Lib\FPS">
       <UniqueIdentifier>{4acd5206-b7a0-41b3-848e-8455398f37d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\WallPlatform">
+      <UniqueIdentifier>{e017667f-2b43-4e72-b9c1-a41ad2279475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\WallPlatform">
+      <UniqueIdentifier>{ad8a673f-4af2-4791-9278-3ac69716d853}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -464,9 +464,6 @@
     <ClCompile Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\FallingPlatform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Platform\JumpPlatform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\MovingPlatform</Filter>
     </ClCompile>
@@ -541,6 +538,9 @@
     </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputManager.cpp">
       <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -625,9 +625,6 @@
     <ClInclude Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\FallingPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Platform\JumpPlatform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\MovingPlatform</Filter>
     </ClInclude>
@@ -702,6 +699,9 @@
     </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputManager.h">
       <Filter>ヘッダー ファイル\Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

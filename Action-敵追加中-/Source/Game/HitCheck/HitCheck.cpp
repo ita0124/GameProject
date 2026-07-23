@@ -392,6 +392,8 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
 		if (!OnePlatform.GetIsActive())continue;
+		//オブジェクトがプレイヤーかつ足場クラスが壁だった場合以降の処理を行わない
+		if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::WALL)continue;
 		//足場クラスの座標取得
 		VECTOR PlatformPos = OnePlatform.GetCenter(ObjectBase::TagShape::FIELD);
 		//足場クラスのサイズを取得

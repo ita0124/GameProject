@@ -1,13 +1,13 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//ジャンプ足場
-class JumpPlatform :public PlatformBase {
+//壁クラス
+class WallPlatform :public PlatformBase {
 public:
 	//コンストラクタ
-	JumpPlatform();
+	WallPlatform();
 	//デストラクタ
-	~JumpPlatform();
+	~WallPlatform();
 	//初期化処理
 	void Init();
 	//データ読み込み処理

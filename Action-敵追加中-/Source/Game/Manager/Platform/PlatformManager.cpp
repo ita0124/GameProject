@@ -40,6 +40,10 @@ void PlatformManager::Init() {
 			//落ちる足場クラスをnew
 			m_Platform[PlatformIndex] = new FallingPlatform;
 			break;
+		case PlatformBase::TagPlatformKinds::WALL:
+			//壁クラスをnew
+			m_Platform[PlatformIndex] = new WallPlatform;
+			break;
 		case PlatformBase::TagPlatformKinds::RESPAWN:
 			//リスポーン地点クラスをnew
 			m_Platform[PlatformIndex] = new RespawnPlatform;
@@ -47,10 +51,6 @@ void PlatformManager::Init() {
 		case PlatformBase::TagPlatformKinds::GOAL:
 			//ゴール地点クラスをnew
 			m_Platform[PlatformIndex] = new GoalPlatform;
-			break;
-		case PlatformBase::TagPlatformKinds::JUMP:
-			//ジャンプ足場クラスをnew
-			m_Platform[PlatformIndex] = new JumpPlatform;
 			break;
 		}
 	}

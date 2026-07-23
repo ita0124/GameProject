@@ -1097,6 +1097,9 @@ void Player::SetKnockBackData(VECTOR _Pos) {
 	//スタミナ残量が少ないほどノックバック量が大きくる
 	float Calc = (m_MaxHitPoints - m_Stamina) * 0.1f;
 	m_KnockBackMaxDistance = 5.0f + Calc;
+	if (m_IsGuardCollision) {
+		m_KnockBackMaxDistance = m_KnockBackMaxDistance * GUARD_DAMAGE_TAKEN_MULT;
+	}
 	//ノックバック開始時の敵座標
 	m_KnockBackStartPos = _Pos;
 	//

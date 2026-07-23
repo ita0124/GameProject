@@ -9,9 +9,9 @@ public:
 		NORMAL,
 		MOVING,
 		FALLING,
+		WALL,
 		RESPAWN,
 		GOAL,
-		JUMP,
 
 		PLATFORM_NUM
 	};

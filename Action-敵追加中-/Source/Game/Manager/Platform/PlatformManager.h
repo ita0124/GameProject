@@ -2,7 +2,7 @@
 #include "Game/Object/Platform/NormalPlatform/NormalPlatform.h"
 #include "Game/Object/Platform/MovingPlatform/MovingPlatform.h"
 #include "Game/Object/Platform/FallingPlatform/FallingPlatform.h"
-#include "Game/Object/Platform/JumpPlatform/JumpPlatform.h"
+#include "Game/Object/Platform/WallPlatfprm/WallPlatfprm.h"
 #include "Game/Object/Platform/RespawnPlatform/RespawnPlatform.h"
 #include "Game/Object/Platform/GoalPlatform/GoalPlatform.h"
 

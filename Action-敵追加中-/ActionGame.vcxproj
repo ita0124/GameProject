@@ -180,10 +180,10 @@
     <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.cpp" />
-    <ClCompile Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.cpp" />
     <ClCompile Include="Source\Game\Object\Shield\Shield.cpp" />
     <ClCompile Include="Source\Game\Object\Sky\Sky.cpp" />
     <ClCompile Include="Source\Game\Object\Sword\Sword.cpp" />
@@ -236,10 +236,10 @@
     <ClInclude Include="Source\Game\Object\BossArea\BossArea.h" />
     <ClInclude Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.h" />
-    <ClInclude Include="Source\Game\Object\Platform\JumpPlatform\JumpPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.h" />
     <ClInclude Include="Source\Game\Object\Shield\Shield.h" />
     <ClInclude Include="Source\Game\Object\Sky\Sky.h" />
     <ClInclude Include="Source\Game\Object\Sword\Sword.h" />
