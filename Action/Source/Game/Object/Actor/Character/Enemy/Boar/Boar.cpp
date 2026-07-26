@@ -4,7 +4,7 @@
 namespace {
 	constexpr VECTOR	INIT_POS = { -20.0f,0.0f,-80.0f };												//初期座標
 
-	constexpr float		RAD = 10.0f;																		//半径
+	constexpr float		RAD = 10.0f;																	//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
 	constexpr float		HIT_POINTS = 50.0f;																//体力
@@ -26,6 +26,8 @@ namespace {
 
 	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
 
+	constexpr int		DOWN_TIME = 180;																//ダウン状態継続時間
+
 	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
 
 	constexpr float		ATTACK_COLLISION_RAD = 15.0f;													//通常攻撃１段目の攻撃当たり判定の半径
@@ -34,7 +36,7 @@ namespace {
 
 	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
 
-	constexpr int		DAMAGE_TIME = 60;																//ダメージ状態の継続時間
+	constexpr int		DAMAGE_TIME = 15;																//ダメージ状態の継続時間
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
@@ -116,13 +118,6 @@ void Boar::Step() {
 	StateManager();
 	//重力処理
 	GravityManager();
-
-#ifdef _DEBUG
-	DrawFormatStringToHandle(50, 420, RED, DxLibFont::FONTHNDL_N20, "攻撃力:%.0f", m_Power);
-	DrawFormatStringToHandle(50, 500, RED, DxLibFont::FONTHNDL_N20, "今の攻撃種:%d", m_State);
-	DrawFormatStringToHandle(50, 540, RED, DxLibFont::FONTHNDL_N20, "体力:%.0f", m_HitPoints);
-	DrawFormatStringToHandle(50, 560, RED, DxLibFont::FONTHNDL_N20, "%d", m_IsCollision);
-#endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
 void Boar::HitCalc(ObjectBase* _Object) {
@@ -135,7 +130,7 @@ void Boar::HitCalc(ObjectBase* _Object) {
 			//ダウン状態へ
 			m_State = DOWN;
 			//ダウン状態継続時間を設定
-			m_DownTime = 120;
+			m_DownTime = DOWN_TIME;
 		}
 		else if (PointerPlayer->GetIsHit()) {
 			//ダウン状態へ
@@ -156,7 +151,7 @@ void Boar::HitCalc(ObjectBase* _Object) {
 				m_HitPoints = m_HitPoints - PointerPlayer->GetPower();
 			}
 			//ノックバックの力を計算
-			float KnockBackPower = PointerPlayer->GetPower() * 0.5f;
+			float KnockBackPower = PointerPlayer->GetKnockBackPower();
 			//ノックバックデータ数値代入
 			SetKnockBackData(KnockBackPower, PointerPlayer->GetPos());
 			//ダメージ処理の継続時間セット
@@ -392,9 +387,6 @@ void Boar::StateManager() {
 		Damage();
 		break;
 	}
-#ifdef _DEBUG
-	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "%d", (int)m_State);
-#endif // DEBUG
 }
 //当たり判定設定
 void Boar::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {

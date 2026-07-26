@@ -115,6 +115,8 @@ private:
 
 	bool		m_IsHit;									//何かに当たった
 
+	float		m_KnockBackPower;							//攻撃時に敵へ与えるノックバックの強さ
+
 	bool		m_IsGuardCollision;							//ガードの当たり判定を発生させてよいか
 	bool		m_IsParryCollision;							//パリィの当たり判定を発生させてよいか
 	bool		m_IsGuardSuccess;							//ガードに成功したか
@@ -127,6 +129,7 @@ private:
 
 	bool		m_IsNextNormalAttack[NORMAL_ATTACK_MAX];	//通常攻撃の次の段数に移行するか
 	bool		m_IsAttackCollision;						//攻撃の当たり判定を発生させてよいか
+	ObjectBase* m_AttackTarget;								//攻撃対象
 	VECTOR		m_AttackTargetPos;							//攻撃対象の座標
 	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//攻撃進行方向
 	float		m_AttackRot[NORMAL_ATTACK_MAX];				//攻撃方向角度
@@ -216,6 +219,8 @@ public:
 	TagState	GetState() const { return m_State; }
 	//何かに当たった
 	bool		GetIsHit() { return m_IsHit; }
+	//攻撃時に敵へ与えるノックバックの強さ
+	float		GetKnockBackPower() { return m_KnockBackPower; }
 	//攻撃の当たり判定を発生させてよいか
 	bool		GetIsAttackCollision() { return m_IsAttackCollision; }
 	//ガードの当たり判定を発生させてよいか
@@ -230,6 +235,8 @@ public:
 	VECTOR		GetAttackTargetPos() { return m_AttackTargetPos; }
 	//リスポーン中か
 	bool		GetIsRespawn() { return m_IsRespawn; }
+	//攻撃対象
+	ObjectBase* GetAttackTarget() { return m_AttackTarget; }
 
 	//Set
 	//カメラ回転率
@@ -238,4 +245,6 @@ public:
 	void		SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
 	//リスポーン中か
 	void		SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
+	//攻撃対象設定
+	void		SetAttackTarget(ObjectBase* _Object) { m_AttackTarget = _Object; }
 };

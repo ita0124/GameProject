@@ -3,7 +3,7 @@
 #include "Game/Object/Actor/Character/Enemy/Wolf/Wolf.h"
 
 namespace {
-	constexpr int MOB_ENEMY_MAX = 20;
+	constexpr int MOB_ENEMY_MAX = 25;
 	constexpr int MOB_ENEMY_ID = 1;
 	constexpr int MOB_ENEMY_REQUEST_DATA_MAX = 12;
 }
@@ -32,7 +32,7 @@ public:
 	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚È‚¢ê‡)
 	void NotHitCalc(const int& _Num, ObjectBase* _Object);
 	//w’è‚µ‚½”z—ñ”Ô†‚Ìƒƒ“ƒo•Ï”‚ğ•Ô‚·
-	MobEnemyBase& GetMobEnemy(const int &_Num) { return *m_MobEnemy[_Num]; }
+	MobEnemyBase& GetMobEnemy(const int& _Num) { return *m_MobEnemy[_Num]; }
 	//Set
 	void SetPlayerPos(VECTOR _PlayerPos);
 };

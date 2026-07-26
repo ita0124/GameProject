@@ -97,8 +97,6 @@ int ResultScene::Loop() {
 
 //•`‰æˆ—ŠÇ—ŠÖ”
 void ResultScene::Draw() {
-	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ƒŠƒUƒ‹ƒg");
-
 	m_Result.Draw();
 }
 

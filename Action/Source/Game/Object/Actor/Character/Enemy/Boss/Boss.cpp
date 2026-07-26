@@ -77,7 +77,7 @@ namespace {
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
-	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
+	constexpr float		PARRY_DOWN_TIME_MULT = 5.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/Boss.mv1");						//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
@@ -966,9 +966,6 @@ void Boss::StateManager() {
 
 		break;
 	}
-#ifdef _DEBUG
-	DrawFormatStringToHandle(50, 400, RED, DxLibFont::FONTHNDL_N20, "%d", (int)m_State);
-#endif // DEBUG
 }
 //当たり判定設定
 void Boss::SetFrameDataIsCollision(int _FrameNamber, float _Rad) {

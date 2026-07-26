@@ -4,9 +4,9 @@ namespace {
 	constexpr VECTOR	UP_VEC = { 0.0f,10.0f,0.0f };
 	constexpr float		CAMERA_POS_LERP_RATE = 0.2f;				//１フレームの補完率
 	constexpr float		TARGET_POS_LERP_RATE = 0.2f;				//１フレームの補完率
-	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };	// プレイヤー基準のカメラ配置オフセット
-	constexpr float		CAMERA_MIN_HEIGHT = 20.0f;				// カメラの最低高度
-	constexpr float		TARGET_HEIGHT_OFFSET = -20.0f;			// ロックオン注視点の高さ補正
+	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };		// プレイヤー基準のカメラ配置オフセット
+	constexpr float		CAMERA_MIN_HEIGHT = 20.0f;					// カメラの最低高度
+	constexpr float		TARGET_HEIGHT_OFFSET = 20.0f;				// ロックオン注視点の高さ補正
 }
 
 //コンストラクタ
@@ -19,7 +19,7 @@ void TargetCamera::Init() {
 	m_CameraPos = VZERO;
 	m_TargetPoint = VZERO;			//注視点
 	m_TargetPos = VZERO;
-	m_UpVec = UP_VEC;			//？？？
+	m_UpVec = UP_VEC;				//？？？
 	m_CameraRot = VZERO;
 	m_CameraPoint = VZERO;
 	m_CalcRot = VZERO;
@@ -92,6 +92,8 @@ void TargetCamera::Draw() {
 	DrawFormatString(50, 300, RED, "最終注視点座標X:%f", m_TargetPoint.x);
 	DrawFormatString(50, 325, RED, "最終注視点座標Y:%f", m_TargetPoint.y);
 	DrawFormatString(50, 350, RED, "最終注視点座標Z:%f", m_TargetPoint.z);
+
+	DrawSphere3D(m_TargetPoint, 10.0f, DIV, RED, RED, false);
 
 	DrawFormatString(50, 400, RED, "注視点座標X:%f", m_TargetPos.x);
 	DrawFormatString(50, 425, RED, "注視点座標Y:%f", m_TargetPos.y);

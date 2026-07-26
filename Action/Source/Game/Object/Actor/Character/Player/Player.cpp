@@ -49,6 +49,13 @@ namespace {
 	constexpr float		NORAML_ATTACK2_POWER = 10.0f;											//通常攻撃２段目時の攻撃力
 	constexpr float		NORAML_ATTACK3_POWER = 30.0f;											//通常攻撃３段目時の攻撃力
 
+	constexpr float		SKILL_KNOCK_BACkK_POWER = 50.0;											//スキル攻撃時の敵へ与えるノックバックの強さ
+	constexpr float		NORMAL_ATTACK1_BACkK_POWER = 5.0;										//通常攻撃１段目時の敵へ与えるノックバックの強さ
+	constexpr float		NORMAL_ATTACK2_BACkK_POWER = 5.0;										//通常攻撃２段目時の敵へ与えるノックバックの強さ
+	constexpr float		NORMAL_ATTACK3_BACkK_POWER = 25.0;										//通常攻撃３段目時の敵へ与えるノックバックの強さ
+
+	constexpr float ATTACK_TARGET_APPROACH_DISTANCE = 100.0f;									//攻撃対象へ向かう距離の閾値
+
 	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 	constexpr float		PARRY_SUCCESS_TIME = 30;												//パリィアクション成功の継続時間
 
@@ -110,6 +117,8 @@ void Player::Init() {
 
 	m_IsHit = false;							//何かに当たった
 
+	m_KnockBackPower = 0.0f;					//攻撃時に敵へ与えるノックバックの強さ
+
 	m_IsGuardCollision = false;					//ガードの当たり判定を発生させてよいか
 	m_IsParryCollision = false;					//パリィ許容フラグ
 	m_IsGuardSuccess = false;					//ガードに成功したか
@@ -121,6 +130,7 @@ void Player::Init() {
 
 	m_JumpPower = 0.0f;							//ジャンプ力計算
 
+	m_AttackTarget = nullptr;					//攻撃対象
 	m_AttackTargetPos = VZERO;					//攻撃サーチを行う物体の座標
 	m_TargetAngle = 0.0f;						// 攻撃対象との角度差
 	for (int Index = 0; Index < NORMAL_ATTACK_MAX; Index++) {
@@ -149,6 +159,15 @@ void Player::Step() {
 		m_Pos = VAdd(m_Pos, m_PlatformVec);
 	}
 	m_PlatformVec = VZERO;
+
+	if (m_AttackTarget != nullptr) {
+		if (m_AttackTarget->GetIsActive()) {
+			m_AttackTargetPos = m_AttackTarget->GetPos();
+		}
+		else {
+			m_AttackTarget = nullptr;
+		}
+	}
 
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
@@ -249,6 +268,8 @@ void Player::Idel() {
 		m_IsStaminaRecover = true;
 		//攻撃力設定
 		m_Power = 0.0f;
+		//当たり判定をオン
+		m_IsCollision = true;
 	}
 	//通常移動方向設定
 	if (SetNormalMoveVec()) {
@@ -326,10 +347,11 @@ void Player::Rolling() {
 	//ローリングアニメーション再生
 	RequestEndLoop(ANIME_ROLLING);
 	//通常移動方向設定
-	if (SetNormalMoveVec()) {
-		//移動計算
-		NormalMoveCalc();
+	if (!SetNormalMoveVec()) {
+		m_MoveVec.z = -1.0f;
 	}
+	//移動計算
+	NormalMoveCalc();
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -377,6 +399,10 @@ void Player::Falling() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		//ガード当たり判定消失
+		m_IsGuardCollision = false;
+		//当たり判定をオン
+		m_IsCollision = true;
 	}
 	//重力処理がオフになったら
 	if (!m_IsGravity) {
@@ -477,6 +503,8 @@ void Player::SkillAttack() {
 		m_IsPush = false;
 		//攻撃力設定
 		m_Power = SKILL_ATTACKPOWER;
+		//敵へ与えるノックバックの強さ設定
+		m_KnockBackPower = SKILL_KNOCK_BACkK_POWER;
 		//スキルゲージ減少
 		m_SkillPoints += -10;
 	}
@@ -541,6 +569,8 @@ void Player::NormalAttack1() {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORMAL_ATTACK1_POWER;
+		//敵へ与えるノックバックの強さ設定
+		m_KnockBackPower = NORMAL_ATTACK1_BACkK_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -646,6 +676,8 @@ void Player::NormalAttack2() {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK2_POWER;
+		//敵へ与えるノックバックの強さ設定
+		m_KnockBackPower = NORMAL_ATTACK2_BACkK_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -753,6 +785,8 @@ void Player::NormalAttack3() {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK3_POWER;
+		//敵へ与えるノックバックの強さ設定
+		m_KnockBackPower = NORMAL_ATTACK3_BACkK_POWER;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -902,9 +936,19 @@ void Player::AttackMoveCalc(int _Index) {
 	//入力がある場合はカメラの向き、入力がない場合はプレイヤーの向きを使用する
 	float RotY = m_CamraRot.y;
 	if (!m_IsSetAttackMoveVec[_Index]) {
-		RotY = m_Rot.y;
-		//プレイヤー前方向に移動する
-		AttackMoveVec.z = -1.0f;
+		//攻撃対象への移動方向を決定
+		VECTOR TargetDirection = GetDirectionNotY(m_Pos, m_AttackTargetPos);
+		float Lenght = VSize(TargetDirection);
+		//攻撃対象が近い場合は、対象へ向かって移動
+		if (Lenght < ATTACK_TARGET_APPROACH_DISTANCE) {
+			//代入
+			AttackMoveVec = TargetDirection;
+		}
+		else {
+			RotY = m_Rot.y;
+			//プレイヤー前方向に移動する
+			AttackMoveVec.z = -1.0f;
+		}
 	}
 	//MoveVecを正規化
 	AttackMoveVec = VNorm(AttackMoveVec);
@@ -943,87 +987,45 @@ void Player::StateManager() {
 	switch (m_State) {
 	case IDEL:				//待機
 		Idel();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "IDEL");
-#endif // DEBUG
 		break;
 	case DAMAGE:			//ダメージ
 		Damage();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DAMAGE");
-#endif // DEBUG
 		break;
 	case DEATH:				//死亡
 		Death();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "DEATH");
-#endif // DEBUG
 		break;
 	case WALK:				//歩き
 		Walk();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "WALK");
-#endif // DEBUG
 		break;
 	case ROLLING:			//ローリング
 		Rolling();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "ROLLING");
-#endif // DEBUG
 		break;
 	case JUMP:				//ジャンプ
 		Jump();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "JUMP");
-#endif // DEBUG
 		break;
 	case FALLING:
 		Falling();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "FALLING");
-#endif // DEBUG
 		break;
 	case GUARD_START:		//ガード開始
 		GuardStart();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_START");
-#endif // DEBUG
 		break;
 	case GUARD_IDEL:		//ガード待機
 		GuardIdel();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_IDEL");
-#endif // DEBUG	
 		break;
 	case GUARD_END:			//ガード終了
 		GuardEnd();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "GUARD_END");
-#endif // DEBUG
 		break;
 	case SKILL_ATTACK:		//スキル攻撃
 		SkillAttack();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "SKILL_ATTACK");
-#endif // DEBUG
 		break;
 	case NORMAL_ATTACK1:	//通常攻撃１段目
 		NormalAttack1();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK1");
-#endif // DEBUG
 		break;
 	case NORMAL_ATTACK2:	//通常攻撃２段目
 		NormalAttack2();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK2");
-#endif // DEBUG
 		break;
 	case NORMAL_ATTACK3:	//通常攻撃３段目
 		NormalAttack3();
-#ifdef _DEBUG
-		DrawFormatStringToHandle(50, 300, RED, DxLibFont::FONTHNDL_N20, "NORMAL_ATTACK3");
-#endif // DEBUG
 		break;
 	}
 }

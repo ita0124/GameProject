@@ -90,8 +90,6 @@ int TitleScene::Loop() {
 
 //•`‰æˆ—ŠÇ—ŠÖ”
 void TitleScene::Draw() {
-	DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ƒ^ƒCƒgƒ‹");
-
 	m_Title.Draw();
 }
 

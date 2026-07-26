@@ -549,7 +549,7 @@ void HitCheck::MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBas
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		//モブ敵マネージャークラスから一つ取得
 		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
-		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		//取得したモブ敵クラスの生存フラグがオフになっていれば次のforへ
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクト同士の押し合い当たり判定
 		ObjectToObjectPush(OneMobEnemy, _Object);
@@ -560,7 +560,7 @@ void HitCheck::MobEnemyToObjectAttack(MobEnemyManager& _MobEnemyManager, ObjectB
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		//モブ敵マネージャークラスから一つ取得
 		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
-		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		//取得したモブ敵クラスの生存フラグがオフになっていれば次のforへ
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクトの攻撃当たり判定
 		ObjectToObjectAttack(OneMobEnemy, _AttackObject);
@@ -571,7 +571,7 @@ void HitCheck::ObjectToMobEnemyAttack(ObjectBase& _Object, MobEnemyManager& _Mob
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		//モブ敵マネージャークラスから一つ取得
 		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
-		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		//取得したモブ敵クラスの生存フラグがオフになっていれば次のforへ
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクトの攻撃当たり判定
 		ObjectToObjectAttack(_Object, OneMobEnemy);
@@ -582,7 +582,7 @@ void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformMan
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		//モブ敵マネージャークラスから一つ取得
 		MobEnemyBase& OneMobEnemy = _MobEnemyManager.GetMobEnemy(Index);
-		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		//取得したモブ敵クラスの生存フラグがオフになっていれば次のforへ
 		if (!OneMobEnemy.GetIsActive())continue;
 		//オブジェクトと足場の当たり判定
 		ObjectToPlatform(OneMobEnemy, _PlatformManager);

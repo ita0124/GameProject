@@ -24,7 +24,7 @@ void PlayerCamera::Init() {
 	m_CameraPos = VZERO;
 	m_TargetPoint = VZERO;			//注視点
 	m_TargetPos = VZERO;
-	m_UpVec = UP_VEC;			//？？？
+	m_UpVec = UP_VEC;				//？？？
 	m_CameraRot = VZERO;
 	m_CalcRot = VZERO;
 

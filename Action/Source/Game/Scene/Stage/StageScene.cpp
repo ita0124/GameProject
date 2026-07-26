@@ -4,6 +4,7 @@ namespace {
 	constexpr int	FADE_SPEED = 5;					//フェードスピード
 	constexpr int	PLAYER_RESPAWN_FADE_SPEED = 5;	//リスポーン完了フェードスピード
 	constexpr int	PLAYER_DEATH_FADE_SPEED = 5;	//プレイヤー落下フェードスピード
+	constexpr float CHANGE_DISTANCE = 50.0f;		//攻撃対象を切り替える距離差
 }
 
 //コンストラクタ
@@ -101,8 +102,7 @@ void StageScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		//m_Sky.Draw();								//天球クラス
-		
+		m_Sky.Draw();								//天球クラス
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);
@@ -125,7 +125,10 @@ void StageScene::Draw() {
 
 		m_HitPoints.Draw();							//体力UIクラス
 		m_SkillPoints.Draw();						//スキルポイントUIクラス
-		m_Stamina.Draw();							//スタミナUIクラス	
+		m_Stamina.Draw();							//スタミナUIクラス
+#ifdef _DEBUG
+		m_CameraManager.Draw();
+#endif // DEBUG
 		break;
 	}
 }
@@ -174,11 +177,11 @@ void StageScene::Load() {
 int StageScene::Step() {
 	int Res = 0;
 
-	//m_Sky.Step(m_Player.GetPos());					//天球クラス
+	m_Sky.Step(m_Player.GetPos());					//天球クラス
 	m_PlatformManager.Step();
 
 	switch (m_GameID) {
-	case GAME_RESET:	
+	case GAME_RESET:
 		//プレイヤーのリスポーン処理
 		m_Player.Respawn();
 		//カメラマネージャークラス
@@ -219,7 +222,7 @@ int StageScene::Step() {
 	VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
 	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);
 
-	SetShadowMapDrawArea(m_ShadowHndl, MinShadow,MaxShadow);
+	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
 
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
 	m_MobEnemyManager.Step();							//モブ敵マネージャークラス
@@ -229,7 +232,7 @@ int StageScene::Step() {
 	//プレイヤーとモブ敵の押し合い当たり判定
 	HitCheck::MobEnemyToObjectPush(m_MobEnemyManager, m_Player);
 	//モブ敵に対する剣の攻撃当たり判定
-	HitCheck::MobEnemyToObjectAttack(m_MobEnemyManager,m_Sword);
+	HitCheck::MobEnemyToObjectAttack(m_MobEnemyManager, m_Sword);
 	//盾とのモブ敵の攻撃当たり判定
 	HitCheck::ObjectToMobEnemyAttack(m_Shield, m_MobEnemyManager);
 	//プレイヤーとモブ敵の攻撃当たり判定
@@ -260,13 +263,41 @@ void StageScene::Update() {
 	m_PlatformManager.Update();
 	m_Player.Update();
 	m_Sword.Update();
-	m_Shield.Update();									
+	m_Shield.Update();
 	m_CameraManager.Update();							//カメラマネージャークラス
 	m_MobEnemyManager.Update();							//モブ敵マネージャークラス
 }
 //プレイヤー関連Step
 void StageScene::PlayerStep() {
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
+
+	//現在の攻撃対象を取得
+	ObjectBase* AttackTarget = m_Player.GetAttackTarget();
+	//現在の攻撃対象までの距離
+	float CurrentTargetLength = FLT_MAX;
+	//攻撃対象が存在する場合は距離を計算
+	if (AttackTarget != nullptr)
+	{
+		VECTOR CurrentDistance = VSub(m_Player.GetPos(), AttackTarget->GetPos());
+		CurrentTargetLength = VSize(CurrentDistance);
+	}
+	for (int MobIndex = 0; MobIndex < MOB_ENEMY_MAX; MobIndex++)
+	{
+		//モブ敵を取得
+		MobEnemyBase& OneMobEnemy = m_MobEnemyManager.GetMobEnemy(MobIndex);
+		//取得したモブ敵クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneMobEnemy.GetIsActive()) continue;
+		//プレイヤーとの距離を計算
+		float Length = VSize(VSub(m_Player.GetPos(), OneMobEnemy.GetPos()));
+		//現在の攻撃対象より一定距離近ければ更新
+		if (Length < CurrentTargetLength - CHANGE_DISTANCE)
+		{
+			CurrentTargetLength = Length;
+			AttackTarget = &OneMobEnemy;
+		}
+	}
+	m_Player.SetAttackTarget(AttackTarget);
+
 	m_Player.Step();
 	m_Sword.Step();
 	m_Shield.Step();

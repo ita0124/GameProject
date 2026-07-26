@@ -90,9 +90,6 @@ int SelectScene::Loop() {
 
 //•`‰æˆ—ŠÇ—ŠÖ”
 void SelectScene::Draw() {
-	/*DrawFormatStringToHandle((int)SCREEN_HALF_X,(int)SCREEN_HALF_Y, WHITE, DxLibFont::FONTHNDL_N15,"ƒZƒŒƒNƒg");
-	DrawFormatStringToHandle((int)SCREEN_HALF_X, (int)SCREEN_LOWER, WHITE, DxLibFont::FONTHNDL_N50, "%d",m_SelectNum);*/
-
 	m_Sky.Draw();
 }
 

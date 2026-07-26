@@ -2,7 +2,7 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	constexpr float		RAD = 5.0f;												//半径
+	constexpr float		RAD = 10.0f;											//半径
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/Sword/Sword.mv1");	//モデルファイルパス
 }
