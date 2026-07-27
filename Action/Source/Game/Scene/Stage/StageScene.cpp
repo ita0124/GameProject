@@ -52,8 +52,8 @@ int StageScene::Loop() {
 		if (Fade::IsEndIn()) {
 			//タグをSTEPに設定
 			m_ID = STEP;
-			////BGMを呼び出す
-			//SoundManager::Play(SoundManager::TagID::BGM_TITLE, DX_PLAYTYPE_LOOP);
+			//BGMを呼び出す
+			SoundManager::Play(SoundManager::TagID::BGM_GAMEMOBENEMY, DX_PLAYTYPE_LOOP);
 		}
 		break;
 
@@ -127,7 +127,7 @@ void StageScene::Draw() {
 		m_SkillPoints.Draw();						//スキルポイントUIクラス
 		m_Stamina.Draw();							//スタミナUIクラス
 #ifdef _DEBUG
-		m_CameraManager.Draw();
+		//m_CameraManager.Draw();
 #endif // DEBUG
 		break;
 	}

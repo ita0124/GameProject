@@ -98,6 +98,8 @@ private:
 
 	int			m_AttackTime;										//UŒ‚Œp‘±ŠÔ
 
+	int			m_DeathIdelTime;									//€–S‘Ò‹@ŠÔ
+
 	//‘Ò‹@
 	void Idel();
 	//•à‚«

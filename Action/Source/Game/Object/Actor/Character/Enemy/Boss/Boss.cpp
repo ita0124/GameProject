@@ -824,10 +824,6 @@ void Boss::Special() {
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW2, m_Pos, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_SPECIALMOVE)) {
-			SoundManager::Play(SoundManager::TagID::SE_SPECIALMOVE);
-		}
 		//初期化
 		m_Pos.y = 0.0;
 		//待機状態へ

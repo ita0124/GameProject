@@ -101,6 +101,8 @@ private:
 
 	float		m_JumpPower;										//ジャンプ力計算
 
+	int			m_DeathIdelTime;									//死亡待機時間
+
 	//待機
 	void Idel();
 	//歩き

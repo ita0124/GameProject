@@ -132,7 +132,7 @@ private:
 	ObjectBase* m_AttackTarget;								//UŒ‚‘ÎÛ
 	VECTOR		m_AttackTargetPos;							//UŒ‚‘ÎÛ‚ÌÀ•W
 	VECTOR		m_AttackMoveVec[NORMAL_ATTACK_MAX];			//UŒ‚is•ûŒü
-	float		m_AttackRot[NORMAL_ATTACK_MAX];				//UŒ‚•ûŒüŠp“x
+	float		m_AttackRotationSpeed;						//UŒ‚‰ñ“]•âŠÔ‘¬“x
 	bool		m_IsSetAttackMoveVec[NORMAL_ATTACK_MAX];	//UŒ‚is•ûŒü‚ğİ’è‚µ‚½‚©
 	float		m_TargetAngle;								//UŒ‚‘ÎÛ‚Æ‚ÌŠp“x·
 

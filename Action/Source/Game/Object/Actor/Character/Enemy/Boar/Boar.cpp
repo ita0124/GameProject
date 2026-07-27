@@ -34,6 +34,8 @@ namespace {
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 
+	constexpr float		EFFECT_SPAWN_FRAME = 30.0f;														//エフェクトを発生させるアニメーションフレーム
+
 	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
 
 	constexpr int		DAMAGE_TIME = 15;																//ダメージ状態の継続時間
@@ -42,6 +44,8 @@ namespace {
 
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 5.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
+
+	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boar/Boar.mv1");							//モデルファイルパス
 }
@@ -75,6 +79,8 @@ void Boar::Init() {
 	m_DamageTime = 0;									//ダメージ処理の継続時間
 
 	m_AttackTime = 0;									//攻撃継続時間
+
+	m_DeathIdelTime;									//死亡待機時間
 
 	for (int Index = 0; Index <= FRAME_NUM; Index++) {
 		FRAME_DATA FrameData;
@@ -223,6 +229,16 @@ void Boar::AttackIdel() {
 		//攻撃状態へ
 		m_State = ATTACK;
 	}
+	if (m_AnimeData.Frame> EFFECT_SPAWN_FRAME) {
+		//エフェクト発生判定オン
+		m_IsEffect = true;
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
 }
 //攻撃
 void Boar::Attack() {
@@ -242,14 +258,6 @@ void Boar::Attack() {
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
 		}
-		//エフェクト発生判定オン
-		m_IsEffect = true;
-		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//方向ベクトルを取得
 		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
 		// 最後の方向を保存
@@ -315,8 +323,23 @@ void Boar::Death() {
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
-		//生存フラグをオフ
-		m_IsActive = false;
+		//死亡後の待機時間が経過したらオブジェクトを無効化
+		if (m_DeathIdelTime > DEATH_TIME) {
+			//生存フラグをオフ
+			m_IsActive = false;
+			//エフェクト発生判定オン
+			m_IsEffect = true;
+			//指定ボーンの座標取得
+			VECTOR Pos = GetFramePos(m_Hndl, HITPS);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		}
+		else {
+			//死亡後の経過時間を加算
+			m_DeathIdelTime++;
+		}
 	}
 }
 //ダメージ

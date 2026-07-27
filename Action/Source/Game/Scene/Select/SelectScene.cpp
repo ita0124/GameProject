@@ -46,8 +46,6 @@ int SelectScene::Loop() {
 		if (Fade::IsEndIn()) {
 			//ƒ^ƒO‚ğSTEP‚Éİ’è
 			m_ID = STEP;
-			//BGM‚ğŒÄ‚Ño‚·
-			SoundManager::Play(SoundManager::TagID::BGM_SELECT, DX_PLAYTYPE_LOOP);
 		}
 		break;
 

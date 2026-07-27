@@ -111,7 +111,7 @@ void MobEnemyManager::Load() {
 void MobEnemyManager::Draw() {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		//null‚È‚çs‚í‚È‚¢
-		if (m_MobEnemy[MobEnemyIndex] != nullptr) {
+		if (m_MobEnemy[MobEnemyIndex] != nullptr && m_MobEnemy[MobEnemyIndex]->GetIsActive()) {
 			m_MobEnemy[MobEnemyIndex]->Draw();
 		}
 	}
@@ -120,7 +120,7 @@ void MobEnemyManager::Draw() {
 void MobEnemyManager::Step() {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		//null‚È‚çs‚í‚È‚¢
-		if (m_MobEnemy[MobEnemyIndex] != nullptr) {
+		if (m_MobEnemy[MobEnemyIndex] != nullptr&& m_MobEnemy[MobEnemyIndex]->GetIsActive()) {
 			m_MobEnemy[MobEnemyIndex]->Step();
 		}
 	}
@@ -129,7 +129,7 @@ void MobEnemyManager::Step() {
 void MobEnemyManager::Update() {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		//null‚È‚çs‚í‚È‚¢
-		if (m_MobEnemy[MobEnemyIndex] != nullptr) {
+		if (m_MobEnemy[MobEnemyIndex] != nullptr && m_MobEnemy[MobEnemyIndex]->GetIsActive()) {
 			m_MobEnemy[MobEnemyIndex]->Update();
 		}
 	}

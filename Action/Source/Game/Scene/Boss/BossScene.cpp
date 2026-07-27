@@ -68,6 +68,8 @@ int	BossScene::Loop() {
 		if (Fade::IsEndIn()) {
 			//状態をSTEPに
 			m_ID = STEP;
+			//BGMを呼び出す
+			SoundManager::Play(SoundManager::TagID::BGM_GAMEMAIN, DX_PLAYTYPE_LOOP);
 		}
 		break;
 		//毎フレーム呼び出す処理を行う
@@ -91,6 +93,8 @@ int	BossScene::Loop() {
 		break;
 		//データ破棄を行う
 	case END:
+		//音楽停止
+		SoundManager::AllStop();
 		//データ破棄処理管理関数を呼び出す
 		Exit();
 		//状態をINITに
@@ -263,6 +267,7 @@ int BossScene::Step() {
 		}
 		break;
 	}
+	m_Player.SetAttackTarget(&m_Boss);
 	PlayerStep();
 
 	float ShadowPos = 500.0f;

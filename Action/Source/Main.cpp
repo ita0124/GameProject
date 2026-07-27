@@ -21,7 +21,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 #ifndef _DEBUG
 	// リリース版はログを出さない
 	SetOutApplicationLogValidFlag(false);
-#endif
+#endif // DEBUG
 
 	//ウィンドウ名設定
 	SetWindowText("ActionGame");
@@ -57,7 +57,7 @@ int  WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	float	Pers = 60.0f * DX_PI_F / 180.0f;
 	SetupCamera_Perspective(Pers);
 
-	constexpr int EFFECTNUM = 10;
+	constexpr int EFFECTNUM = 100;
 	constexpr int PARTICLENUM = 1000;
 	//第一:エフェクト総数
 	//第二:パーティクル総数

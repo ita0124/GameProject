@@ -14,6 +14,8 @@ constexpr const char* FilePath[MyEffeckseer::EFFECTID::EFFECT_NUM] = {
 	"Data/Effect/Effect/8tktk02Blow3.efk",
 	"Data/Effect/Effect/9LossOfBlood.efk",
 	"Data/Effect/Effect/10tktk02Blow2.efk",
+	"Data/Effect/Effect/11Simple_Sprite_BillBoard.efk",
+	"Data/Effect/Effect/12Simple_SpawnMethod.efk",
 };
 
 //コンストラクタ

@@ -25,7 +25,9 @@ namespace {
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;										//通常移動時の回転速度
-	constexpr float		NORMAL_ATTACK_MOVE_ROTATE_SPEED = 0.1f;									//攻撃移動時の回転速度
+	constexpr float		NORMAL_ATTACK1_MOVE_ROTATE_SPEED = 1.0f;								//通常攻撃１段目の回転速度
+	constexpr float		NORMAL_ATTACK2_MOVE_ROTATE_SPEED = 0.1f;								//通常攻撃２段目の回転速度
+	constexpr float		NORMAL_ATTACK3_MOVE_ROTATE_SPEED = 0.25f;								//通常攻撃３段目の回転速度
 
 	constexpr float		ROLLING_SUB_STAMINA = 10.0f;											//ローリング時のスタミナ減算値
 
@@ -136,7 +138,6 @@ void Player::Init() {
 	for (int Index = 0; Index < NORMAL_ATTACK_MAX; Index++) {
 		m_IsNextNormalAttack[Index] = false;	//通常攻撃の次の段数に移行するか
 		m_AttackMoveVec[Index] = VZERO;			//攻撃進行方向
-		m_AttackRot[Index] = 0.0f;				//攻撃方向角度
 		m_IsSetAttackMoveVec[Index] = true;		//攻撃進行方向を設定したか
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
@@ -217,6 +218,10 @@ void Player::HitCalc(ObjectBase* _Object) {
 		m_IsParrySucess = true;
 		//スタミナを回復
 		m_Stamina += PointerEnemy->GetPower() / 2;
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_SHIELD)) {
+			SoundManager::Play(SoundManager::TagID::SE_SHIELD);
+		}
 	}
 	//ガードの当たりがオン
 	else if (m_IsGuardCollision) {
@@ -230,6 +235,16 @@ void Player::HitCalc(ObjectBase* _Object) {
 		float KnockBackPower = PointerEnemy->GetPower() * GUARD_DAMAGE_TAKEN_MULT;
 		//ノックバックデータ数値代入
 		SetKnockBackData(PointerEnemy->GetPos());
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPAWNMETHOD, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_HIT)) {
+			SoundManager::Play(SoundManager::TagID::SE_HIT);
+		}
 	}
 	else {
 		//HPを消費
@@ -242,6 +257,16 @@ void Player::HitCalc(ObjectBase* _Object) {
 		float KnockBackPower = PointerEnemy->GetPower();
 		//ノックバックデータ数値代入
 		SetKnockBackData(PointerEnemy->GetPos());
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPAWNMETHOD, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_HIT)) {
+			SoundManager::Play(SoundManager::TagID::SE_HIT);
+		}
 	}
 	//当たった
 	m_IsHit = true;
@@ -571,6 +596,8 @@ void Player::NormalAttack1() {
 		m_Power = NORMAL_ATTACK1_POWER;
 		//敵へ与えるノックバックの強さ設定
 		m_KnockBackPower = NORMAL_ATTACK1_BACkK_POWER;
+		//攻撃回転補間速度を設定
+		m_AttackRotationSpeed = NORMAL_ATTACK1_MOVE_ROTATE_SPEED;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -678,6 +705,8 @@ void Player::NormalAttack2() {
 		m_Power = NORAML_ATTACK2_POWER;
 		//敵へ与えるノックバックの強さ設定
 		m_KnockBackPower = NORMAL_ATTACK2_BACkK_POWER;
+		//攻撃回転補間速度を設定
+		m_AttackRotationSpeed = NORMAL_ATTACK2_MOVE_ROTATE_SPEED;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -787,6 +816,8 @@ void Player::NormalAttack3() {
 		m_Power = NORAML_ATTACK3_POWER;
 		//敵へ与えるノックバックの強さ設定
 		m_KnockBackPower = NORMAL_ATTACK3_BACkK_POWER;
+		//攻撃回転補間速度を設定
+		m_AttackRotationSpeed = NORMAL_ATTACK3_MOVE_ROTATE_SPEED;
 		//サウンドリクエスト
 		SoundManager::Play(SoundManager::TagID::SE_ATK);
 	}
@@ -967,7 +998,7 @@ void Player::AttackMoveCalc(int _Index) {
 	//方向ベクトルを反転
 	AttackMoveVec = VScale(AttackMoveVec, -1.0f);
 	//移動方向を向く
-	UpdateRotation(AttackMoveVec, NORMAL_ATTACK_MOVE_ROTATE_SPEED);
+	UpdateRotation(AttackMoveVec, m_AttackRotationSpeed);
 }
 //スタミナ処理
 void Player::StaminaManager() {

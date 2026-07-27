@@ -45,6 +45,8 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 5.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
+	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
+
 	constexpr float		FIRST_JUMP_POWER = 2.0f;														//初回ジャンプ力
 	constexpr float		JUMP_POWER_MAX = -7.5f;															//ジャンプ速度の下限
 	constexpr float		GRAVITY = -0.025f;																//重力
@@ -86,6 +88,8 @@ void Wolf::Init() {
 	m_AttackIdelTime = 0;								//攻撃へ移行するまでの経過時間
 
 	m_JumpPower = 0;									//ジャンプ力計算
+
+	m_DeathIdelTime = 0;								//死亡待機時間
 
 	for (int Index = 0; Index <= FRAME_NUM; Index++) {
 		FRAME_DATA FrameData;
@@ -365,8 +369,21 @@ void Wolf::Death() {
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
-		//生存フラグをオフ
-		m_IsActive = false;
+		//死亡後の待機時間が経過したらオブジェクトを無効化
+		if (m_DeathIdelTime > DEATH_TIME) {
+			//生存フラグをオフ
+			m_IsActive = false;
+			//指定ボーンの座標取得
+			VECTOR Pos = GetFramePos(m_Hndl,HITPS);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		}
+		else {
+			//死亡後の経過時間を加算
+			m_DeathIdelTime++;
+		}
 	}
 }
 //ダメージ

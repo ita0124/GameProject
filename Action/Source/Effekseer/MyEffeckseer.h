@@ -15,6 +15,8 @@ public:
 		TKTK02BLOW3,				//“Ëi”­ŽË
 		PIERRE02LOSSOFBLOOD,		//“G”í’e
 		TKTK02BLOW2,				//“G•KŽE
+		SIMPLE_SPRITE_BILLBOARD,	//“GŽ€–S
+		SIMPLE_SPAWNMETHOD,			//ƒqƒbƒg
 
 		EFFECT_NUM
 	};
