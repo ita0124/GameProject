@@ -9,14 +9,21 @@ namespace {
 }
 
 class MobEnemyManager {
-private:
-	MobEnemyBase* m_MobEnemy[MOB_ENEMY_MAX];
+public:
+	enum TagMapKinds {
+		MAP1,
+		MAP2,
 
+		MAP_NUM
+	};
+
+	MobEnemyBase* m_MobEnemy[MOB_ENEMY_MAX];
+private:
 	int		m_MobEnemyID[MOB_ENEMY_MAX][MOB_ENEMY_ID];							//出現させるモブ敵を指定するデータをcsvから受け取り保存する
 	float	m_RequestData[MOB_ENEMY_MAX][MOB_ENEMY_REQUEST_DATA_MAX];			//リクエスト時に必要なデータをcsvから受け取り保存する
 public:
 	//初期化処理
-	void Init();
+	void Init(int _Map = 0);
 	//データ破棄処理
 	void Exit();
 	//データ読み込み処理

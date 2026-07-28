@@ -1,12 +1,19 @@
 #include "MobEnemyManager.h"
 
 namespace {
-	constexpr char MOB_ENEMY_ID_FILE_CSV_PATH[] = ("Data/CSV/MobEnemy/MobEnemyId.csv");			//モブ敵IDCSVファイルパス
-	constexpr char MOB_ENEMY_DATA_FILE_CSV_PATH[] = ("Data/CSV/MobEnemy/MobEnemyData.csv");		//モブ敵データCSVファイルパス
+	constexpr const char* MOB_ENEMY_ID_FILE_CSV_PATH[MobEnemyManager::TagMapKinds::MAP_NUM] = {			//モブ敵IDCSVファイルパス
+	"Data/CSV/MobEnemy1/MobEnemyId.csv",
+	"Data/CSV/MobEnemy2/MobEnemyId.csv",
+	};
+
+	constexpr const char* MOB_ENEMY_DATA_FILE_CSV_PATH[MobEnemyManager::TagMapKinds::MAP_NUM] = {		//モブ敵データCSVファイルパス
+	"Data/CSV/MobEnemy1/MobEnemyData.csv",
+	"Data/CSV/MobEnemy2/MobEnemyData.csv",
+	};
 }
 
 //初期化処理
-void MobEnemyManager::Init() {
+void MobEnemyManager::Init(int _Map) {
 	//初期化
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		m_MobEnemy[Index] = nullptr;
@@ -15,7 +22,7 @@ void MobEnemyManager::Init() {
 	//CSVファイルからデータを読む込む
 	FILE* MobEnemyIdFile;
 	//ファイルを開く
-	if (fopen_s(&MobEnemyIdFile, MOB_ENEMY_ID_FILE_CSV_PATH, "r") != 0)return;
+	if (fopen_s(&MobEnemyIdFile, MOB_ENEMY_ID_FILE_CSV_PATH[_Map], "r") != 0)return;
 	//データ取得
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		fscanf_s(MobEnemyIdFile, "%d", &m_MobEnemyID[MobEnemyIndex][0]);
@@ -48,7 +55,7 @@ void MobEnemyManager::Init() {
 	//CSVファイルからデータを読む込む
 	FILE* MobEnemyDataFile;
 	//ファイルを開く
-	if (fopen_s(&MobEnemyDataFile, MOB_ENEMY_DATA_FILE_CSV_PATH, "r") != 0)return;
+	if (fopen_s(&MobEnemyDataFile, MOB_ENEMY_DATA_FILE_CSV_PATH[_Map], "r") != 0)return;
 	//データ取得
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		for (int RequestDataIndex = 0; RequestDataIndex < MOB_ENEMY_REQUEST_DATA_MAX; RequestDataIndex++) {
@@ -120,7 +127,7 @@ void MobEnemyManager::Draw() {
 void MobEnemyManager::Step() {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		//nullなら行わない
-		if (m_MobEnemy[MobEnemyIndex] != nullptr&& m_MobEnemy[MobEnemyIndex]->GetIsActive()) {
+		if (m_MobEnemy[MobEnemyIndex] != nullptr && m_MobEnemy[MobEnemyIndex]->GetIsActive()) {
 			m_MobEnemy[MobEnemyIndex]->Step();
 		}
 	}

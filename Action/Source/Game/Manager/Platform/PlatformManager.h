@@ -13,6 +13,13 @@ namespace {
 }
 
 class PlatformManager {
+public:
+	enum TagMapKinds {
+		MAP1,
+		MAP2,
+
+		MAP_NUM
+	};
 private:
 	PlatformBase* m_Platform[PLATFORM_MAX];
 
@@ -20,7 +27,7 @@ private:
 	float	m_RequestData[PLATFORM_MAX][PLATFORM_REQUEST_DATA_MAX];			//リクエスト時に必要なデータをcsvから受け取り保存する
 public:
 	//初期化処理
-	void Init();
+	void Init(int _Map = 0);
 	//データ破棄処理
 	void Exit();
 	//データ読み込み処理
@@ -36,5 +43,5 @@ public:
 	//当たり判定後の処理(当たっていない場合)
 	void NotHitCalc(const int& _Num, ObjectBase* _Object);
 	//指定した配列番号のメンバ変数を返す
-	PlatformBase& GetPlatform(const int &_Num) { return *m_Platform[_Num]; }
+	PlatformBase& GetPlatform(const int& _Num) { return *m_Platform[_Num]; }
 };

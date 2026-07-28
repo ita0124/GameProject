@@ -143,8 +143,11 @@ void StageScene::Init() {
 	m_HitPoints.Init();								//体力UIクラス
 	m_SkillPoints.Init();							//スキルポイントUIクラス
 	m_Stamina.Init();								//スタミナUIクラス
-	m_PlatformManager.Init();						//プラットフォームマネージャークラス
-	m_MobEnemyManager.Init();						//モブ敵マネージャークラス
+
+	const int Map = 1;
+
+	m_PlatformManager.Init(Map);					//プラットフォームマネージャークラス
+	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
 }
 //データ破棄処理管理関数

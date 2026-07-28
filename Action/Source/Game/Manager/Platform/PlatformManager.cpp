@@ -1,12 +1,19 @@
 #include "PlatformManager.h"
 
 namespace {
-	constexpr char PLATFORM_ID_FILE_CSV_PATH[] = ("Data/CSV/Platform/PlatformId.csv");		//プラットフォームIDCSVファイルパス
-	constexpr char PLATFORM_DATA_FILE_CSV_PATH[] = ("Data/CSV/Platform/PlatformData.csv");	//プラットフォームデータCSVファイルパス
+	constexpr const char* PLATFORM_ID_FILE_CSV_PATH[PlatformManager::TagMapKinds::MAP_NUM] = {			//プラットフォームIDCSVファイルパス
+	"Data/CSV/Platform1/PlatformId.csv",
+	"Data/CSV/Platform2/PlatformId.csv",
+	};
+
+	constexpr const char* PLATFORM_DATA_FILE_CSV_PATH[PlatformManager::TagMapKinds::MAP_NUM] = {		//プラットフォームデータCSVファイルパス
+	"Data/CSV/Platform1/PlatformData.csv",
+	"Data/CSV/Platform2/PlatformData.csv",
+	};
 }
 
 //初期化処理
-void PlatformManager::Init() {
+void PlatformManager::Init(int _Map) {
 	//初期化
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		m_Platform[Index] = nullptr;
@@ -15,7 +22,7 @@ void PlatformManager::Init() {
 	//CSVファイルからデータを読む込む
 	FILE* PlatformIdFile;
 	//ファイルを開く
-	if (fopen_s(&PlatformIdFile, PLATFORM_ID_FILE_CSV_PATH, "r") != 0)return;
+	if (fopen_s(&PlatformIdFile, PLATFORM_ID_FILE_CSV_PATH[_Map], "r") != 0)return;
 	//データ取得
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		fscanf_s(PlatformIdFile, "%d", &m_PlatformID[PlatformIndex][0]);
@@ -64,7 +71,7 @@ void PlatformManager::Init() {
 	//CSVファイルからデータを読む込む
 	FILE* PlatformDataFile;
 	//ファイルを開く
-	if (fopen_s(&PlatformDataFile, PLATFORM_DATA_FILE_CSV_PATH, "r") != 0)return;
+	if (fopen_s(&PlatformDataFile, PLATFORM_DATA_FILE_CSV_PATH[_Map], "r") != 0)return;
 	//データ取得
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		for (int RequestDataIndex = 0; RequestDataIndex < PLATFORM_REQUEST_DATA_MAX; RequestDataIndex++) {
