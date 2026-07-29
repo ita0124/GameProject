@@ -1,6 +1,7 @@
 #include "InputManager.h"
 #include "InputKey.h"
 #include "InputPad.h"
+#include "InputMouse.h"
 
 using namespace std;
 
@@ -39,11 +40,15 @@ void InputManager::Init() {
 	m_LeftStickY = 0.0f;				//左スティックY
 	m_RightStickX = 0.0f;				//右スティックX
 	m_RightStickY = 0.0f;				//右スティックY
+
+	InputKey::Init();
+	InputMouse::Init();
 }
 //更新処理
 void InputManager::Update() {
 	InputKey::Update();
 	InputPad::Update();
+	InputMouse::Update();
 	// 前回のデータ更新
 	m_OldBuf = m_NowBuf;
 	// 一度データを0にする
@@ -57,19 +62,19 @@ void InputManager::Update() {
 		m_NowBuf |= INPUT_JUMP;
 	}
 	//ガード
-	if (InputKey::IsPushKeyRep(KEY_INPUT_K) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_K) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputMouse::IsPushMouseRep(MOUSE_INPUT_RIGHT)) {
 		m_NowBuf |= INPUT_GUARD;
 	}
 	//スキル攻撃
-	if (InputKey::IsPushKeyRep(KEY_INPUT_L) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_L) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y) || InputMouse::IsPushMouseRep(MOUSE_INPUT_MIDDLE)) {
 		m_NowBuf |= INPUT_SKILL_ATTACK;
 	}
 	//通常攻撃
-	if (InputKey::IsPushKeyRep(KEY_INPUT_J) || InputPad::IsPushPadRep(XINPUT_BUTTON_B)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_J) || InputPad::IsPushPadRep(XINPUT_BUTTON_B) || InputMouse::IsPushMouseRep(MOUSE_INPUT_LEFT)) {
 		m_NowBuf |= INPUT_NORMAL_ATTACK;
 	}
 	//カメラチェンジ
-	if (InputKey::IsPushKeyRep(KEY_INPUT_C) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_THUMB)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_C) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_THUMB) ) {
 		m_NowBuf |= INPUT_CAMERA_CHANGE;
 	}
 }
@@ -148,6 +153,12 @@ float InputManager::GetRAnalogXInput(unsigned int _Num) {
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
 		m_RightStickX = -1.0f;
 	}
+	/*else if (InputMouse::GetPosX() > 0) {
+		m_RightStickX = 0.5f;
+	}
+	else if (InputMouse::GetPosX() < 0) {
+		m_RightStickX = -0.5f;
+	}*/
 	else {
 		m_RightStickX = 0.0f;
 	}
@@ -165,6 +176,12 @@ float InputManager::GetRAnalogYInput(unsigned int _Num) {
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_UP)) {
 		m_RightStickY = -1.0f;
 	}
+	/*else if (InputMouse::GetPosY() > 0) {
+		m_RightStickY = 0.5f;
+	}
+	else if (InputMouse::GetPosY() < 0) {
+		m_RightStickY = -0.5f;
+	}*/
 	else {
 		m_RightStickY = 0.0f;
 	}

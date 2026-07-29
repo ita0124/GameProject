@@ -1,14 +1,7 @@
 #pragma once
 #include <DxLib.h>
 
-constexpr int USE_PAD_NUM = 1;				//使用するコントローラーの数
-
-constexpr short THUMB_MAX = 32767;		//アナログスティックの最大強度
-
-constexpr float TRIGGER_MAX = 255.0f;	//トリガーの最大強度
-
-constexpr float ANALOG_MIN = 0.05f;
-
+constexpr int USE_PAD_NUM = 1;			//使用するコントローラーの数
 /*
 XInputボタン入力定義
 XINPUT_BUTTON_DPAD_UP			// デジタル方向ボタン上

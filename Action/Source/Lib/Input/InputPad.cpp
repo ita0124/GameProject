@@ -4,6 +4,14 @@ XINPUT_STATE InputPad::m_NowInput[USE_PAD_NUM];	//現フレームの入力情報
 
 XINPUT_STATE InputPad::m_OldInput[USE_PAD_NUM];	//現フレームの入力情報
 
+namespace {
+	constexpr short THUMB_MAX = 32767;		//アナログスティックの最大強度
+
+	constexpr float TRIGGER_MAX = 255.0f;	//トリガーの最大強度
+
+	constexpr float ANALOG_MIN = 0.05f;		//スティックのデッドゾーン
+}
+
 //パッド入力情報を更新
 void InputPad::Update() {
 	for (int i = 0; i < USE_PAD_NUM; i++) {

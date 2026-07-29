@@ -205,6 +205,7 @@
     <ClCompile Include="Source\Lib\FPS\FPS.cpp" />
     <ClCompile Include="Source\Lib\Input\InputKey.cpp" />
     <ClCompile Include="Source\Lib\Input\InputManager.cpp" />
+    <ClCompile Include="Source\Lib\Input\InputMouse.cpp" />
     <ClCompile Include="Source\Lib\Input\InputPad.cpp" />
     <ClCompile Include="Source\Lib\LoadMaterial\LoadMaterial.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="Source\Lib\FPS\FPS.h" />
     <ClInclude Include="Source\Lib\Input\InputKey.h" />
     <ClInclude Include="Source\Lib\Input\InputManager.h" />
+    <ClInclude Include="Source\Lib\Input\InputMouse.h" />
     <ClInclude Include="Source\Lib\Input\InputPad.h" />
     <ClInclude Include="Source\Lib\LoadMaterial\LoadMaterial.h" />
   </ItemGroup>

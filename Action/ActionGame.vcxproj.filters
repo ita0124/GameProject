@@ -542,6 +542,9 @@
     <ClCompile Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Lib\Input\InputMouse.cpp">
+      <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -702,6 +705,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Lib\Input\InputMouse.h">
+      <Filter>ヘッダー ファイル\Lib\Input</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

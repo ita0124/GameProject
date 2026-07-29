@@ -1,6 +1,5 @@
 #include "InputKey.h"
 
-
 char InputKey::m_NowKey[KEY_MAX];
 char InputKey::m_OldKey[KEY_MAX];
 
