@@ -20,9 +20,6 @@ private:
 	static unsigned int m_NowBuf;
 	static unsigned int m_OldBuf;
 
-	static std::vector<int>m_Key;		//キーボード用
-	static std::vector<int>m_Pad;		//コントローラー用
-
 	static float m_LeftStickX;			//左スティックX
 	static float m_LeftStickY;			//左スティックY
 	static float m_RightStickX;			//右スティックX

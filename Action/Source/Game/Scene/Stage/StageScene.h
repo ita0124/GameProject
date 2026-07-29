@@ -11,6 +11,7 @@
 #include "Game/Manager/MobEnemy/MobEnemyManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/HitCheck/HitCheck.h"
+#include "Game/Result/ResultNum.h"
 
 class StageScene :public SceneBase {
 private:
@@ -26,6 +27,8 @@ private:
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 
 	int m_ShadowHndl;					//影生成用のハンドル
+
+	int m_Result;
 
 	//ゲーム内の状態管理
 	enum TagGameState {

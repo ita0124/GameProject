@@ -123,7 +123,7 @@ int ResultScene::Step() {
 
 	m_Result.Step();
 
-	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_JUMP)) {
 		Res = 1;
 	}
 	return Res;

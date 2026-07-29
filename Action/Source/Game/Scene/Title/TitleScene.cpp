@@ -114,7 +114,7 @@ int TitleScene::Step() {
 
 	m_Title.Step();
 
-	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_NORMAL_ATTACK)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_JUMP)) {
 		Res = 1;
 	}
 

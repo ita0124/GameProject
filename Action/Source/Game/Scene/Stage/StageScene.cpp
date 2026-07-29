@@ -87,7 +87,7 @@ int StageScene::Loop() {
 		//タグをINITに設定
 		m_ID = INIT;
 
-		Res = 1;
+		Res = m_Result;
 		break;
 	}
 	//0以外の数値が入ると次のシーンへ以降する
@@ -149,6 +149,8 @@ void StageScene::Init() {
 	m_PlatformManager.Init(Map);					//プラットフォームマネージャークラス
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
+
+	m_Result = 0;
 }
 //データ破棄処理管理関数
 void StageScene::Exit() {
@@ -245,20 +247,24 @@ int StageScene::Step() {
 	//モブ敵と足場の当たり判定
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 
-	//終了位置設定　後にゴールオブジェクトを追加する
+	if (!m_Player.GetIsActive()) {
+		m_Result = 1;
+		ResultNum::SetNum(m_Result);
+	}
+	//終了位置設定
 	VECTOR Pos = m_Player.GetPos();
 	if (m_Player.GetIsGoal()) {
-		Res = 1;
+		m_Result = 2;
 	}
 	if (CheckHitKey(KEY_INPUT_N)) {
-		Res = 1;
+		m_Result = 2;
 	}
 
 	StatusStep();
 
 	Update();
 
-	return Res;
+	return m_Result;
 }
 //モデル更新処理
 void StageScene::Update() {

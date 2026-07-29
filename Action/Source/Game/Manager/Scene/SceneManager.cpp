@@ -51,7 +51,11 @@ int SceneManager::Loop() {
 		break;
 	case STAGE:
 		//I‚í‚ê‚ÎŽŸ‚Ö
-		if (m_Scene[STAGE]->Loop() != 0) {
+		Res = m_Scene[STAGE]->Loop();
+		if (Res == 1) {
+			m_ID = RESULT;
+		}
+		if (Res == 2) {
 			m_ID = BOSS;
 		}
 		break;

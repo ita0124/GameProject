@@ -7,9 +7,6 @@ using namespace std;
 unsigned int InputManager::m_NowBuf;
 unsigned int InputManager::m_OldBuf;
 
-vector<int>InputManager::m_Key;
-vector<int>InputManager::m_Pad;
-
 float InputManager::m_LeftStickX;			//左スティックX
 float InputManager::m_LeftStickY;			//左スティックY
 float InputManager::m_RightStickX;			//右スティックX
@@ -17,10 +14,10 @@ float InputManager::m_RightStickY;			//右スティックY
 
 constexpr int KEY_INPUT[InputManager::INPUT_MAX] = {
 	KEY_INPUT_R,					//ローリング
-	KEY_INPUT_Z,					//ジャンプ
-	KEY_INPUT_F,					//ガード
-	KEY_INPUT_Q,					//スキル攻撃
-	KEY_INPUT_SPACE,				//通常攻撃
+	KEY_INPUT_SPACE,				//ジャンプ
+	KEY_INPUT_K,					//ガード
+	KEY_INPUT_L,					//スキル攻撃
+	KEY_INPUT_J,					//通常攻撃
 	KEY_INPUT_C,					//カメラチェンジ
 };
 
@@ -37,11 +34,6 @@ constexpr int PAD_INPUT[InputManager::INPUT_MAX] = {
 void InputManager::Init() {
 	m_NowBuf = 0;
 	m_OldBuf = 0;
-
-	for (int Index = 0;Index < INPUT_MAX;Index++) {
-		m_Key.push_back(KEY_INPUT[Index]);
-		m_Pad.push_back(PAD_INPUT[Index]);
-	}
 
 	m_LeftStickX = 0.0f;				//左スティックX
 	m_LeftStickY = 0.0f;				//左スティックY
@@ -61,19 +53,19 @@ void InputManager::Update() {
 		m_NowBuf |= INPUT_ROLLING;
 	}
 	//ジャンプ
-	if (InputKey::IsPushKeyRep(KEY_INPUT_Z) || InputPad::IsPushPadRep(XINPUT_BUTTON_A)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_SPACE) || InputPad::IsPushPadRep(XINPUT_BUTTON_A)) {
 		m_NowBuf |= INPUT_JUMP;
 	}
 	//ガード
-	if (InputKey::IsPushKeyRep(KEY_INPUT_F) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_K) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER)) {
 		m_NowBuf |= INPUT_GUARD;
 	}
 	//スキル攻撃
-	if (InputKey::IsPushKeyRep(KEY_INPUT_Q) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_L) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y)) {
 		m_NowBuf |= INPUT_SKILL_ATTACK;
 	}
 	//通常攻撃
-	if (InputKey::IsPushKeyRep(KEY_INPUT_SPACE) || InputPad::IsPushPadRep(XINPUT_BUTTON_B)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_J) || InputPad::IsPushPadRep(XINPUT_BUTTON_B)) {
 		m_NowBuf |= INPUT_NORMAL_ATTACK;
 	}
 	//カメラチェンジ
@@ -89,15 +81,6 @@ bool InputManager::IsPushRep(unsigned char _Button, unsigned int _Num) {
 	else {
 		return false;
 	}
-	/*if (InputPad::IsPushPadRep(_Button, _Num)) {
-		return true;
-	}
-	else if (InputKey::IsPushKeyRep(_Button)) {
-		return true;
-	}
-	else {
-		return false;
-	}*/
 }
 
 //トリガー入力情報取得
@@ -108,15 +91,6 @@ bool InputManager::IsPushTrg(unsigned char _Button, unsigned int _Num) {
 	else {
 		return false;
 	}
-	/*if (InputPad::IsPushPadTrg(_Button, _Num)) {
-		return true;
-	}
-	else if (InputKey::IsPushKeyTrg(_Button)) {
-		return true;
-	}
-	else {
-		return false;
-	}*/
 }
 
 //離したかの情報取得
@@ -127,15 +101,6 @@ bool InputManager::IsPushLet(unsigned char _Button, unsigned int _Num) {
 	else {
 		return false;
 	}
-	/*if (InputPad::IsPushPadLet(_Button, _Num)) {
-		return true;
-	}
-	else if (InputKey::IsPushKeyLet(_Button)) {
-		return true;
-	}
-	else {
-		return false;
-	}*/
 }
 
 //左アナログスティックのX軸の入力
