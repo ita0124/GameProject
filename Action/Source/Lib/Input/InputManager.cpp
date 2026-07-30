@@ -154,10 +154,10 @@ float InputManager::GetRAnalogXInput(unsigned int _Num) {
 		m_RightStickX = -1.0f;
 	}
 	/*else if (InputMouse::GetPosX() > 0) {
-		m_RightStickX = 0.5f;
+		m_RightStickX = 1.0f;
 	}
 	else if (InputMouse::GetPosX() < 0) {
-		m_RightStickX = -0.5f;
+		m_RightStickX = -1.0f;
 	}*/
 	else {
 		m_RightStickX = 0.0f;
@@ -177,10 +177,10 @@ float InputManager::GetRAnalogYInput(unsigned int _Num) {
 		m_RightStickY = -1.0f;
 	}
 	/*else if (InputMouse::GetPosY() > 0) {
-		m_RightStickY = 0.5f;
+		m_RightStickY = 1.0f;
 	}
 	else if (InputMouse::GetPosY() < 0) {
-		m_RightStickY = -0.5f;
+		m_RightStickY = -1.0f;
 	}*/
 	else {
 		m_RightStickY = 0.0f;

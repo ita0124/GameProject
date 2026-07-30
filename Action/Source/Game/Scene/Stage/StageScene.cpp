@@ -144,7 +144,7 @@ void StageScene::Init() {
 	m_SkillPoints.Init();							//スキルポイントUIクラス
 	m_Stamina.Init();								//スタミナUIクラス
 
-	const int Map = 1;
+	const int Map = 0;
 
 	m_PlatformManager.Init(Map);					//プラットフォームマネージャークラス
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス

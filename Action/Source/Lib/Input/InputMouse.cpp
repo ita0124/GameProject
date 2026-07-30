@@ -38,7 +38,7 @@ void InputMouse::Update() {
 	m_OldPosY = m_NowPosY;
 	//現在のマウス入力情報を取得
 	m_NowMouse = GetMouseInput();
-	//マウスの位置を後進
+	//マウスの位置を更新
 	GetMousePoint(&m_NowPosX, &m_NowPosY);
 }
 

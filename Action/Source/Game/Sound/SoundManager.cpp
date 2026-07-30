@@ -47,7 +47,11 @@ void SoundManager::Load() {
 //âπó í≤êﬂ
 void SoundManager::Volume() {
 	for (int Index = SE_ATK; Index < NUM_MAX; Index++) {
-		ChangeVolumeSoundMem(255 * 0 / 100, m_Hndl[Index]);
+		ChangeVolumeSoundMem(255 * 100 / 100, m_Hndl[Index]);
+	}
+
+	for (int Index = BGM_TITLE; Index < NUM_MAX; Index++) {
+		ChangeVolumeSoundMem(255 * 75 / 100, m_Hndl[Index]);
 	}
 }
 
