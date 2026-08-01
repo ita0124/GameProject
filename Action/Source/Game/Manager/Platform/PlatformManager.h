@@ -2,14 +2,15 @@
 #include "Game/Object/Platform/NormalPlatform/NormalPlatform.h"
 #include "Game/Object/Platform/MovingPlatform/MovingPlatform.h"
 #include "Game/Object/Platform/FallingPlatform/FallingPlatform.h"
-#include "Game/Object/Platform/WallPlatfprm/WallPlatfprm.h"
+#include "Game/Object/Platform/WallPlatform/WallPlatform.h"
 #include "Game/Object/Platform/RespawnPlatform/RespawnPlatform.h"
 #include "Game/Object/Platform/GoalPlatform/GoalPlatform.h"
+#include "Game/Object/Platform/BarrierPlatform/BarrierPlatform.h"
 
 namespace {
 	constexpr int PLATFORM_MAX = 100;
 	constexpr int PLATFORM_ID = 1;
-	constexpr int PLATFORM_REQUEST_DATA_MAX = 16;
+	constexpr int PLATFORM_REQUEST_DATA_MAX = 17;
 }
 
 class PlatformManager {

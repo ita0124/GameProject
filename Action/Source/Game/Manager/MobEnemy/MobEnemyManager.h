@@ -5,7 +5,7 @@
 namespace {
 	constexpr int MOB_ENEMY_MAX = 25;
 	constexpr int MOB_ENEMY_ID = 1;
-	constexpr int MOB_ENEMY_REQUEST_DATA_MAX = 12;
+	constexpr int MOB_ENEMY_REQUEST_DATA_MAX = 13;
 }
 
 class MobEnemyManager {

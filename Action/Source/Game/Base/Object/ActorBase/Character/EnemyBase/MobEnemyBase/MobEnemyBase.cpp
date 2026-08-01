@@ -17,22 +17,25 @@ MobEnemyBase::~MobEnemyBase() {
 void MobEnemyBase::Init() {
 	ObjectBase::Init();
 
-	memset(&m_NormalRequestData, 0, sizeof(REQUEST_DATA));					//リクエスト時に最低限必要なデータ構造体を初期化
+	memset(&m_RequestData, 0, sizeof(REQUEST_DATA));							//リクエスト時に最低限必要なデータ構造体を初期化
 
 	m_MobEnemyKinds = BOAR;														//足場オブジェクト種類を設定
+	m_GimmickType = -1;															//作用するギミックタイプ
 }
 //リクエスト
-void MobEnemyBase::Request(const REQUEST_DATA& _NormalRequestData) {
+void MobEnemyBase::Request(const REQUEST_DATA& _RequestData) {
 	//生存フラグオン
 	m_IsActive = true;
 	//座標情報設定
-	m_Pos = _NormalRequestData.Pos;
+	m_Pos = _RequestData.Pos;
 	//回転率情報設定
-	m_Rot = _NormalRequestData.Rot;
+	m_Rot = _RequestData.Rot;
 	//拡縮情報設定
-	m_Scale = _NormalRequestData.Scale;
+	m_Scale = _RequestData.Scale;
 	//サイズ情報設定
-	m_Size = _NormalRequestData.Size;
+	m_Size = _RequestData.Size;
+	//作用するギミックタイプ設定
+	m_GimmickType = _RequestData.GimmickType;
 }
 //重力処理
 void MobEnemyBase::GravityManager() {

@@ -381,6 +381,12 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\WallPlatform">
       <UniqueIdentifier>{ad8a673f-4af2-4791-9278-3ac69716d853}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\BarrierPlatform">
+      <UniqueIdentifier>{7012aee0-b5bc-4f5d-8292-6ff32ffa13e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\BarrierPlatform">
+      <UniqueIdentifier>{30766ade-1c0e-4c40-80bc-394d63d26d58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -539,11 +545,14 @@
     <ClCompile Include="Source\Lib\Input\InputManager.cpp">
       <Filter>ソース ファイル\Lib\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.cpp">
-      <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputMouse.cpp">
       <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\BarrierPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\WallPlatform\WallPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -703,11 +712,14 @@
     <ClInclude Include="Source\Lib\Input\InputManager.h">
       <Filter>ヘッダー ファイル\Lib\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.h">
-      <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputMouse.h">
       <Filter>ヘッダー ファイル\Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\BarrierPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\WallPlatform\WallPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
