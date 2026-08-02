@@ -2,11 +2,6 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 
 namespace {
-	constexpr VECTOR	INIT_POS = { -20.0f,0.0f,-80.0f };												//初期座標
-
-	constexpr float		RAD = 10.0f;																	//半径
-	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
-
 	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
@@ -64,10 +59,6 @@ void Boar::Init() {
 
 	m_Kinds = ENEMY;
 
-	m_Pos = INIT_POS;									//座標
-	m_Rad = RAD;										//半径
-	m_Size = BOSS_SIZE;									//ボックス当たり判定
-
 	m_HitPoints = HIT_POINTS;							//体力
 
 	m_IsPush = true;									//押し出し判定を行う
@@ -94,6 +85,11 @@ void Boar::Init() {
 //データ読み込み処理
 void Boar::Load() {
 	ObjectBase::Load(MODEL_FILE_PATH);
+	//設定されているギミックタイプが0以上なら
+	if (m_GimmickType >= 0) {
+		//体のマテリアルをマテリアル黒に変更
+		MV1SetTextureGraphHandle(m_Hndl, BODY, LoadMaterial::MATERIAL_BLACK, FALSE);
+	}
 }
 //毎フレーム呼び出す処理
 void Boar::Step() {
@@ -229,7 +225,7 @@ void Boar::AttackIdel() {
 		//攻撃状態へ
 		m_State = ATTACK;
 	}
-	if (m_AnimeData.Frame> EFFECT_SPAWN_FRAME) {
+	if (m_AnimeData.Frame > EFFECT_SPAWN_FRAME) {
 		//エフェクト発生判定オン
 		m_IsEffect = true;
 		//指定ボーンの座標取得

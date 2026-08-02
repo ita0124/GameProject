@@ -47,3 +47,5 @@ constexpr VECTOR VONE = { 1.0f,1.0f,1.0f };						//VECTORŒ^‚ğ‘S‚Ä1‚É(ƒXƒP[ƒ‹‚Ì
 constexpr int	DIV = 16;
 
 constexpr float	RADIAN_CALC = DX_PI_F / 180.0f;					//360Šp“x‚ğƒ‰ƒWƒAƒ“‚É•ÏŠ·‚·‚é‚Æ‚«‚Ég‚¤
+
+constexpr float	HALF = 0.5f;								//”¼•ª‚É‚µ‚½‚¢‚Æ‚«‚É

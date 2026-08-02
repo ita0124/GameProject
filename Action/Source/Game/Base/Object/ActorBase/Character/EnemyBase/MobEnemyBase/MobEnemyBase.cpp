@@ -34,6 +34,8 @@ void MobEnemyBase::Request(const REQUEST_DATA& _RequestData) {
 	m_Scale = _RequestData.Scale;
 	//サイズ情報設定
 	m_Size = _RequestData.Size;
+	//当たり判定半径設定
+	m_Rad = m_Size.x * HALF;
 	//作用するギミックタイプ設定
 	m_GimmickType = _RequestData.GimmickType;
 }

@@ -86,7 +86,6 @@ public:
 	enum Material {
 		BODY,					//‘Ì
 		FANG,					//‰å
-		OUTLINE,
 
 		MATERIAL_NUM
 	};
