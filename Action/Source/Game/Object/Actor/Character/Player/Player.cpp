@@ -43,7 +43,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK2_COLLISION_END = 10.0f;									//通常攻撃２段目の当たり判定終了フレーム
 	constexpr float		NORMAL_ATTACK2_TRANSITION = 17.0f;										//通常攻撃２段目から通常攻撃３段目に移行するフレーム
 	constexpr float		NORMAL_ATTACK3_COLLISION_START = 25.0f;									//通常攻撃３段目の当たり判定開始フレーム
-	constexpr float		NORMAL_ATTACK3_COLLISION_END = 30.0f;									//通常攻撃３段目の当たり判定終了フレーム
+	constexpr float		NORMAL_ATTACK3_COLLISION_END = 35.0f;									//通常攻撃３段目の当たり判定終了フレーム
 	constexpr float		NORMAL_ATTACK3_TRANSITION = 40.0f;										//通常攻撃３段目から通常攻撃１段目に移行するフレーム
 
 	constexpr float		SKILL_ATTACKPOWER = 150.0f;												//スキル攻撃時の攻撃力

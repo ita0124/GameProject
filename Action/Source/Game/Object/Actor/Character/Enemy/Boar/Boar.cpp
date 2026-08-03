@@ -100,6 +100,9 @@ void Boar::Step() {
 	}
 	m_PlatformVec = VZERO;
 
+	if (m_Pos.y <= -500) {
+		m_HitPoints = 0;
+	}
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;

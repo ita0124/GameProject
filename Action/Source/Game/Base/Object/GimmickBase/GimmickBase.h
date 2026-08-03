@@ -1,5 +1,7 @@
 #pragma once
 #include "Game/Base/Object/ObjectBase.h"
+#include "Game/Manager/MobEnemy/MobEnemyManager.h"
+#include "Game/Manager/Platform/PlatformManager.h"
 
 //ステージベースクラス
 class GimmickBase :public ObjectBase {
@@ -8,7 +10,7 @@ public:
 	enum TagGimmickKinds {
 		BARRIERACTIVATOR,
 
-		PLATFORM_NUM
+		GIMMICK_NUM
 	};
 protected:
 	//リクエスト時に必要なデータ構造体
@@ -33,6 +35,10 @@ public:
 	virtual ~GimmickBase();
 	//初期化処理
 	virtual void Init();
+	//毎フレーム呼び出す処理
+	virtual void Step() {};
+	//毎フレーム呼び出す処理
+	virtual void Step(MobEnemyManager _MobEnemyManager, PlatformManager _PlatformManager) {};
 	//リクエスト
 	void Request(const REQUEST_DATA& _RequestData);
 	//Get

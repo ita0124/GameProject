@@ -9,6 +9,7 @@
 #include "Game/UI/Stamina/Stamina.h"
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/MobEnemy/MobEnemyManager.h"
+#include "Game/Manager/Gimmick/GimmickManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/HitCheck/HitCheck.h"
 #include "Game/Result/ResultNum.h"
@@ -24,6 +25,7 @@ private:
 	Stamina			m_Stamina;			//スタミナUIクラス
 	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
 	MobEnemyManager	m_MobEnemyManager;	//モブ敵マネージャークラス
+	GimmickManager	m_GimmickManager;	//ギミックマネージャークラス
 	CameraManager	m_CameraManager;	//カメラマネージャークラス
 
 	int m_ShadowHndl;					//影生成用のハンドル

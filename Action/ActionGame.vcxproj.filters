@@ -399,6 +399,12 @@
     <Filter Include="ヘッダー ファイル\Game\Manager\GimmickManager">
       <UniqueIdentifier>{05d4e9d1-9340-4814-9240-fe3ccbe7f644}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Gimmick">
+      <UniqueIdentifier>{00fdcd3f-ce29-4015-b201-0f4cb292062e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Gimmick">
+      <UniqueIdentifier>{2d333373-3e2b-4487-a1b7-6cb285325010}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -569,6 +575,12 @@
     <ClCompile Include="Source\Game\Base\Object\GimmickBase\GimmickBase.cpp">
       <Filter>ソース ファイル\Game\Base\ObjectBase\GimmickBase</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.cpp">
+      <Filter>ソース ファイル\Game\Object\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\Gimmick\GimmickManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\GimmickManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -738,6 +750,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Base\Object\GimmickBase\GimmickBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\GimmickBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.h">
+      <Filter>ヘッダー ファイル\Game\Object\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\Gimmick\GimmickManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\GimmickManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "Game/Base/Object/ObjectBase.h"
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/MobEnemy/MobEnemyManager.h"
+#include "Game/Manager/Gimmick/GimmickManager.h"
 #include "Lib/DxLibFont/DxLibFont.h"
 
 class HitCheck {
@@ -17,6 +18,8 @@ public:
 	static void ObjectToField(ObjectBase& _Object, ObjectBase& _Field);
 	//オブジェクトと足場の当たり判定
 	static void ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager);
+	//オブジェクトとギミックの当たり判定
+	static void ObjectToGimmick(ObjectBase& _Object, GimmickManager& _GimmickManager);
 	//モブ敵とオブジェクトの押し合い当たり判定
 	static void MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object);
 	//モブ敵に対するオブジェクトの攻撃当たり判定

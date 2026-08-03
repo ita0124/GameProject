@@ -148,6 +148,7 @@ void StageScene::Init() {
 
 	m_PlatformManager.Init(Map);					//プラットフォームマネージャークラス
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
+	m_GimmickManager.Init(Map);						//ギミックマネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
 
 	m_Result = 0;
@@ -163,6 +164,7 @@ void StageScene::Exit() {
 	m_Stamina.Exit();								//スタミナUIクラス
 	m_PlatformManager.Exit();						//プラットフォームマネージャークラス
 	m_MobEnemyManager.Exit();						//モブ敵マネージャークラス
+	m_GimmickManager.Exit();						//ギミックマネージャークラス
 
 	DeleteShadowMap(m_ShadowHndl);
 }
@@ -177,6 +179,7 @@ void StageScene::Load() {
 	m_Stamina.Load();								//スタミナUIクラス
 	m_PlatformManager.Load();						//プラットフォームマネージャークラス
 	m_MobEnemyManager.Load();						//モブ敵マネージャークラス
+	m_GimmickManager.Load();						//ギミックマネージャークラス
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
@@ -230,7 +233,8 @@ int StageScene::Step() {
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
 
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
-	m_MobEnemyManager.Step();							//モブ敵マネージャークラス
+	m_MobEnemyManager.Step();										//モブ敵マネージャークラス
+	m_GimmickManager.Step(m_MobEnemyManager, m_PlatformManager);	//ギミックマネージャークラス
 
 	CameraStep();
 
@@ -246,6 +250,8 @@ int StageScene::Step() {
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
 	//モブ敵と足場の当たり判定
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
+	//オブジェクトとギミックの当たり判定
+	HitCheck::ObjectToGimmick(m_Player, m_GimmickManager);
 
 	if (!m_Player.GetIsActive()) {
 		m_Result = 1;
@@ -275,6 +281,7 @@ void StageScene::Update() {
 	m_Shield.Update();
 	m_CameraManager.Update();							//カメラマネージャークラス
 	m_MobEnemyManager.Update();							//モブ敵マネージャークラス
+	m_GimmickManager.Update();							//ギミックマネージャークラス
 }
 //プレイヤー関連Step
 void StageScene::PlayerStep() {

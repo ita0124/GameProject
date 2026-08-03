@@ -1,7 +1,6 @@
 #include "WallPlatform.h"
 
-namespace {
-	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };								
+namespace {							
 	constexpr char		FILE_PATH[] = ("");	//モデルファイルパス
 }
 

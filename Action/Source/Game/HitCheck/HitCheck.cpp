@@ -544,6 +544,68 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		_Object.SetIsGravity(true);
 	}
 }
+//オブジェクトとギミックの当たり判定
+void HitCheck::ObjectToGimmick(ObjectBase& _Object, GimmickManager& _GimmickManager) {
+	//オブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsActive())return;
+	//オブジェクトの座標取得
+	VECTOR	ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
+	//オブジェクトの１フレーム前の座標取得
+	VECTOR PrevPos = _Object.GetPrevCenter(ObjectBase::TagShape::BOX);
+	//オブジェクトのサイズを取得
+	VECTOR	ObjectSize = _Object.GetSize();
+#ifdef _DEBUG
+	VECTOR ObjectPos1 = VGet(ObjectPos.x + ObjectSize.x / 2, ObjectPos.y + ObjectSize.y / 2, ObjectPos.z + ObjectSize.z / 2);
+	VECTOR ObjectPos2 = VGet(ObjectPos.x - ObjectSize.x / 2, ObjectPos.y - ObjectSize.y / 2, ObjectPos.z - ObjectSize.z / 2);
+	DrawCube3D(ObjectPos1, ObjectPos2, RED, RED, FALSE);
+#endif // DEBUG
+	for (int Index = 0; Index < GIMMICK_MAX; Index++) {
+		//足場マネージャークラスから一つ取得
+		GimmickBase& OneGimmick = _GimmickManager.GetGimmick(Index);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OneGimmick.GetIsActive())continue;
+		//足場クラスの座標取得
+		VECTOR GimmickPos = OneGimmick.GetCenter(ObjectBase::TagShape::FIELD);
+		//足場クラスのサイズを取得
+		VECTOR GimmickSize = OneGimmick.GetSize();
+
+		float Pos1X = GimmickPos.x + GimmickSize.x * 0.5f;
+		float Pos1Y = GimmickPos.y + GimmickSize.y * 0.5f;
+		float Pos1Z = GimmickPos.z + GimmickSize.z * 0.5f;
+
+		float Pos2X = GimmickPos.x - GimmickSize.x * 0.5f;
+		float Pos2Y = GimmickPos.y - GimmickSize.y * 0.5f;
+		float Pos2Z = GimmickPos.z - GimmickSize.z * 0.5f;
+
+		VECTOR GimmickPos1 = VGet(Pos1X, Pos1Y, Pos1Z);
+		VECTOR GimmickPos2 = VGet(Pos2X, Pos2Y, Pos2Z);
+#ifdef _DEBUG
+		DrawCube3D(GimmickPos1, GimmickPos2, RED, RED, FALSE);
+#endif // DEBUG
+		//当たり判定
+		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, GimmickPos, GimmickSize);
+		//当たっていれば
+		if (IsHit) {
+			//面座標計算
+			//オブジェクト
+			//下方向
+			float ObjectDown = ObjectPos.y - ObjectSize.y * 0.5f;
+			//１フレーム前
+			//下方向
+			float PrevObjectDown = PrevPos.y - ObjectSize.y * 0.5f;
+			//足場
+			//上方向
+			float GimmickUp = GimmickPos.y + GimmickSize.y * 0.5f;
+			//下方向
+			float GimmickDown = GimmickPos.y - GimmickSize.y * 0.5f;
+			//着地
+			if (PrevObjectDown >= GimmickUp || ObjectDown >= GimmickUp) {
+				//当たり判定後の処理(当たっている場合)
+				_GimmickManager.HitCalc(Index, &_Object);
+			}
+		}
+	}
+}
 //モブ敵とオブジェクトの押し合い当たり判定
 void HitCheck::MobEnemyToObjectPush(MobEnemyManager& _MobEnemyManager, ObjectBase& _Object) {
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
