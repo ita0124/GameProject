@@ -16,11 +16,10 @@ void PlatformBase::Init() {
 	memset(&m_MovingPlatformRequestData, 0, sizeof(MOVINGPLATFORM_REQUEST_DATA));	//動く床をリクエストする時必要なデータ構造体を初期化
 
 	m_PlatformKinds = NORMAL;														//足場オブジェクト種類を設定
+	m_GimmickType = -1;																//作用するギミックタイプ
 }
 //リクエスト
 void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
-	//生存フラグオン
-	m_IsActive = true;
 	//座標情報設定
 	m_Pos = _NormalRequestData.Pos;
 	//回転率情報設定
@@ -29,4 +28,6 @@ void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
 	m_Scale = _NormalRequestData.Scale;
 	//サイズ情報設定
 	m_Size = _NormalRequestData.Size;
+	//作用するギミックタイプ設定
+	m_GimmickType = _NormalRequestData.GimmickType;
 }

@@ -74,20 +74,21 @@ void MobEnemyManager::Init(int _Map) {
 		//nullなら行わない
 		if (m_MobEnemy[MobEnemyIndex] != nullptr) {
 			//リクエストに最低限必要なデータ
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataPosX(m_RequestData[MobEnemyIndex][0]);					//X座標
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataPosY(m_RequestData[MobEnemyIndex][1]);					//Y座標
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataPosZ(m_RequestData[MobEnemyIndex][2]);					//Z座標
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataRotX(m_RequestData[MobEnemyIndex][3]);					//X回転率
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataRotY(m_RequestData[MobEnemyIndex][4]);					//Y回転率
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataRotZ(m_RequestData[MobEnemyIndex][5]);					//Z回転率
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataScaleX(m_RequestData[MobEnemyIndex][6]);					//X拡縮
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataScaleY(m_RequestData[MobEnemyIndex][7]);					//Y拡縮
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataScaleZ(m_RequestData[MobEnemyIndex][8]);					//Z拡縮
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataSizeX(m_RequestData[MobEnemyIndex][9]);					//Xサイズ
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataSizeY(m_RequestData[MobEnemyIndex][10]);					//Yサイズ
-			m_MobEnemy[MobEnemyIndex]->SetNormalRequestDataSizeZ(m_RequestData[MobEnemyIndex][11]);					//Zサイズ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataPosX(m_RequestData[MobEnemyIndex][0]);					//X座標
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataPosY(m_RequestData[MobEnemyIndex][1]);					//Y座標
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataPosZ(m_RequestData[MobEnemyIndex][2]);					//Z座標
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataRotX(m_RequestData[MobEnemyIndex][3]);					//X回転率
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataRotY(m_RequestData[MobEnemyIndex][4]);					//Y回転率
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataRotZ(m_RequestData[MobEnemyIndex][5]);					//Z回転率
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataScaleX(m_RequestData[MobEnemyIndex][6]);				//X拡縮
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataScaleY(m_RequestData[MobEnemyIndex][7]);				//Y拡縮
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataScaleZ(m_RequestData[MobEnemyIndex][8]);				//Z拡縮
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeX(m_RequestData[MobEnemyIndex][9]);				//Xサイズ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeY(m_RequestData[MobEnemyIndex][10]);				//Yサイズ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeZ(m_RequestData[MobEnemyIndex][11]);				//Zサイズ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataGimmickType(m_RequestData[MobEnemyIndex][12]);			//ギミックタイプ
 			//リクエストしてオブジェクトを生成
-			m_MobEnemy[MobEnemyIndex]->Request(m_MobEnemy[MobEnemyIndex]->GetNormalRequestData());
+			m_MobEnemy[MobEnemyIndex]->Request(m_MobEnemy[MobEnemyIndex]->GetRequestData());
 		}
 	}
 }

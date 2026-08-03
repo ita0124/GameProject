@@ -85,7 +85,6 @@ public:
 	//ƒ}ƒeƒŠƒAƒ‹enum
 	enum Material {
 		BODY,					//‘Ì
-		OUTLINE,
 
 		MATERIAL_NUM
 	};

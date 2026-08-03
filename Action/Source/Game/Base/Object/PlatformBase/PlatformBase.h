@@ -12,16 +12,19 @@ public:
 		WALL,
 		RESPAWN,
 		GOAL,
+		BARRIER,
 
 		PLATFORM_NUM
 	};
 protected:
 	//リクエスト時に最低限必要なデータ構造体
 	typedef struct {
-		VECTOR	Pos;		//座標
-		VECTOR	Rot;		//回転率
-		VECTOR	Scale;		//拡縮
-		VECTOR	Size;		//サイズ
+		VECTOR	Pos;			//座標
+		VECTOR	Rot;			//回転率
+		VECTOR	Scale;			//拡縮
+		VECTOR	Size;			//サイズ
+		int		GimmickType;	//ギミックタイプ
+
 	}NORMAL_REQUEST_DATA;
 
 	//動く床をリクエストする時必要なデータ構造体
@@ -35,6 +38,8 @@ protected:
 	MOVINGPLATFORM_REQUEST_DATA	m_MovingPlatformRequestData;	//動く床をリクエストする時必要なデータ構造体
 
 	TagPlatformKinds			m_PlatformKinds;				//足場オブジェクト種類
+
+	int							m_GimmickType;					//作用するギミックタイプ
 public:
 	//コンストラクタ
 	PlatformBase();
@@ -51,6 +56,8 @@ public:
 	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() const { return m_MovingPlatformRequestData; }
 	//足場オブジェクト種類
 	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
+	//作用するギミックタイプ
+	int				GetGimmickType()	const { return m_GimmickType; }
 
 	//Set
 	//基本データ構造体 座標
@@ -69,6 +76,8 @@ public:
 	void SetNormalRequestDataSizeX(const float& _SizeX) { m_NormalRequestData.Size.x = _SizeX; }
 	void SetNormalRequestDataSizeY(const float& _SizeY) { m_NormalRequestData.Size.y = _SizeY; }
 	void SetNormalRequestDataSizeZ(const float& _SizeZ) { m_NormalRequestData.Size.z = _SizeZ; }
+	//データ構造体 ギミックタイプ
+	void SetNormalRequestDataGimmickType(const int& _GimmickType) { m_NormalRequestData.GimmickType = _GimmickType; }
 	//動く床データ構造体 初期座標
 	void SetMovingPlatformRequestDataFirstPosX(const float& _FirstPosX) { m_MovingPlatformRequestData.FirstPos.x = _FirstPosX; }
 	void SetMovingPlatformRequestDataFirstPosY(const float& _FirstPosY) { m_MovingPlatformRequestData.FirstPos.y = _FirstPosY; }

@@ -59,6 +59,10 @@ void PlatformManager::Init(int _Map) {
 			//ゴール地点クラスをnew
 			m_Platform[PlatformIndex] = new GoalPlatform;
 			break;
+		case PlatformBase::TagPlatformKinds::BARRIER:
+			//バリアクラスをnew
+			m_Platform[PlatformIndex] = new BarrierPlatform;
+			break;
 		}
 	}
 	//初期化をここで行う
@@ -102,6 +106,7 @@ void PlatformManager::Init(int _Map) {
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeX(m_RequestData[PlatformIndex][9]);					//Xサイズ
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeY(m_RequestData[PlatformIndex][10]);					//Yサイズ
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeZ(m_RequestData[PlatformIndex][11]);					//Zサイズ
+			m_Platform[PlatformIndex]->SetNormalRequestDataGimmickType(m_RequestData[PlatformIndex][12]);			//ギミックタイプ
 			////動く床なら
 			if (m_PlatformID[PlatformIndex][0] == PlatformBase::TagPlatformKinds::MOVING) {
 				//---データ使いまわし---
@@ -109,10 +114,10 @@ void PlatformManager::Init(int _Map) {
 				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosY(m_RequestData[PlatformIndex][1]);	//Y初期座標
 				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataFirstPosZ(m_RequestData[PlatformIndex][2]);	//Z初期座標
 				//----------------------
-				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosX(m_RequestData[PlatformIndex][12]);	//X終端座標
-				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosY(m_RequestData[PlatformIndex][13]);	//Y終端座標
-				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosZ(m_RequestData[PlatformIndex][14]);	//Z終端座標
-				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataMoveSpeed(m_RequestData[PlatformIndex][15]);	//移動速度
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosX(m_RequestData[PlatformIndex][13]);	//X終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosY(m_RequestData[PlatformIndex][14]);	//Y終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataEndPosZ(m_RequestData[PlatformIndex][15]);	//Z終端座標
+				m_Platform[PlatformIndex]->SetMovingPlatformRequestDataMoveSpeed(m_RequestData[PlatformIndex][16]);	//移動速度
 			}
 			//リクエストしてオブジェクトを生成
 			m_Platform[PlatformIndex]->Request(m_Platform[PlatformIndex]->GetNormalRequestData());

@@ -228,9 +228,6 @@
     <Filter Include="ソース ファイル\Game\Manager\PlatformManager">
       <UniqueIdentifier>{c150b69f-c010-4925-90c8-549f5bf8c2ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Base\ObjectBase\Platform">
-      <UniqueIdentifier>{7f4e4860-a5f9-4747-a5e1-379b9d75e109}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\PlatformBase">
       <UniqueIdentifier>{9118e909-c031-46c8-9679-c71b96ec8b57}</UniqueIdentifier>
     </Filter>
@@ -381,6 +378,27 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\WallPlatform">
       <UniqueIdentifier>{ad8a673f-4af2-4791-9278-3ac69716d853}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\BarrierPlatform">
+      <UniqueIdentifier>{7012aee0-b5bc-4f5d-8292-6ff32ffa13e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\BarrierPlatform">
+      <UniqueIdentifier>{30766ade-1c0e-4c40-80bc-394d63d26d58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\GimmickBase">
+      <UniqueIdentifier>{08bb179b-9fff-437c-bd5d-bad7884fd80d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\GimmickBase">
+      <UniqueIdentifier>{7dddef5a-0a72-44c8-806d-86a9abebe7a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\PlatformBase">
+      <UniqueIdentifier>{7f4e4860-a5f9-4747-a5e1-379b9d75e109}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\GimmickManager">
+      <UniqueIdentifier>{00855158-257b-4d26-8bff-5337bf41ebe8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\GimmickManager">
+      <UniqueIdentifier>{05d4e9d1-9340-4814-9240-fe3ccbe7f644}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -459,7 +477,7 @@
       <Filter>ソース ファイル\Game\Scene\StageScene</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ObjectBase\Platform</Filter>
+      <Filter>ソース ファイル\Game\Base\ObjectBase\PlatformBase</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\FallingPlatform</Filter>
@@ -539,11 +557,17 @@
     <ClCompile Include="Source\Lib\Input\InputManager.cpp">
       <Filter>ソース ファイル\Lib\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.cpp">
-      <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Lib\Input\InputMouse.cpp">
       <Filter>ソース ファイル\Lib\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\BarrierPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\WallPlatform\WallPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\WallPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\GimmickBase\GimmickBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\GimmickBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -703,11 +727,17 @@
     <ClInclude Include="Source\Lib\Input\InputManager.h">
       <Filter>ヘッダー ファイル\Lib\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Platform\WallPlatfprm\WallPlatfprm.h">
-      <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Lib\Input\InputMouse.h">
       <Filter>ヘッダー ファイル\Lib\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\BarrierPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\WallPlatform\WallPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\WallPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\GimmickBase\GimmickBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\GimmickBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
