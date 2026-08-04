@@ -156,6 +156,16 @@ void PlatformManager::Draw() {
 		}
 	}
 }
+//
+void PlatformManager::Test() {
+	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
+		//nullなら行わない
+		if (m_Platform[PlatformIndex] != nullptr&& m_Platform[PlatformIndex]->GetPlatformKinds()!= PlatformBase::TagPlatformKinds::BARRIER) {
+			
+			m_Platform[PlatformIndex]->Draw();
+		}
+	}
+}
 //毎フレーム呼び出す処理
 void PlatformManager::Step() {
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {

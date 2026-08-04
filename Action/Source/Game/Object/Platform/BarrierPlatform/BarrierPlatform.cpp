@@ -1,4 +1,5 @@
 #include "BarrierPlatform.h"
+#include "Lib/LoadMaterial/LoadMaterial.h"
 
 namespace {
 	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
@@ -27,4 +28,11 @@ void BarrierPlatform::Load() {
 //毎フレーム呼び出す処理
 void BarrierPlatform::Step() {
 	m_IsActive;
+}
+//描画処理
+void BarrierPlatform::Draw() {
+	if (!m_IsActive)return;
+	// 不透明度を50%にする
+	MV1SetOpacityRate(m_Hndl, HALF);
+	MV1DrawModel(m_Hndl);				//モデル描画
 }

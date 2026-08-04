@@ -35,6 +35,8 @@ public:
 	void Load();
 	//描画処理
 	void Draw();
+	//
+	void Test();
 	//毎フレーム呼び出す処理
 	void Step();
 	//モデル更新処理

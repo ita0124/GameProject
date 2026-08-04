@@ -106,7 +106,7 @@ void StageScene::Draw() {
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);
-		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
+		m_PlatformManager.Test();					//プラットフォームマネージャークラス
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
@@ -115,11 +115,11 @@ void StageScene::Draw() {
 		ShadowMap_DrawEnd();
 		//影生成
 		SetUseShadowMap(0, m_ShadowHndl);
-		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		m_Player.Draw();							//プレイヤークラス
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
 		m_MobEnemyManager.Draw();					//モブ敵マネージャークラス
+		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		//影生成終了
 		SetUseShadowMap(0, -1);
 

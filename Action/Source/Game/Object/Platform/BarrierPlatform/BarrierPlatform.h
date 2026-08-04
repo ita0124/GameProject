@@ -14,6 +14,8 @@ public:
 	void Load();
 	//–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
 	void Step();
+	//•`‰æˆ—
+	void Draw();
 };
 
 
