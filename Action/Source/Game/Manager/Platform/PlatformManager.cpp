@@ -156,12 +156,12 @@ void PlatformManager::Draw() {
 		}
 	}
 }
-//
-void PlatformManager::Test() {
+//‰e‚ğ¶¬‚·‚é•¨
+void PlatformManager::ShadowMapDraw() {
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//null‚È‚çs‚í‚È‚¢
-		if (m_Platform[PlatformIndex] != nullptr&& m_Platform[PlatformIndex]->GetPlatformKinds()!= PlatformBase::TagPlatformKinds::BARRIER) {
-			
+		if (m_Platform[PlatformIndex] != nullptr && m_Platform[PlatformIndex]->GetPlatformKinds() != PlatformBase::TagPlatformKinds::BARRIER) {
+
 			m_Platform[PlatformIndex]->Draw();
 		}
 	}
