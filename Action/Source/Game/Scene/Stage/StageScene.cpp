@@ -144,7 +144,7 @@ void StageScene::Init() {
 	m_SkillPoints.Init();							//スキルポイントUIクラス
 	m_Stamina.Init();								//スタミナUIクラス
 
-	const int Map = 0;
+	const int Map = 1;
 
 	m_PlatformManager.Init(Map);					//プラットフォームマネージャークラス
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
@@ -350,7 +350,7 @@ void StageScene::CameraStep() {
 	if (Dot < 1.0f) {
 		Dot = acosf(Dot);
 
-		Dot = Dot * 180.0f / DX_PI_F;
+		Dot = Dot * RADIAN_CALC;
 	}
 
 	if (Dot < 90.0f) {
