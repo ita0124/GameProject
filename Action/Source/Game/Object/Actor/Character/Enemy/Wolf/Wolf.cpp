@@ -5,7 +5,7 @@ namespace {
 	constexpr float		HIT_POINTS = 50.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 50.0f;															//最大体力
 
-	constexpr float		ACTION_IDEL_DISTANCE = 200.0f;													//IDELに移行するプレイヤーとの距離
+	constexpr float		ACTION_IDEL_DISTANCE = 150.0f;													//IDELに移行するプレイヤーとの距離
 	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
