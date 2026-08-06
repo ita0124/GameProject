@@ -106,7 +106,7 @@ void PlatformManager::Init(int _Map) {
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeX(m_RequestData[PlatformIndex][9]);					//Xサイズ
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeY(m_RequestData[PlatformIndex][10]);					//Yサイズ
 			m_Platform[PlatformIndex]->SetNormalRequestDataSizeZ(m_RequestData[PlatformIndex][11]);					//Zサイズ
-			m_Platform[PlatformIndex]->SetNormalRequestDataGimmickType(m_RequestData[PlatformIndex][12]);			//ギミックタイプ
+			m_Platform[PlatformIndex]->SetNormalRequestDataGimmickType((int)m_RequestData[PlatformIndex][12]);		//ギミックタイプ
 			////動く床なら
 			if (m_PlatformID[PlatformIndex][0] == PlatformBase::TagPlatformKinds::MOVING) {
 				//---データ使いまわし---

@@ -76,13 +76,13 @@ void GimmickManager::Init(int _Map) {
 			m_Gimmick[GimmickIndex]->SetRequestDataRotX(m_RequestData[GimmickIndex][3]);					//X回転率
 			m_Gimmick[GimmickIndex]->SetRequestDataRotY(m_RequestData[GimmickIndex][4]);					//Y回転率
 			m_Gimmick[GimmickIndex]->SetRequestDataRotZ(m_RequestData[GimmickIndex][5]);					//Z回転率
-			m_Gimmick[GimmickIndex]->SetRequestDataScaleX(m_RequestData[GimmickIndex][6]);				//X拡縮
-			m_Gimmick[GimmickIndex]->SetRequestDataScaleY(m_RequestData[GimmickIndex][7]);				//Y拡縮
-			m_Gimmick[GimmickIndex]->SetRequestDataScaleZ(m_RequestData[GimmickIndex][8]);				//Z拡縮
-			m_Gimmick[GimmickIndex]->SetRequestDataSizeX(m_RequestData[GimmickIndex][9]);				//Xサイズ
-			m_Gimmick[GimmickIndex]->SetRequestDataSizeY(m_RequestData[GimmickIndex][10]);				//Yサイズ
-			m_Gimmick[GimmickIndex]->SetRequestDataSizeZ(m_RequestData[GimmickIndex][11]);				//Zサイズ
-			m_Gimmick[GimmickIndex]->SetRequestDataGimmickType(m_RequestData[GimmickIndex][12]);			//ギミックタイプ
+			m_Gimmick[GimmickIndex]->SetRequestDataScaleX(m_RequestData[GimmickIndex][6]);					//X拡縮
+			m_Gimmick[GimmickIndex]->SetRequestDataScaleY(m_RequestData[GimmickIndex][7]);					//Y拡縮
+			m_Gimmick[GimmickIndex]->SetRequestDataScaleZ(m_RequestData[GimmickIndex][8]);					//Z拡縮
+			m_Gimmick[GimmickIndex]->SetRequestDataSizeX(m_RequestData[GimmickIndex][9]);					//Xサイズ
+			m_Gimmick[GimmickIndex]->SetRequestDataSizeY(m_RequestData[GimmickIndex][10]);					//Yサイズ
+			m_Gimmick[GimmickIndex]->SetRequestDataSizeZ(m_RequestData[GimmickIndex][11]);					//Zサイズ
+			m_Gimmick[GimmickIndex]->SetRequestDataGimmickType((int)m_RequestData[GimmickIndex][12]);		//ギミックタイプ
 			//リクエストしてオブジェクトを生成
 			m_Gimmick[GimmickIndex]->Request(m_Gimmick[GimmickIndex]->GetRequestData());
 		}

@@ -3,6 +3,11 @@
 #include "InputPad.h"
 #include "InputMouse.h"
 
+namespace {
+	//マウス移動量からアナログ入力へ変換する倍率
+	constexpr float MOUSE_ANALOG_SENSITIVITY = 0.01f;
+}
+
 using namespace std;
 
 unsigned int InputManager::m_NowBuf;
@@ -12,24 +17,6 @@ float InputManager::m_LeftStickX;			//左スティックX
 float InputManager::m_LeftStickY;			//左スティックY
 float InputManager::m_RightStickX;			//右スティックX
 float InputManager::m_RightStickY;			//右スティックY
-
-constexpr int KEY_INPUT[InputManager::INPUT_MAX] = {
-	KEY_INPUT_R,					//ローリング
-	KEY_INPUT_SPACE,				//ジャンプ
-	KEY_INPUT_K,					//ガード
-	KEY_INPUT_L,					//スキル攻撃
-	KEY_INPUT_J,					//通常攻撃
-	KEY_INPUT_C,					//カメラチェンジ
-};
-
-constexpr int PAD_INPUT[InputManager::INPUT_MAX] = {
-	XINPUT_BUTTON_X,				//ローリング
-	XINPUT_BUTTON_A,				//ジャンプ
-	XINPUT_BUTTON_RIGHT_SHOULDER,	//ガード
-	XINPUT_BUTTON_Y,				//スキル攻撃
-	XINPUT_BUTTON_B,				//通常攻撃
-	XINPUT_BUTTON_RIGHT_THUMB,		//カメラチェンジ
-};
 
 //初期化
 void InputManager::Init() {
@@ -62,11 +49,11 @@ void InputManager::Update() {
 		m_NowBuf |= INPUT_JUMP;
 	}
 	//ガード
-	if (InputKey::IsPushKeyRep(KEY_INPUT_K) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputMouse::IsPushMouseRep(MOUSE_INPUT_RIGHT)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_L) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_SHOULDER) || InputMouse::IsPushMouseRep(MOUSE_INPUT_RIGHT)) {
 		m_NowBuf |= INPUT_GUARD;
 	}
 	//スキル攻撃
-	if (InputKey::IsPushKeyRep(KEY_INPUT_L) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y) || InputMouse::IsPushMouseRep(MOUSE_INPUT_MIDDLE)) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_K) || InputPad::IsPushPadRep(XINPUT_BUTTON_Y) || InputMouse::IsPushMouseRep(MOUSE_INPUT_MIDDLE)) {
 		m_NowBuf |= INPUT_SKILL_ATTACK;
 	}
 	//通常攻撃
@@ -74,7 +61,7 @@ void InputManager::Update() {
 		m_NowBuf |= INPUT_NORMAL_ATTACK;
 	}
 	//カメラチェンジ
-	if (InputKey::IsPushKeyRep(KEY_INPUT_C) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_THUMB) ) {
+	if (InputKey::IsPushKeyRep(KEY_INPUT_C) || InputPad::IsPushPadRep(XINPUT_BUTTON_RIGHT_THUMB)) {
 		m_NowBuf |= INPUT_CAMERA_CHANGE;
 	}
 }
@@ -153,12 +140,9 @@ float InputManager::GetRAnalogXInput(unsigned int _Num) {
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_LEFT)) {
 		m_RightStickX = -1.0f;
 	}
-	/*else if (InputMouse::GetPosX() > 0) {
-		m_RightStickX = 1.0f;
+	else if (InputMouse::GetPosX() != 0) {
+		m_RightStickX = -((float)InputMouse::GetPosX() * MOUSE_ANALOG_SENSITIVITY);
 	}
-	else if (InputMouse::GetPosX() < 0) {
-		m_RightStickX = -1.0f;
-	}*/
 	else {
 		m_RightStickX = 0.0f;
 	}
@@ -176,12 +160,9 @@ float InputManager::GetRAnalogYInput(unsigned int _Num) {
 	else if (InputKey::IsPushKeyRep(KEY_INPUT_UP)) {
 		m_RightStickY = -1.0f;
 	}
-	/*else if (InputMouse::GetPosY() > 0) {
-		m_RightStickY = 1.0f;
+	else if (InputMouse::GetPosY() != 0) {
+		m_RightStickY = (float)InputMouse::GetPosY() * MOUSE_ANALOG_SENSITIVITY;
 	}
-	else if (InputMouse::GetPosY() < 0) {
-		m_RightStickY = -1.0f;
-	}*/
 	else {
 		m_RightStickY = 0.0f;
 	}

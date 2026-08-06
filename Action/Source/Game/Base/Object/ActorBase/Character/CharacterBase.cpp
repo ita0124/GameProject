@@ -1,5 +1,10 @@
 #include "CharacterBase.h"
 
+namespace {
+	//ノックバック量の減衰率
+	constexpr float KNOCKBACK_DECAY_RATE = 0.1f;
+}
+
 //コンストラクタ
 CharacterBase::CharacterBase() {
 	Init();
@@ -75,7 +80,7 @@ void CharacterBase::KnockBackManager() {
 		//状態をCHARGEへ
 		m_KnockBackState = KNOCKBACK_BACK;
 		//1フレーム当たりの減衰量
-		m_KnockBackSub = m_KnockBackMaxDistance * 0.1f;
+		m_KnockBackSub = m_KnockBackMaxDistance * KNOCKBACK_DECAY_RATE;
 		//ノックバック継続時間をリセット
 		m_KnockBackDuration = 0;
 		//ノックバック量初期化

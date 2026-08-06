@@ -70,11 +70,11 @@ VECTOR ObjectBase::GetCenter(TagShape _Shape) {
 	}
 	else if (_Shape == BOX) {
 		//Y軸をY軸サイズの半分あげる
-		Res.y += m_Size.y * 0.5f;
+		Res.y += m_Size.y * HALF;
 	}
 	else if (_Shape == FIELD) {
 		//Y軸をYサイズの半分下げる
-		Res.y -= m_Size.y * 0.5f;
+		Res.y -= m_Size.y * HALF;
 
 		return Res;
 	}
@@ -89,7 +89,7 @@ VECTOR ObjectBase::GetPrevCenter(TagShape _Shape) {
 	}
 	else if (_Shape == BOX) {
 		//Y軸をY軸サイズの半分あげる
-		Res.y += m_Size.y * 0.5f;
+		Res.y += m_Size.y * HALF;
 	}
 	return Res;
 }

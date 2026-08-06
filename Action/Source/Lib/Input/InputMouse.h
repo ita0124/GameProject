@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "Comon.h"
 
 //マウスボード入力クラス
@@ -7,10 +8,8 @@ protected:
 	static int m_NowMouse;	//今フレームのマウス情報
 	static int m_OldMouse;	//前フレームのマウス情報
 
-	static int m_NowPosX;	//今フレームのX軸情報
-	static int m_NowPosY;	//今フレームのY軸情報
-	static int m_OldPosX;	//前フレームのX軸情報
-	static int m_OldPosY;	//前フレームのY軸情報
+	static int m_PosX;		//X軸情報
+	static int m_PosY;		//Y軸情報
 public:
 	//コンストラクタ
 	InputMouse();

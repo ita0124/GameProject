@@ -86,7 +86,7 @@ void MobEnemyManager::Init(int _Map) {
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeX(m_RequestData[MobEnemyIndex][9]);				//Xサイズ
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeY(m_RequestData[MobEnemyIndex][10]);				//Yサイズ
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeZ(m_RequestData[MobEnemyIndex][11]);				//Zサイズ
-			m_MobEnemy[MobEnemyIndex]->SetRequestDataGimmickType(m_RequestData[MobEnemyIndex][12]);			//ギミックタイプ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataGimmickType((int)m_RequestData[MobEnemyIndex][12]);	//ギミックタイプ
 			//リクエストしてオブジェクトを生成
 			m_MobEnemy[MobEnemyIndex]->Request(m_MobEnemy[MobEnemyIndex]->GetRequestData());
 		}
