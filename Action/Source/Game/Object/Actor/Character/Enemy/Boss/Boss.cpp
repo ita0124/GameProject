@@ -322,8 +322,6 @@ void Boss::BreakNormalAttack1() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //通常攻撃１段目　攻撃継続(鼻)
@@ -336,8 +334,6 @@ void Boss::ChainNormalAttack1() {
 	if (m_AnimeData.EndFlg) {
 		//攻撃パターン管理
 		AttackPatternManager();
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //通常攻撃１段目共通処理
@@ -348,6 +344,8 @@ void Boss::NoormalAttack1(TagState _State) {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORMAL_ATTACK1_POWER;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK1_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
@@ -369,9 +367,9 @@ void Boss::NoormalAttack1(TagState _State) {
 		//ボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(NOSE004END);
 	}
-	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK1_EFFECT_REQUEST) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
+	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK1_EFFECT_REQUEST) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, NOSE004END);
 		//エフェクトリクエスト
@@ -390,8 +388,6 @@ void Boss::BreakNormalAttack2() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //通常攻撃２段目　攻撃継続(牙振り上げ)
@@ -404,8 +400,6 @@ void Boss::ChainNormalAttack2() {
 	if (m_AnimeData.EndFlg) {
 		//攻撃パターン管理
 		AttackPatternManager();
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //通常攻撃２段目共通処理
@@ -416,6 +410,8 @@ void Boss::NoormalAttack2(TagState _State) {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK2_POWER;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK2_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
@@ -439,9 +435,9 @@ void Boss::NoormalAttack2(TagState _State) {
 		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
 		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
 	}
-	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK2_EFFECT_REQUEST) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
+	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK2_EFFECT_REQUEST) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
 		//エフェクトリクエスト
@@ -468,6 +464,8 @@ void Boss::BreakNormalAttack3() {
 		m_PrevState = m_State;
 		//攻撃力設定
 		m_Power = NORAML_ATTACK3_POWER;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK3_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
@@ -487,9 +485,9 @@ void Boss::BreakNormalAttack3() {
 		DeleteFrameDataIsAttackFlg(PALMEND_LEFT);
 		DeleteFrameDataIsAttackFlg(PALMEND_RIGHT);
 	}
-	if (!m_IsEffect && m_AnimeData.Frame > NORMAL_ATTACK3_EFFECT_REQUEST) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
+	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK3_EFFECT_REQUEST) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, PALMEND_LEFT);
 		//エフェクトリクエスト
@@ -511,8 +509,6 @@ void Boss::BreakNormalAttack3() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //後方攻撃
@@ -561,8 +557,6 @@ void Boss::RearAttack() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 
 }
@@ -625,10 +619,12 @@ void Boss::ChargeAttackStart() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
-	if (!m_IsEffect) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
+	if (!m_IsPerformance) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;
 		//エフェクトリクエスト
@@ -640,8 +636,6 @@ void Boss::ChargeAttackStart() {
 	if (m_AnimeData.EndFlg) {
 		//突進状態へ
 		m_State = CHARGE;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 }
 //突進
@@ -657,12 +651,16 @@ void Boss::Charge() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		///演出を実行オフ
+		m_IsPerformance = false;
+	}
+	if (!m_IsPerformance) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
 		}
-		//エフェクト発生判定オン
-		m_IsEffect = true;
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;
 		//エフェクトリクエスト
@@ -687,8 +685,6 @@ void Boss::Charge() {
 		m_State = CHARGE_ATTACK;
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 	}
 	if (Len < CHARGE_CHANGE_MATERIAL_START_LEN) {
 		//輪郭線のマテリアルをマテリアル赤に変更
@@ -712,10 +708,12 @@ void Boss::ChargeAttack() {
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
 		}
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
-	if (!m_IsEffect && m_AnimeData.Frame) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
+	if (!m_IsPerformance && m_AnimeData.Frame) {
+		///演出を実行オン
+		m_IsPerformance = true;
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
 		//エフェクトリクエスト
@@ -733,8 +731,6 @@ void Boss::ChargeAttack() {
 	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
-		//エフェクト発生判定オフ
-		m_IsEffect = false;
 		//ボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
 		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);

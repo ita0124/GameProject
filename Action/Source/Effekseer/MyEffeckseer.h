@@ -5,7 +5,7 @@ class MyEffeckseer {
 public:
 	enum EFFECTID {
 		TKTK01BLOW2,				//ãUŒ‚
-		TKTK01BLOW3,				//SpMove •Ï‚¦‚é
+		TKTK01BLOW3,				//SpMove
 		TKTK01BLOW9,				//‹­
 		TKTK01BLOW12,				//‰å
 		TKTK01SWORD1_1,				//ƒvƒŒƒCƒ„[’Êí	c

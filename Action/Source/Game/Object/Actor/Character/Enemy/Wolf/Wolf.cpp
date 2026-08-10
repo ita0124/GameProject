@@ -14,7 +14,7 @@ namespace {
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
-	constexpr float		ATTACK_COLLISION_START = 15.0f;													//通常攻撃１段目の当たり判定開始フレーム
+	constexpr float		ATTACK_COLLISION_START = 0.0f;													//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		ATTACK_COLLISION_END = 30.0f;													//通常攻撃１段目の当たり判定終了フレーム
 
 	constexpr int		ATTACK_IDEL_TIME = 60;															//攻撃へ移行するまでの待機時間

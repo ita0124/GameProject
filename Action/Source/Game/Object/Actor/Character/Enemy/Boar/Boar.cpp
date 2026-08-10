@@ -229,8 +229,6 @@ void Boar::AttackIdel() {
 		m_State = ATTACK;
 	}
 	if (m_AnimeData.Frame > EFFECT_SPAWN_FRAME) {
-		//エフェクト発生判定オン
-		m_IsEffect = true;
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;
 		//エフェクトリクエスト
@@ -326,8 +324,6 @@ void Boar::Death() {
 		if (m_DeathIdelTime > DEATH_TIME) {
 			//生存フラグをオフ
 			m_IsActive = false;
-			//エフェクト発生判定オン
-			m_IsEffect = true;
 			//指定ボーンの座標取得
 			VECTOR Pos = GetFramePos(m_Hndl, HITPS);
 			//エフェクトリクエスト

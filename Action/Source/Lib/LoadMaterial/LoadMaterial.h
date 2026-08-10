@@ -7,10 +7,6 @@ public:
 	static int MATERIAL_BLACK;
 	static int MATERIAL_BLUE;
 	static int MATERIAL_RED;
-	static int MATERIAL_GRADATION_BLUE;
-	static int MATERIAL_GRADATION_RED;
-	static int MATERIAL_GRADATION_YELLOW;
-	static int MATERIAL_DAMAGE;
 	static int MATERIAL_GRAY;
 
 	//コンストラクタ・デストラクタ

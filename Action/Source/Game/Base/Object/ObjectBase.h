@@ -26,28 +26,28 @@ public:
 		SHAPE_NUM
 	};
 protected:
-	TagKinds	m_Kinds;		//オブジェクト種類
+	TagKinds	m_Kinds;			//オブジェクト種類
 
-	VECTOR		m_Pos;			//座標
-	VECTOR		m_Rot;			//回転率
-	VECTOR		m_Scale;		//拡縮
-	VECTOR		m_Size;			//サイズ
-	VECTOR		m_PrevPos;		//前フレーム座標
-	VECTOR		m_PlatformVec;	//足場の動く移動方向
-	VECTOR		m_RespawnPos;	//リスポーン座標
-	VECTOR		m_MoveVec;		//移動方向
-	int			m_Hndl;			//画像ハンドル
-	float		m_Rad;			//半径
-	bool		m_IsActive;		//生存フラグ
-	bool		m_IsCollision;	//当たり判定実行フラグ
-	bool		m_IsPush;		//押し出し判定を行うか
-	float		m_Gravity;		//重力
-	bool		m_IsGravity;	//重力処理をするか
-	bool		m_IsGoal;		//ゴールしたか
-	ObjectBase* m_Owner;		//オーナーオブジェクト
+	VECTOR		m_Pos;				//座標
+	VECTOR		m_Rot;				//回転率
+	VECTOR		m_Scale;			//拡縮
+	VECTOR		m_Size;				//サイズ
+	VECTOR		m_PrevPos;			//前フレーム座標
+	VECTOR		m_PlatformVec;		//足場の動く移動方向
+	VECTOR		m_RespawnPos;		//リスポーン座標
+	VECTOR		m_MoveVec;			//移動方向
+	int			m_Hndl;				//画像ハンドル
+	float		m_Rad;				//半径
+	bool		m_IsActive;			//生存フラグ
+	bool		m_IsCollision;		//当たり判定実行フラグ
+	bool		m_IsPush;			//押し出し判定を行うか
+	float		m_Gravity;			//重力
+	bool		m_IsGravity;		//重力処理をするか
+	bool		m_IsGoal;			//ゴールしたか
+	ObjectBase* m_Owner;			//オーナーオブジェクト
 
-	int			m_EffectHndl;	//エフェクトハンドル
-	bool		m_IsEffect;		//エフェクト出現判定
+	int			m_EffectHndl;		//エフェクトハンドル
+	bool		m_IsPerformance;	///演出を実行したか
 public:
 	//コンストラクタ
 	ObjectBase();

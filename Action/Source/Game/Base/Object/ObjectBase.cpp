@@ -12,24 +12,24 @@ ObjectBase::~ObjectBase() {
 }
 //初期化処理
 void ObjectBase::Init() {
-	m_Pos = VZERO;			//座標
-	m_Rot = VZERO;			//回転率
-	m_Scale = VONE;			//拡縮
-	m_Size = VZERO;			//サイズ
-	m_PrevPos = m_Pos;		//前フレーム座標
-	m_PlatformVec = VZERO;	//足場の動く移動方向
-	m_Rad = 0.0f;			//半径
-	m_IsActive = true;		//生存フラグオン
-	m_IsCollision = true;	//当たり判定を実行する
-	m_IsPush = false;		//押し出し判定を行わない
-	m_Gravity = 0.0f;		//重力
-	m_IsGravity = false;	//重力処理をしない
-	m_Owner = nullptr;		//オーナーオブジェクト
+	m_Pos = VZERO;				//座標
+	m_Rot = VZERO;				//回転率
+	m_Scale = VONE;				//拡縮
+	m_Size = VZERO;				//サイズ
+	m_PrevPos = m_Pos;			//前フレーム座標
+	m_PlatformVec = VZERO;		//足場の動く移動方向
+	m_Rad = 0.0f;				//半径
+	m_IsActive = true;			//生存フラグオン
+	m_IsCollision = true;		//当たり判定を実行する
+	m_IsPush = false;			//押し出し判定を行わない
+	m_Gravity = 0.0f;			//重力
+	m_IsGravity = false;		//重力処理をしない
+	m_Owner = nullptr;			//オーナーオブジェクト
 
-	m_EffectHndl = -1;	//エフェクトハンドル
-	m_IsEffect = false;	//エフェクト出現判定
+	m_EffectHndl = -1;			//エフェクトハンドル
+	m_IsPerformance = false;	///演出を実行したか
 
-	m_Kinds = OBJECT;	//種類設定
+	m_Kinds = OBJECT;			//種類設定
 }
 //データ破棄処理
 void ObjectBase::Exit() {
