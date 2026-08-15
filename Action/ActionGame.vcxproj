@@ -157,8 +157,8 @@
   <ItemGroup>
     <ClCompile Include="Source\Effekseer\effekseer.cpp" />
     <ClCompile Include="Source\Effekseer\MyEffeckseer.cpp" />
-    <ClCompile Include="Source\Game\Base\Item\ItemBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object2D\Object2DBase.cpp" />
+    <ClCompile Include="Source\Game\Base\Object2D\StatusDraw\StatusDrawBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\ActorBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp" />
@@ -175,6 +175,7 @@
     <ClCompile Include="Source\Game\Manager\MobEnemy\MobEnemyManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Platform\PlatformManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Scene\SceneManager.cpp" />
+    <ClCompile Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.cpp" />
@@ -218,8 +219,8 @@
     <ClInclude Include="Source\Comon.h" />
     <ClInclude Include="Source\Effekseer\effekseer.h" />
     <ClInclude Include="Source\Effekseer\MyEffeckseer.h" />
-    <ClInclude Include="Source\Game\Base\Item\ItemBase.h" />
     <ClInclude Include="Source\Game\Base\Object2D\Object2DBase.h" />
+    <ClInclude Include="Source\Game\Base\Object2D\StatusDraw\StatusDrawBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\ActorBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\CharacterBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Source\Game\Manager\MobEnemy\MobEnemyManager.h" />
     <ClInclude Include="Source\Game\Manager\Platform\PlatformManager.h" />
     <ClInclude Include="Source\Game\Manager\Scene\SceneManager.h" />
+    <ClInclude Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boar\Boar.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.h" />

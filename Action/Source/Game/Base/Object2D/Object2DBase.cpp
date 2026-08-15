@@ -15,7 +15,6 @@ void Object2DBase::Init() {
 	m_Pos = VZERO;								//ç¿ïW
 	m_Rot = 0.0f;								//âÒì]ó¶
 	m_Scale = VONE;								//ägèk
-	m_Size = VZERO;								//ÉTÉCÉY
 	m_Rad = 0.0f;								//îºåa
 	m_IsActive = true;							//ê∂ë∂ÉtÉâÉO
 	m_IsTurn = false;							//âÊëúîΩì]Ç≥ÇπÇÈÇ©
@@ -120,5 +119,5 @@ void Object2DBase::AnimeStop() {
 //ï`âÊèàóù
 void Object2DBase::Draw() {
 	if (!m_IsActive || m_Hndl.size() == 0)return;
-	DrawRotaGraph3((int)m_Pos.x, (int)m_Pos.y, 0, 0, m_Scale.x, m_Scale.y, m_Rot, m_Hndl[m_AnimeData.ID][m_AnimeData.Frame], TRUE, m_IsTurn);
+	DrawRotaGraph3((int)m_Pos.x, (int)m_Pos.y, 0, 0, (float)m_Scale.x, (float)m_Scale.y, m_Rot, m_Hndl[m_AnimeData.ID][m_AnimeData.Frame], TRUE, m_IsTurn);
 }

@@ -6,13 +6,10 @@
 #include "Game/Object/Actor/Character/Enemy/Boss/Boss.h"
 #include "Game/Object/Sword/Sword.h"
 #include "Game/Object/Shield/Shield.h"
-#include "Game/UI/HitPoints/HitPoints.h"
-#include "Game/UI/SkillPoints/SkillPoints.h"
-#include "Game/UI/Stamina/Stamina.h"
 #include "Game/Manager/Camera/CameraManager.h"
+#include "Game/Manager/StatusDrawManager/StatusDrawManager.h"
 #include "Game/Result/ResultNum.h"
 #include "Game/HitCheck/HitCheck.h"
-
 
 namespace {
 	constexpr int HNDL_MAX = 4;	//非同期処理時に表示する画像のハンドル総数
@@ -20,16 +17,14 @@ namespace {
 
 class BossScene :public SceneBase {
 private:
-	BossArea		m_BossArea;			//ボス戦の足場クラス
-	Sky				m_Sky;				//天球クラス
-	Player			m_Player;			//プレイヤークラス
-	Sword			m_Sword;			//剣クラス
-	Shield			m_Shield;			//盾クラス
-	HitPoints		m_HitPoints;		//体力UIクラス
-	SkillPoints		m_SkillPoints;		//スキルポイントUIクラス
-	Stamina			m_Stamina;			//スタミナUIクラス
-	Boss			m_Boss;				//ボスクラス
-	CameraManager	m_CameraManager;	//カメラマネージャークラス
+	BossArea			m_BossArea;				//ボス戦の足場クラス
+	Sky					m_Sky;					//天球クラス
+	Player				m_Player;				//プレイヤークラス
+	Sword				m_Sword;				//剣クラス
+	Shield				m_Shield;				//盾クラス
+	Boss				m_Boss;					//ボスクラス
+	CameraManager		m_CameraManager;		//カメラマネージャークラス
+	StatusDrawManager	m_StatusDrawManager;	//ステータス描画マネージャー
 
 	typedef struct {
 		int		LoadTime;				//非同期処理継続時間

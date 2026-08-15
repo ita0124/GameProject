@@ -5,6 +5,7 @@ namespace {
 	constexpr int	PLAYER_RESPAWN_FADE_SPEED = 5;	//リスポーン完了フェードスピード
 	constexpr int	PLAYER_DEATH_FADE_SPEED = 5;	//プレイヤー落下フェードスピード
 	constexpr float CHANGE_DISTANCE = 50.0f;		//攻撃対象を切り替える距離差
+	constexpr float SHADOW_RANGE = 200.0f;			//影の判定範囲
 }
 
 //コンストラクタ
@@ -123,12 +124,7 @@ void StageScene::Draw() {
 		//影生成終了
 		SetUseShadowMap(0, -1);
 
-		m_HitPoints.Draw();							//体力UIクラス
-		m_SkillPoints.Draw();						//スキルポイントUIクラス
-		m_Stamina.Draw();							//スタミナUIクラス
-#ifdef _DEBUG
-		//m_CameraManager.Draw();
-#endif // DEBUG
+		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
 		break;
 	}
 }
@@ -140,9 +136,7 @@ void StageScene::Init() {
 	m_Sword.Init(&m_Player);						//剣クラス
 	//オーナーを設定
 	m_Shield.Init(&m_Player);						//盾クラス
-	m_HitPoints.Init();								//体力UIクラス
-	m_SkillPoints.Init();							//スキルポイントUIクラス
-	m_Stamina.Init();								//スタミナUIクラス
+
 
 	const int Map = 0;
 
@@ -150,6 +144,7 @@ void StageScene::Init() {
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
 	m_GimmickManager.Init(Map);						//ギミックマネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
+	m_StatusDrawManager.Init(&m_Player);			//ステータス描画マネージャー
 
 	m_Result = 0;
 }
@@ -159,12 +154,10 @@ void StageScene::Exit() {
 	m_Player.Exit();								//プレイヤークラス
 	m_Sword.Exit();									//剣クラス
 	m_Shield.Exit();								//盾クラス
-	m_HitPoints.Exit();								//体力UIクラス
-	m_SkillPoints.Exit();							//スキルポイントUIクラス
-	m_Stamina.Exit();								//スタミナUIクラス
 	m_PlatformManager.Exit();						//プラットフォームマネージャークラス
 	m_MobEnemyManager.Exit();						//モブ敵マネージャークラス
 	m_GimmickManager.Exit();						//ギミックマネージャークラス
+	m_StatusDrawManager.Exit();						//ステータス描画マネージャー
 
 	DeleteShadowMap(m_ShadowHndl);
 }
@@ -174,12 +167,10 @@ void StageScene::Load() {
 	m_Player.Load();								//プレイヤークラス
 	m_Sword.Load();									//剣クラス
 	m_Shield.Load();								//盾クラス
-	m_HitPoints.Load();								//体力UIクラス
-	m_SkillPoints.Load();							//スキルポイントUIクラス
-	m_Stamina.Load();								//スタミナUIクラス
 	m_PlatformManager.Load();						//プラットフォームマネージャークラス
 	m_MobEnemyManager.Load();						//モブ敵マネージャークラス
 	m_GimmickManager.Load();						//ギミックマネージャークラス
+	m_StatusDrawManager.Load();						//ステータス描画マネージャー
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
@@ -226,7 +217,7 @@ int StageScene::Step() {
 	}
 	PlayerStep();
 
-	float ShadowPos = 200.0f;
+	float ShadowPos = SHADOW_RANGE;
 	VECTOR MinShadow = VGet(m_Player.GetPos().x - ShadowPos, m_Player.GetPos().y - ShadowPos, m_Player.GetPos().z - ShadowPos);
 	VECTOR MaxShadow = VGet(m_Player.GetPos().x + ShadowPos, m_Player.GetPos().y + ShadowPos, m_Player.GetPos().z + ShadowPos);
 
@@ -320,12 +311,7 @@ void StageScene::PlayerStep() {
 }
 //ステータス関連Step
 void StageScene::StatusStep() {
-	int HitPoints = (int)m_Player.GetHitPoints();
-	m_HitPoints.SetHitPoints(HitPoints);			//体力UIクラス
-	int SkillPoints = (int)m_Player.GetSkillPoints();
-	m_SkillPoints.SetSkillPoints(SkillPoints);		//スキルポイントUIクラス
-	int Stamina = (int)m_Player.GetStamina();
-	m_Stamina.SetStamina(Stamina);					//スタミナUIクラス
+	m_StatusDrawManager.SetStatus();						//ステータス描画マネージャー
 }
 //カメラ関連Step
 void StageScene::CameraStep() {

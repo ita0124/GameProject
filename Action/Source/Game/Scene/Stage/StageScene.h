@@ -4,29 +4,25 @@
 #include "Game/Object/Actor/Character/Player/Player.h"
 #include "Game/Object/Sword/Sword.h"
 #include "Game/Object/Shield/Shield.h"
-#include "Game/UI/HitPoints/HitPoints.h"
-#include "Game/UI/SkillPoints/SkillPoints.h"
-#include "Game/UI/Stamina/Stamina.h"
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/MobEnemy/MobEnemyManager.h"
 #include "Game/Manager/Gimmick/GimmickManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
+#include "Game/Manager/StatusDrawManager/StatusDrawManager.h"
 #include "Game/HitCheck/HitCheck.h"
 #include "Game/Result/ResultNum.h"
 
 class StageScene :public SceneBase {
 private:
-	Sky				m_Sky;				//天球クラス
-	Player			m_Player;			//プレイヤークラス
-	Sword			m_Sword;			//剣クラス
-	Shield			m_Shield;			//盾クラス
-	HitPoints		m_HitPoints;		//体力UIクラス
-	SkillPoints		m_SkillPoints;		//スキルポイントUIクラス
-	Stamina			m_Stamina;			//スタミナUIクラス
-	PlatformManager	m_PlatformManager;	//プラットフォームマネージャークラス
-	MobEnemyManager	m_MobEnemyManager;	//モブ敵マネージャークラス
-	GimmickManager	m_GimmickManager;	//ギミックマネージャークラス
-	CameraManager	m_CameraManager;	//カメラマネージャークラス
+	Sky					m_Sky;					//天球クラス
+	Player				m_Player;				//プレイヤークラス
+	Sword				m_Sword;				//剣クラス
+	Shield				m_Shield;				//盾クラス
+	PlatformManager		m_PlatformManager;		//プラットフォームマネージャークラス
+	MobEnemyManager		m_MobEnemyManager;		//モブ敵マネージャークラス
+	GimmickManager		m_GimmickManager;		//ギミックマネージャークラス
+	CameraManager		m_CameraManager;		//カメラマネージャークラス
+	StatusDrawManager	m_StatusDrawManager;	//ステータス描画マネージャー
 
 	int m_ShadowHndl;					//影生成用のハンドル
 

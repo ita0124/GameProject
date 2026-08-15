@@ -120,9 +120,6 @@
     <Filter Include="ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase">
       <UniqueIdentifier>{cd514c39-16d2-4951-9bf8-6f444a7bedd2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Base\ItemBase">
-      <UniqueIdentifier>{90996708-c25f-49f3-bba4-9651fcfcff11}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Base\SceneBase">
       <UniqueIdentifier>{06f91ff4-b509-4667-9a46-55a86817cdfd}</UniqueIdentifier>
     </Filter>
@@ -158,9 +155,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase">
       <UniqueIdentifier>{148fbc58-843b-4a40-b480-3ab2e34a5abf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Bace\ItemBase">
-      <UniqueIdentifier>{1197ab85-0aea-4d72-9735-bee0b95b8b7f}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Game\Bace\SceneBase">
       <UniqueIdentifier>{89a2546e-8ddb-4873-bab9-4b3523fdfe37}</UniqueIdentifier>
@@ -405,6 +399,18 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Gimmick">
       <UniqueIdentifier>{2d333373-3e2b-4487-a1b7-6cb285325010}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Base\Object2DBase\StatusDrawBase">
+      <UniqueIdentifier>{1a5a74e2-1cc2-47be-b2e2-ed160b85cc31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Bace\Object2DBase\StatusDrawBase">
+      <UniqueIdentifier>{b5e8e485-5cc6-41ec-84ad-47fad6b52f5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\StatusDrawManager">
+      <UniqueIdentifier>{8f5a46ec-6944-4629-8272-c90d71ab0ce5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\StatusDrawManager">
+      <UniqueIdentifier>{f24ce4b7-23bb-453c-9b9a-c1bb998ce0dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -433,9 +439,6 @@
     </ClCompile>
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp">
       <Filter>ソース ファイル\Game\Base\ObjectBase\ActorBase\CharacterBase\EnemyBase</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Base\Item\ItemBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ItemBase</Filter>
     </ClCompile>
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp">
       <Filter>ソース ファイル\Game\Base\SceneBase</Filter>
@@ -509,12 +512,6 @@
     <ClCompile Include="Source\Game\UI\HitPoints\HitPoints.cpp">
       <Filter>ソース ファイル\Game\UI\HitPoints</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\UI\SkillPoints\SkillPoints.cpp">
-      <Filter>ソース ファイル\Game\UI\SkillPoints</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\UI\Stamina\Stamina.cpp">
-      <Filter>ソース ファイル\Game\UI\Stamina</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp">
       <Filter>ソース ファイル\Game\Camera\Target</Filter>
     </ClCompile>
@@ -581,6 +578,18 @@
     <ClCompile Include="Source\Game\Manager\Gimmick\GimmickManager.cpp">
       <Filter>ソース ファイル\Game\Manager\GimmickManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object2D\StatusDraw\StatusDrawBase.cpp">
+      <Filter>ソース ファイル\Game\Base\Object2DBase\StatusDrawBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\UI\SkillPoints\SkillPoints.cpp">
+      <Filter>ソース ファイル\Game\UI\SkillPoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\UI\Stamina\Stamina.cpp">
+      <Filter>ソース ファイル\Game\UI\Stamina</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\StatusDrawManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -600,9 +609,6 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\ActorBase\CharacterBase\EnemyBase</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Base\Item\ItemBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace\ItemBase</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\SceneBase</Filter>
@@ -685,12 +691,6 @@
     <ClInclude Include="Source\Game\UI\HitPoints\HitPoints.h">
       <Filter>ヘッダー ファイル\Game\UI\HitPoints</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\UI\SkillPoints\SkillPoints.h">
-      <Filter>ヘッダー ファイル\Game\UI\SkillPoints</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\UI\Stamina\Stamina.h">
-      <Filter>ヘッダー ファイル\Game\UI\Stamina</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera\Target</Filter>
     </ClInclude>
@@ -756,6 +756,18 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Manager\Gimmick\GimmickManager.h">
       <Filter>ヘッダー ファイル\Game\Manager\GimmickManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object2D\StatusDraw\StatusDrawBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\Object2DBase\StatusDrawBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\UI\SkillPoints\SkillPoints.h">
+      <Filter>ヘッダー ファイル\Game\UI\SkillPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\UI\Stamina\Stamina.h">
+      <Filter>ヘッダー ファイル\Game\UI\Stamina</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\StatusDrawManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
