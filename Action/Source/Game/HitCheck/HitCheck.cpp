@@ -99,6 +99,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 				//プレイヤークラスをダウンキャスト
 				PointerPlayer = dynamic_cast<Player*>(&_Object);
 				_AttackObject.HitCalc(PointerPlayer);
+				break;
 			}
 		}
 	}
@@ -632,7 +633,7 @@ void HitCheck::MobEnemyToObjectAttack(MobEnemyManager& _MobEnemyManager, ObjectB
 		ObjectToObjectAttack(OneMobEnemy, _AttackObject);
 	}
 }
-//モブ敵に対するオブジェクトの攻撃当たり判定
+//オブジェクトとモブ敵の攻撃当たり判定
 void HitCheck::ObjectToMobEnemyAttack(ObjectBase& _Object, MobEnemyManager& _MobEnemyManager) {
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		//モブ敵マネージャークラスから一つ取得

@@ -87,6 +87,8 @@ void MobEnemyManager::Init(int _Map) {
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeY(m_RequestData[MobEnemyIndex][10]);				//Yサイズ
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataSizeZ(m_RequestData[MobEnemyIndex][11]);				//Zサイズ
 			m_MobEnemy[MobEnemyIndex]->SetRequestDataGimmickType((int)m_RequestData[MobEnemyIndex][12]);	//ギミックタイプ
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataPower(m_RequestData[MobEnemyIndex][13]);				//攻撃力
+			m_MobEnemy[MobEnemyIndex]->SetRequestDataHitPoints(m_RequestData[MobEnemyIndex][14]);			//体力
 			//リクエストしてオブジェクトを生成
 			m_MobEnemy[MobEnemyIndex]->Request(m_MobEnemy[MobEnemyIndex]->GetRequestData());
 		}

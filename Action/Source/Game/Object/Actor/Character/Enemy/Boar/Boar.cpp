@@ -31,8 +31,6 @@ namespace {
 
 	constexpr float		EFFECT_SPAWN_FRAME = 30.0f;														//エフェクトを発生させるアニメーションフレーム
 
-	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
-
 	constexpr int		DAMAGE_TIME = 15;																//ダメージ状態の継続時間
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
@@ -249,8 +247,6 @@ void Boar::Attack() {
 		m_IsPush = false;
 		//接近後の経過フレームを初期化
 		m_AttackTime = 0;
-		//攻撃力設定
-		m_Power = ATTACK_POWER;
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
 			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);

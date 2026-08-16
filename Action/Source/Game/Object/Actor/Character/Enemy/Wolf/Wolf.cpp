@@ -31,8 +31,6 @@ namespace {
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 
-	constexpr float		ATTACK_POWER = 5.0f;															//通常攻撃１段目時の攻撃力
-
 	constexpr int		DAMAGE_TIME = 15;																//ダメージ状態の継続時間
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
@@ -276,8 +274,6 @@ void Wolf::Attack() {
 		m_IsClose = false;
 		//押し出し判定オフ
 		m_IsPush = false;
-		//攻撃力設定
-		m_Power = ATTACK_POWER;
 		//重力処理オン
 		m_IsGravity = true;
 		//ジャンプ力設定

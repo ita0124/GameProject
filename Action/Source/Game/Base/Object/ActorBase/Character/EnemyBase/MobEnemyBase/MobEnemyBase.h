@@ -19,6 +19,9 @@ protected:
 		VECTOR	Scale;			//拡縮
 		VECTOR	Size;			//サイズ
 		int		GimmickType;	//ギミックタイプ
+		float	Power;			//攻撃力
+		float	HitPoints;		//体力
+
 	}REQUEST_DATA;
 
 	REQUEST_DATA			m_RequestData;			//リクエスト時に最低限必要なデータ構造体
@@ -66,4 +69,8 @@ public:
 	void SetRequestDataSizeZ(const float& _SizeZ) { m_RequestData.Size.z = _SizeZ; }
 	//データ構造体 ギミックタイプ
 	void SetRequestDataGimmickType(const int& _GimmickType) { m_RequestData.GimmickType = _GimmickType; }
+	//データ構造体 攻撃力
+	void SetRequestDataPower(const float& _Power) { m_RequestData.Power = _Power; }
+	//データ構造体 体力
+	void SetRequestDataHitPoints(const float& _HitPoints) { m_RequestData.HitPoints = _HitPoints; }
 };

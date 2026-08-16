@@ -38,6 +38,10 @@ void MobEnemyBase::Request(const REQUEST_DATA& _RequestData) {
 	m_Rad = m_Size.x * HALF;
 	//作用するギミックタイプ設定
 	m_GimmickType = _RequestData.GimmickType;
+	//攻撃力設定
+	m_Power = _RequestData.Power;
+	//体力設定
+	m_HitPoints = _RequestData.HitPoints;
 }
 //重力処理
 void MobEnemyBase::GravityManager() {

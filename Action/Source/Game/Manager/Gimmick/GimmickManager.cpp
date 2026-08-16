@@ -54,7 +54,7 @@ void GimmickManager::Init(int _Map) {
 	if (fopen_s(&GimmickDataFile, GIMMICK_DATA_FILE_CSV_PATH[_Map], "r") != 0)return;
 	//データ取得
 	for (int GimmickIndex = 0; GimmickIndex < GIMMICK_MAX; GimmickIndex++) {
-		for (int RequestDataIndex = 0; RequestDataIndex < MOB_ENEMY_REQUEST_DATA_MAX; RequestDataIndex++) {
+		for (int RequestDataIndex = 0; RequestDataIndex < GIMMICK_REQUEST_DATA_MAX; RequestDataIndex++) {
 			//データ一つ分取得
 			if (fscanf_s(GimmickDataFile, "%f", &m_RequestData[GimmickIndex][RequestDataIndex]) == 0) {
 				m_RequestData[GimmickIndex][RequestDataIndex] = 0;

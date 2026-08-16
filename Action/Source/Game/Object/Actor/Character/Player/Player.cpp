@@ -967,7 +967,7 @@ void Player::AttackMoveCalc(int _Index) {
 		MATRIX MatRotY = MGetRotY(m_CamraRot.y);
 		MATRIX MatComposition = MMult(MatMoveVec, MatRotY);
 		//合成した行列から移動方向を取得
-		AttackMoveVec = VGet(MatComposition.m[3][0],0.0f,MatComposition.m[3][2]
+		AttackMoveVec = VGet(MatComposition.m[3][0], 0.0f, MatComposition.m[3][2]
 		);
 	}
 	else {
@@ -986,7 +986,7 @@ void Player::AttackMoveCalc(int _Index) {
 			MATRIX MatRotY = MGetRotY(m_Rot.y);
 			MATRIX MatComposition = MMult(MatMoveVec, MatRotY);
 			//合成した行列から移動方向を取得
-			AttackMoveVec = VGet(MatComposition.m[3][0],0.0f,MatComposition.m[3][2]
+			AttackMoveVec = VGet(MatComposition.m[3][0], 0.0f, MatComposition.m[3][2]
 			);
 		}
 	}
@@ -1125,7 +1125,7 @@ void Player::GravityManager() {
 	}
 }
 //ノックバックデータ数値代入
-void Player::SetKnockBackData(VECTOR _Pos,float _Power) {
+void Player::SetKnockBackData(VECTOR _Pos, float _Power) {
 	//スタミナ残量が少ないほどノックバック量が大きくる
 	float Calc = (m_MaxHitPoints - m_Stamina) * 0.1f;
 	m_KnockBackMaxDistance = _Power + Calc;
