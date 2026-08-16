@@ -392,8 +392,12 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		PlatformBase& OnePlatform = _PlatformManager.GetPlatform(Index);
 		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
 		if (!OnePlatform.GetIsActive())continue;
-		//オブジェクトがプレイヤーかつ足場クラスが壁だった場合以降の処理を行わない
-		if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && OnePlatform.GetPlatformKinds() == PlatformBase::TagPlatformKinds::WALL)continue;
+		//足場クラスがオブジェクトを押し戻さない設定になっているならば次のforへ
+		if (!OnePlatform.GetObjectPush())continue;
+		//オブジェクトがプレイヤーかつ足場クラスがプレイヤーを押し戻さない設定になっているならば次のforへ
+		if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && !OnePlatform.GetPlayerPush())continue;
+		//オブジェクトが敵かつ足場クラスが敵を押し戻さない設定になっているならば次のforへ
+		if (_Object.GetKinds() == ObjectBase::TagKinds::ENEMY && !OnePlatform.GetEnemyPush())continue;
 		//足場クラスの座標取得
 		VECTOR PlatformPos = OnePlatform.GetCenter(ObjectBase::TagShape::FIELD);
 		//足場クラスのサイズを取得

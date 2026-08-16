@@ -17,6 +17,9 @@ void PlatformBase::Init() {
 
 	m_PlatformKinds = NORMAL;														//足場オブジェクト種類を設定
 	m_GimmickType = -1;																//作用するギミックタイプ
+	m_ObjectPush = true;															//オブジェクトを押し戻すか
+	m_PlayerPush = true;															//プレイヤーを押し戻すか
+	m_EnemyPush = true;																//敵を押し戻すか
 }
 //リクエスト
 void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {

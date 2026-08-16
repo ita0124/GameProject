@@ -46,11 +46,10 @@ void BarrierActivator::Step(MobEnemyManager _MobEnemyManager, PlatformManager _P
 			}
 			//カウントが増えていなければ
 			if (MobEnemyActiveCount == 0) {
-				OnePlatform.SetIsActive(false);
+				OnePlatform.SetPlayerPush(false);
 			}
 			else {
-				//生存フラグをオンに
-				OnePlatform.SetIsActive(true);
+				OnePlatform.SetPlayerPush(true);
 			}
 		}
 	}

@@ -32,7 +32,7 @@ void RespawnPlatform::HitCalc(ObjectBase* _Object) {
 	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER) {
 		m_Object = _Object;
 		if (m_Object != nullptr) {
-			m_Object->SetRespawnPos(m_Pos);
+			m_Object->SetRespawnPos(m_Pos);	
 			m_Object = nullptr;
 		}
 	}

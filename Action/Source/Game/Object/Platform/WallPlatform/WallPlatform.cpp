@@ -1,6 +1,6 @@
 #include "WallPlatform.h"
 
-namespace {							
+namespace {
 	constexpr char		FILE_PATH[] = ("");	//モデルファイルパス
 }
 
@@ -17,6 +17,7 @@ void WallPlatform::Init() {
 	ObjectBase::Init();
 
 	m_PlatformKinds = WALL;	//足場オブジェクト種類を再設定
+	m_PlayerPush = false;	//プレイヤーを押し戻すか
 }
 //データ読み込み処理
 void WallPlatform::Load() {

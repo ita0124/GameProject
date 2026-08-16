@@ -40,6 +40,11 @@ protected:
 	TagPlatformKinds			m_PlatformKinds;				//足場オブジェクト種類
 
 	int							m_GimmickType;					//作用するギミックタイプ
+
+	bool						m_ObjectPush;					//オブジェクトを押し戻すか
+	bool						m_PlayerPush;					//プレイヤーを押し戻すか
+	bool						m_EnemyPush;					//敵を押し戻すか
+
 public:
 	//コンストラクタ
 	PlatformBase();
@@ -51,13 +56,19 @@ public:
 	void Request(const NORMAL_REQUEST_DATA& _NormalRequestData);
 	//Get
 	//基本データ構造体
-	NORMAL_REQUEST_DATA	GetNormalRequestData() const { return m_NormalRequestData; }
+	NORMAL_REQUEST_DATA			GetNormalRequestData() const { return m_NormalRequestData; }
 	//動く床データ構造体
 	MOVINGPLATFORM_REQUEST_DATA GetMovingPlatformRequestData() const { return m_MovingPlatformRequestData; }
 	//足場オブジェクト種類
-	TagPlatformKinds GetPlatformKinds()	const { return m_PlatformKinds; }
+	TagPlatformKinds			GetPlatformKinds()	const { return m_PlatformKinds; }
 	//作用するギミックタイプ
-	int				GetGimmickType()	const { return m_GimmickType; }
+	int							GetGimmickType()	const { return m_GimmickType; }
+	//オブジェクトを押し戻すか
+	bool						GetObjectPush()const { return m_ObjectPush; }
+	//プレイヤーを押し戻すか
+	bool						GetPlayerPush()const { return m_PlayerPush; }
+	//敵を押し戻すか
+	bool						GetEnemyPush()const { return m_EnemyPush; }
 
 	//Set
 	//基本データ構造体 座標
@@ -88,4 +99,10 @@ public:
 	void SetMovingPlatformRequestDataEndPosZ(const float& _EndPosZ) { m_MovingPlatformRequestData.EndPos.z = _EndPosZ; }
 	//動く床データ構造体 移動速度
 	void SetMovingPlatformRequestDataMoveSpeed(const float& _MoveSpeed) { m_MovingPlatformRequestData.MoveSpeed = _MoveSpeed; }
+	//オブジェクトを押し戻すか
+	void SetObjectPush(const bool& _ObjectPush) { m_ObjectPush = _ObjectPush; }
+	//プレイヤーを押し戻すか
+	void SetPlayerPush(const bool& _PlayerPush) { m_PlayerPush= _PlayerPush; }
+	//敵を押し戻すか
+	void SetEnemyPush(const bool& _EnemyPush) { m_EnemyPush= _EnemyPush; }
 };
