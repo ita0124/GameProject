@@ -1,5 +1,6 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
+#include "Lib/LoadMaterial/LoadMaterial.h"
 
 //“®‚­‘«ê
 class RespawnPlatform :public PlatformBase {

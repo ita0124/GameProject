@@ -35,5 +35,7 @@ void RespawnPlatform::HitCalc(ObjectBase* _Object) {
 			m_Object->SetRespawnPos(m_Pos);	
 			m_Object = nullptr;
 		}
+		//輪郭線のマテリアルをマテリアル青に変更
+		MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::MATERIAL_AFTER_RESPAWN, FALSE);
 	}
 }

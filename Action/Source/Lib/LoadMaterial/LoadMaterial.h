@@ -8,6 +8,8 @@ public:
 	static int MATERIAL_BLUE;
 	static int MATERIAL_RED;
 	static int MATERIAL_GRAY;
+	static int MATERIAL_BEFORE_RESPAWN;
+	static int MATERIAL_AFTER_RESPAWN;
 
 	//コンストラクタ・デストラクタ
 	LoadMaterial();
