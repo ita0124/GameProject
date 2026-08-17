@@ -2,13 +2,13 @@
 
 namespace {
 	constexpr const char* PLATFORM_ID_FILE_CSV_PATH[PlatformManager::TagMapKinds::MAP_NUM] = {			//プラットフォームIDCSVファイルパス
-	"Data/CSV/Platform1/PlatformId.csv",
-	"Data/CSV/Platform2/PlatformId.csv",
+	"Data/CSV/Map1/Platform/PlatformId.csv",
+	"Data/CSV/Map2/Platform/PlatformId.csv",
 	};
 
 	constexpr const char* PLATFORM_DATA_FILE_CSV_PATH[PlatformManager::TagMapKinds::MAP_NUM] = {		//プラットフォームデータCSVファイルパス
-	"Data/CSV/Platform1/PlatformData.csv",
-	"Data/CSV/Platform2/PlatformData.csv",
+	"Data/CSV/Map1/Platform/PlatformData.csv",
+	"Data/CSV/Map2/Platform/PlatformData.csv",
 	};
 }
 

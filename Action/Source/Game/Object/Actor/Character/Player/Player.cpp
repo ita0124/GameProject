@@ -560,18 +560,20 @@ void Player::SkillAttack() {
 		m_IsAttackCollision = false;
 	}
 	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING) {
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_FLASHLIGHT);
-			//指定ボーンの座標取得
-			VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD21, Pos, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}
+		//
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

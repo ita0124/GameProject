@@ -2,13 +2,13 @@
 
 namespace {
 	constexpr const char* MOB_ENEMY_ID_FILE_CSV_PATH[MobEnemyManager::TagMapKinds::MAP_NUM] = {			//モブ敵IDCSVファイルパス
-	"Data/CSV/MobEnemy1/MobEnemyId.csv",
-	"Data/CSV/MobEnemy2/MobEnemyId.csv",
+	"Data/CSV/Map1/MobEnemy/MobEnemyId.csv",
+	"Data/CSV/Map2/MobEnemy/MobEnemyId.csv",
 	};
 
 	constexpr const char* MOB_ENEMY_DATA_FILE_CSV_PATH[MobEnemyManager::TagMapKinds::MAP_NUM] = {		//モブ敵データCSVファイルパス
-	"Data/CSV/MobEnemy1/MobEnemyData.csv",
-	"Data/CSV/MobEnemy2/MobEnemyData.csv",
+	"Data/CSV/Map1/MobEnemy/MobEnemyData.csv",
+	"Data/CSV/Map2/MobEnemy/MobEnemyData.csv",
 	};
 }
 

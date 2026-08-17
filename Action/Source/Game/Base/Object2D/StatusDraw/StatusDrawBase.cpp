@@ -1,7 +1,7 @@
 #include "StatusDrawBase.h"
 
 namespace {
-	constexpr int ICON_OFFSET_Y = 32;	//アイコンのY座標補正値
+	constexpr int ICON_OFFSET_Y = 24;	//アイコンのY座標補正値
 }
 
 //コンストラクタ
@@ -30,5 +30,6 @@ void StatusDrawBase::Draw() {
 		int X = m_ImageSpacing * Index;
 		DrawRotaGraph((int)m_Pos.x + X, (int)m_Pos.y, 1.0f, 0.0f, m_Hndl[STATUS][0], TRUE);
 	}
-	DrawRotaGraph3((int)0, (int)m_Pos.y - ICON_OFFSET_Y, 0, 0, 1.0f, 1.0f, m_Rot, m_Hndl[ICON][0], TRUE, m_IsTurn);
+	//DrawRotaGraph3(0, (int)m_Pos.y - ICON_OFFSET_Y, 0, 0, 1.0f, 1.0f, m_Rot, m_Hndl[ICON][0], TRUE, m_IsTurn);
+	DrawRotaGraph3(0, (int)m_Pos.y - ICON_OFFSET_Y, 0, 0, 1.0f, 1.0f, m_Rot, m_Hndl[DECORATION][0], TRUE, m_IsTurn);
 }

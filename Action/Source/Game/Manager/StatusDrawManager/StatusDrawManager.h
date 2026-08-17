@@ -4,10 +4,6 @@
 #include "Game/UI/SkillPoints/SkillPoints.h"
 #include "Game/UI/Stamina/Stamina.h"
 
-namespace {
-	constexpr int UI_FRAME_MAX = 3;
-}
-
 //ステータス描画マネージャー
 class StatusDrawManager {
 private:
@@ -15,7 +11,7 @@ private:
 	HitPoints		m_HitPoints;			//体力
 	SkillPoints		m_SkillPoints;			//スキルポイント
 	Stamina			m_Stamina;				//スタミナ
-	Object2DBase	m_Frame[UI_FRAME_MAX];	//UIフレーム
+	Object2DBase	m_Frame;				//UIフレーム
 
 public:
 	//コンストラクタ

@@ -5,9 +5,11 @@ namespace {
 	"Data/UI/SkillPoints.png",
 	"Data/UI/Gray.png",
 	"Data/UI/SkillPointsIcon.png",
+	"Data/UI/Decoration.png",
 	};
 
 	constexpr int DIVIDE_NUM[SkillPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//‰æ‘œ‚Ì•ªŠ„”
+		1,
 		1,
 		1,
 		1,

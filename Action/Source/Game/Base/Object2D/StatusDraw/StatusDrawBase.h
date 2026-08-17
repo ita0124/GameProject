@@ -13,6 +13,7 @@ public:
 		STATUS,			//ステータス
 		MAX_STATUS,		//最大ステータス
 		ICON,			//アイコン
+		DECORATION,		//飾り
 
 		GRAPHICS_NUM
 	};

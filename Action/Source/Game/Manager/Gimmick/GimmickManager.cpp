@@ -2,13 +2,13 @@
 
 namespace {
 	constexpr const char* GIMMICK_ID_FILE_CSV_PATH[GimmickManager::TagMapKinds::MAP_NUM] = {			//モブ敵IDCSVファイルパス
-	"Data/CSV/Gimmick1/GimmickId.csv",
-	"Data/CSV/Gimmick2/GimmickId.csv",
+	"Data/CSV/Map1/Gimmick/GimmickId.csv",
+	"Data/CSV/Map2/Gimmick/GimmickId.csv",
 	};
 
 	constexpr const char* GIMMICK_DATA_FILE_CSV_PATH[GimmickManager::TagMapKinds::MAP_NUM] = {			//モブ敵データCSVファイルパス
-	"Data/CSV/Gimmick1/GimmickData.csv",
-	"Data/CSV/Gimmick2/GimmickData.csv",
+	"Data/CSV/Map1/Gimmick/GimmickData.csv",
+	"Data/CSV/Map2/Gimmick/GimmickData.csv",
 	};
 }
 

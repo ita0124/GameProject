@@ -5,9 +5,11 @@ namespace {
 	"Data/UI/Stamina.png",
 	"Data/UI/Gray.png",
 	"Data/UI/StaminaIcon.png",
+	"Data/UI/Decoration.png",
 	};
 
 	constexpr int DIVIDE_NUM[Stamina::TagGraphicsNum::GRAPHICS_NUM] = {			//‰æ‘œ‚Ì•ªŠ„”
+		1,
 		1,
 		1,
 		1,
