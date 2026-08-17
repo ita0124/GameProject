@@ -36,7 +36,8 @@ namespace {
 
 	constexpr float		SKILL_ATTACK_COLLISION_START = 45.0f;									//スキル攻撃の当たり判定開始フレーム
 	constexpr float		SKILL_ATTACK_COLLISION_END = 55.0f;										//スキル攻撃の当たり判定終了フレーム
-	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING = 45.0f;								//スキル攻撃の演出タイミング
+	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_SE = 15.0f;							//スキル攻撃の演出タイミング(SE)
+	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT = 45.0f;							//スキル攻撃の演出タイミング(エフェクト)
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 15.0f;									//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_END = 25.0f;									//通常攻撃１段目の当たり判定終了フレーム
 	constexpr float		NORMAL_ATTACK1_PERFORMANCE_TIMING = 15.0f;								//通常攻撃１段目の演出タイミング
@@ -412,6 +413,8 @@ void Player::Jump() {
 		m_IsGravity = true;
 		//初回ジャンプ力設定
 		m_JumpPower = FIRST_JUMP_POWER;
+		//サウンドリクエスト
+		SoundManager::Play(SoundManager::TagID::SE_JUMP);
 	}
 	//通常移動方向設定
 	if (SetNormalMoveVec()) {
@@ -559,14 +562,18 @@ void Player::SkillAttack() {
 		//攻撃の当たり判定消滅
 		m_IsAttackCollision = false;
 	}
-	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING) {
+	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_SE) {
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_SKILL_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_SKILL_ATTACK);
+		}
+	}
+	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT) {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
-			//サウンドリクエスト
-			SoundManager::Play(SoundManager::TagID::SE_FLASHLIGHT);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD21, Pos, false);
 		}
@@ -667,18 +674,20 @@ void Player::NormalAttack1() {
 		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_PERFORMANCE_TIMING) {
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
-			SoundManager::Play(SoundManager::TagID::SE_ATK);
-			//指定ボーンの座標取得
-			VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}
+		//
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -773,18 +782,20 @@ void Player::NormalAttack2() {
 		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_PERFORMANCE_TIMING) {
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
-			SoundManager::Play(SoundManager::TagID::SE_ATK);
-			//指定ボーンの座標取得
-			VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}
+		//
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -861,18 +872,20 @@ void Player::NormalAttack3() {
 		}
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_PERFORMANCE_TIMING) {
+		//指定ボーンの座標取得
+		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
-			SoundManager::Play(SoundManager::TagID::SE_ATK);
-			//指定ボーンの座標取得
-			VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}
+		//
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

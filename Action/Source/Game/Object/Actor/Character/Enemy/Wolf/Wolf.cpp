@@ -35,6 +35,8 @@ namespace {
 
 	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
 
+	constexpr float		FALL_OUT_Y = -500.0f;															//落下判定のY座標
+
 	constexpr float		FIRST_JUMP_POWER = 2.0f;														//初回ジャンプ力
 	constexpr float		JUMP_POWER_MAX = -7.5f;															//ジャンプ速度の下限
 	constexpr float		GRAVITY = -0.025f;																//重力
@@ -121,7 +123,7 @@ void Wolf::Step() {
 	}
 	m_PlatformVec = VZERO;
 
-	if (m_Pos.y <= -500) {
+	if (m_Pos.y <= FALL_OUT_Y) {
 		m_HitPoints = 0;
 	}
 	if (m_HitPoints <= 0) {
@@ -333,8 +335,8 @@ void Wolf::Attack() {
 	UpdateRotation(m_MoveVec, NORMAL_MOVE_ROTATE_SPEED);
 	if (m_AnimeData.Frame > ATTACK_COLLISION_START && m_AnimeData.Frame < ATTACK_COLLISION_END) {
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_WEAKATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_WEAKATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_WOLF_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_WOLF_ATTACK);
 		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(JAW_UPPER002_END, ATTACK_COLLISION_RAD);
@@ -387,6 +389,17 @@ void Wolf::Death() {
 		m_PrevState = m_State;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//サウンドリクエスト
+		if (m_GimmickType != -1) {
+			if (!SoundManager::IsPlay(SoundManager::TagID::SE_BOSS_WOLF_DEATH)) {
+				SoundManager::Play(SoundManager::TagID::SE_BOSS_WOLF_DEATH);
+			}
+		}
+		else {
+			if (!SoundManager::IsPlay(SoundManager::TagID::SE_MOB_WOLF_DEATH)) {
+				SoundManager::Play(SoundManager::TagID::SE_MOB_WOLF_DEATH);
+			}
+		}
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

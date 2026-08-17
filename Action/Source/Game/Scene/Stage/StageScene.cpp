@@ -54,7 +54,7 @@ int StageScene::Loop() {
 			//ƒ^ƒO‚ğSTEP‚Éİ’è
 			m_ID = STEP;
 			//BGM‚ğŒÄ‚Ño‚·
-			SoundManager::Play(SoundManager::TagID::BGM_GAMEMOBENEMY, DX_PLAYTYPE_LOOP);
+			SoundManager::Play(SoundManager::TagID::BGM_NORMAL_MAP, DX_PLAYTYPE_LOOP);
 		}
 		break;
 

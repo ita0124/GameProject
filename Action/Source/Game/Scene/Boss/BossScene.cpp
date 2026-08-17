@@ -70,7 +70,7 @@ int	BossScene::Loop() {
 			//状態をSTEPに
 			m_ID = STEP;
 			//BGMを呼び出す
-			SoundManager::Play(SoundManager::TagID::BGM_GAMEMAIN, DX_PLAYTYPE_LOOP);
+			SoundManager::Play(SoundManager::TagID::BGM_MAIN, DX_PLAYTYPE_LOOP);
 		}
 		break;
 		//毎フレーム呼び出す処理を行う

@@ -8,17 +8,23 @@ constexpr const char* FilePath1[SoundManager::TagID::NUM_MAX] = {
 	"Data/Sound/SE/1.Sword.mp3",
 	"Data/Sound/SE/2.Shield.mp3",
 	"Data/Sound/SE/3.Hit.mp3",
-	"Data/Sound/SE/4.WeakAtk.mp3",
-	"Data/Sound/SE/5.MediumAtk.mp3",
-	"Data/Sound/SE/6.StrongAtk.mp3",
-	"Data/Sound/SE/7.Lunges.mp3",
-	"Data/Sound/SE/8.Flashoflight.mp3",
+	"Data/Sound/SE/4.Jump.mp3",
+	"Data/Sound/SE/5.SkillAttack.mp3",
+	"Data/Sound/SE/6.ElephantNormalAttack.mp3",
+	"Data/Sound/SE/7.ElephantStrongAttack.mp3",
+	"Data/Sound/SE/8.ElephantLunges.mp3",
 	"Data/Sound/SE/9.ElephantCry.mp3",
-	"Data/Sound/BGM/Title.mp3",
-	"Data/Sound/BGM/GameOver.mp3",
-	"Data/Sound/BGM/GameClear.mp3",
-	"Data/Sound/BGM/Main.mp3",
-	"Data/Sound/BGM/MobEnemy.mp3",
+	"Data/Sound/SE/10.WolfAttack.mp3",
+	"Data/Sound/SE/11.MobWolfDeath.mp3",
+	"Data/Sound/SE/12.BossWolfDeath.mp3",
+	"Data/Sound/SE/13.BoarLunges.mp3",
+	"Data/Sound/SE/14.MobBoarDeath.mp3",
+	"Data/Sound/SE/15.BossBoarDeath.mp3",
+	"Data/Sound/BGM/1.Title.mp3",
+	"Data/Sound/BGM/2.NormalMap.mp3",
+	"Data/Sound/BGM/3.Main.mp3",
+	"Data/Sound/BGM/4.GameClear.mp3",
+	"Data/Sound/BGM/5.GameOver.mp3",
 };
 
 //コンストラクタ
@@ -47,7 +53,7 @@ void SoundManager::Load() {
 //音量調節
 void SoundManager::Volume() {
 	for (int Index = BGM_TITLE; Index < NUM_MAX; Index++) {
-		ChangeVolumeSoundMem(255 * 0 / 100, m_Hndl[Index]);
+		ChangeVolumeSoundMem(255 *  50/ 100, m_Hndl[Index]);
 	}
 }
 

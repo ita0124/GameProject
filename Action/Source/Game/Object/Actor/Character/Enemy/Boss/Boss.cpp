@@ -357,8 +357,8 @@ void Boss::NoormalAttack1(TagState _State) {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_WEAKATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_WEAKATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
 		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(NOSE004END, NORMAL_ATTACK1_COLLISION_RAD);
@@ -423,8 +423,8 @@ void Boss::NoormalAttack2(TagState _State) {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
 		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(FANG003END_LEFT, NORMAL_ATTACK2_COLLISION_RAD);
@@ -501,8 +501,8 @@ void Boss::BreakNormalAttack3() {
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
 		}
 	}
 	//アニメーションが終わったら
@@ -533,8 +533,8 @@ void Boss::RearAttack() {
 	}
 	if (m_AnimeData.Frame > REAR_ATTACK_COLLISION_START && m_AnimeData.Frame < REAR_ATTACK_COLLISION_END) {
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
 		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(TOESEND_LEFT, REAR_ATTACK_COLLISION_RAD);
@@ -658,8 +658,8 @@ void Boss::Charge() {
 		///演出を実行オン
 		m_IsPerformance = true;
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_LUNGES)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_LUNGES);
 		}
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;
@@ -705,8 +705,8 @@ void Boss::ChargeAttack() {
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_MEDIUMATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_MEDIUMATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
 		}
 		///演出を実行オフ
 		m_IsPerformance = false;
@@ -811,8 +811,8 @@ void Boss::Special() {
 		//座標を変更
 		m_Pos = SPECIAL_INIT_VECTOR;
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANTCRY)) {
-			SoundManager::Play(SoundManager::TagID::SE_ELEPHANTCRY);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_CRY)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_CRY);
 		}
 	}
 	if (m_Pos.y <= 0.0f) {

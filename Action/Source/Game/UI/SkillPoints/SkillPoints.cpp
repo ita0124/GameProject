@@ -5,7 +5,7 @@ namespace {
 	"Data/UI/SkillPoints.png",
 	"Data/UI/Gray.png",
 	"Data/UI/SkillPointsIcon.png",
-	"Data/UI/Decoration.png",
+	"Data/UI/SkillPointsDecoration.png",
 	};
 
 	constexpr int DIVIDE_NUM[SkillPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//âÊëúÇÃï™äÑêî
@@ -54,6 +54,6 @@ void SkillPoints::Load() {
 void SkillPoints::Draw() {
 	StatusDrawBase::Draw();
 
-	DrawFormatStringToHandle((int)m_Pos.x + TEXT_POS_X, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "%d/%d", (int)m_Status, (int)m_MaxStatus);
-	DrawFormatStringToHandle((int)m_Pos.x, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "SkillPoints");
+	//DrawFormatStringToHandle((int)m_Pos.x + TEXT_POS_X, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "%d/%d", (int)m_Status, (int)m_MaxStatus);
+	//DrawFormatStringToHandle((int)m_Pos.x, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "SkillPoints");
 }

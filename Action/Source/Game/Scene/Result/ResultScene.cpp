@@ -49,10 +49,10 @@ int ResultScene::Loop() {
 			//BGMÇåƒÇ—èoÇ∑
 			switch (m_ResultNum) {
 			case 1:
-				SoundManager::Play(SoundManager::TagID::BGM_GAMEOVER, DX_PLAYTYPE_LOOP);
+				SoundManager::Play(SoundManager::TagID::BGM_GAME_OVER, DX_PLAYTYPE_LOOP);
 				break;
 			case 2:
-				SoundManager::Play(SoundManager::TagID::BGM_GAMECLEAR, DX_PLAYTYPE_LOOP);
+				SoundManager::Play(SoundManager::TagID::BGM_GAME_CLEAR, DX_PLAYTYPE_LOOP);
 				break;
 			}
 		}

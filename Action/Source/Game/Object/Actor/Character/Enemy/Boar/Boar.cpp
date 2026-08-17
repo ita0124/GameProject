@@ -40,6 +40,8 @@ namespace {
 
 	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
 
+	constexpr float		FALL_OUT_Y = -500.0f;															//落下判定のY座標
+
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boar/Boar.mv1");							//モデルファイルパス
 }
 
@@ -98,7 +100,7 @@ void Boar::Step() {
 	}
 	m_PlatformVec = VZERO;
 
-	if (m_Pos.y <= -500) {
+	if (m_Pos.y <= FALL_OUT_Y) {
 		m_HitPoints = 0;
 	}
 	if (m_HitPoints <= 0) {
@@ -162,6 +164,11 @@ void Boar::HitCalc(ObjectBase* _Object) {
 			//ダメージ状態へ
 			m_State = DAMAGE;
 		}
+	}
+	//サウンドリクエスト
+	if (SoundManager::IsPlay(SoundManager::TagID::SE_BOAR_LUNGES)) {
+		//音楽停止
+		SoundManager::Stop(SoundManager::TagID::SE_BOAR_LUNGES);
 	}
 }
 //待機
@@ -248,8 +255,8 @@ void Boar::Attack() {
 		//接近後の経過フレームを初期化
 		m_AttackTime = 0;
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_STRONGATK)) {
-			SoundManager::Play(SoundManager::TagID::SE_STRONGATK);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_BOAR_LUNGES)) {
+			SoundManager::Play(SoundManager::TagID::SE_BOAR_LUNGES);
 		}
 		//方向ベクトルを取得
 		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos);
@@ -276,6 +283,11 @@ void Boar::Attack() {
 		m_NextActionTime = NEXT_ACTION_WAIT_TIME;
 		//押し出し判定オン
 		m_IsPush = true;
+		//サウンドリクエスト
+		if (SoundManager::IsPlay(SoundManager::TagID::SE_BOAR_LUNGES)) {
+			//音楽停止
+			SoundManager::Stop(SoundManager::TagID::SE_BOAR_LUNGES);
+		}
 	}
 	else {
 		m_AttackTime++;
@@ -292,6 +304,11 @@ void Boar::Down() {
 		m_PrevState = m_State;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//サウンドリクエスト
+		if (SoundManager::IsPlay(SoundManager::TagID::SE_BOAR_LUNGES)) {
+			//音楽停止
+			SoundManager::Stop(SoundManager::TagID::SE_BOAR_LUNGES);
+		}
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
@@ -313,6 +330,17 @@ void Boar::Death() {
 		m_PrevState = m_State;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//サウンドリクエスト
+		if (m_GimmickType != -1) {
+			if (!SoundManager::IsPlay(SoundManager::TagID::SE_BOSS_BOAR_DEATH)) {
+				SoundManager::Play(SoundManager::TagID::SE_BOSS_BOAR_DEATH);
+			}
+		}
+		else {
+			if (!SoundManager::IsPlay(SoundManager::TagID::SE_MOB_BOAR_DEATH)) {
+				SoundManager::Play(SoundManager::TagID::SE_MOB_BOAR_DEATH);
+			}
+		}
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

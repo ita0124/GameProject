@@ -5,7 +5,7 @@ namespace {
 	"Data/UI/HitPoints.png",
 	"Data/UI/Gray.png",
 	"Data/UI/HitPointsIcon.png",
-	"Data/UI/Decoration.png",
+	"Data/UI/HitPointsDecoration.png",
 	};
 
 	constexpr int DIVIDE_NUM[HitPoints::TagGraphicsNum::GRAPHICS_NUM] = {			//âÊëúÇÃï™äÑêî
@@ -54,6 +54,6 @@ void HitPoints::Load() {
 void HitPoints::Draw() {
 	StatusDrawBase::Draw();
 
-	DrawFormatStringToHandle((int)m_Pos.x + TEXT_POS_X, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "%d/%d", (int)m_Status, (int)m_MaxStatus);
-	DrawFormatStringToHandle((int)m_Pos.x, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "HitPoints");
+	//DrawFormatStringToHandle((int)m_Pos.x + TEXT_POS_X, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "%d/%d", (int)m_Status, (int)m_MaxStatus);
+	//DrawFormatStringToHandle((int)m_Pos.x, (int)m_Pos.y + TEXT_POS_Y, WHITE, DxLibFont::FONTHNDL_N20, "HitPoints");
 }

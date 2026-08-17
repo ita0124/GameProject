@@ -3,13 +3,13 @@
 namespace {
 	constexpr float		HEAD_POS_Y_BASE = 12.0f;
 
-	constexpr VECTOR	HIT_POINTS_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 4.0f,0.0f };		//先頭座標
+	constexpr VECTOR	HIT_POINTS_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 3.0f,0.0f };		//先頭座標
 	constexpr int		HIT_POINTS_MAX = 100;												//最大HP
 
-	constexpr VECTOR	SKILL_POINTS_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 9.0f,0.0f };		//先頭座標
+	constexpr VECTOR	SKILL_POINTS_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 11.0f,0.0f };		//先頭座標
 	constexpr int		SKILL_POINTS_MAX = 100;												//最大スキルポイント
 
-	constexpr VECTOR	STAMINA_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 14.0f,0.0f };			//先頭座標
+	constexpr VECTOR	STAMINA_HEAD_POS = { 48.0f,HEAD_POS_Y_BASE * 7.0f,0.0f };			//先頭座標
 	constexpr int		STAMINA_MAX = 100;													//最大スタミナ
 
 
