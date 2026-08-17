@@ -9,8 +9,6 @@ namespace {
 	constexpr float		ACTION_ATTACK_DISTANCE = 50.0f;													//攻撃に移行するプレイヤーとの距離
 
 	constexpr float		WALK_MULT = 2.0f;																//歩き時の移動乗算値
-	constexpr float		ORBIT_MOVE_MULT = 2.0f;															//プレイヤーの周囲を旋回する移動速度
-	constexpr float		ATTACK_MULT = 3.0f;
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;												//通常移動時の回転速度
 
@@ -35,15 +33,31 @@ namespace {
 
 	constexpr float		DOWN_DAMAGE_TAKEN_MULT = 1.5f;													//ダウン時の被ダメ増加量
 
-	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 5.0f;												//パリィされたときにダウンへ移行する攻撃力
-	constexpr float		PARRY_DOWN_TIME_MULT = 3.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
-
 	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
 
 	constexpr float		FIRST_JUMP_POWER = 2.0f;														//初回ジャンプ力
 	constexpr float		JUMP_POWER_MAX = -7.5f;															//ジャンプ速度の下限
 	constexpr float		GRAVITY = -0.025f;																//重力
 	constexpr float		GRAVITY_MAX = -0.25f;															//最大重力
+
+	constexpr int		ATTACK_PATTERN_MAX = 8;															//攻撃パターンの最大数
+	constexpr int		ATTACK_PATTERN_SETTING = 2;														//攻撃パターンの設定数
+
+	enum {
+		ORBIT_MOVE_MULT,
+		ATTACK_MULT
+	};
+
+	constexpr const float ATTACK_PATTERN_MULT[ATTACK_PATTERN_MAX][ATTACK_PATTERN_SETTING]{
+		{2.0f,3.0f},
+		{4.0f,6.0f},
+		{1.0f,1.5f},
+		{3.0f,4.5f},
+		{-2.0f,3.0f},
+		{-4.0f,6.0f},
+		{-1.0f,1.5f},
+		{-3.0f,4.5f},
+	};
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Wolf/Wolf.mv1");							//モデルファイルパス
 }
@@ -113,6 +127,18 @@ void Wolf::Step() {
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
+	}
+
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
+	}
+	else {
+		m_DamageTime--;
+		//ノックバック
+		KnockBackManager();
 	}
 	//状態遷移
 	StateManager();
@@ -226,7 +252,7 @@ void Wolf::Orbit() {
 	//正規化
 	OrbitDir = VNorm(OrbitDir);
 	//旋回速度を適用
-	OrbitDir = VScale(OrbitDir, ATTACK_MULT);
+	OrbitDir = VScale(OrbitDir, ATTACK_PATTERN_MULT[m_AttackPattern][ORBIT_MOVE_MULT]);
 	//旋回方向へ移動
 	m_Pos = VAdd(m_Pos, OrbitDir);
 	//移動方向を向く
@@ -299,7 +325,7 @@ void Wolf::Attack() {
 			m_MoveVec = VNorm(DirToPlayer);
 		}
 		//1フレームで移動する距離を生成
-		m_MoveVec = VScale(m_MoveVec, ATTACK_MULT);
+		m_MoveVec = VScale(m_MoveVec, ATTACK_PATTERN_MULT[m_AttackPattern][ATTACK_MULT]);
 	}
 	//座標に加算
 	m_Pos = VAdd(m_Pos, m_MoveVec);
@@ -369,7 +395,7 @@ void Wolf::Death() {
 			//生存フラグをオフ
 			m_IsActive = false;
 			//指定ボーンの座標取得
-			VECTOR Pos = GetFramePos(m_Hndl,HITPS);
+			VECTOR Pos = GetFramePos(m_Hndl, HITPS);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
 			//エフェクトの回転角度を設定
@@ -421,6 +447,8 @@ void Wolf::ActionManager() {
 	if (ToPlayerLen <= ACTION_ATTACK_DISTANCE) {
 		//攻撃へ
 		m_State = ORBIT;
+		//攻撃パターンを設定
+		m_AttackPattern = GetRand(ATTACK_PATTERN_MAX - 1);
 		return;
 	}
 }

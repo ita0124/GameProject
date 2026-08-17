@@ -102,6 +102,8 @@ private:
 
 	int			m_DeathIdelTime;									//死亡待機時間
 
+	int			m_AttackPattern;									//攻撃パターン
+
 	//待機
 	void Idel();
 	//歩き
