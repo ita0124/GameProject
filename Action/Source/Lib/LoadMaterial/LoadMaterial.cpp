@@ -35,7 +35,7 @@ void LoadMaterial::Init() {
 //ƒf[ƒ^“Ç‚İ‚İ
 void LoadMaterial::Load() {
 	for (int Index = 0; Index < MATERIAL_MAX; Index++) {
-		int Hndl = LoadSoundMem(FilePath[Index]);
+		int Hndl = LoadGraph(FilePath[Index]);
 		m_Hndl.push_back(Hndl);
 	}
 }
@@ -44,7 +44,7 @@ void LoadMaterial::Load() {
 void LoadMaterial::Exit() {
 	for (int Index = 0; Index < m_Hndl.size(); Index++) {
 		if (m_Hndl[Index] != -1) {
-			DeleteSoundMem(m_Hndl[Index]);
+			DeleteGraph(m_Hndl[Index]);
 			m_Hndl[Index] = -1;
 		}
 	}
