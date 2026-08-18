@@ -1,55 +1,46 @@
 #pragma once
-#include "../../Character.h"
-#include "../../../../../Lib/LoadMaterial/LoadMaterial.h"
+#include "Game/Base/Object/ActorBase/Character/CharacterBase.h"
+#include "Lib/LoadMaterial/LoadMaterial.h"
 
-class EnergyPoint :public Character {
-private:
+class Crystal :public CharacterBase {
+public:
 	enum TagState {
-		WAIT,
-		SPIN,
-		DEATH,
+		IDEL,				//待機
+		ROTATION,			//回転
 
 		STATE_MAX
 	};
 
-	TagState m_State;
-
 	enum TagAnimeState {
-		ANIME_WAIT,
-		ANIME_SPAWN,
-		ANIME_DEATH,
+		ANIME_IDEL,			//待機
+		ANIME_ROTATION,		//回転
 
 		ANIME_MAX
 	};
-public:
-	//コンストラクタ・デストラクタ
-	EnergyPoint();
-	~EnergyPoint();
+private:
+	TagState	m_State;		//状態変数
 
+	int			m_DamageTime;	//ダメージ処理の継続時間
+
+	float		m_FloatCount;	//浮遊モーション用カウント
+
+	//待機
+	void Idel();
+	//回転
+	void Rotarion();
+public:
+	//コンストラクタ
+	Crystal();
+	//デストラクタ
+	~Crystal();
 	//初期化処理
 	void Init();
-
-	//データ破棄処理
-	void Exit();
-
-	//モデル更新処理
-	void Update();
-
-	//描画処理
-	void Draw();
-
 	//データ読み込み処理
-	void Load() {};
-
-	//データ読み込み処理
-	void Load(int _Hndl);
-
+	void Load();
 	//毎フレーム呼び出す処理
 	void Step();
-
-	//当たり判定の処理
-	void HitCalc(float _Power);
-
+	//当たり判定後の処理(当たっている場合)
+	void HitCalc(ObjectBase* _Object);
 	//リクエスト
 	bool Request(const VECTOR& _Pos);
 };

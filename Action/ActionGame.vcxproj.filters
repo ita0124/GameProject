@@ -411,6 +411,12 @@
     <Filter Include="ヘッダー ファイル\Game\Manager\StatusDrawManager">
       <UniqueIdentifier>{f24ce4b7-23bb-453c-9b9a-c1bb998ce0dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Actor\Crystal">
+      <UniqueIdentifier>{390b1a78-dd44-4e51-ac09-0c22b974ffe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Actor\Crystal">
+      <UniqueIdentifier>{994a9a1f-0fb7-402e-ac12-019562c3a575}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -590,6 +596,9 @@
     <ClCompile Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.cpp">
       <Filter>ソース ファイル\Game\Manager\StatusDrawManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Actor\Crystal\Crystal.cpp">
+      <Filter>ソース ファイル\Game\Object\Actor\Crystal</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -768,6 +777,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Manager\StatusDrawManager\StatusDrawManager.h">
       <Filter>ヘッダー ファイル\Game\Manager\StatusDrawManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Actor\Crystal\Crystal.h">
+      <Filter>ヘッダー ファイル\Game\Object\Actor\Crystal</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

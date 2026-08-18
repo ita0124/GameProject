@@ -88,7 +88,7 @@ void Boar::Load() {
 	//設定されているギミックタイプが0以上なら
 	if (m_GimmickType >= 0) {
 		//体のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, BODY, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, BODY, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 }
 //毎フレーム呼び出す処理

@@ -1,109 +1,103 @@
-#include "EnergyPoint.h"
+#include "Crystal.h"
 
 namespace {
-	static const int MAX_HP = 3.0f;
+	constexpr int		HIT_POINTS = 3.0f;														//体力
+
+	constexpr float		RAD = 5.0f;																//半径
+
+	constexpr int		DAMAGE_TIME = 20;														//ダメージ状態の継続時間
+
+	constexpr float		FLOAT_AMPLITUDE = 10.0f;												//浮遊モーションの振幅
+	constexpr float		FLOAT_SPEED = 5.0f;														//浮遊モーションの速度
+
+	constexpr char		FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
 }
-
-
-//コンストラクタ・デストラクタ
-EnergyPoint::EnergyPoint() {
+//コンストラクタ
+Crystal::Crystal() {
 	Init();
-	m_State = WAIT;
 }
-
-EnergyPoint::~EnergyPoint() {
+//デストラクタ
+Crystal::~Crystal() {
 	Exit();
 }
-
 //初期化処理
-void EnergyPoint::Init() {
-	Character::Init();
+void Crystal::Init() {
+	CharacterBase::Init();
 
-	m_Hp = MAX_HP;
-	m_Rad = 15.0f;
+	m_IsActive = true;
+
+	m_Rad = RAD;		//半径
+
+	m_State = IDEL;		//状態変数を初期化
+	m_DamageTime = 0;	//ダメージ処理の継続時間
+	m_FloatCount = 0;	//浮遊モーション用カウント
 }
-
-//データ破棄処理
-void EnergyPoint::Exit() {
-	Character::Exit();
-}
-
-//モデル更新処理
-void EnergyPoint::Update() {
-	Character::Update();
-}
-
-//描画処理
-void EnergyPoint::Draw() {
-	Character::Draw();
-}
-
 //データ読み込み処理
-void EnergyPoint::Load(int _Hndl) {
-	m_Hndl = MV1DuplicateModel(_Hndl);
+void Crystal::Load() {
+	ObjectBase::Load(FILE_PATH);
 }
-
 //毎フレーム呼び出す処理
-void EnergyPoint::Step() {
-	if (!m_IsActive)return;
-
-	switch (m_State) {
-	case WAIT:
-		m_State = SPIN;
-		break;
-	case SPIN:
-		if (m_Pos.y < FZERO) {
-			m_Pos.y += 1.0f;
-		}
-		else {
-			m_Pos.y = FZERO;
-		}
-
-		Character::RequestLoop(ANIME_SPAWN, 0.75f);
-
-		if (m_Hp <= 0.0f) {
-			m_State = DEATH;
-		}
-
-
-		if (m_Hp <= 1) {
-			MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::MATERIAL_GRADATION_RED, FALSE);
-		}
-		else if (m_Hp <= 2) {
-			MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::MATERIAL_GRADATION_YELLOW, FALSE);
-		}
-
-		/*m_Hp--;*/
-		break;
-	case DEATH:
-		Character::RequestEndLoop(ANIME_DEATH);
-
-		if (m_AnimeFlg) {
-			m_IsActive = false;
-			m_State = WAIT;
-		}
-		break;
-	}
-}
-
-//当たり判定の処理
-void EnergyPoint::HitCalc(float _Power) {
-	if (_Power >= 50.0f) {
-		m_Hp += -_Power;
+void Crystal::Step() {
+	if (m_DamageTime <= 0) {
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間をリセット
+		m_DamageTime = 0;
 	}
 	else {
-		m_Hp += -1;
+		m_DamageTime--;
+	}
+	switch (m_State) {
+	case IDEL:
+		Idel();
+		break;
+	case ROTATION:
+		Rotarion();
+		break;
 	}
 }
-
+//当たり判定後の処理(当たっている場合)
+void Crystal::HitCalc(ObjectBase* _Object) {
+	if (_Object->GetKinds() == TagKinds::PLAYER) {
+		m_HitPoints--;
+		//ダメージ処理の継続時間セット
+		m_DamageTime = DAMAGE_TIME;
+		//当たり判定オフ
+		m_IsCollision = false;
+		switch ((int)m_HitPoints) {
+		case 1:
+			//マテリアルを変更
+			MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_GRADATION_RED), FALSE);
+			break;
+		case 2:
+			//マテリアルを変更
+			MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_GRADATION_YELLOW), FALSE);
+			break;
+		}
+	}
+}
 //リクエスト
-bool EnergyPoint::Request(const VECTOR& _Pos) {
+bool Crystal::Request(const VECTOR& _Pos) {
 	if (m_IsActive)return false;
 
 	m_IsActive = true;
 	m_Pos = _Pos;
-	m_Hp = MAX_HP;
-	MV1SetTextureGraphHandle(m_Hndl, 0, LoadMaterial::MATERIAL_GRADATION_BLUE, FALSE);
+	m_HitPoints = HIT_POINTS;
 
 	return true;
+}
+//待機
+void Crystal::Idel() {
+	//回転状態へ
+	m_State = ROTATION;
+}
+//回転
+void Crystal::Rotarion() {
+	//回転アニメーションループ再生
+	RequestLoop(ROTATION);
+	//上下に浮遊させる
+	m_Pos.y = sinf(m_FloatCount * RADIAN_CALC) * FLOAT_AMPLITUDE;
+
+	//浮遊カウント更新
+	m_FloatCount += FLOAT_SPEED;
 }

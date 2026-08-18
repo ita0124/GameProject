@@ -271,7 +271,7 @@ void Boss::Down() {
 		//変更があった
 		m_PrevState = m_State;
 		//輪郭線のマテリアルをマテリアル青に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLUE, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLUE), FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 	}
@@ -279,7 +279,7 @@ void Boss::Down() {
 		//待機状態へ
 		m_State = IDEL;
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	else {
 		//ダウン状態継続時間を減算
@@ -296,7 +296,7 @@ void Boss::Death() {
 		//変更があった
 		m_PrevState = m_State;
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
 	}
@@ -367,11 +367,11 @@ void Boss::NoormalAttack1(TagState _State) {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK1_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 	else {
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
 		//サウンドリクエスト
@@ -433,11 +433,11 @@ void Boss::NoormalAttack2(TagState _State) {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK2_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 	else {
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
 		//サウンドリクエスト
@@ -487,11 +487,11 @@ void Boss::BreakNormalAttack3() {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_CHANGE_MATERIAL_START && m_AnimeData.Frame < NORMAL_ATTACK3_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 	else {
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK3_COLLISION_END) {
 		//ボーンに攻撃判定を生成
@@ -542,11 +542,11 @@ void Boss::RearAttack() {
 	}
 	if (m_AnimeData.Frame > REAR_ATTACK_CHANGE_MATERIAL_START && m_AnimeData.Frame < REAR_ATTACK_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 	else {
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > REAR_ATTACK_COLLISION_START && m_AnimeData.Frame < REAR_ATTACK_COLLISION_END) {
 		//サウンドリクエスト
@@ -594,11 +594,11 @@ void Boss::SideAttack() {
 	}
 	if (m_AnimeData.Frame > SIDE_ATTACK_CHANGE_MATERIAL_START && m_AnimeData.Frame < SIDE_ATTACK_CHANGE_MATERIAL_END) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 	else {
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > SIDE_ATTACK_COLLISION_START && m_AnimeData.Frame < SIDE_ATTACK_COLLISION_END) {
 		//ボーンに攻撃判定を生成
@@ -746,11 +746,11 @@ void Boss::Charge() {
 		//突進振り上げ状態へ
 		m_State = CHARGE_ATTACK;
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (Len < CHARGE_CHANGE_MATERIAL_START_LEN) {
 		//輪郭線のマテリアルをマテリアル赤に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_RED), FALSE);
 	}
 }
 //突進振り上げ
@@ -765,7 +765,7 @@ void Boss::ChargeAttack() {
 		//攻撃力設定
 		m_Power = CHARGE_ATTACK_POWER;
 		//輪郭線のマテリアルをマテリアル黒に変更
-		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);

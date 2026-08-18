@@ -180,6 +180,7 @@
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.cpp" />
     <ClCompile Include="Source\Game\Object\Actor\Character\Player\Player.cpp" />
+    <ClCompile Include="Source\Game\Object\Actor\Crystal\Crystal.cpp" />
     <ClCompile Include="Source\Game\Object\BossArea\BossArea.cpp" />
     <ClCompile Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Boss\Boss.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Enemy\Wolf\Wolf.h" />
     <ClInclude Include="Source\Game\Object\Actor\Character\Player\Player.h" />
+    <ClInclude Include="Source\Game\Object\Actor\Crystal\Crystal.h" />
     <ClInclude Include="Source\Game\Object\BossArea\BossArea.h" />
     <ClInclude Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.h" />
     <ClInclude Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.h" />
