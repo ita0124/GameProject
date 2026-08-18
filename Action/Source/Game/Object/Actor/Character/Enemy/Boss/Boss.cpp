@@ -44,6 +44,11 @@ namespace {
 	constexpr float		REAR_ATTACK_COLLISION_START = 15.0f;											//後方攻撃の当たり判定開始フレーム
 	constexpr float		REAR_ATTACK_COLLISION_END = 25.0f;												//後方攻撃の当たり判定終了フレーム
 
+	constexpr float		SIDE_ATTACK_CHANGE_MATERIAL_START = 20.0f;										//回転攻撃のマテリアル変更開始フレーム
+	constexpr float		SIDE_ATTACK_CHANGE_MATERIAL_END = 25.0f;										//回転攻撃のマテリアル変更終了フレーム
+	constexpr float		SIDE_ATTACK_COLLISION_START = 25.0f;											//回転攻撃の当たり判定開始フレーム
+	constexpr float		SIDE_ATTACK_COLLISION_END = 65.0f;												//回転攻撃の当たり判定終了フレーム
+
 	constexpr float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
 
 	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
@@ -62,14 +67,17 @@ namespace {
 	constexpr float		NORMAL_ATTACK2_COLLISION_RAD = 20.0f;											//通常攻撃２段目の攻撃当たり判定の半径
 	constexpr float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
 	constexpr float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
+	constexpr float		SIDE_ATTACK_COLLISION_RAD = 25.0f;												//回転攻撃の攻撃当たり判定の半径
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
-	constexpr float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージ
+	constexpr float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージアニメーション再生スピード
+	constexpr float		SIDE_ATTACK_ANIME_SPEED = 0.5f;													//回転攻撃アニメーション再生スピード
 
 	constexpr float		NORMAL_ATTACK1_POWER = 10.0f;													//通常攻撃１段目時の攻撃力
 	constexpr float		NORAML_ATTACK2_POWER = 15.0f;													//通常攻撃２段目時の攻撃力
 	constexpr float		NORAML_ATTACK3_POWER = 20.0f;													//通常攻撃３段目時の攻撃力
 	constexpr float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
+	constexpr float		SIDE_ATTACK_POWER = 10.0f;														//回転攻撃時の攻撃力
 	constexpr float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
 
 	constexpr int		DAMAGE_TIME = 20;																//ダメージ状態の継続時間
@@ -79,7 +87,16 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 5.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
-	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boss/Boss.mv1");						//モデルファイルパス
+	constexpr float		ATTACK_PATTERN_HP_RATE_LOW = 0.5f;												//攻撃パターンの変化するHP割合
+	constexpr float		ATTACK_PATTERN_HP_RATE_HIGH = 0.9f;												//攻撃パターンの変化するHP割合
+
+	constexpr int		ATTACK_PATTERN_RANDOM_MAX = 1;													//攻撃パターンのランダム範囲
+	constexpr int		ATTACK_PATTERN_LOW_HP_RANDOM_MAX = 2;											//攻撃パターンのランダム範囲
+
+
+	constexpr int		ATTACK_PATTERN_LOW_HP_START_INDEX = 2;											//低HP時の攻撃パターン開始番号
+
+	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
 }
 
@@ -103,6 +120,7 @@ void Boss::Init() {
 	m_Rot.y = m_Rot.y * -1.0f;							//Y軸回転値を反転
 
 	m_HitPoints = HIT_POINTS;							//体力
+	m_MaxHitPoints = m_HitPoints;						//最大体力
 
 	m_FrameNumber = FRAME_NUM;							//最大ボーン数を保存
 
@@ -515,7 +533,6 @@ void Boss::BreakNormalAttack3() {
 void Boss::RearAttack() {
 	//後方攻撃アニメーション再生
 	RequestEndLoop(ANIME_REAR_ATTACK, ANIME_SPEED);
-
 	//１フレーム前の状態と今のフレームの状態を比較
 	if (m_State != m_PrevState) {
 		//変更があった
@@ -555,10 +572,55 @@ void Boss::RearAttack() {
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
+		if (m_NextAttack == CHARGE_ATTACK_START) {
+			AttackPatternManager();
+		}
+		else {
+			//待機状態へ
+			m_State = IDEL;
+		}
+	}
+}
+//回転攻撃
+void Boss::SideAttack() {
+	//後方攻撃アニメーション再生
+	RequestEndLoop(ANIME_SIDE_ATTACK, SIDE_ATTACK_ANIME_SPEED);
+	//１フレーム前の状態と今のフレームの状態を比較
+	if (m_State != m_PrevState) {
+		//変更があった
+		m_PrevState = m_State;
+		//攻撃力設定
+		m_Power = SIDE_ATTACK_POWER;
+	}
+	if (m_AnimeData.Frame > SIDE_ATTACK_CHANGE_MATERIAL_START && m_AnimeData.Frame < SIDE_ATTACK_CHANGE_MATERIAL_END) {
+		//輪郭線のマテリアルをマテリアル赤に変更
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_RED, FALSE);
+	}
+	else {
+		//輪郭線のマテリアルをマテリアル黒に変更
+		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::MATERIAL_BLACK, FALSE);
+	}
+	if (m_AnimeData.Frame > SIDE_ATTACK_COLLISION_START && m_AnimeData.Frame < SIDE_ATTACK_COLLISION_END) {
+		//ボーンに攻撃判定を生成
+		SetFrameDataIsAttackFlg(FANG003END_LEFT, SIDE_ATTACK_COLLISION_RAD);
+		SetFrameDataIsAttackFlg(FANG003END_RIGHT, SIDE_ATTACK_COLLISION_RAD);
+	}
+	else {
+		//ボーン攻撃判定を削除する
+		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
+		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
+	}
+	if (m_AnimeData.Frame > SIDE_ATTACK_COLLISION_END) {
+		//正規化された方向ベクトルを取得
+		VECTOR DirToPlayer = GetDirectionNotY(m_PlayerPos, m_Pos, TRUE);
+		//移動方向を向く
+		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
+	}
+	//アニメーションが終わったら
+	if (m_AnimeData.EndFlg) {
 		//待機状態へ
 		m_State = IDEL;
 	}
-
 }
 //突進直前移動
 void Boss::Jump() {
@@ -853,24 +915,32 @@ void Boss::AttackPatternManager() {
 	case REAR_END:
 		m_State = REAR_ATTACK;
 		break;
-		/*case RIGHT:
-		case RIGHT_END:
-		case LEFT:
-		case LEFT_END:*/
+	case RIGHT:
+	case RIGHT_END:
+	case LEFT:
+	case LEFT_END:
+		m_State = SIDE_ATTACK;
+		break;
 	default:
 		//攻撃種配列を１つずらす
 		m_AttackIndex++;
 		//攻撃種配列の最大格納量より多ければ
 		if (m_AttackIndex >= ATTACK_INDEX) {
+			//体力を一時保存
+			float HitPoints = m_HitPoints;
+			//体力の割合を取得
+			float HitPointsRate = m_HitPoints / m_MaxHitPoints;
+			//体力の割合が一定以下なら
+			if (HitPointsRate < ATTACK_PATTERN_HP_RATE_LOW) {
+				//攻撃パターン配列を変更
+				m_PatternIndex = ATTACK_PATTERN_LOW_HP_START_INDEX + GetRand(ATTACK_PATTERN_LOW_HP_RANDOM_MAX);
+			}
+			else if (HitPointsRate < ATTACK_PATTERN_HP_RATE_HIGH) {
+				//攻撃パターン配列を変更
+				m_PatternIndex = GetRand(ATTACK_PATTERN_RANDOM_MAX);
+			}
 			//先頭にリセット
 			m_AttackIndex = 0;
-			//攻撃パターン配列を1ずらす
-			m_PatternIndex++;
-			//攻撃パターン配列の最大格納量より多いなら
-			if (m_PatternIndex >= PATTERN_INDEX) {
-				//先頭にリセット
-				m_PatternIndex = 0;
-			}
 		}
 		//二次元配列に合致する位置の数値を取得する
 		int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
@@ -934,6 +1004,9 @@ void Boss::StateManager() {
 		break;
 	case REAR_ATTACK:				//後方攻撃
 		RearAttack();
+		break;
+	case SIDE_ATTACK:				//回転攻撃
+		SideAttack();
 		break;
 	case JUMP:						//突進直前移動
 		Jump();

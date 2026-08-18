@@ -36,7 +36,7 @@ namespace {
 
 	constexpr float		SKILL_ATTACK_COLLISION_START = 45.0f;									//スキル攻撃の当たり判定開始フレーム
 	constexpr float		SKILL_ATTACK_COLLISION_END = 55.0f;										//スキル攻撃の当たり判定終了フレーム
-	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_SE = 15.0f;							//スキル攻撃の演出タイミング(SE)
+	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_SE = 15.0f;								//スキル攻撃の演出タイミング(SE)
 	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT = 45.0f;							//スキル攻撃の演出タイミング(エフェクト)
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 15.0f;									//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_END = 25.0f;									//通常攻撃１段目の当たり判定終了フレーム
@@ -493,8 +493,8 @@ void Player::GuardIdel() {
 	KnockBackManager();
 	//ガード入力を継続している時間を加算
 	m_GuardTimer++;
-	//ガードボタンを離したら
-	if (!InputManager::IsPushRep(InputManager::TagInput::INPUT_GUARD)) {
+	//ガードボタンを離したらまたはスタミナが一定以下になったら
+	if (!InputManager::IsPushRep(InputManager::TagInput::INPUT_GUARD) || m_Stamina < GUARD_MIN_STAMINA) {
 		if (m_GuardTimer >= GUARD_HOLD_TIME) {
 			//ガード終了状態へ
 			m_State = GUARD_END;
@@ -1092,7 +1092,7 @@ bool Player::ActionManager() {
 		IsAction = true;
 	}
 	//ガード
-	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_GUARD)) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_GUARD) && m_Stamina > GUARD_MIN_STAMINA) {
 		m_State = GUARD_START;
 		IsAction = true;
 	}

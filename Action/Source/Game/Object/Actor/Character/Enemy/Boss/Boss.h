@@ -21,6 +21,7 @@ public:
 		CHAIN_NORMAL_ATTACK2,		//通常攻撃２段目　攻撃継続(牙振り上げ)
 		BREAK_NORMAL_ATTACK3,		//通常攻撃３段目　攻撃終了(踏みつけ)
 		REAR_ATTACK,				//後方攻撃
+		SIDE_ATTACK,				//回転攻撃
 		JUMP,						//突進直前移動
 		CHARGE_ATTACK_START,		//突進チャージ
 		CHARGE,						//突進
@@ -44,6 +45,7 @@ public:
 		ANIME_CHAIN_NORMAL_ATTACK2,		//通常攻撃２段目　攻撃継続(牙振り上げ)
 		ANIME_BREAK_NORMAL_ATTACK3,		//通常攻撃３段目　攻撃終了(踏みつけ)
 		ANIME_REAR_ATTACK,				//後方攻撃
+		ANIME_SIDE_ATTACK,				//回転攻撃
 		ANIME_CHARGE_ATTACK_START,		//突進チャージ
 		ANIME_CHARGE,					//突進
 		ANIME_CHARGE_ATTACK,			//突進振り上げ
@@ -162,6 +164,8 @@ private:
 	void BreakNormalAttack3();
 	//後方攻撃
 	void RearAttack();
+	//回転攻撃
+	void SideAttack();
 	//突進直前移動
 	void Jump();
 	//突進チャージ
