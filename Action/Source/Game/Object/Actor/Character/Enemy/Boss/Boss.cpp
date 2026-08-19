@@ -58,16 +58,18 @@ namespace {
 
 	constexpr float		SPECIAL_CHARGE_ANIME_SPEED_CHANGE = 0.025f;										//必殺チャージ中のアニメーション再生速度加算値
 	constexpr int		SPECIAL_CHARGE_END_TIME = 1200;													//必殺チャージ終了フレーム
+	constexpr float		SPECIAL_MOVE_RISE_START_TIME = SPECIAL_CHARGE_END_TIME - 60.0f;					//必殺チャージ時の上昇開始の時間
+	constexpr float		SPECIAL_MOVE_RISE_SPEED = 50.0f;												//必殺技中の上昇量
+	constexpr int		SPECIAL_INTERRUPTED_DOWN_TIME = 300;											//必殺技を阻止されたときのダウン状態継続時間
 
 	constexpr VECTOR	SPECIAL_INIT_VECTOR = { 0.0f,500.0f,0.0f };										//必殺の初めに座標を変更するときの値
-
-	constexpr float		SPECIAL_POSY_CALC = -50.0f;														//必殺中のY座標計算値
 
 	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
 	constexpr float		NORMAL_ATTACK2_COLLISION_RAD = 20.0f;											//通常攻撃２段目の攻撃当たり判定の半径
 	constexpr float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
 	constexpr float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
 	constexpr float		SIDE_ATTACK_COLLISION_RAD = 25.0f;												//回転攻撃の攻撃当たり判定の半径
+	constexpr float		SPECIAL_COLLISION_RAD = 500.0f;													//回転攻撃の攻撃当たり判定の半径
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 	constexpr float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージアニメーション再生スピード
@@ -79,6 +81,7 @@ namespace {
 	constexpr float		REAR_ATTACK_POWER = 20.0f;														//後方攻撃時の攻撃力
 	constexpr float		SIDE_ATTACK_POWER = 10.0f;														//回転攻撃時の攻撃力
 	constexpr float		CHARGE_ATTACK_POWER = 25.0f;													//突進攻撃時の攻撃力
+	constexpr float		SPECIAL_POWER = 20.0f;															//回転攻撃時の攻撃力
 
 	constexpr int		DAMAGE_TIME = 20;																//ダメージ状態の継続時間
 
@@ -92,9 +95,8 @@ namespace {
 
 	constexpr int		ATTACK_PATTERN_RANDOM_MAX = 1;													//攻撃パターンのランダム範囲
 	constexpr int		ATTACK_PATTERN_LOW_HP_RANDOM_MAX = 2;											//攻撃パターンのランダム範囲
-
-
 	constexpr int		ATTACK_PATTERN_LOW_HP_START_INDEX = 2;											//低HP時の攻撃パターン開始番号
+	constexpr float		SPECIAL_MOVE_HP_THRESHOLD = 100.0f;												//必殺技発動体力
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
@@ -127,10 +129,15 @@ void Boss::Init() {
 	m_State = IDEL;										//ボス状態変数
 	m_PrevState = m_State;								//１フレーム前の状態
 	m_DamageTime = 0;									//ダメージ処理の継続時間
+	m_IsDamageTimeCalc = true;							//ダメージ処理の継続時間の計算をしてよいか
 	m_BeforJumpPos = VZERO;								//ジャンプ直前の座標を保存
 	m_PredictedLandingPos = VZERO;						//着地予定座標
 	m_SpecialChargeTime = 0;							//必殺チャージの継続時間
 	m_DirectNum = 0;									//どの方向判定ボーンと当たったかを保存する
+	m_WasSpecialMove = false;							//必殺技を一度でも実行したか
+	m_IsCrystalRequest = false;							//クリスタルの出現を要求しているか
+	m_IsCrystalDeathRequest = false;					//クリスタルの死亡を要求しているか
+	m_CrystalCount = 0;									//現在出現しているクリスタルの数
 
 	for (int Index = 0; Index <= FRAME_NUM; Index++) {
 		FRAME_DATA FrameData;
@@ -173,11 +180,16 @@ void Boss::Load() {
 //毎フレーム呼び出す処理
 void Boss::Step() {
 	if (m_HitPoints <= 0) {
-		m_HitPoints = 0;
-		m_State = DEATH;
+		if (!m_WasSpecialMove) {
+			m_HitPoints = 1;
+		}
+		else {
+			m_HitPoints = 0;
+			m_State = DEATH;
+		}
 	}
 
-	if (m_DamageTime <= 0) {
+	if (m_IsDamageTimeCalc && m_DamageTime <= 0) {
 		//当たり判定オン
 		m_IsCollision = true;
 		//ダメージ処理の継続時間をリセット
@@ -249,6 +261,8 @@ void Boss::Idel() {
 		m_PrevState = m_State;
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//当たり判定オン
+		m_IsCollision = true;
 	}
 	//設定した時間分待機を続けたら
 	if (m_NextActionTime <= 0) {
@@ -274,6 +288,12 @@ void Boss::Down() {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLUE), FALSE);
 		//全てのボーン攻撃判定を削除する
 		AllDeleteFrameDataIsAttackFlg();
+		//ロックオン可能に設定
+		m_RockOn = true;
+		//座標をリセット
+		m_Pos = VZERO;
+		//当たり判定オン
+		m_IsCollision = true;
 	}
 	if (m_DownTime <= 0) {
 		//待機状態へ
@@ -812,6 +832,18 @@ void Boss::SpecialStart() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		//当たり判定オフ
+		m_IsCollision = false;
+		//ダメージ処理の継続時間の計算をオフ
+		m_IsDamageTimeCalc = false;
+		//必殺技実行済みフラグをオン
+		m_WasSpecialMove = true;
+		//クリスタルの出現を要求
+		m_IsCrystalRequest = true;
+		//クリスタルの死亡を要求を破棄
+		m_IsCrystalDeathRequest = false;
+		//ロックオン不可に設定
+		m_RockOn = false;
 	}
 	//方向ベクトルを取得
 	VECTOR DirToZero = GetDirectionNotY(m_Pos, VZERO);
@@ -821,6 +853,8 @@ void Boss::SpecialStart() {
 	if (m_AnimeData.EndFlg && Len < SPECIAL_START_END_LEN) {
 		//必殺チャージ状態へ
 		m_State = SPECIAL_CHARGE;
+		//クリスタルの出現を要求を破棄
+		m_IsCrystalRequest = false;
 	}
 	else if (Len < SPECIAL_START_END_LEN) {
 		//座標を固定
@@ -862,6 +896,20 @@ void Boss::SpecialCharge() {
 		m_State = SPECIAL;
 		//初期化
 		m_SpecialChargeTime = 0;
+		return;
+	}
+	if (m_SpecialChargeTime >= SPECIAL_MOVE_RISE_START_TIME) {
+		m_Pos.y += SPECIAL_MOVE_RISE_SPEED;
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_CRY)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_CRY);
+		}
+	}
+	if (m_CrystalCount <= 0) {
+		//ダウン状態へ
+		m_State = DOWN;
+		//ダウン状態継続時間を設定
+		m_DownTime = SPECIAL_INTERRUPTED_DOWN_TIME;
 	}
 }
 //必殺
@@ -870,14 +918,12 @@ void Boss::Special() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
-		//座標を変更
-		m_Pos = SPECIAL_INIT_VECTOR;
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_CRY)) {
-			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_CRY);
-		}
 	}
 	if (m_Pos.y <= 0.0f) {
+		//ボーンに攻撃判定を生成
+		SetFrameDataIsAttackFlg(CHEST, SPECIAL_COLLISION_RAD);
+		//攻撃力設定
+		m_Power = SPECIAL_POWER * m_CrystalCount;
 		//エフェクトリクエスト
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW2, m_Pos, false);
 		//エフェクトの回転角度を設定
@@ -886,10 +932,18 @@ void Boss::Special() {
 		m_Pos.y = 0.0;
 		//待機状態へ
 		m_State = IDEL;
+		//ロックオン可能に設定
+		m_RockOn = true;
+		//クリスタルの死亡を要求
+		m_IsCrystalDeathRequest = true;
+		//当たり判定オン
+		m_IsCollision = true;
+		//ダメージ処理の継続時間の計算をオフ
+		m_IsDamageTimeCalc = true;
 	}
 	else {
 		//Y軸のみ計算をする
-		m_Pos.y += SPECIAL_POSY_CALC;
+		m_Pos.y += -SPECIAL_MOVE_RISE_SPEED;
 	}
 }
 //行動管理
@@ -910,62 +964,68 @@ void Boss::ActionManager() {
 }
 //攻撃パターン管理
 void Boss::AttackPatternManager() {
-	switch (m_DirectNum) {
-	case REAR:
-	case REAR_END:
-		m_State = REAR_ATTACK;
-		break;
-	case RIGHT:
-	case RIGHT_END:
-	case LEFT:
-	case LEFT_END:
-		m_State = SIDE_ATTACK;
-		break;
-	default:
-		//攻撃種配列を１つずらす
-		m_AttackIndex++;
-		//攻撃種配列の最大格納量より多ければ
-		if (m_AttackIndex >= ATTACK_INDEX) {
-			//体力を一時保存
-			float HitPoints = m_HitPoints;
-			//体力の割合を取得
-			float HitPointsRate = m_HitPoints / m_MaxHitPoints;
-			//体力の割合が一定以下なら
-			if (HitPointsRate < ATTACK_PATTERN_HP_RATE_LOW) {
-				//攻撃パターン配列を変更
-				m_PatternIndex = ATTACK_PATTERN_LOW_HP_START_INDEX + GetRand(ATTACK_PATTERN_LOW_HP_RANDOM_MAX);
+	//体力が必殺技発動ラインを下回り、必殺技未使用の場合
+	if (m_HitPoints < SPECIAL_MOVE_HP_THRESHOLD && !m_WasSpecialMove) {
+		m_State = SPECIAL_START;
+	}
+	else {
+		switch (m_DirectNum) {
+		case REAR:
+		case REAR_END:
+			m_State = REAR_ATTACK;
+			break;
+		case RIGHT:
+		case RIGHT_END:
+		case LEFT:
+		case LEFT_END:
+			m_State = SIDE_ATTACK;
+			break;
+		default:
+			//攻撃種配列を１つずらす
+			m_AttackIndex++;
+			//攻撃種配列の最大格納量より多ければ
+			if (m_AttackIndex >= ATTACK_INDEX) {
+				//体力を一時保存
+				float HitPoints = m_HitPoints;
+				//体力の割合を取得
+				float HitPointsRate = m_HitPoints / m_MaxHitPoints;
+				//体力の割合が一定以下なら
+				if (HitPointsRate < ATTACK_PATTERN_HP_RATE_LOW) {
+					//攻撃パターン配列を変更
+					m_PatternIndex = ATTACK_PATTERN_LOW_HP_START_INDEX + GetRand(ATTACK_PATTERN_LOW_HP_RANDOM_MAX);
+				}
+				else if (HitPointsRate < ATTACK_PATTERN_HP_RATE_HIGH) {
+					//攻撃パターン配列を変更
+					m_PatternIndex = GetRand(ATTACK_PATTERN_RANDOM_MAX);
+				}
+				//先頭にリセット
+				m_AttackIndex = 0;
 			}
-			else if (HitPointsRate < ATTACK_PATTERN_HP_RATE_HIGH) {
-				//攻撃パターン配列を変更
-				m_PatternIndex = GetRand(ATTACK_PATTERN_RANDOM_MAX);
-			}
-			//先頭にリセット
-			m_AttackIndex = 0;
-		}
-		//二次元配列に合致する位置の数値を取得する
-		int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
-		//状態変化
-		m_State = (TagState)Attack;
-
-		//次の攻撃は何の予定か調べる
-		int NextAttackIndex = m_AttackIndex + 1;
-		//最大格納量より多ければ-1を入れておく
-		if (NextAttackIndex >= ATTACK_INDEX) {
-			m_NextAttack = -1;
-		}
-		else {
 			//二次元配列に合致する位置の数値を取得する
-			int NextAttack = m_AttackPatterns[m_PatternIndex][NextAttackIndex];
-			//次の攻撃を保存
-			m_NextAttack = (TagState)NextAttack;
+			int Attack = m_AttackPatterns[m_PatternIndex][m_AttackIndex];
+			//状態変化
+			m_State = (TagState)Attack;
+
+			//次の攻撃は何の予定か調べる
+			int NextAttackIndex = m_AttackIndex + 1;
+			//最大格納量より多ければ-1を入れておく
+			if (NextAttackIndex >= ATTACK_INDEX) {
+				m_NextAttack = -1;
+			}
+			else {
+				//二次元配列に合致する位置の数値を取得する
+				int NextAttack = m_AttackPatterns[m_PatternIndex][NextAttackIndex];
+				//次の攻撃を保存
+				m_NextAttack = (TagState)NextAttack;
+			}
+			//正規化された方向ベクトルを取得
+			VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
+			//方向ベクトルを反転
+			DirToPlayer = VScale(DirToPlayer, -1.0f);
+			//移動方向を向く
+			UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
+			break;
 		}
-		//正規化された方向ベクトルを取得
-		VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, TRUE);
-		//方向ベクトルを反転
-		DirToPlayer = VScale(DirToPlayer, -1.0f);
-		//移動方向を向く
-		UpdateRotation(DirToPlayer, NORMAL_MOVE_ROTATE_SPEED);
-		break;
 	}
 }
 //ジャンプ時の着地地点管理

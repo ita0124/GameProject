@@ -2,6 +2,7 @@
 #include "Game/Base/Object/ActorBase/Character/CharacterBase.h"
 #include "Lib/LoadMaterial/LoadMaterial.h"
 
+//ƒNƒŠƒXƒ^ƒ‹
 class Crystal :public CharacterBase {
 public:
 	enum TagState {

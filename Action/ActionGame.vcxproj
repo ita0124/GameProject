@@ -170,6 +170,7 @@
     <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp" />
     <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp" />
     <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp" />
+    <ClCompile Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Gimmick\GimmickManager.cpp" />
     <ClCompile Include="Source\Game\Manager\MobEnemy\MobEnemyManager.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h" />
     <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h" />
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
+    <ClInclude Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.h" />
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />
     <ClInclude Include="Source\Game\Manager\Gimmick\GimmickManager.h" />
     <ClInclude Include="Source\Game\Manager\MobEnemy\MobEnemyManager.h" />

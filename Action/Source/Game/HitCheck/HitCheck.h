@@ -4,6 +4,7 @@
 #include "Game/Manager/Platform/PlatformManager.h"
 #include "Game/Manager/MobEnemy/MobEnemyManager.h"
 #include "Game/Manager/Gimmick/GimmickManager.h"
+#include "Game/Manager/BossGimmickManager/BossGimmickManager.h"
 #include "Lib/DxLibFont/DxLibFont.h"
 
 class HitCheck {
@@ -28,4 +29,8 @@ public:
 	static void ObjectToMobEnemyAttack(ObjectBase& _Object, MobEnemyManager& _MobEnemyManager);
 	//モブ敵と足場の当たり判定
 	static void MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformManager& _PlatformManager);
+	//Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
+	static void BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase);
+	//Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
+	static void BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase);
 };

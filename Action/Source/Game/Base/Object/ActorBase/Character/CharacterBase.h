@@ -26,6 +26,9 @@ protected:
 	float			m_KnockBackMaxDistance;						//最大ノックバック量
 	float			m_KnockBackSub;								//1フレーム毎のノックバック力減衰量
 	int				m_KnockBackDuration;						//ノックバック継続時間
+
+	bool			m_RockOn;									//ロックオン可能か
+
 	enum KnockBackState {
 		KNOCKBACK_NOT,
 		KNOCKBACK_START,
@@ -55,7 +58,9 @@ public:
 	//スタミナ
 	float	GetStamina()	const { return m_Stamina; }
 	//スキルポイント
-	int	GetSkillPoints()	const { return m_SkillPoints; }
+	int		GetSkillPoints()	const { return m_SkillPoints; }
+	//ロックオン可能か
+	bool	GetRockOn()const { return m_RockOn; }
 
 	//Set
 	//攻撃力

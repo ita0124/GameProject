@@ -87,6 +87,8 @@ namespace {
 	constexpr float		GRAVITY = -0.025f;														//重力
 	constexpr float		GRAVITY_MAX = -0.25f;													//最大重力
 
+	constexpr float		FALL_OUT_Y = -500.0f;													//落下判定のY座標
+
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
 
@@ -167,10 +169,7 @@ void Player::Step() {
 	m_PlatformVec = VZERO;
 
 	if (m_AttackTarget != nullptr) {
-		if (m_AttackTarget->GetIsActive()) {
-			m_AttackTargetPos = m_AttackTarget->GetPos();
-		}
-		else {
+		if (!m_AttackTarget->GetIsActive()) {
 			m_AttackTarget = nullptr;
 		}
 	}
@@ -184,7 +183,7 @@ void Player::Step() {
 	m_HitPoints = HIT_POINTS;
 #endif // DEBUG
 
-	if (m_Pos.y <= -500) {
+	if (m_Pos.y <= FALL_OUT_Y) {
 		m_IsRespawn = true;
 	}
 	if (!m_IsRespawn) {
@@ -251,8 +250,8 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_HIT)) {
-			SoundManager::Play(SoundManager::TagID::SE_HIT);
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_GUARD)) {
+			SoundManager::Play(SoundManager::TagID::SE_GUARD);
 		}
 	}
 	else {

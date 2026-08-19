@@ -8,6 +8,7 @@
 #include "Game/Object/Shield/Shield.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/Manager/StatusDrawManager/StatusDrawManager.h"
+#include "Game/Manager/BossGimmickManager/BossGimmickManager.h"
 #include "Game/Result/ResultNum.h"
 #include "Game/HitCheck/HitCheck.h"
 
@@ -25,6 +26,7 @@ private:
 	Boss				m_Boss;					//ボスクラス
 	CameraManager		m_CameraManager;		//カメラマネージャークラス
 	StatusDrawManager	m_StatusDrawManager;	//ステータス描画マネージャー
+	BossGimmickManager	m_BossGimmickManager;	//Bossが使うObjectを管理するクラス
 
 	typedef struct {
 		int		LoadTime;				//非同期処理継続時間

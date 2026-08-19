@@ -243,8 +243,8 @@ public:
 	void		SetCameraRot(VECTOR _CameraRot) { m_CamraRot = _CameraRot; }
 	//攻撃サーチを行う物体の座標
 	void		SetAttackTargetPos(VECTOR _AttackTargetPos) { m_AttackTargetPos = _AttackTargetPos; }
-	//リスポーン中か
-	void		SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
 	//攻撃対象設定
 	void		SetAttackTarget(ObjectBase* _Object) { m_AttackTarget = _Object; }
+	//リスポーン中か
+	void		SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
 };

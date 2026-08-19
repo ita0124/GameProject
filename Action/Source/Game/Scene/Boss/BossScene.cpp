@@ -14,6 +14,7 @@ namespace {
 	constexpr int	FADE_SPEED = 5;					//フェードスピード
 	constexpr int	PLAYER_RESPAWN_FADE_SPEED = 5;	//リスポーン完了フェードスピード
 	constexpr int	PLAYER_DEATH_FADE_SPEED = 5;	//プレイヤー落下フェードスピード
+	constexpr float CHANGE_DISTANCE = 100.0f;		//攻撃対象を切り替える距離差
 	constexpr float SHADOW_RANGE = 500.0f;			//影の判定範囲
 }
 
@@ -127,6 +128,7 @@ void BossScene::Draw() {
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
 		m_Boss.Draw();								//ボスクラス
+		m_BossGimmickManager.Draw();				//Bossが使うObjectを管理するクラス
 		//影設定終了
 		ShadowMap_DrawEnd();
 		//影生成
@@ -136,6 +138,7 @@ void BossScene::Draw() {
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
 		m_Boss.Draw();								//ボスクラス
+		m_BossGimmickManager.Draw();				//Bossが使うObjectを管理するクラス
 		//影生成終了
 		SetUseShadowMap(0, -1);
 
@@ -153,6 +156,7 @@ void BossScene::Init() {
 
 	m_Boss.Init();									//ボスクラス
 	m_CameraManager.Init();							//カメラマネージャークラス
+	m_BossGimmickManager.Init(&m_Boss);				//Bossが使うObjectを管理するクラス
 
 	m_StatusDrawManager.Init(&m_Player);			//ステータス描画マネージャー
 
@@ -172,6 +176,7 @@ void BossScene::Exit() {
 	m_Shield.Exit();								//盾クラス
 	m_Boss.Exit();									//ボスクラス
 	m_StatusDrawManager.Exit();						//ステータス描画マネージャー
+	m_BossGimmickManager.Exit();					//Bossが使うObjectを管理するクラス
 
 	DeleteShadowMap(m_ShadowHndl);
 }
@@ -187,6 +192,7 @@ void BossScene::Load() {
 	m_Shield.Load();								//盾クラス
 	m_Boss.Load();									//ボスクラス
 	m_StatusDrawManager.Load();						//ステータス描画マネージャー
+	m_BossGimmickManager.Load();					//Bossが使うObjectを管理するクラス
 
 	//非同期読み込みを行わない
 	SetUseASyncLoadFlag(false);
@@ -299,6 +305,7 @@ void BossScene::Update() {
 	m_Shield.Update();									//盾クラス
 	m_Boss.Update();									//ボスクラス
 	m_CameraManager.Update();							//カメラマネージャークラス
+	m_BossGimmickManager.Update();						//Bossが使うObjectを管理するクラス
 }
 //プレイヤー関連Step
 void BossScene::PlayerStep() {
@@ -306,7 +313,38 @@ void BossScene::PlayerStep() {
 	m_Sky.Step(m_Player.GetPos());						//天球クラス
 
 	m_Player.SetCameraRot(m_CameraManager.GetCameraRot());
-	m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(), Boss::FrameNumber::CHEST));
+
+	if (m_Boss.GetRockOn()) {
+		//Bossを攻撃対象に設定
+		m_Player.SetAttackTarget(&m_Boss);
+		m_Player.SetAttackTargetPos(m_Boss.GetFramePos(m_Boss.GetHndl(), Boss::FrameNumber::CHEST));
+	}
+	else {
+		//攻撃対象を初期化
+		ObjectBase* AttackTarget = nullptr;
+		//攻撃対象までの距離を初期化
+		float CurrentTargetLength = FLT_MAX;
+		for (int CrystalIndex = 0; CrystalIndex < CRYSTAL_MAX; CrystalIndex++) {
+			//クリスタルを取得
+			Crystal& OneCrystal = m_BossGimmickManager.GetCrystal(CrystalIndex);
+			//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
+			if (!OneCrystal.GetIsActive()) continue;
+			//プレイヤーとの距離を計算
+			float Length = VSize(VSub(m_Player.GetPos(), OneCrystal.GetPos()));
+			//現在の攻撃対象より一定距離近ければ更新
+			if (Length < CurrentTargetLength - CHANGE_DISTANCE) {
+				CurrentTargetLength = Length;
+				AttackTarget = &OneCrystal;
+			}
+		}
+		//攻撃対象を設定
+		m_Player.SetAttackTarget(AttackTarget);
+		//攻撃対象が存在する場合は位置を設定
+		if (AttackTarget != nullptr) {
+			m_Player.SetAttackTargetPos(AttackTarget->GetPos());
+		}
+	}
+
 	m_Player.Step();
 	m_Sword.Step();
 	m_Shield.Step();
@@ -315,6 +353,7 @@ void BossScene::PlayerStep() {
 void BossScene::EnemyStep() {
 	m_Boss.SetPlayerPos(m_Player.GetPos());
 	m_Boss.Step();
+	m_BossGimmickManager.Step();
 }
 //カメラ関連Step
 void BossScene::CameraStep() {
@@ -369,4 +408,8 @@ void BossScene::HitCheck() {
 	HitCheck::ObjectToObjectRelativePos(m_Player, m_Boss);
 	//ステージとプレイヤーの当たり判定
 	HitCheck::ObjectToField(m_Player, m_BossArea);
+	//Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
+	HitCheck::BossGimmickManagerToObjectPush(m_BossGimmickManager,m_Player);
+	//Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
+	HitCheck::BossGimmickManagerToObjectAttack(m_BossGimmickManager, m_Sword);
 }

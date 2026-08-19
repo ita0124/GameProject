@@ -1,16 +1,16 @@
 #include "Crystal.h"
 
 namespace {
-	constexpr int		HIT_POINTS = 3.0f;														//体力
+	constexpr int		HIT_POINTS = 3;															//体力
 
-	constexpr float		RAD = 5.0f;																//半径
+	constexpr float		RAD = 20.0f;																//半径
 
 	constexpr int		DAMAGE_TIME = 20;														//ダメージ状態の継続時間
 
 	constexpr float		FLOAT_AMPLITUDE = 10.0f;												//浮遊モーションの振幅
-	constexpr float		FLOAT_SPEED = 5.0f;														//浮遊モーションの速度
+	constexpr float		FLOAT_SPEED = 2.5f;														//浮遊モーションの速度
 
-	constexpr char		FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
+	constexpr char		FILE_PATH[] = ("Data/Model/Enemy/Boss/Crystal/Crystal.mv1");			//モデルファイルパス
 }
 //コンストラクタ
 Crystal::Crystal() {
@@ -24,9 +24,10 @@ Crystal::~Crystal() {
 void Crystal::Init() {
 	CharacterBase::Init();
 
-	m_IsActive = true;
+	m_Kinds = ENEMY;
 
 	m_Rad = RAD;		//半径
+	m_IsActive = false;	//生存フラグをオフ
 
 	m_State = IDEL;		//状態変数を初期化
 	m_DamageTime = 0;	//ダメージ処理の継続時間
@@ -96,8 +97,17 @@ void Crystal::Rotarion() {
 	//回転アニメーションループ再生
 	RequestLoop(ROTATION);
 	//上下に浮遊させる
-	m_Pos.y = sinf(m_FloatCount * RADIAN_CALC) * FLOAT_AMPLITUDE;
-
+	m_Pos.y = (FLOAT_AMPLITUDE+ sinf(m_FloatCount * RADIAN_CALC) * FLOAT_AMPLITUDE);
 	//浮遊カウント更新
 	m_FloatCount += FLOAT_SPEED;
+
+	if (m_HitPoints <= 0) {
+		m_IsActive = false;
+		//指定ボーンの座標取得
+		VECTOR Pos = m_Pos;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	}
 }

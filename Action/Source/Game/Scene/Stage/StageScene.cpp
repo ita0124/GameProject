@@ -304,6 +304,7 @@ void StageScene::PlayerStep() {
 		}
 	}
 	m_Player.SetAttackTarget(AttackTarget);
+	m_Player.SetAttackTargetPos(AttackTarget->GetPos());
 
 	m_Player.Step();
 	m_Sword.Step();
