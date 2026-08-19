@@ -417,6 +417,12 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Actor\Crystal">
       <UniqueIdentifier>{994a9a1f-0fb7-402e-ac12-019562c3a575}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\BossGimmickManager">
+      <UniqueIdentifier>{bdc2c5e3-275b-4cc8-a2cf-ec3a00ac094c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\BossGimmickManager">
+      <UniqueIdentifier>{dd707567-53d7-4417-9bf1-9e04fa5e699e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -599,6 +605,9 @@
     <ClCompile Include="Source\Game\Object\Actor\Crystal\Crystal.cpp">
       <Filter>ソース ファイル\Game\Object\Actor\Crystal</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\BossGimmickManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -780,6 +789,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Actor\Crystal\Crystal.h">
       <Filter>ヘッダー ファイル\Game\Object\Actor\Crystal</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\BossGimmickManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -127,6 +127,7 @@ private:
 	TagState	m_PrevState;										//１フレーム前の状態
 
 	int			m_DamageTime;										//ダメージ処理の継続時間
+	bool		m_IsDamageTimeCalc;									//ダメージ処理の継続時間の計算をしてよいか
 
 	VECTOR		m_BeforJumpPos;										//ジャンプ直前の座標を保存
 	VECTOR		m_PredictedLandingPos;								//着地予定座標
@@ -139,6 +140,11 @@ private:
 	int			m_PatternIndex;										//攻撃パターンの種類
 	int			m_AttackIndex;										//パターン内の攻撃順
 	int			m_NextAttack;										//次に行う予定の攻撃
+
+	bool		m_WasSpecialMove;									//必殺技を一度でも実行したか
+	bool		m_IsCrystalRequest;									//クリスタルの出現を要求しているか
+	bool		m_IsCrystalDeathRequest;							//クリスタルの死亡を要求しているか
+	int			m_CrystalCount;										//現在出現しているクリスタルの数
 
 	//待機
 	void Idel();
@@ -227,4 +233,12 @@ public:
 	bool	GetFrameDataIsHitFlg(int _Num) { return m_FrameData[_Num].IsCollision; }
 	//指定のボーン攻撃判定を取得する
 	bool	GetFrameDataIsAttackFlg(int _Num) { return m_FrameData[_Num].IsAttackFlg; }
+	//クリスタルの出現を要求しているか
+	bool	GetIsCrystalRequest() { return m_IsCrystalRequest; }
+	//クリスタルの脂肪を要求しているか
+	bool	GetIsCrystalDeathRequest() { return m_IsCrystalDeathRequest; }
+
+	//Set
+	//現在出現しているクリスタルの数
+	void	SetCrystalCount(int _CrystalCount) { m_CrystalCount = _CrystalCount; }
 };

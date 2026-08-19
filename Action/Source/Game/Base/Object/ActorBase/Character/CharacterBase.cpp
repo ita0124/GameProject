@@ -31,6 +31,7 @@ void CharacterBase::Init() {
 	m_KnockBackSub = 0.0f;						//1フレーム毎のノックバック力減衰量
 	m_KnockBackDuration = 0;					//ノックバック継続時間	
 	m_KnockBackState = KNOCKBACK_NOT;			//ノックバック状態管理変数
+	m_RockOn = true;							// ロックオン可能か
 
 	m_IsStaminaRecover = true;	//スタミナを回復させてよいか
 }

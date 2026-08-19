@@ -6,7 +6,7 @@ namespace {
 	constexpr float		TARGET_POS_LERP_RATE = 0.2f;				//１フレームの補完率
 	constexpr VECTOR	CAMERA_OFFSET = { 0.0f,25.0f,100.0f };		// プレイヤー基準のカメラ配置オフセット
 	constexpr float		CAMERA_MIN_HEIGHT = 20.0f;					// カメラの最低高度
-	constexpr float		TARGET_HEIGHT_OFFSET = 20.0f;				// ロックオン注視点の高さ補正
+	constexpr float		TARGET_HEIGHT_OFFSET = 10.0f;				// ロックオン注視点の高さ補正
 }
 
 //コンストラクタ
