@@ -4,19 +4,6 @@
 class MyEffeckseer {
 public:
 	enum EFFECTID {
-		TKTK01BLOW2,				//弱攻撃
-		TKTK01BLOW3,				//SpMove
-		TKTK01BLOW9,				//強
-		TKTK01BLOW12,				//牙
-		TKTK01SWORD1_1,				//プレイヤー通常	縦
-		TKTK01SWORD1_2,				//プレイヤー通常	横
-		TKTK01SWORD21,				//プレイヤー必殺
-		ANDREWFM01BLUE_LASER,		//突進溜め
-		TKTK02BLOW3,				//突進発射
-		PIERRE02LOSSOFBLOOD,		//敵被弾
-		TKTK02BLOW2,				//敵必殺
-		SIMPLE_SPRITE_BILLBOARD,	//敵死亡
-		SIMPLE_SPAWNMETHOD,			//ヒット
 
 		EFFECT_NUM
 	};
