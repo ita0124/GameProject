@@ -410,7 +410,7 @@ void Wolf::Death() {
 			//指定ボーンの座標取得
 			VECTOR Pos = GetFramePos(m_Hndl, HITPS);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_ENEMY_DEATH, Pos, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}

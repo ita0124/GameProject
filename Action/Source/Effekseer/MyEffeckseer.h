@@ -4,6 +4,17 @@
 class MyEffeckseer {
 public:
 	enum EFFECTID {
+		EFFEKSEER01_HIT,			//”í’e
+		EFFEKSEER01_ENEMY_DEATH,	//ŽG‹›“GŽ€–S
+		TKTK01_BLOW5,				//ÕŒ‚”g
+		TKTK01_BLOW12_DOWN,			//U‚è‰º‚ë‚µ
+		TKTK01_BLOW12_UP,			//U‚èã‚°
+		TKTK01_SWORD17,				//Œ••KŽE
+		TKTK02_BLOW2,				//“G•KŽE
+		TKTK02_CLAW1,				//ƒIƒIƒJƒ~Šš‚Ý‚Â‚«
+		TKTK02_GUN3,				//“Ëi
+		TKTK02_SWORD4_HORIZONTAL,	//ŽaŒ‚‰¡
+		TKTK02_SWORD4_VERTICAL,		//ŽaŒ‚c
 
 		EFFECT_NUM
 	};

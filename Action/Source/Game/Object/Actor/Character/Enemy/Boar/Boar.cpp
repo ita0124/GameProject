@@ -23,9 +23,9 @@ namespace {
 
 	constexpr int		DOWN_TIME = 180;																//ダウン状態継続時間
 
-	constexpr float		NORMAL_ATTACK1_COLLISION_RAD = 15.0f;											//通常攻撃１段目の攻撃当たり判定の半径
+	constexpr float		ATTACK_IDEL_TIMING = 10.0f;														//突進前の演出タイミング
 
-	constexpr float		ATTACK_COLLISION_RAD = 15.0f;													//通常攻撃１段目の攻撃当たり判定の半径
+	constexpr float		ATTACK_COLLISION_RAD = 15.0f;													//突進の攻撃当たり判定の半径
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 
@@ -223,6 +223,8 @@ void Boar::AttackIdel() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
 	//方向ベクトルを取得
 	VECTOR DirToPlayer = GetDirectionNotY(m_Pos, m_PlayerPos, true);
@@ -233,11 +235,17 @@ void Boar::AttackIdel() {
 		//攻撃状態へ
 		m_State = ATTACK;
 	}
-	if (m_AnimeData.Frame > EFFECT_SPAWN_FRAME) {
+	if (m_AnimeData.Frame > ATTACK_IDEL_TIMING) {
 		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
+		VECTOR Pos = GetFramePos(m_Hndl, ROOT);
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_GUN3, Pos, false);
+		}
+		//エフェクトの出現座標を設定
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
@@ -351,7 +359,7 @@ void Boar::Death() {
 			//指定ボーンの座標取得
 			VECTOR Pos = GetFramePos(m_Hndl, HITPS);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPRITE_BILLBOARD, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_ENEMY_DEATH, Pos, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}

@@ -3,6 +3,17 @@
 MyEffeckseer::EFFECT_DATA MyEffeckseer::m_Effect[EFFECT_NUM];
 
 constexpr const char* FilePath[MyEffeckseer::EFFECTID::EFFECT_NUM] = {
+	"Data/Effect/Efk/Effekseer01/Simple_GeneratingPosition1.efk",	//”í’e
+	"Data/Effect/Efk/Effekseer01/Simple_Sprite_BillBoard.efk",		//G‹›“G€–S
+	"Data/Effect/Efk/tktk01/Blow5.efk",								//ÕŒ‚”g
+	"Data/Effect/Efk/tktk01/Blow12Down.efk",						//U‚è‰º‚ë‚µ
+	"Data/Effect/Efk/tktk01/Blow12Up.efk",							//U‚èã‚°
+	"Data/Effect/Efk/tktk01/Sword17.efk",							//Œ••KE
+	"Data/Effect/Efk/tktk02/Blow2.efk",								//“G•KE
+	"Data/Effect/Efk/tktk02/Claw1.efk",								//ƒIƒIƒJƒ~Šš‚İ‚Â‚«
+	"Data/Effect/Efk/tktk02/Gun3.efk",								//“Ëi
+	"Data/Effect/Efk/tktk02/Sword4Horizontal.efk",					//aŒ‚‰¡
+	"Data/Effect/Efk/tktk02/Sword4Vertical.efk",					//aŒ‚c
 };
 
 //ƒRƒ“ƒXƒgƒ‰ƒNƒ^

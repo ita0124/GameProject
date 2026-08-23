@@ -25,19 +25,19 @@ namespace {
 	constexpr float		NORMAL_ATTACK1_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃１段目のマテリアル変更終了フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 10.0f;											//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_END = 15.0f;											//通常攻撃１段目の当たり判定終了フレーム
-	constexpr float		NORMAL_ATTACK1_EFFECT_REQUEST = 12.0f;											//通常攻撃１段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK1_PERFORMANCE_TIMING = 10.0f;										//通常攻撃１段目の演出タイミング
 
 	constexpr float		NORMAL_ATTACK2_CHANGE_MATERIAL_START = 5.0f;									//通常攻撃２段目のマテリアル変更開始フレーム
 	constexpr float		NORMAL_ATTACK2_CHANGE_MATERIAL_END = 10.0f;										//通常攻撃２段目のマテリアル変更終了フレーム
 	constexpr float		NORMAL_ATTACK2_COLLISION_START = 10.0f;											//通常攻撃２段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK2_COLLISION_END = 20.0f;											//通常攻撃２段目の当たり判定終了フレーム
-	constexpr float		NORMAL_ATTACK2_EFFECT_REQUEST = 15.0f;											//通常攻撃２段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK2_PERFORMANCE_TIMING = 10.0f;										//通常攻撃２段目の演出タイミング
 
 	constexpr float		NORMAL_ATTACK3_CHANGE_MATERIAL_START = 25.0f;									//通常攻撃３段目のマテリアル変更開始フレーム
 	constexpr float		NORMAL_ATTACK3_CHANGE_MATERIAL_END = 30.0f;										//通常攻撃３段目のマテリアル変更終了フレーム
 	constexpr float		NORMAL_ATTACK3_COLLISION_START = 30.0f;											//通常攻撃３段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK3_COLLISION_END = 40.0f;											//通常攻撃３段目の当たり判定終了フレーム
-	constexpr float		NORMAL_ATTACK3_EFFECT_REQUEST = 40.0f;											//通常攻撃３段目のエフェクト呼び出しフレーム
+	constexpr float		NORMAL_ATTACK3_PERFORMANCE_TIMING = 40.0f;										//通常攻撃３段目の演出タイミング
 
 	constexpr float		REAR_ATTACK_CHANGE_MATERIAL_START = 10.0f;										//後方攻撃のマテリアル変更開始フレーム
 	constexpr float		REAR_ATTACK_CHANGE_MATERIAL_END = 15.0f;										//後方攻撃のマテリアル変更終了フレーム
@@ -51,8 +51,12 @@ namespace {
 
 	constexpr float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
 
+	constexpr float		CHARGE_ATTACK_START_TIMING = 30.0f;												//突進チャージの演出タイミング
+
 	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
 	constexpr float		CHARGE_END_LEN = RAD + 10.0f;													//突進アクションから次の状態に移行する最低距離
+
+	constexpr float		CHARGE_ATTACK_PERFORMANCE_TIMING = 0.0f;										//突進攻撃の演出タイミング
 
 	constexpr float		SPECIAL_START_END_LEN = 25.0f;													//必殺開始アクションから次の状態に移行する最低距離
 
@@ -394,10 +398,6 @@ void Boss::NoormalAttack1(TagState _State) {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
-			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
-		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(NOSE004END, NORMAL_ATTACK1_COLLISION_RAD);
 	}
@@ -405,13 +405,19 @@ void Boss::NoormalAttack1(TagState _State) {
 		//ボーン攻撃判定を削除する
 		DeleteFrameDataIsAttackFlg(NOSE004END);
 	}
-	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK1_EFFECT_REQUEST) {
-		///演出を実行オン
-		m_IsPerformance = true;
+	if (m_AnimeData.Frame > NORMAL_ATTACK1_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, NOSE004END);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW2, Pos, false);
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//サウンドリクエスト
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_DOWN, Pos, false);
+		}
+		//エフェクトの出現座標を設定
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
@@ -473,21 +479,24 @@ void Boss::NoormalAttack2(TagState _State) {
 		DeleteFrameDataIsAttackFlg(FANG003END_LEFT);
 		DeleteFrameDataIsAttackFlg(FANG003END_RIGHT);
 	}
-	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK2_EFFECT_REQUEST) {
-		///演出を実行オン
-		m_IsPerformance = true;
+	if (m_AnimeData.Frame > NORMAL_ATTACK2_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW12, Pos1, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-		//指定ボーンの座標取得
 		VECTOR Pos2 = GetFramePos(m_Hndl, FANG003END_RIGHT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW12, Pos2, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//サウンドリクエスト
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos1, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos2, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		}
 	}
 }
 //通常攻撃３段目　攻撃終了(踏みつけ)
@@ -523,24 +532,23 @@ void Boss::BreakNormalAttack3() {
 		DeleteFrameDataIsAttackFlg(PALMEND_LEFT);
 		DeleteFrameDataIsAttackFlg(PALMEND_RIGHT);
 	}
-	if (!m_IsPerformance && m_AnimeData.Frame > NORMAL_ATTACK3_EFFECT_REQUEST) {
-		///演出を実行オン
-		m_IsPerformance = true;
+	if (m_AnimeData.Frame > NORMAL_ATTACK3_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, PALMEND_LEFT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW3, Pos1, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-		//指定ボーンの座標取得
 		VECTOR Pos2 = GetFramePos(m_Hndl, PALMEND_RIGHT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW3, Pos2, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW5, Pos1, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW5, Pos2, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		}
 	}
 	//アニメーションが終わったら
@@ -704,15 +712,17 @@ void Boss::ChargeAttackStart() {
 		///演出を実行オフ
 		m_IsPerformance = false;
 	}
-	if (!m_IsPerformance) {
-		///演出を実行オン
-		m_IsPerformance = true;
+	if (m_AnimeData.Frame > CHARGE_ATTACK_START_TIMING) {
 		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::ANDREWFM01BLUE_LASER, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		VECTOR Pos = GetFramePos(m_Hndl, HIP);
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_GUN3, Pos, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		}
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -743,12 +753,6 @@ void Boss::Charge() {
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_LUNGES)) {
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_LUNGES);
 		}
-		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW3, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	if (Len > CHARGE_END_LEN) {
 		//正規化したものを取得
@@ -786,28 +790,27 @@ void Boss::ChargeAttack() {
 		m_Power = CHARGE_ATTACK_POWER;
 		//輪郭線のマテリアルをマテリアル黒に変更
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK)) {
-			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
-		}
 		///演出を実行オフ
 		m_IsPerformance = false;
 	}
-	if (!m_IsPerformance && m_AnimeData.Frame) {
-		///演出を実行オン
-		m_IsPerformance = true;
+	if (m_AnimeData.Frame > CHARGE_ATTACK_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
 		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW12, Pos1, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-		//指定ボーンの座標取得
 		VECTOR Pos2 = GetFramePos(m_Hndl, FANG003END_RIGHT);
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01BLOW12, Pos2, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//サウンドリクエスト
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos1, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos2, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		}
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -918,16 +921,16 @@ void Boss::Special() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
+		//エフェクトリクエスト
+		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_BLOW2, VZERO, false);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	if (m_Pos.y <= 0.0f) {
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(CHEST, SPECIAL_COLLISION_RAD);
 		//攻撃力設定
 		m_Power = SPECIAL_POWER * m_CrystalCount;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02BLOW2, m_Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//初期化
 		m_Pos.y = 0.0;
 		//待機状態へ

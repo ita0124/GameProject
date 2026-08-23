@@ -216,6 +216,12 @@ void Player::HitCalc(ObjectBase* _Object) {
 	EnemyBase* PointerEnemy = nullptr;
 	//エネミーベースクラスをダウンキャスト
 	PointerEnemy = dynamic_cast<EnemyBase*>(_Object);
+	//指定ボーンの座標取得
+	VECTOR Pos = m_Pos;
+	//エフェクトリクエスト
+	m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_HIT, Pos, false);
+	//エフェクトの回転角度を設定
+	MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	//パリィの当たりがオン
 	if (m_IsParryCollision) {
 		//パリィ成功
@@ -243,12 +249,6 @@ void Player::HitCalc(ObjectBase* _Object) {
 		VECTOR HitVec = GetDirectionNotY(PointerEnemy->GetPos(), m_Pos, true);
 		//ヒット方向を向く
 		UpdateRotation(HitVec, (float)DX_PI);
-		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPAWNMETHOD, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_GUARD)) {
 			SoundManager::Play(SoundManager::TagID::SE_GUARD);
@@ -265,12 +265,6 @@ void Player::HitCalc(ObjectBase* _Object) {
 		float KnockBackPower = PointerEnemy->GetPower();
 		//ノックバックデータ数値代入
 		SetKnockBackData(PointerEnemy->GetPos(), KnockBackPower);
-		//指定ボーンの座標取得
-		VECTOR Pos = m_Pos;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::SIMPLE_SPAWNMETHOD, Pos, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 		//サウンドリクエスト
 		if (!SoundManager::IsPlay(SoundManager::TagID::SE_HIT)) {
 			SoundManager::Play(SoundManager::TagID::SE_HIT);
@@ -574,12 +568,12 @@ void Player::SkillAttack() {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD21, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_SWORD17, Pos, false);
 		}
-		//
+		//エフェクトの出現座標を設定
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -681,12 +675,12 @@ void Player::NormalAttack1() {
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_1, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_SWORD4_VERTICAL, Pos, false);
 		}
-		//
+		//エフェクトの出現座標を設定
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
+		MyEffeckseer::SetRot(m_EffectHndl,m_Rot);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -789,12 +783,12 @@ void Player::NormalAttack2() {
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_SWORD4_HORIZONTAL, Pos, false);
 		}
-		//
+		//エフェクトの出現座標を設定
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -879,12 +873,12 @@ void Player::NormalAttack3() {
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_SWORD);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01SWORD1_2, Pos, false);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_SWORD4_HORIZONTAL, Pos, false);
 		}
-		//
+		//エフェクトの出現座標を設定
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, VGet(0.0f, 0.0f, 90.0f / RADIAN_CALC));
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
