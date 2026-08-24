@@ -14,7 +14,7 @@ WallPlatform::~WallPlatform() {
 }
 //初期化処理
 void WallPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_PlatformKinds = WALL;	//足場オブジェクト種類を再設定
 	m_PlayerPush = false;	//プレイヤーを押し戻すか

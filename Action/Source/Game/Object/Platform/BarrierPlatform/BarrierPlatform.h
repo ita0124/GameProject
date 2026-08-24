@@ -1,7 +1,7 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//通常足場
+//バリアクラス
 class BarrierPlatform :public PlatformBase {
 public:
 	//コンストラクタ

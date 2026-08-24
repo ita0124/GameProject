@@ -16,7 +16,7 @@ GoalPlatform::~GoalPlatform() {
 }
 //‰Šú‰»ˆ—
 void GoalPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_Object = nullptr;
 }

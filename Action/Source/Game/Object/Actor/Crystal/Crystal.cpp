@@ -3,12 +3,14 @@
 namespace {
 	constexpr int		HIT_POINTS = 3;															//体力
 
-	constexpr float		RAD = 20.0f;																//半径
+	constexpr float		RAD = 20.0f;															//半径
 
 	constexpr int		DAMAGE_TIME = 20;														//ダメージ状態の継続時間
 
 	constexpr float		FLOAT_AMPLITUDE = 10.0f;												//浮遊モーションの振幅
 	constexpr float		FLOAT_SPEED = 2.5f;														//浮遊モーションの速度
+
+	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Enemy/Boss/Crystal/Crystal.mv1");			//モデルファイルパス
 }
@@ -109,5 +111,7 @@ void Crystal::Rotarion() {
 		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_ENEMY_DEATH, Pos, false);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 }

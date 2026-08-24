@@ -2,7 +2,7 @@
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 #include "Lib/LoadMaterial/LoadMaterial.h"
 
-//“®‚­‘«ê
+//ƒŠƒXƒ|[ƒ“‘«ê
 class RespawnPlatform :public PlatformBase {
 private:
 	ObjectBase *m_Object;

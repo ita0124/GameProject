@@ -423,6 +423,30 @@
     <Filter Include="ソース ファイル\Game\Manager\BossGimmickManager">
       <UniqueIdentifier>{dd707567-53d7-4417-9bf1-9e04fa5e699e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\FlowersPlatform">
+      <UniqueIdentifier>{ef024b5b-b9ca-4fb7-87ed-ef3de1233603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\GrassPlatform">
+      <UniqueIdentifier>{57d7917d-ea8c-4bb0-93e4-44675ff80fe0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\HrdgePlatform">
+      <UniqueIdentifier>{d098ccc3-7906-4e41-aee6-4ee688fa4597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\TreePlatform">
+      <UniqueIdentifier>{95b88f1f-ab67-4611-9a70-320e2dfe2286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\TreePlatform">
+      <UniqueIdentifier>{17406ace-5348-4405-8f7c-4d7d45bc56ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\FlowersPlatform">
+      <UniqueIdentifier>{39ceb7fd-5cf7-4182-a033-72ae98e5e597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\GrassPlatform">
+      <UniqueIdentifier>{2239ffd5-98df-4827-8440-292e90aa83ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\HrdgePlatform">
+      <UniqueIdentifier>{6a85cd00-47c2-411a-813e-32f0b3008646}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -608,6 +632,18 @@
     <ClCompile Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.cpp">
       <Filter>ソース ファイル\Game\Manager\BossGimmickManager</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\FlowersPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\GrassPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\HrdgePlatform\HrdgePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\HrdgePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\TreePlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -792,6 +828,18 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.h">
       <Filter>ヘッダー ファイル\Game\Manager\BossGimmickManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\FlowersPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\GrassPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\HrdgePlatform\HrdgePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\HrdgePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\TreePlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

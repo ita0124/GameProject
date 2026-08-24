@@ -19,7 +19,7 @@ FallingPlatform::~FallingPlatform() {
 }
 //‰Šú‰»ˆ—
 void FallingPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_FallWait = 0;				//—‚¿n‚ß‚é‚Ü‚Å‚Ì‘Ò‹@ŠÔ
 	m_FallingTime = 0;			//—‚¿‘±‚¯‚éŠÔ

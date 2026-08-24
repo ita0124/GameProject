@@ -25,7 +25,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK_MOVE_MULT = 3.0f;											//通常攻撃時の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.25f;										//通常移動時の回転速度
-	constexpr float		NORMAL_ATTACK1_MOVE_ROTATE_SPEED = 0.5f;								//通常攻撃１段目の回転速度
+	constexpr float		NORMAL_ATTACK1_MOVE_ROTATE_SPEED = 0.2f;								//通常攻撃１段目の回転速度
 	constexpr float		NORMAL_ATTACK2_MOVE_ROTATE_SPEED = 0.1f;								//通常攻撃２段目の回転速度
 	constexpr float		NORMAL_ATTACK3_MOVE_ROTATE_SPEED = 0.25f;								//通常攻撃３段目の回転速度
 
@@ -37,7 +37,7 @@ namespace {
 	constexpr float		SKILL_ATTACK_COLLISION_START = 45.0f;									//スキル攻撃の当たり判定開始フレーム
 	constexpr float		SKILL_ATTACK_COLLISION_END = 55.0f;										//スキル攻撃の当たり判定終了フレーム
 	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_SE = 15.0f;								//スキル攻撃の演出タイミング(SE)
-	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT = 45.0f;							//スキル攻撃の演出タイミング(エフェクト)
+	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT = 30.0f;							//スキル攻撃の演出タイミング(エフェクト)
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 15.0f;									//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_END = 25.0f;									//通常攻撃１段目の当たり判定終了フレーム
 	constexpr float		NORMAL_ATTACK1_PERFORMANCE_TIMING = 15.0f;								//通常攻撃１段目の演出タイミング
@@ -88,6 +88,8 @@ namespace {
 	constexpr float		GRAVITY_MAX = -0.25f;													//最大重力
 
 	constexpr float		FALL_OUT_Y = -500.0f;													//落下判定のY座標
+
+	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
@@ -205,9 +207,9 @@ void Player::Step() {
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
 #ifdef _DEBUG
-	DrawFormatStringToHandle(10, 600, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標X:%.1f", m_Pos.x);
-	DrawFormatStringToHandle(10, 620, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Y:%.1f", m_Pos.y);
-	DrawFormatStringToHandle(10, 640, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Z:%.1f", m_Pos.z);
+	DrawFormatStringToHandle(10, 200, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標X:%.1f", m_Pos.x);
+	DrawFormatStringToHandle(10, 220, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Y:%.1f", m_Pos.y);
+	DrawFormatStringToHandle(10, 240, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Z:%.1f", m_Pos.z);
 #endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
@@ -222,6 +224,8 @@ void Player::HitCalc(ObjectBase* _Object) {
 	m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_HIT, Pos, false);
 	//エフェクトの回転角度を設定
 	MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+	//エフェクトの拡大率を設定
+	MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	//パリィの当たりがオン
 	if (m_IsParryCollision) {
 		//パリィ成功
@@ -564,6 +568,8 @@ void Player::SkillAttack() {
 	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT) {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+		//座標を調整
+		Pos.y = 0.0f;
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
@@ -574,6 +580,8 @@ void Player::SkillAttack() {
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -680,7 +688,9 @@ void Player::NormalAttack1() {
 		//エフェクトの出現座標を設定
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl,m_Rot);
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -789,6 +799,8 @@ void Player::NormalAttack2() {
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -879,6 +891,8 @@ void Player::NormalAttack3() {
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {

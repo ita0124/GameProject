@@ -16,7 +16,7 @@ RespawnPlatform::~RespawnPlatform() {
 }
 //‰Šú‰»ˆ—
 void RespawnPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_Object = nullptr;
 }

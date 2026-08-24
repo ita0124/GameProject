@@ -23,7 +23,7 @@ namespace {
 
 	constexpr int		DOWN_TIME = 180;																//ダウン状態継続時間
 
-	constexpr float		ATTACK_IDEL_TIMING = 10.0f;														//突進前の演出タイミング
+	constexpr float		ATTACK_IDEL_TIMING = 30.0f;														//突進前の演出タイミング
 
 	constexpr float		ATTACK_COLLISION_RAD = 15.0f;													//突進の攻撃当たり判定の半径
 
@@ -41,6 +41,8 @@ namespace {
 	constexpr int		DEATH_TIME = 20;																//死亡後にオブジェクトを削除するまでの待機時間
 
 	constexpr float		FALL_OUT_Y = -500.0f;															//落下判定のY座標
+
+	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boar/Boar.mv1");							//モデルファイルパス
 }
@@ -248,6 +250,8 @@ void Boar::AttackIdel() {
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 }
 //攻撃
@@ -362,6 +366,8 @@ void Boar::Death() {
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_ENEMY_DEATH, Pos, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 		}
 		else {
 			//死亡後の経過時間を加算

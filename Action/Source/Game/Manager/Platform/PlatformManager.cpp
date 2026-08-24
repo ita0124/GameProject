@@ -63,6 +63,22 @@ void PlatformManager::Init(int _Map) {
 			//バリアクラスをnew
 			m_Platform[PlatformIndex] = new BarrierPlatform;
 			break;
+		case PlatformBase::TagPlatformKinds::FLOWERS:
+			//花クラスをnew
+			m_Platform[PlatformIndex] = new FlowersPlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::GRASS:
+			//草クラスをnew
+			m_Platform[PlatformIndex] = new GrassPlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::HRDGE:
+			//花壇クラスをnew
+			m_Platform[PlatformIndex] = new HrdgePlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::TREE:
+			//木クラスをnew
+			m_Platform[PlatformIndex] = new TreePlatform;
+			break;
 		}
 	}
 	//初期化をここで行う

@@ -61,6 +61,8 @@ namespace {
 		{-3.0f,4.5f},
 	};
 
+	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
+
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Wolf/Wolf.mv1");							//モデルファイルパス
 }
 
@@ -413,6 +415,8 @@ void Wolf::Death() {
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::EFFEKSEER01_ENEMY_DEATH, Pos, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 		}
 		else {
 			//死亡後の経過時間を加算

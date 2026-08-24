@@ -19,16 +19,18 @@
 
 9	REAR_ATTACK		後方攻撃
 
-10	JUMP			突進直前移動
+10	SIDE_ATTACK		回転攻撃		
 
-11	CHARGE_ATTACK_START	突進チャージ
+11	JUMP			突進直前移動
 
-12	CHARGE			突進
+12	CHARGE_ATTACK_START	突進チャージ
 
-13	CHARGE_ATTACK		突進振り上げ
+13	CHARGE			突進
 
-14	SPECIAL_START		必殺開始
+14	CHARGE_ATTACK		突進振り上げ
 
-15	SPECIAL_CHAGE		必殺チャージ
+15	SPECIAL_START		必殺開始
 
-16	SPECIAL			必殺
+16	SPECIAL_CHAGE		必殺チャージ
+
+17	SPECIAL			必殺

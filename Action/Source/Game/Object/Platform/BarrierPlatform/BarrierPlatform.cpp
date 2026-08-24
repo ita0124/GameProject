@@ -16,7 +16,7 @@ BarrierPlatform::~BarrierPlatform() {
 }
 //初期化処理
 void BarrierPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_PlatformKinds = BARRIER;	//足場オブジェクト種類を再設定
 	m_PlayerPush = false;		//プレイヤーを押し戻すか

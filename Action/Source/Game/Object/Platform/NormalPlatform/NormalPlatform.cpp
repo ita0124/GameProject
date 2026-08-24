@@ -15,7 +15,7 @@ NormalPlatform::~NormalPlatform() {
 }
 //初期化処理
 void NormalPlatform::Init() {
-	ObjectBase::Init();
+	PlatformBase::Init();
 
 	m_PlatformKinds = NORMAL;	//足場オブジェクト種類を再設定
 }

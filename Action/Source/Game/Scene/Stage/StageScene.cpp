@@ -103,7 +103,7 @@ void StageScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();								//天球クラス
+		//m_Sky.Draw();								//天球クラス
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);

@@ -6,13 +6,17 @@ class PlatformBase :public ObjectBase {
 public:
 	//足場オブジェクト種類
 	enum TagPlatformKinds {
-		NORMAL,
-		MOVING,
-		FALLING,
-		WALL,
-		RESPAWN,
-		GOAL,
-		BARRIER,
+		NORMAL,		//通常足場
+		MOVING,		//動く足場
+		FALLING,	//落ちる足場
+		WALL,		//壁
+		RESPAWN,	//リスポーン
+		GOAL,		//ゴール
+		BARRIER,	//バリア
+		FLOWERS,	//花
+		GRASS,		//草
+		HRDGE,		//花壇
+		TREE,		//木
 
 		PLATFORM_NUM
 	};

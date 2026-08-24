@@ -7,7 +7,7 @@ namespace {
 	constexpr float		RAD = 50.0f;																	//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	constexpr float		HIT_POINTS = 1000.0f;															//体力
+	constexpr float		HIT_POINTS = 10.0f;																//体力
 	constexpr float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 750.0f;													//IDELに移行するプレイヤーとの距離
@@ -17,7 +17,7 @@ namespace {
 	constexpr float		REAR_ATTACK_MULT = -7.5f;														//後方攻撃の移動乗算値
 	constexpr float		JUMP_MULT = 10.0f;																//ジャンプの移動乗算値
 	constexpr float		CHARGE_MULT = 25.0f;															//突進の移動乗算値
-	constexpr float		SPECIALSTART_MULT = 10.0f;														//必殺開始の移動乗算値
+	constexpr float		SPECIALSTART_MULT = 5.0f;														//必殺開始の移動乗算値
 
 	constexpr float		NORMAL_MOVE_ROTATE_SPEED = 0.2f;												//通常移動時の回転速度
 
@@ -51,7 +51,7 @@ namespace {
 
 	constexpr float		JUMP_END_SIZE = 25.0f;															//ジャンプから次の状態に移行する最低距離
 
-	constexpr float		CHARGE_ATTACK_START_TIMING = 30.0f;												//突進チャージの演出タイミング
+	constexpr float		CHARGE_ATTACK_START_TIMING = 85.0f;												//突進チャージの演出タイミング
 
 	constexpr float		CHARGE_CHANGE_MATERIAL_START_LEN = 500.0f;										//突進のマテリアル変更最低距離
 	constexpr float		CHARGE_END_LEN = RAD + 10.0f;													//突進アクションから次の状態に移行する最低距離
@@ -65,6 +65,7 @@ namespace {
 	constexpr float		SPECIAL_MOVE_RISE_START_TIME = SPECIAL_CHARGE_END_TIME - 60.0f;					//必殺チャージ時の上昇開始の時間
 	constexpr float		SPECIAL_MOVE_RISE_SPEED = 50.0f;												//必殺技中の上昇量
 	constexpr int		SPECIAL_INTERRUPTED_DOWN_TIME = 300;											//必殺技を阻止されたときのダウン状態継続時間
+	constexpr float		SPECIAL_MOVE_PERFORMANCE_HEIGHT = SPECIAL_MOVE_RISE_SPEED * 12.0f;				//必殺技演出開始高度の倍率
 
 	constexpr VECTOR	SPECIAL_INIT_VECTOR = { 0.0f,500.0f,0.0f };										//必殺の初めに座標を変更するときの値
 
@@ -73,7 +74,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK3_COLLISION_RAD = 25.0f;											//通常攻撃３段目の攻撃当たり判定の半径
 	constexpr float		REAR_ATTACK_COLLISION_RAD = 50.0f;												//後方攻撃の攻撃当たり判定の半径
 	constexpr float		SIDE_ATTACK_COLLISION_RAD = 25.0f;												//回転攻撃の攻撃当たり判定の半径
-	constexpr float		SPECIAL_COLLISION_RAD = 500.0f;													//回転攻撃の攻撃当たり判定の半径
+	constexpr float		SPECIAL_COLLISION_RAD = 1000.0f;												//必殺攻撃の攻撃当たり判定の半径
 
 	constexpr float		ANIME_SPEED = 0.35f;															//アニメーション再生スピード
 	constexpr float		CHARGE_START_ANIME_SPEED = 0.5f;												//突進チャージアニメーション再生スピード
@@ -94,13 +95,16 @@ namespace {
 	constexpr float		PARRY_DOWN_POWER_THRESHOLD = 20.0f;												//パリィされたときにダウンへ移行する攻撃力
 	constexpr float		PARRY_DOWN_TIME_MULT = 5.0f;													//パリィされたときに攻撃力に乗算してダウン時間を設定する
 
-	constexpr float		ATTACK_PATTERN_HP_RATE_LOW = 0.5f;												//攻撃パターンの変化するHP割合
+	constexpr float		ATTACK_PATTERN_HP_RATE_LOW = 0.7f;												//攻撃パターンの変化するHP割合
 	constexpr float		ATTACK_PATTERN_HP_RATE_HIGH = 0.9f;												//攻撃パターンの変化するHP割合
 
 	constexpr int		ATTACK_PATTERN_RANDOM_MAX = 1;													//攻撃パターンのランダム範囲
 	constexpr int		ATTACK_PATTERN_LOW_HP_RANDOM_MAX = 2;											//攻撃パターンのランダム範囲
 	constexpr int		ATTACK_PATTERN_LOW_HP_START_INDEX = 2;											//低HP時の攻撃パターン開始番号
 	constexpr float		SPECIAL_MOVE_HP_THRESHOLD = 100.0f;												//必殺技発動体力
+
+	constexpr VECTOR	EFFECT_SCALE = { 10.0f,10.0f,10.0f };											//エフェクトの拡大倍率
+	constexpr VECTOR	SPECIAL_EFFECT_SCALE = { 20.0f,20.0f,20.0f };									//エフェクトの拡大倍率
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
@@ -295,7 +299,8 @@ void Boss::Down() {
 		//ロックオン可能に設定
 		m_RockOn = true;
 		//座標をリセット
-		m_Pos = VZERO;
+		VECTOR	DownPos = { m_Pos.x,0.0f,m_Pos.z };
+		m_Pos = DownPos;
 		//当たり判定オン
 		m_IsCollision = true;
 	}
@@ -420,6 +425,8 @@ void Boss::NoormalAttack1(TagState _State) {
 		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
 		//エフェクトの回転角度を設定
 		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 }
 //通常攻撃２段目　攻撃終了(牙振り上げ)
@@ -466,10 +473,6 @@ void Boss::NoormalAttack2(TagState _State) {
 		MV1SetTextureGraphHandle(m_Hndl, OUTLINE, LoadMaterial::GetHndl(LoadMaterial::TagMaterial::MATERIAL_BLACK), FALSE);
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
-		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
-			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
-		}
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(FANG003END_LEFT, NORMAL_ATTACK2_COLLISION_RAD);
 		SetFrameDataIsAttackFlg(FANG003END_RIGHT, NORMAL_ATTACK2_COLLISION_RAD);
@@ -481,22 +484,21 @@ void Boss::NoormalAttack2(TagState _State) {
 	}
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
-		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
-		VECTOR Pos2 = GetFramePos(m_Hndl, FANG003END_RIGHT);
+		VECTOR Pos = GetFramePos(m_Hndl, NOSE004END);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos1, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos2, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos, false);
 		}
+		//エフェクトの出現座標を設定
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 }
 //通常攻撃３段目　攻撃終了(踏みつけ)
@@ -545,10 +547,14 @@ void Boss::BreakNormalAttack3() {
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW5, Pos1, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 			//エフェクトリクエスト
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW5, Pos2, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 		}
 	}
 	//アニメーションが終わったら
@@ -632,6 +638,10 @@ void Boss::SideAttack() {
 		//ボーンに攻撃判定を生成
 		SetFrameDataIsAttackFlg(FANG003END_LEFT, SIDE_ATTACK_COLLISION_RAD);
 		SetFrameDataIsAttackFlg(FANG003END_RIGHT, SIDE_ATTACK_COLLISION_RAD);
+		//サウンドリクエスト
+		if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
+		}
 	}
 	else {
 		//ボーン攻撃判定を削除する
@@ -722,6 +732,8 @@ void Boss::ChargeAttackStart() {
 			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_GUN3, Pos, false);
 			//エフェクトの回転角度を設定
 			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 		}
 	}
 	//アニメーションが終わったら
@@ -795,22 +807,21 @@ void Boss::ChargeAttack() {
 	}
 	if (m_AnimeData.Frame > CHARGE_ATTACK_PERFORMANCE_TIMING) {
 		//指定ボーンの座標取得
-		VECTOR Pos1 = GetFramePos(m_Hndl, FANG003END_LEFT);
-		VECTOR Pos2 = GetFramePos(m_Hndl, FANG003END_RIGHT);
+		VECTOR Pos = GetFramePos(m_Hndl, NOSE004END);
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
 			//サウンドリクエスト
 			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
 			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos1, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
-			//エフェクトリクエスト
-			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos2, false);
-			//エフェクトの回転角度を設定
-			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK01_BLOW12_UP, Pos, false);
 		}
+		//エフェクトの出現座標を設定
+		MyEffeckseer::SetPosition(m_EffectHndl, Pos);
+		//エフェクトの回転角度を設定
+		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+		//エフェクトの拡大率を設定
+		MyEffeckseer::SetScale(m_EffectHndl, EFFECT_SCALE);
 	}
 	//アニメーションが終わったら
 	if (m_AnimeData.EndFlg) {
@@ -862,6 +873,7 @@ void Boss::SpecialStart() {
 	else if (Len < SPECIAL_START_END_LEN) {
 		//座標を固定
 		m_Pos = VZERO;
+		m_Pos.y = 100.0f;
 	}
 	else {
 		//正規化したものを取得
@@ -892,6 +904,10 @@ void Boss::SpecialCharge() {
 	AnimeSpeed += SPECIAL_CHARGE_ANIME_SPEED_CHANGE;
 	//セット
 	SetAnimeSpeed(AnimeSpeed);
+	//サウンドリクエスト
+	if (!SoundManager::IsPlay(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK)) {
+		SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_NORMAL_ATTACK);
+	}
 	//必殺チャージ継続時間加算
 	m_SpecialChargeTime++;
 	if (m_SpecialChargeTime >= SPECIAL_CHARGE_END_TIME) {
@@ -921,10 +937,6 @@ void Boss::Special() {
 	if (m_State != m_PrevState) {
 		//変更があった
 		m_PrevState = m_State;
-		//エフェクトリクエスト
-		m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_BLOW2, VZERO, false);
-		//エフェクトの回転角度を設定
-		MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
 	}
 	if (m_Pos.y <= 0.0f) {
 		//ボーンに攻撃判定を生成
@@ -947,6 +959,20 @@ void Boss::Special() {
 	else {
 		//Y軸のみ計算をする
 		m_Pos.y += -SPECIAL_MOVE_RISE_SPEED;
+	}
+	if (m_Pos.y <= SPECIAL_MOVE_PERFORMANCE_HEIGHT) {
+		if (!m_IsPerformance) {
+			///演出を実行オン
+			m_IsPerformance = true;
+			//サウンドリクエスト
+			SoundManager::Play(SoundManager::TagID::SE_ELEPHANT_STRONG_ATTACK);
+			//エフェクトリクエスト
+			m_EffectHndl = MyEffeckseer::Request(MyEffeckseer::EFFECTID::TKTK02_BLOW2, VZERO, false);
+			//エフェクトの回転角度を設定
+			MyEffeckseer::SetRot(m_EffectHndl, m_Rot);
+			//エフェクトの拡大率を設定
+			MyEffeckseer::SetScale(m_EffectHndl, SPECIAL_EFFECT_SCALE);
+		}
 	}
 }
 //行動管理
