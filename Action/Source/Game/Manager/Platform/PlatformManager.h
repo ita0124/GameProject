@@ -12,7 +12,7 @@
 #include "Game/Object/Platform/TreePlatform/TreePlatform.h"
 
 namespace {
-	constexpr int PLATFORM_MAX = 150;
+	constexpr int PLATFORM_MAX = 500;
 	constexpr int PLATFORM_ID = 1;
 	constexpr int PLATFORM_REQUEST_DATA_MAX = 17;
 }

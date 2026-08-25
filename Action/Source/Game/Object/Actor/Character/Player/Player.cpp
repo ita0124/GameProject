@@ -568,8 +568,6 @@ void Player::SkillAttack() {
 	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT) {
 		//指定ボーンの座標取得
 		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
-		//座標を調整
-		Pos.y = 0.0f;
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;
