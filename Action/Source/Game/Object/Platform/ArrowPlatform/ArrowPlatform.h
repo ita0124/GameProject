@@ -1,13 +1,13 @@
 #pragma once
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
-//花
-class FlowersPlatform :public PlatformBase {
+//矢印
+class ArrowPlatform :public PlatformBase {
 public:
 	//コンストラクタ
-	FlowersPlatform();
+	ArrowPlatform();
 	//デストラクタ
-	~FlowersPlatform();
+	~ArrowPlatform();
 	//初期化処理
 	void Init();
 	//毎フレーム呼び出す処理

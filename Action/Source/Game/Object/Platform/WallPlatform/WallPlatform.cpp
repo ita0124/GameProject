@@ -19,10 +19,6 @@ void WallPlatform::Init() {
 	m_PlatformKinds = WALL;	//足場オブジェクト種類を再設定
 	m_PlayerPush = false;	//プレイヤーを押し戻すか
 }
-//データ読み込み処理
-void WallPlatform::Load() {
-	ObjectBase::Load(FILE_PATH);
-}
 //毎フレーム呼び出す処理
 void WallPlatform::Step() {
 }

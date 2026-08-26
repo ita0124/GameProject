@@ -10,6 +10,21 @@ namespace {
 	"Data/CSV/Map1/Platform/PlatformData.csv",
 	"Data/CSV/Map2/Platform/PlatformData.csv",
 	};
+
+	constexpr const char* MODEL_FILE_PATH[PlatformBase::TagPlatformKinds::PLATFORM_NUM] = {				//モデルファイルパス
+	"Data/Model/Stage/NormalPlatform/NormalPlatform.mv1",
+	"Data/Model/Stage/MovingPlatform/MovingPlatform.mv1",
+	"Data/Model/Stage/FallingPlatform/FallingPlatform.mv1",
+	"",
+	"Data/Model/Stage/RespawnPlatform/RespawnPlatform.mv1",
+	"Data/Model/Stage/GoalPlatform/GoalPlatform.mv1",
+	"Data/Model/Stage/BarrierWall/BarrierWall.mv1",
+	"Data/Model/Stage/FlowersPlatform/FlowersPlatform.mv1",
+	"Data/Model/Stage/GrassPlatform/GrassPlatform.mv1",
+	"Data/Model/Stage/FencePlatform/FencePlatform.mv1",
+	"Data/Model/Stage/TreePlatform/TreePlatform.mv1",
+	"Data/Model/Stage/ArrowPlayform/ArrowPlayform.mv1",
+	};
 }
 
 //初期化処理
@@ -68,16 +83,20 @@ void PlatformManager::Init(int _Map) {
 			m_Platform[PlatformIndex] = new FlowersPlatform;
 			break;
 		case PlatformBase::TagPlatformKinds::GRASS:
-			//草クラスをnew
+			//草
 			m_Platform[PlatformIndex] = new GrassPlatform;
 			break;
-		case PlatformBase::TagPlatformKinds::HRDGE:
-			//花壇クラスをnew
-			m_Platform[PlatformIndex] = new HrdgePlatform;
+		case PlatformBase::TagPlatformKinds::FENCE:
+			//塀クラスをnew
+			m_Platform[PlatformIndex] = new FencePlatform;
 			break;
 		case PlatformBase::TagPlatformKinds::TREE:
 			//木クラスをnew
 			m_Platform[PlatformIndex] = new TreePlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::ARROW:
+			//矢印
+			m_Platform[PlatformIndex] = new ArrowPlatform;
 			break;
 		}
 	}
@@ -156,10 +175,15 @@ void PlatformManager::Exit() {
 }
 //データ読み込み処理
 void PlatformManager::Load() {
+	int Hndl[PlatformBase::TagPlatformKinds::PLATFORM_NUM] = {};
+	//
+	for (int LoadIndex = 0;LoadIndex < PlatformBase::TagPlatformKinds::PLATFORM_NUM;LoadIndex++) {
+		Hndl[LoadIndex] = MV1LoadModel(MODEL_FILE_PATH[LoadIndex]);
+	}
 	for (int PlatformIndex = 0; PlatformIndex < PLATFORM_MAX; PlatformIndex++) {
 		//nullなら行わない
 		if (m_Platform[PlatformIndex] != nullptr) {
-			m_Platform[PlatformIndex]->Load();
+			m_Platform[PlatformIndex]->Load(Hndl[m_PlatformID[PlatformIndex][0]]);
 		}
 	}
 }

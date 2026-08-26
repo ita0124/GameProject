@@ -21,6 +21,12 @@ void PlatformBase::Init() {
 	m_PlayerPush = true;															//プレイヤーを押し戻すか
 	m_EnemyPush = true;																//敵を押し戻すか
 }
+// データ読み込み処理
+void PlatformBase::Load(const int _Hndl) {
+	if (m_Hndl != -1)return;
+	//モデルロード
+	m_Hndl = MV1DuplicateModel(_Hndl);
+}
 //リクエスト
 void PlatformBase::Request(const NORMAL_REQUEST_DATA& _NormalRequestData) {
 	//座標情報設定

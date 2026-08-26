@@ -4,8 +4,6 @@ using namespace std;
 
 namespace {
 	constexpr float		MIN_LEN = 0.0f;
-	constexpr VECTOR	INIT_POS = { 0.0f,0.0f,0.0f };
-	constexpr char		FILE_PATH[] = ("Data/Model/Stage/MovingPlatform/MovingPlatform.mv1");	//モデルファイルパス
 	constexpr int		REMOVE_TIME = 30;
 }
 
@@ -31,8 +29,10 @@ void MovingPlatform::Init() {
 	m_Object.clear();
 }
 //データ読み込み処理
-void MovingPlatform::Load() {
-	ObjectBase::Load(FILE_PATH);
+void MovingPlatform::Load(const int _Hndl) {
+	if (m_Hndl != -1)return;
+	//モデルロード
+	m_Hndl = MV1DuplicateModel(_Hndl);
 	//初期の移動方向ベクトルを設定
 	m_MoveDir = VSub(m_MovingPlatformRequestData.EndPos, m_MovingPlatformRequestData.FirstPos);
 	//ベクトルの長さを取得

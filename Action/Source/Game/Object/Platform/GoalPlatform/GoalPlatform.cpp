@@ -1,11 +1,5 @@
 #include "GoalPlatform.h"
 
-namespace {
-	constexpr float		MIN_LEN = 0.0f;
-	constexpr VECTOR	INIT_POS = { 25.0f,0.0f,0.0f };
-	constexpr char		FILE_PATH[] = ("Data/Model/Stage/GoalPlatform/GoalPlatform.mv1");	//モデルファイルパス
-}
-
 //コンストラクタ
 GoalPlatform::GoalPlatform() {
 	Init();
@@ -19,10 +13,6 @@ void GoalPlatform::Init() {
 	PlatformBase::Init();
 
 	m_Object = nullptr;
-}
-//データ読み込み処理
-void GoalPlatform::Load() {
-	ObjectBase::Load(FILE_PATH);
 }
 //毎フレーム呼び出す処理
 void GoalPlatform::Step() {

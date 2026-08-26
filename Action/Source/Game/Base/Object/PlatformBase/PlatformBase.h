@@ -15,8 +15,9 @@ public:
 		BARRIER,	//バリア
 		FLOWERS,	//花
 		GRASS,		//草
-		HRDGE,		//花壇
+		FENCE,		//塀
 		TREE,		//木
+		ARROW,		//矢印
 
 		PLATFORM_NUM
 	};
@@ -56,6 +57,8 @@ public:
 	virtual ~PlatformBase();
 	//初期化処理
 	virtual void Init();
+	// データ読み込み処理
+	virtual void Load(const int _Hndl);
 	//リクエスト
 	void Request(const NORMAL_REQUEST_DATA& _NormalRequestData);
 	//Get

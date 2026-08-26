@@ -7,9 +7,10 @@
 #include "Game/Object/Platform/GoalPlatform/GoalPlatform.h"
 #include "Game/Object/Platform/BarrierPlatform/BarrierPlatform.h"
 #include "Game/Object/Platform/FlowersPlatform/FlowersPlatform.h"
+#include "Game/Object/Platform/FencePlatform/FencePlatform.h"
 #include "Game/Object/Platform/GrassPlatform/GrassPlatform.h"
-#include "Game/Object/Platform/HrdgePlatform/HrdgePlatform.h"
 #include "Game/Object/Platform/TreePlatform/TreePlatform.h"
+#include "Game/Object/Platform/ArrowPlatform/ArrowPlatform.h"
 
 namespace {
 	constexpr int PLATFORM_MAX = 500;

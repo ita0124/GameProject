@@ -426,12 +426,6 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\FlowersPlatform">
       <UniqueIdentifier>{ef024b5b-b9ca-4fb7-87ed-ef3de1233603}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Platform\GrassPlatform">
-      <UniqueIdentifier>{57d7917d-ea8c-4bb0-93e4-44675ff80fe0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\Game\Object\Platform\HrdgePlatform">
-      <UniqueIdentifier>{d098ccc3-7906-4e41-aee6-4ee688fa4597}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\Game\Object\Platform\TreePlatform">
       <UniqueIdentifier>{95b88f1f-ab67-4611-9a70-320e2dfe2286}</UniqueIdentifier>
     </Filter>
@@ -441,11 +435,23 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\FlowersPlatform">
       <UniqueIdentifier>{39ceb7fd-5cf7-4182-a033-72ae98e5e597}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Platform\GrassPlatform">
-      <UniqueIdentifier>{2239ffd5-98df-4827-8440-292e90aa83ff}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Object\Platform\HrdgePlatform">
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\FencePlatform">
       <UniqueIdentifier>{6a85cd00-47c2-411a-813e-32f0b3008646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\FencePlatform">
+      <UniqueIdentifier>{d098ccc3-7906-4e41-aee6-4ee688fa4597}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\ArrowPlatform">
+      <UniqueIdentifier>{ff8247ee-53d9-4ca5-8c2a-169bf04e9832}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\ArrowPlatform">
+      <UniqueIdentifier>{206009a7-d782-4ec0-8185-6dc0f2ab1d6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\GrassPlatform">
+      <UniqueIdentifier>{e37a11e8-26f1-4040-8dfc-6ae14ea956a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\GrassPlatform">
+      <UniqueIdentifier>{0a93f884-4e39-46d4-92d0-ac0f7abfca2e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -635,14 +641,17 @@
     <ClCompile Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\FlowersPlatform</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Platform\GrassPlatform</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Game\Object\Platform\HrdgePlatform\HrdgePlatform.cpp">
-      <Filter>ソース ファイル\Game\Object\Platform\HrdgePlatform</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\TreePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\FencePlatform\FencePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\FencePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\ArrowPlatform\ArrowPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\ArrowPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\GrassPlatform</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -832,14 +841,17 @@
     <ClInclude Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\FlowersPlatform</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Platform\GrassPlatform</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Game\Object\Platform\HrdgePlatform\HrdgePlatform.h">
-      <Filter>ヘッダー ファイル\Game\Object\Platform\HrdgePlatform</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\TreePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\FencePlatform\FencePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\FencePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\ArrowPlatform\ArrowPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\ArrowPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\GrassPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
