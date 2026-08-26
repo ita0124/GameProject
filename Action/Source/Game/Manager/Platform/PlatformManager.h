@@ -11,6 +11,7 @@
 #include "Game/Object/Platform/GrassPlatform/GrassPlatform.h"
 #include "Game/Object/Platform/TreePlatform/TreePlatform.h"
 #include "Game/Object/Platform/ArrowPlatform/ArrowPlatform.h"
+#include "Game/Object/Platform/MushroomsPlatform/MushroomsPlatform.h"
 
 namespace {
 	constexpr int PLATFORM_MAX = 500;

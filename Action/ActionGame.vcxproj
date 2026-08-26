@@ -192,6 +192,7 @@
     <ClCompile Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.cpp" />
@@ -261,6 +262,7 @@
     <ClInclude Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\MovingPlatform\MovingPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\NormalPlatform\NormalPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\RespawnPlatform\RespawnPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\TreePlatform\TreePlatform.h" />

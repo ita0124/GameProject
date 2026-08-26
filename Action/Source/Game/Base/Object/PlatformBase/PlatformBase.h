@@ -18,6 +18,7 @@ public:
 		FENCE,		//•»
 		TREE,		//–Ø
 		ARROW,		//–îˆó
+		MUSHROOMS,	//‚«‚Ì‚±
 
 		PLATFORM_NUM
 	};

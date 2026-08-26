@@ -24,6 +24,7 @@ namespace {
 	"Data/Model/Stage/FencePlatform/FencePlatform.mv1",
 	"Data/Model/Stage/TreePlatform/TreePlatform.mv1",
 	"Data/Model/Stage/ArrowPlayform/ArrowPlayform.mv1",
+	"Data/Model/Stage/MushroomsPlatform/MushroomsPlatform.mv1",
 	};
 }
 
@@ -97,6 +98,10 @@ void PlatformManager::Init(int _Map) {
 		case PlatformBase::TagPlatformKinds::ARROW:
 			//–îˆó
 			m_Platform[PlatformIndex] = new ArrowPlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::MUSHROOMS:
+			//ƒLƒmƒR
+			m_Platform[PlatformIndex] = new MushroomsPlatform;
 			break;
 		}
 	}

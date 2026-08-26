@@ -453,6 +453,12 @@
     <Filter Include="ヘッダー ファイル\Game\Object\Platform\GrassPlatform">
       <UniqueIdentifier>{0a93f884-4e39-46d4-92d0-ac0f7abfca2e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\MushroomsPlatform">
+      <UniqueIdentifier>{c3a4dbf9-7b96-43bc-8a71-8f5da52d38da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\MushroomsPlatform">
+      <UniqueIdentifier>{9eb01ac6-8973-436a-982b-ea99d562628f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -653,6 +659,9 @@
     <ClCompile Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\GrassPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\MushroomsPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -852,6 +861,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\GrassPlatform\GrassPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\GrassPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\MushroomsPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

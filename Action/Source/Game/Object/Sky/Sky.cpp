@@ -1,8 +1,8 @@
 #include "Sky.h"
 
 namespace {
-	constexpr VECTOR	SCALE = { 2500.0f,2500.0f,2500.0f };		//初期スケール
-	constexpr float		ROTY_SPEED = 0.001f;						//Y軸回転速度
+	constexpr VECTOR	SCALE = { 3000.0f,3000.0f,3000.0f };		//初期スケール
+	constexpr float		ROTY_SPEED = 0.0005f;						//Y軸回転速度
 	constexpr char		FILE_PATH[] = ("Data/Model/Sky/Sky.mv1");	//モデルファイルパス
 }
 
