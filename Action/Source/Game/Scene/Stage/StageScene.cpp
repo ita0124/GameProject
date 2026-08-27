@@ -103,7 +103,7 @@ void StageScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		m_Sky.Draw();								//天球クラス
+		//m_Sky.Draw();								//天球クラス
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);
@@ -125,6 +125,10 @@ void StageScene::Draw() {
 		SetUseShadowMap(0, -1);
 
 		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
+
+		DrawFormatStringToHandle(10, 300, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().x);
+		DrawFormatStringToHandle(10, 350, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().y);
+		DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().z);
 		break;
 	}
 }
@@ -224,7 +228,7 @@ int StageScene::Step() {
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
 
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
-	m_MobEnemyManager.Step();										//モブ敵マネージャークラス
+	//m_MobEnemyManager.Step();										//モブ敵マネージャークラス
 	m_GimmickManager.Step(m_MobEnemyManager, m_PlatformManager);	//ギミックマネージャークラス
 
 	CameraStep();

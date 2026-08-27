@@ -58,6 +58,9 @@ void SoundManager::Volume() {
 	for (int Index = BGM_TITLE; Index < NUM_MAX; Index++) {
 		ChangeVolumeSoundMem(255 *  50/ 100, m_Hndl[Index]);
 	}
+	for (int Index = 0; Index < NUM_MAX; Index++) {
+		ChangeVolumeSoundMem(255 * 0 / 100, m_Hndl[Index]);
+	}
 }
 
 //ƒf[ƒ^”jŠü
