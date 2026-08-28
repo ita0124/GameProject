@@ -25,6 +25,7 @@ void FallingPlatform::Init() {
 	m_IsHit = false;			//乗られたか
 	m_PlatformKinds = FALLING;	//足場オブジェクト種類を再設定
 	m_State = NORMAL;			//プレイヤー状態変数
+	m_EnemyPush = false;		//敵を押し戻さない
 }
 //データ読み込み処理
 void FallingPlatform::Load(const int _Hndl) {

@@ -13,6 +13,7 @@ void GoalPlatform::Init() {
 	PlatformBase::Init();
 
 	m_Object = nullptr;
+	m_EnemyPush = false;		//“G‚ğ‰Ÿ‚µ–ß‚³‚È‚¢
 }
 //–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
 void GoalPlatform::Step() {

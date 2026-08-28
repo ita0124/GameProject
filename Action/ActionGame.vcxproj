@@ -186,7 +186,9 @@
     <ClCompile Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\ArrowPlatform\ArrowPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Platform\CoinGoldPlatform\CoinGoldPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.cpp" />
+    <ClCompile Include="Source\Game\Object\Platform\FenceBrokenPlatform\FenceBrokenPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\FencePlatform\FencePlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.cpp" />
     <ClCompile Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.cpp" />
@@ -256,7 +258,9 @@
     <ClInclude Include="Source\Game\Object\Gimmick\BarrierActivator\BarrierActivator.h" />
     <ClInclude Include="Source\Game\Object\Platform\ArrowPlatform\ArrowPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\BarrierPlatform\BarrierPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Platform\CoinGoldPlatform\CoinGoldPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\FallingPlatform\FallingPlatform.h" />
+    <ClInclude Include="Source\Game\Object\Platform\FenceBrokenPlatform\FenceBrokenPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\FencePlatform\FencePlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\FlowersPlatform\FlowersPlatform.h" />
     <ClInclude Include="Source\Game\Object\Platform\GoalPlatform\GoalPlatform.h" />
@@ -278,6 +282,7 @@
     <ClInclude Include="Source\Game\Scene\Stage\StageScene.h" />
     <ClInclude Include="Source\Game\Scene\Title\TitleScene.h" />
     <ClInclude Include="Source\Game\Sound\SoundManager.h" />
+    <ClInclude Include="Source\Game\System\Coin\Coin.h" />
     <ClInclude Include="Source\Game\Title\Title.h" />
     <ClInclude Include="Source\Game\UI\HitPoints\HitPoints.h" />
     <ClInclude Include="Source\Game\UI\SkillPoints\SkillPoints.h" />

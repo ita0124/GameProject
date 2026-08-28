@@ -22,6 +22,7 @@ namespace {
 		"Data/Sound/SE/14.BoarLunges.mp3",
 		"Data/Sound/SE/15.MobBoarDeath.mp3",
 		"Data/Sound/SE/16.BossBoarDeath.mp3",
+		"Data/Sound/SE/17.CoinSE.mp3",
 		"Data/Sound/BGM/1.Title.mp3",
 		"Data/Sound/BGM/2.NormalMap.mp3",
 		"Data/Sound/BGM/3.Main.mp3",
@@ -58,9 +59,9 @@ void SoundManager::Volume() {
 	for (int Index = BGM_TITLE; Index < NUM_MAX; Index++) {
 		ChangeVolumeSoundMem(255 *  50/ 100, m_Hndl[Index]);
 	}
-	for (int Index = 0; Index < NUM_MAX; Index++) {
+	/*for (int Index = 0; Index < NUM_MAX; Index++) {
 		ChangeVolumeSoundMem(255 * 0 / 100, m_Hndl[Index]);
-	}
+	}*/
 }
 
 //ƒf[ƒ^”jŠü

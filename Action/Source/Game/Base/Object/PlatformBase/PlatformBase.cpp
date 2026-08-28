@@ -20,6 +20,7 @@ void PlatformBase::Init() {
 	m_ObjectPush = true;															//オブジェクトを押し戻すか
 	m_PlayerPush = true;															//プレイヤーを押し戻すか
 	m_EnemyPush = true;																//敵を押し戻すか
+	m_IsItem = false;																//アイテム系か
 }
 // データ読み込み処理
 void PlatformBase::Load(const int _Hndl) {

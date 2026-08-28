@@ -462,8 +462,13 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 			VECTOR PushVec = VZERO;
 			//着地しているか
 			bool IsLanding = false;
+			//もし取得した足場クラスがアイテムだったなら
+			if (OnePlatform.GetIsItem()) {
+				//当たり判定後の処理(当たっている場合)
+				_PlatformManager.HitCalc(Index, &_Object);
+			}
 			//着地
-			if (PrevObjectDown >= PlatformUp || ObjectDown >= PlatformUp) {
+			else if (PrevObjectDown >= PlatformUp || ObjectDown >= PlatformUp) {
 				//押し戻し量計算
 				//上方向
 				float PushUp = PlatformUp - ObjectDown;
@@ -660,26 +665,26 @@ void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformMan
 	}
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
- void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
-	 //クリスタル
-	 for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
-		 //クリスタルを取得
-		 Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
-		 //取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
-		 if (!OneCrystal.GetIsActive()) continue;
-		 //オブジェクト同士の押し合い当たり判定
-		 ObjectToObjectPush(OneCrystal, _ObjectBase);
-	 }
+void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
+	//クリスタル
+	for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
+		//クリスタルを取得
+		Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
+		//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
+		if (!OneCrystal.GetIsActive()) continue;
+		//オブジェクト同士の押し合い当たり判定
+		ObjectToObjectPush(OneCrystal, _ObjectBase);
+	}
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
- void HitCheck::BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
-	 //クリスタル
-	 for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
-		 //クリスタルを取得
-		 Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
-		 //取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
-		 if (!OneCrystal.GetIsActive()) continue;
-		 //オブジェクトの攻撃当たり判定]
-		 ObjectToObjectAttack(OneCrystal, _ObjectBase);
-	 }
+void HitCheck::BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
+	//クリスタル
+	for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
+		//クリスタルを取得
+		Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
+		//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
+		if (!OneCrystal.GetIsActive()) continue;
+		//オブジェクトの攻撃当たり判定]
+		ObjectToObjectAttack(OneCrystal, _ObjectBase);
+	}
 }

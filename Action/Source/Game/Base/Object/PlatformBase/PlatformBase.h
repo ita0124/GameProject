@@ -6,19 +6,21 @@ class PlatformBase :public ObjectBase {
 public:
 	//足場オブジェクト種類
 	enum TagPlatformKinds {
-		NORMAL,		//通常足場
-		MOVING,		//動く足場
-		FALLING,	//落ちる足場
-		WALL,		//壁
-		RESPAWN,	//リスポーン
-		GOAL,		//ゴール
-		BARRIER,	//バリア
-		FLOWERS,	//花
-		GRASS,		//草
-		FENCE,		//塀
-		TREE,		//木
-		ARROW,		//矢印
-		MUSHROOMS,	//きのこ
+		NORMAL,			//通常足場
+		MOVING,			//動く足場
+		FALLING,		//落ちる足場
+		WALL,			//壁
+		RESPAWN,		//リスポーン
+		GOAL,			//ゴール
+		BARRIER,		//バリア
+		FLOWERS,		//花
+		GRASS,			//草
+		FENCE,			//塀
+		TREE,			//木
+		ARROW,			//矢印
+		MUSHROOMS,		//きのこ
+		FENCE_BROKEN,	//壊れた塀
+		COIN_GOLD,		//金コイン
 
 		PLATFORM_NUM
 	};
@@ -50,6 +52,7 @@ protected:
 	bool						m_ObjectPush;					//オブジェクトを押し戻すか
 	bool						m_PlayerPush;					//プレイヤーを押し戻すか
 	bool						m_EnemyPush;					//敵を押し戻すか
+	bool						m_IsItem;						//アイテム系か
 
 public:
 	//コンストラクタ
@@ -77,6 +80,8 @@ public:
 	bool						GetPlayerPush()const { return m_PlayerPush; }
 	//敵を押し戻すか
 	bool						GetEnemyPush()const { return m_EnemyPush; }
+	//アイテム系か
+	bool						GetIsItem()const { return m_IsItem; };
 
 	//Set
 	//基本データ構造体 座標
@@ -110,7 +115,7 @@ public:
 	//オブジェクトを押し戻すか
 	void SetObjectPush(const bool& _ObjectPush) { m_ObjectPush = _ObjectPush; }
 	//プレイヤーを押し戻すか
-	void SetPlayerPush(const bool& _PlayerPush) { m_PlayerPush= _PlayerPush; }
+	void SetPlayerPush(const bool& _PlayerPush) { m_PlayerPush = _PlayerPush; }
 	//敵を押し戻すか
-	void SetEnemyPush(const bool& _EnemyPush) { m_EnemyPush= _EnemyPush; }
+	void SetEnemyPush(const bool& _EnemyPush) { m_EnemyPush = _EnemyPush; }
 };

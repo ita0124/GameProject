@@ -206,11 +206,6 @@ void Player::Step() {
 	MV1SetPosition(m_Hndl, m_Pos);		//座標情報
 	MV1SetRotationXYZ(m_Hndl, m_Rot);	//回転角度情報
 	MV1SetScale(m_Hndl, m_Scale);		//スケール情報
-#ifdef _DEBUG
-	DrawFormatStringToHandle(10, 200, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標X:%.1f", m_Pos.x);
-	DrawFormatStringToHandle(10, 220, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Y:%.1f", m_Pos.y);
-	DrawFormatStringToHandle(10, 240, RED, DxLibFont::FONTHNDL_N20, "プレイヤー座標Z:%.1f", m_Pos.z);
-#endif // DEBUG
 }
 //当たり判定後の処理(当たっている場合)
 void Player::HitCalc(ObjectBase* _Object) {
@@ -567,7 +562,7 @@ void Player::SkillAttack() {
 	}
 	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT) {
 		//指定ボーンの座標取得
-		VECTOR Pos = GetFramePos(m_Hndl, RIGHT_HAND2);
+		VECTOR Pos = m_Pos;
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;

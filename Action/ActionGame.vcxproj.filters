@@ -459,6 +459,27 @@
     <Filter Include="ソース ファイル\Game\Object\Platform\MushroomsPlatform">
       <UniqueIdentifier>{9eb01ac6-8973-436a-982b-ea99d562628f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\FenceBrokenPlatform">
+      <UniqueIdentifier>{d2c084cc-c628-46f4-abb3-6e6ef14f1ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\FenceBrokenPlatform">
+      <UniqueIdentifier>{4ed8076a-2ba8-4bf6-bfba-f73b7e986743}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\CoinGoldPlatform">
+      <UniqueIdentifier>{7b9a6d40-a374-4db3-8a36-136ef94d2669}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\CoinGoldPlatform">
+      <UniqueIdentifier>{e4664f32-2bbe-407d-9977-bf7d313b977d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\System">
+      <UniqueIdentifier>{09f96e50-8cd6-4096-acdf-3e74015d5cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\System">
+      <UniqueIdentifier>{cf2aad30-bcb5-4a10-811b-5663fc147759}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\System\Coin">
+      <UniqueIdentifier>{b1f4627e-2f6d-40f6-b639-1ac6df6fc5e7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -662,6 +683,12 @@
     <ClCompile Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\MushroomsPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\FenceBrokenPlatform\FenceBrokenPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\FenceBrokenPlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\CoinGoldPlatform\CoinGoldPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\CoinGoldPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -864,6 +891,15 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\Platform\MushroomsPlatform\MushroomsPlatform.h">
       <Filter>ヘッダー ファイル\Game\Object\Platform\MushroomsPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\FenceBrokenPlatform\FenceBrokenPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\FenceBrokenPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\CoinGoldPlatform\CoinGoldPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\CoinGoldPlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\System\Coin\Coin.h">
+      <Filter>ヘッダー ファイル\Game\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
