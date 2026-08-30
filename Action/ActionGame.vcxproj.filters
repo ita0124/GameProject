@@ -689,6 +689,9 @@
     <ClCompile Include="Source\Game\Object\Platform\CoinGoldPlatform\CoinGoldPlatform.cpp">
       <Filter>ソース ファイル\Game\Object\Platform\CoinGoldPlatform</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\System\Coin\Coin.cpp">
+      <Filter>ソース ファイル\Game\System\Coin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">

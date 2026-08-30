@@ -1,4 +1,5 @@
 #include "CoinGoldPlatform.h"
+#include "Game/System/Coin/Coin.h"
 
 namespace {
 	constexpr float ROTATION_SPEED = 2.5f;					//回転速度
@@ -8,6 +9,7 @@ namespace {
 	constexpr float SCALE_DECREASE_RATE = 0.97f;			//縮小率
 	constexpr float ORBIT_RADIUS = 25.0f;					//旋回半径
 	constexpr float ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
+	constexpr int	COIN_COUNT = 1;							//取得コイン量
 }
 
 //コンストラクタ
@@ -110,5 +112,5 @@ void CoinGoldPlatform::Orbit() {
 //消滅
 void CoinGoldPlatform::Death() {
 	m_IsActive = false;
-
+	Coin::CalcCoinCount(COIN_COUNT);
 }

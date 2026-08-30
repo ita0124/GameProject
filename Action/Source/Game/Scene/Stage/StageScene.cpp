@@ -126,9 +126,10 @@ void StageScene::Draw() {
 
 		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
 
-		DrawFormatStringToHandle(10, 300, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().x);
-		DrawFormatStringToHandle(10, 350, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().y);
-		DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N50, "%f", m_Player.GetPos().z);
+		DrawFormatStringToHandle(10, 300, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().x);
+		DrawFormatStringToHandle(10, 320, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().y);
+		DrawFormatStringToHandle(10, 340, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().z);
+		DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N20, "%d", Coin::GetCoinCount());
 		break;
 	}
 }
@@ -140,7 +141,8 @@ void StageScene::Init() {
 	m_Sword.Init(&m_Player);						//剣クラス
 	//オーナーを設定
 	m_Shield.Init(&m_Player);						//盾クラス
-
+	
+	Coin::Init();									//コイン
 
 	const int Map = 0;
 
@@ -228,7 +230,7 @@ int StageScene::Step() {
 	SetShadowMapDrawArea(m_ShadowHndl, MinShadow, MaxShadow);
 
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
-	//m_MobEnemyManager.Step();										//モブ敵マネージャークラス
+	m_MobEnemyManager.Step();										//モブ敵マネージャークラス
 	m_GimmickManager.Step(m_MobEnemyManager, m_PlatformManager);	//ギミックマネージャークラス
 
 	CameraStep();

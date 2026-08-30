@@ -210,6 +210,7 @@
     <ClCompile Include="Source\Game\Scene\Stage\StageScene.cpp" />
     <ClCompile Include="Source\Game\Scene\Title\TitleScene.cpp" />
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp" />
+    <ClCompile Include="Source\Game\System\Coin\Coin.cpp" />
     <ClCompile Include="Source\Game\Title\Title.cpp" />
     <ClCompile Include="Source\Game\UI\HitPoints\HitPoints.cpp" />
     <ClCompile Include="Source\Game\UI\SkillPoints\SkillPoints.cpp" />

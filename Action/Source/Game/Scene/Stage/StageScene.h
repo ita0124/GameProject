@@ -11,6 +11,7 @@
 #include "Game/Manager/StatusDrawManager/StatusDrawManager.h"
 #include "Game/HitCheck/HitCheck.h"
 #include "Game/Result/ResultNum.h"
+#include "Game/System/Coin/Coin.h"
 
 class StageScene :public SceneBase {
 private:
