@@ -5,20 +5,39 @@ CameraManager::CameraManager() {
 	Init();
 }
 //初期化
-void CameraManager::Init() {
-	m_Camera = PLAYER;
+void CameraManager::Init(TagCamera _Camera) {
+	m_Camera = _Camera;
 
-	m_PlayCamera.Init();
-	SetCameraNearFar(1.0f, 5000.0f);
-}
-//毎フレーム呼び出す処理
-void CameraManager::Step(Player& _Player) {
 	switch (m_Camera) {
 	case PLAYER:
-		m_PlayCamera.Step(_Player);
+		m_PlayCamera.Init();
 		break;
 	case TARGET:
-		m_TargetCamera.Step(_Player);
+		m_TargetCamera.Init();
+		break;
+	case TITLE:
+		m_TitleCamera.Init();
+		break;
+	}
+	SetCameraNearFar(1.0f, 5000.0f);
+
+	m_Owner = nullptr;
+}
+//毎フレーム呼び出す処理
+void CameraManager::Step() {
+	switch (m_Camera) {
+	case PLAYER:
+		if (m_Owner != nullptr) {
+			m_PlayCamera.Step(m_Owner);
+		}
+		break;
+	case TARGET:
+		if (m_Owner != nullptr) {
+			m_TargetCamera.Step(m_Owner);
+		}
+		break;
+	case TITLE:
+		m_TitleCamera.Step();
 		break;
 	}
 }
@@ -30,6 +49,9 @@ void CameraManager::Update() {
 		break;
 	case TARGET:
 		m_TargetCamera.Update();
+		break;
+	case TITLE:
+		m_TitleCamera.Update();
 		break;
 	}
 }
@@ -63,6 +85,9 @@ VECTOR CameraManager::GetCameraRot() {
 	case TARGET:
 		Rot = m_TargetCamera.GetCameraRot();
 		break;
+	case TITLE:
+		Rot = m_TitleCamera.GetCameraRot();
+		break;
 	}
 	return Rot;
 }
@@ -74,6 +99,9 @@ VECTOR CameraManager::GetCameraPos() {
 		break;
 	case TARGET:
 		Pos = m_TargetCamera.GetCameraPos();
+		break;
+	case TITLE:
+		Pos = m_TitleCamera.GetCameraPos();
 		break;
 	}
 	return Pos;
@@ -87,16 +115,22 @@ VECTOR CameraManager::GetTargetPos() {
 	case TARGET:
 		Pos = m_TargetCamera.GetTargetPos();
 		break;
+	case TITLE:
+		Pos = m_TitleCamera.GetTargetPos();
+		break;
 	}
 	return Pos;
 }
 void CameraManager::Draw() {
 	switch (m_Camera) {
 	case PLAYER:
-		return m_PlayCamera.Draw();
+		m_PlayCamera.Draw();
 		break;
 	case TARGET:
-		return m_TargetCamera.Draw();
+		m_TargetCamera.Draw();
+		break;
+	case TITLE:
+		m_TitleCamera.Draw();
 		break;
 	}
 }

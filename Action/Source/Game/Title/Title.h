@@ -9,8 +9,6 @@ class Title {
 private:
 	int m_Hndl[TAITLEHANDL_MAX];
 
-	int m_Time;
-
 	int m_BlendParam;
 
 	int m_BlendParamTime;
@@ -18,8 +16,7 @@ private:
 	bool m_IsUpBlendParam;
 public:
 	const char* FilePath1[TAITLEHANDL_MAX] = {
-	"Data/Title/PushKeyorPad1.png",
-	"Data/Title/PushKeyorPad2.png",
+	"Data/Title/PushKeyPad.png",
 	"Data/Title/BATTLEANIMAL.png",
 	};
 

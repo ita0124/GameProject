@@ -10,14 +10,12 @@ class Result {
 private:
 	int m_Hndl[RESULTHANDL_MAX];
 
-	int m_Time;
 	int m_BlendParam;
 	int m_BlendParamTime;
 	bool m_IsUpBlendParam;
 public:
 	const char* FilePath1[RESULTHANDL_MAX] = {
-	"Data/Result/PushKeyorPad1.png",
-	"Data/Result/PushKeyorPad2.png",
+	"Data/Result/PushKeyPad.png",
 	"Data/Result/GAMEOVER.png",
 	"Data/Result/GAMECLEAR.png",
 	"Data/Result/BackGround.png",

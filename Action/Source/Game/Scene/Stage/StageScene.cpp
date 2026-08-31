@@ -103,7 +103,7 @@ void StageScene::Draw() {
 		break;
 	case STEP:
 	case ENDWAIT:
-		//m_Sky.Draw();								//天球クラス
+		m_Sky.Draw();								//天球クラス
 
 		//影生成セットアップ
 		ShadowMap_DrawSetup(m_ShadowHndl);
@@ -123,13 +123,7 @@ void StageScene::Draw() {
 		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
 		//影生成終了
 		SetUseShadowMap(0, -1);
-
-		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
-
-		DrawFormatStringToHandle(10, 300, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().x);
-		DrawFormatStringToHandle(10, 320, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().y);
-		DrawFormatStringToHandle(10, 340, RED, DxLibFont::FONTHNDL_N20, "%f", m_Player.GetPos().z);
-		DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N20, "%d", Coin::GetCoinCount());
+		m_StatusDrawManager.Draw();						//ステータス描画マネージャー
 		break;
 	}
 }
@@ -150,6 +144,7 @@ void StageScene::Init() {
 	m_MobEnemyManager.Init(Map);					//モブ敵マネージャークラス
 	m_GimmickManager.Init(Map);						//ギミックマネージャークラス
 	m_CameraManager.Init();							//カメラマネージャークラス
+	m_CameraManager.SetOwner(&m_Player);			//オーナー設定
 	m_StatusDrawManager.Init(&m_Player);			//ステータス描画マネージャー
 
 	m_Result = 0;
@@ -189,8 +184,6 @@ int StageScene::Step() {
 	case GAME_RESET:
 		//プレイヤーのリスポーン処理
 		m_Player.Respawn();
-		//カメラマネージャークラス
-		m_CameraManager.Init();
 		//開始待機へ
 		m_GameID = GAME_START_WAIT;
 		break;
@@ -210,6 +203,8 @@ int StageScene::Step() {
 		if (m_Player.GetIsRespawn()) {
 			//リセット待機へ
 			m_GameID = GAME_RESET_WAIT;
+			//BGMを呼び出す
+			SoundManager::Play(SoundManager::TagID::SE_FALL);
 		}
 		break;
 	case GAME_RESET_WAIT:
@@ -357,5 +352,5 @@ void StageScene::CameraStep() {
 		}
 	}
 
-	m_CameraManager.Step(m_Player);
+	m_CameraManager.Step();
 }

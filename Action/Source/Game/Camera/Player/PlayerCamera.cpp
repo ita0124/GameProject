@@ -31,8 +31,8 @@ void PlayerCamera::Init() {
 	Update();
 }
 //プレイヤー
-void PlayerCamera::Step(Player& _Player) {
-	m_TargetPoint = _Player.GetPos();
+void PlayerCamera::Step(Player* _Player) {
+	m_TargetPoint = _Player->GetPos();
 	float RotX = 0.0f;
 	float RotY = 0.0f;
 
@@ -78,7 +78,7 @@ void PlayerCamera::Step(Player& _Player) {
 	//現在の注視点と目標注視点の高低差を取得
 	float TargetPosYDif = fabsf(m_TargetPoint.y - m_TargetPos.y);
 	//空中にいるかつ高低差がデッドゾーン内ならY座標の追従を停止
-	if (_Player.GetIsGravity() && TargetPosYDif < POS_Y_HEIGHT_DEADZONE) {
+	if (_Player->GetIsGravity() && TargetPosYDif < POS_Y_HEIGHT_DEADZONE) {
 		m_CameraPoint.y = m_CameraPos.y;
 		m_TargetPoint.y = m_TargetPos.y;
 	}

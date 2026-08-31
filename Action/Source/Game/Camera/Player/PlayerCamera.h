@@ -29,7 +29,7 @@ public:
 	void Init();
 
 	//毎フレーム呼び出す処理(ノーマル)
-	void Step(Player& _Player);
+	void Step(Player* _Player);
 
 	//更新処理
 	void Update();

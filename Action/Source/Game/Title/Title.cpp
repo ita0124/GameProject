@@ -3,6 +3,9 @@
 namespace {
 	constexpr int CHANGE_TIME = 90;
 	constexpr int BLENDPARM_MAX = 255;
+
+	constexpr int BATTLEANIMAL_Y = 125;
+	constexpr int PUSH_KEY_PAD_Y = 600;
 }
 
 //コンストラクタ
@@ -20,9 +23,6 @@ void Title::Init() {
 	for (int i = 0; i < TAITLEHANDL_MAX; i++) {
 		m_Hndl[i] = -1;
 	}
-
-	m_Time = 0;
-
 	m_BlendParam = 0;
 	m_IsUpBlendParam = true;
 	m_BlendParamTime = 0;
@@ -49,25 +49,18 @@ void Title::Exit() {
 
 //描画処理
 void Title::Draw() {
-	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, 1.0f, 0.0f, m_Hndl[2], TRUE);
-
-	int i = m_Time / CHANGE_TIME;
+	DrawRotaGraph((int)SCREEN_HALF_X, (int)BATTLEANIMAL_Y, 1.0f, 0.0f, m_Hndl[1], TRUE);
 
 	/*まずはここでアルファ値をセット*/
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_BlendParam);
-	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_LOWER, 1.5f, 0.0f, m_Hndl[i], TRUE);
+	DrawRotaGraph((int)SCREEN_HALF_X, (int)PUSH_KEY_PAD_Y, 1.0f, 0.0f, m_Hndl[0], TRUE);
 	//鉾の画像に影響を出さないよう、初期化設定に戻す
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }
 
 //毎フレーム行う処理
 void Title::Step() {
-	m_Time++;
 	m_BlendParamTime++;
-
-	if (m_Time >= CHANGE_TIME * 2) {
-		m_Time = 0;
-	}
 
 	if (m_BlendParamTime >= CHANGE_TIME) {
 		m_BlendParamTime = 0;

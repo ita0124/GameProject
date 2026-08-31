@@ -5,8 +5,8 @@
 
 /*===================================================================================================================*/
 //スクリーン関連
-constexpr float	SCREEN_MAX_X = 1600;							//スクリーンのX最大値
-constexpr float	SCREEN_MAX_Y = 800;								//スクリーンのY最大値
+constexpr float	SCREEN_MAX_X = 1280;							//スクリーンのX最大値
+constexpr float	SCREEN_MAX_Y = 720;								//スクリーンのY最大値
 
 constexpr float	SCREEN_HALF_X = SCREEN_MAX_X / 2;				//スクリーンのX半分
 constexpr float	SCREEN_HALF_Y = SCREEN_MAX_Y / 2;				//スクリーンのY半分

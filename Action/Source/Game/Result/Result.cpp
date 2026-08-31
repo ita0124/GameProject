@@ -21,7 +21,6 @@ void Result::Init() {
 		m_Hndl[i] = -1;
 	}
 
-	m_Time = 0;
 	m_BlendParam = 0;
 	m_IsUpBlendParam = true;
 	m_BlendParamTime = 0;
@@ -49,33 +48,26 @@ void Result::Exit() {
 //•`‰æˆ—
 void Result::Draw() {
 	//”wŒi
-	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, 1.0f, 0.0f, m_Hndl[4], TRUE);
+	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_HALF_Y, 1.0f, 0.0f, m_Hndl[3], TRUE);
 	//”s–k
 	if(ResultNum::GetNum() == 1){
-		DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_UPPER, 1.5f, 0.0f, m_Hndl[2], TRUE);
+		DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_UPPER, 1.0f, 0.0f, m_Hndl[1], TRUE);
 	}
 	//Ÿ—˜
 	else if (ResultNum::GetNum() == 2) {
-		DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_UPPER, 1.5f, 0.0f, m_Hndl[3], TRUE);
+		DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_UPPER, 1.0f, 0.0f, m_Hndl[2], TRUE);
 	}
-
-	int i = m_Time / CHANGE_TIME;
 
 	/*‚Ü‚¸‚Í‚±‚±‚ÅƒAƒ‹ƒtƒ@’l‚ðƒZƒbƒg*/
 	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_BlendParam);
-	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_LOWER, 1.5f, 0.0f, m_Hndl[i], TRUE);
+	DrawRotaGraph((int)SCREEN_HALF_X, (int)SCREEN_LOWER, 1.0f, 0.0f, m_Hndl[0], TRUE);
 	//–g‚Ì‰æ‘œ‚É‰e‹¿‚ðo‚³‚È‚¢‚æ‚¤A‰Šú‰»Ý’è‚É–ß‚·
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 255);
 }
 
 //–ˆƒtƒŒ[ƒ€s‚¤ˆ—
 void Result::Step() {
-	m_Time++;
 	m_BlendParamTime++;
-
-	if (m_Time >= CHANGE_TIME * 2) {
-		m_Time = 0;
-	}
 
 	if (m_BlendParamTime >= CHANGE_TIME) {
 		m_BlendParamTime = 0;

@@ -6,6 +6,7 @@
 class RespawnPlatform :public PlatformBase {
 private:
 	ObjectBase *m_Object;
+	bool		m_IsHit;
 public:
 	//コンストラクタ
 	RespawnPlatform();

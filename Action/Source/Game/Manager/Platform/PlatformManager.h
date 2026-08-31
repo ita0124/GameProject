@@ -16,7 +16,7 @@
 #include "Game/Object/Platform/CoinGoldPlatform/CoinGoldPlatform.h"
 
 namespace {
-	constexpr int PLATFORM_MAX = 750;
+	constexpr int PLATFORM_MAX = 619;
 	constexpr int PLATFORM_ID = 1;
 	constexpr int PLATFORM_REQUEST_DATA_MAX = 17;
 }

@@ -1,10 +1,18 @@
 #pragma once
 #include "Game/Base/Scene/SceneBase.h"
 #include "Game/Title/Title.h"
+#include "Game/Object/Sky/Sky.h"
+#include "Game/Manager/Platform/PlatformManager.h"
+#include "Game/Manager/Camera/CameraManager.h"
 
 class TitleScene :public SceneBase {
 private:
-	Title	m_Title;
+	Title				m_Title;
+	Sky					m_Sky;					//天球クラス
+	PlatformManager		m_PlatformManager;		//プラットフォームマネージャークラス
+	CameraManager		m_CameraManager;		//カメラマネージャークラス
+
+	int					m_ShadowHndl;			//影生成用のハンドル
 public:
 	//コンストラクタ・デストラクタ
 	TitleScene();

@@ -27,9 +27,9 @@ void TargetCamera::Init() {
 	Update();
 }
 //ロックオン
-void TargetCamera::Step(Player& _Player) {
+void TargetCamera::Step(Player* _Player) {
 	//プレイヤー→敵の方向から回転角を作る
-	VECTOR Dir = VSub(_Player.GetAttackTargetPos(), _Player.GetPos());
+	VECTOR Dir = VSub(_Player->GetAttackTargetPos(), _Player->GetPos());
 
 	Dir = VNorm(Dir);
 
@@ -53,7 +53,7 @@ void TargetCamera::Step(Player& _Player) {
 	Offset = VTransform(Offset, MatRot);
 
 	//プレイヤー座標に足してカメラ座標へ
-	m_CameraPoint = VAdd(_Player.GetPos(), Offset);
+	m_CameraPoint = VAdd(_Player->GetPos(), Offset);
 
 	//地面めり込み防止
 	if (m_CameraPoint.y < CAMERA_MIN_HEIGHT) {
@@ -61,10 +61,10 @@ void TargetCamera::Step(Player& _Player) {
 	}
 
 	//_TargetPos代入
-	m_TargetPoint = _Player.GetAttackTargetPos();
+	m_TargetPoint = _Player->GetAttackTargetPos();
 	m_TargetPoint.y += TARGET_HEIGHT_OFFSET;
 
-	if (_Player.GetState() != Player::TagState::SKILL_ATTACK) {
+	if (_Player->GetState() != Player::TagState::SKILL_ATTACK) {
 		m_CameraRot.y = m_CalcRot.y;
 	}
 

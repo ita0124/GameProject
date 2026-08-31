@@ -156,6 +156,7 @@ void BossScene::Init() {
 
 	m_Boss.Init();									//ボスクラス
 	m_CameraManager.Init();							//カメラマネージャークラス
+	m_CameraManager.SetOwner(&m_Player);			//オーナー設定
 	m_BossGimmickManager.Init(&m_Boss);				//Bossが使うObjectを管理するクラス
 
 	m_StatusDrawManager.Init(&m_Player);			//ステータス描画マネージャー
@@ -235,8 +236,6 @@ int BossScene::Step() {
 	case GAME_RESET:
 		//プレイヤーのリスポーン処理
 		m_Player.Respawn();
-		//カメラマネージャークラス
-		m_CameraManager.Init();
 		//開始待機へ
 		m_GameID = GAME_START_WAIT;
 		break;
@@ -256,6 +255,8 @@ int BossScene::Step() {
 		if (m_Player.GetIsRespawn()) {
 			//リセット待機へ
 			m_GameID = GAME_RESET_WAIT;
+			//BGMを呼び出す
+			SoundManager::Play(SoundManager::TagID::SE_FALL);
 		}
 		break;
 	case GAME_RESET_WAIT:
@@ -392,7 +393,7 @@ void BossScene::CameraStep() {
 		}
 	}
 
-	m_CameraManager.Step(m_Player);
+	m_CameraManager.Step();
 }
 //当たり判定関係
 void BossScene::HitCheck() {
