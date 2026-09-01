@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -169,6 +169,7 @@
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp" />
     <ClCompile Include="Source\Game\Camera\Player\PlayerCamera.cpp" />
     <ClCompile Include="Source\Game\Camera\Target\TargetCamera.cpp" />
+    <ClCompile Include="Source\Game\Camera\Title\TitleCamera.cpp" />
     <ClCompile Include="Source\Game\HitCheck\HitCheck.cpp" />
     <ClCompile Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.cpp" />
     <ClCompile Include="Source\Game\Manager\Camera\CameraManager.cpp" />
@@ -242,6 +243,7 @@
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h" />
     <ClInclude Include="Source\Game\Camera\Player\PlayerCamera.h" />
     <ClInclude Include="Source\Game\Camera\Target\TargetCamera.h" />
+    <ClInclude Include="Source\Game\Camera\Title\TitleCamera.h" />
     <ClInclude Include="Source\Game\HitCheck\HitCheck.h" />
     <ClInclude Include="Source\Game\Manager\BossGimmickManager\BossGimmickManager.h" />
     <ClInclude Include="Source\Game\Manager\Camera\CameraManager.h" />

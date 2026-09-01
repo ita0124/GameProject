@@ -480,6 +480,12 @@
     <Filter Include="ソース ファイル\Game\System\Coin">
       <UniqueIdentifier>{b1f4627e-2f6d-40f6-b639-1ac6df6fc5e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Camera\Title">
+      <UniqueIdentifier>{86ae2d8c-3854-4c45-8d58-617f937a677a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Camera\Title">
+      <UniqueIdentifier>{a807294e-a81f-4f57-99c8-492f347f2c87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -692,6 +698,9 @@
     <ClCompile Include="Source\Game\System\Coin\Coin.cpp">
       <Filter>ソース ファイル\Game\System\Coin</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Camera\Title\TitleCamera.cpp">
+      <Filter>ソース ファイル\Game\Camera\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -903,6 +912,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\System\Coin\Coin.h">
       <Filter>ヘッダー ファイル\Game\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Camera\Title\TitleCamera.h">
+      <Filter>ヘッダー ファイル\Game\Camera\Title</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
