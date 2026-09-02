@@ -62,7 +62,7 @@ public:
 	//初期化処理
 	virtual void Init();
 	// データ読み込み処理
-	virtual void Load(const int _Hndl);
+	void Load(const int _Hndl);
 	//リクエスト
 	void Request(const NORMAL_REQUEST_DATA& _NormalRequestData);
 	//Get

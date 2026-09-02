@@ -486,10 +486,10 @@
     <Filter Include="ヘッダー ファイル\Game\Camera\Title">
       <UniqueIdentifier>{a807294e-a81f-4f57-99c8-492f347f2c87}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Game\Base\ItemBase">
+    <Filter Include="ソース ファイル\Game\Base\ObjectBase\DropItemBase">
       <UniqueIdentifier>{1f4c01fc-d51f-4609-a173-0ba3b585b2ff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\Game\Bace\ItemBase">
+    <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\DropItemBase">
       <UniqueIdentifier>{3c25616e-b3ca-4136-b83a-dd9c790d05a8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -707,8 +707,8 @@
     <ClCompile Include="Source\Effekseer\effekseer.cpp">
       <Filter>ソース ファイル\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ItemBase\ItemBase.cpp">
-      <Filter>ソース ファイル\Game\Base\ItemBase</Filter>
+    <ClCompile Include="Source\Game\Base\Object\ItemBase\DropItemBase.cpp">
+      <Filter>ソース ファイル\Game\Base\ObjectBase\DropItemBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -925,8 +925,8 @@
     <ClInclude Include="Source\Effekseer\effekseer.h">
       <Filter>ヘッダー ファイル\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\ItemBase\ItemBase.h">
-      <Filter>ヘッダー ファイル\Game\Bace\ItemBase</Filter>
+    <ClInclude Include="Source\Game\Base\Object\ItemBase\DropItemBase.h">
+      <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\DropItemBase</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

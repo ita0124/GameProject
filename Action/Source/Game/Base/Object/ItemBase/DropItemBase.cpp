@@ -1,4 +1,4 @@
-#include "ItemBase.h"
+#include "DropItemBase.h"
 
 namespace {
 	constexpr float ROTATION_SPEED = 2.5f;					//回転速度
@@ -9,18 +9,23 @@ namespace {
 	constexpr float ORBIT_RADIUS = 25.0f;					//旋回半径
 	constexpr float ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
 	constexpr int	COIN_COUNT = 1;							//取得コイン量
+
+	constexpr float	GRAVITY = -0.1f;						//重力
+	constexpr float	GRAVITY_MAX = -5.0f;					//最大重力
+	constexpr float	FIRST_JUMP_POWER = 2.0f;				//初回ジャンプ力
+	constexpr float	JUMP_POWER_MAX = -7.5f;					//ジャンプ速度の下限
 }
 
 //コンストラクタ
-ItemBase::ItemBase() {
+DropItemBase::DropItemBase() {
 	Init();
 }
 //デストラクタ
-ItemBase::~ItemBase() {
+DropItemBase::~DropItemBase() {
 	Exit();
 }
 //初期化処理
-void ItemBase::Init() {
+void DropItemBase::Init() {
 	ObjectBase::Init();
 
 	m_Owner = nullptr;
@@ -30,10 +35,17 @@ void ItemBase::Init() {
 
 	m_OrbitAngle = 0.0f;		//現在の旋回角度
 	m_OrbitTotalAngle = 0.0f;	//累積旋回角度
-	m_OrbitCount = 0.0f;		//現在の周回数
+	m_OrbitRadius = 0.0f;		//旋回半径
+	m_JumpPower = 0.0f;			//ジャンプ力計算
+}
+// データ読み込み処理
+void DropItemBase::Load(const int _Hndl) {
+	if (m_Hndl != -1)return;
+	//モデルロード
+	m_Hndl = MV1DuplicateModel(_Hndl);
 }
 //毎フレーム呼び出す処理
-void ItemBase::Step() {
+void DropItemBase::Step() {
 	if (!m_IsActive)return;
 	switch (m_State) {
 	case IDEL:
@@ -48,7 +60,7 @@ void ItemBase::Step() {
 	}
 }
 //当たり判定後の処理(当たっている場合)
-void ItemBase::HitCalc(ObjectBase* _Owner) {
+void DropItemBase::HitCalc(ObjectBase* _Owner) {
 	if (_Owner->GetKinds() == ObjectBase::TagKinds::PLAYER) {
 		if (!m_IsHit) {
 			m_IsHit = true;
@@ -70,12 +82,12 @@ void ItemBase::HitCalc(ObjectBase* _Owner) {
 	}
 }
 //待機
-void ItemBase::Idel() {
+void DropItemBase::Idel() {
 	//回転
 	m_Rot.y += ROTATION_SPEED * RADIAN_CALC;
 }
 //旋回
-void ItemBase::Orbit() {
+void DropItemBase::Orbit() {
 	//回転
 	m_Rot.y += ROTATION_SPEED * RADIAN_CALC;
 
@@ -103,6 +115,41 @@ void ItemBase::Orbit() {
 	}
 }
 //消滅
-void ItemBase::Death() {
+void DropItemBase::Death() {
 	m_IsActive = false;
+}
+//重力処理
+void DropItemBase::GravityManager() {
+	if (m_IsGravity) {
+		//現在のY座標にジャンプ力を加算
+		m_Pos.y += m_JumpPower;
+		//重力方向に加算
+		m_Gravity += GRAVITY;
+		//重力速度を制限
+		if (m_Gravity <= GRAVITY_MAX) {
+			m_Gravity = GRAVITY_MAX;
+		}
+		if (m_JumpPower <= JUMP_POWER_MAX) {
+			m_JumpPower = JUMP_POWER_MAX;
+		}
+		//ジャンプ力減衰
+		m_JumpPower += m_Gravity;
+		//
+		m_Pos = VAdd(m_Pos,m_MoveVec);
+	}
+	else {
+		//ジャンプ力リセット
+		m_JumpPower = 0.0f;
+	}
+}
+//リクエスト
+bool DropItemBase::Request(const VECTOR& _Pos) {
+	if (m_IsActive)return false;
+
+	m_IsActive = true;
+	m_Pos = _Pos;
+	m_JumpPower = FIRST_JUMP_POWER;
+	m_MoveVec = VGet(1.0f, 0.0f, 1.0f);
+
+	return true;
 }

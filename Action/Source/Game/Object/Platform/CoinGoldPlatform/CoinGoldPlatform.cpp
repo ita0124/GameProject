@@ -24,7 +24,6 @@ CoinGoldPlatform::~CoinGoldPlatform() {
 void CoinGoldPlatform::Init() {
 	PlatformBase::Init();
 
-	m_Owner = nullptr;
 	m_EnemyPush = false;		//敵と当たり判定を行わない
 	m_IsItem = true;			//アイテム系である
 

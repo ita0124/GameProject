@@ -13,7 +13,6 @@ class CoinGoldPlatform :public PlatformBase {
 	};
 private:
 	TagState	m_State;			//ó‘Ô•Ï”
-	ObjectBase* m_Owner;
 	bool		m_IsHit;
 
 	float		m_OrbitAngle;		//Œ»İ‚Ìù‰ñŠp“x

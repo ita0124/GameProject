@@ -168,7 +168,7 @@
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\GimmickBase\GimmickBase.cpp" />
-    <ClCompile Include="Source\Game\Base\Object\ItemBase\ItemBase.cpp" />
+    <ClCompile Include="Source\Game\Base\Object\ItemBase\DropItemBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\ObjectBase.cpp" />
     <ClCompile Include="Source\Game\Base\Object\PlatformBase\PlatformBase.cpp" />
     <ClCompile Include="Source\Game\Base\Scene\SceneBase.cpp" />
@@ -243,7 +243,7 @@
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\EnemyBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ActorBase\Character\EnemyBase\MobEnemyBase\MobEnemyBase.h" />
     <ClInclude Include="Source\Game\Base\Object\GimmickBase\GimmickBase.h" />
-    <ClInclude Include="Source\Game\Base\Object\ItemBase\ItemBase.h" />
+    <ClInclude Include="Source\Game\Base\Object\ItemBase\DropItemBase.h" />
     <ClInclude Include="Source\Game\Base\Object\ObjectBase.h" />
     <ClInclude Include="Source\Game\Base\Object\PlatformBase\PlatformBase.h" />
     <ClInclude Include="Source\Game\Base\Scene\SceneBase.h" />
