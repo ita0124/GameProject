@@ -491,9 +491,6 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Effekseer\effekseer.cpp">
-      <Filter>ソース ファイル\Effekseer</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Game\Sound\SoundManager.cpp">
       <Filter>ソース ファイル\Game\Sound</Filter>
     </ClCompile>
@@ -701,6 +698,9 @@
     <ClCompile Include="Source\Game\Camera\Title\TitleCamera.cpp">
       <Filter>ソース ファイル\Game\Camera\Title</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Effekseer\effekseer.cpp">
+      <Filter>ソース ファイル\Effekseer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -708,9 +708,6 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Sound\SoundManager.h">
       <Filter>ヘッダー ファイル\Game\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Effekseer\effekseer.h">
-      <Filter>ヘッダー ファイル\Effekseer</Filter>
     </ClInclude>
     <ClInclude Include="Source\Game\Title\Title.h">
       <Filter>ヘッダー ファイル\Game\Title</Filter>
@@ -915,6 +912,9 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Camera\Title\TitleCamera.h">
       <Filter>ヘッダー ファイル\Game\Camera\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Effekseer\effekseer.h">
+      <Filter>ヘッダー ファイル\Effekseer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

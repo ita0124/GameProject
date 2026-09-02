@@ -29,6 +29,6 @@ MyEffeckseer::~MyEffeckseer() {
 //エフェクト読み込み
 void MyEffeckseer::Load() {
 	for (int i = 0; i < EFFECT_NUM; i++) {
-		m_Effect[i].Hndl = CEffekseerCtrl::LoadData(FilePath[i]);
+		m_Effect[i].Hndl = EffekseerManager::LoadData(FilePath[i]);
 	}
 }

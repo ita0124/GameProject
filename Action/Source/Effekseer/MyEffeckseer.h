@@ -46,26 +46,26 @@ public:
 	//	初期化
 	//	_EffNum			:	エフェクト総数
 	//	_ParticleNum	:	パーティクル総数
-	static void Init(int _EffNum, int _ParticleNumcleNum) { CEffekseerCtrl::Init(_EffNum, _ParticleNumcleNum); }
+	static void Init(int _EffNum, int _ParticleNumcleNum) { EffekseerManager::Init(_EffNum, _ParticleNumcleNum); }
 	//破棄
-	static void Exit() { CEffekseerCtrl::Exit(); }
+	static void Exit() { EffekseerManager::Exit(); }
 	//	更新処理
 	//	@memo	: カメラ設定も自動(なるべく使わない)
 	//			  ProjectionMtx,CameraMtxの設定も不要
-	static void UpdateAutoCamera() { CEffekseerCtrl::UpdateAutoCamera(); }
+	static void UpdateAutoCamera() { EffekseerManager::UpdateAutoCamera(); }
 	//	描画処理
-	static void Draw() { CEffekseerCtrl::Draw(); }
+	static void Draw() { EffekseerManager::Draw(); }
 	//	エフェクト呼び出し
 	//	ID		:	エフェクトID
 	//	pos		:	初期位置
 	//	isLoop	:	エフェクトがループするか
-	static int Request(int _ID, VECTOR _Pos, bool _IsLoop) { return CEffekseerCtrl::Request(_ID, _Pos, _IsLoop); }
+	static int Request(int _ID, VECTOR _Pos, bool _IsLoop) { return EffekseerManager::Request(_ID, _Pos, _IsLoop); }
 	//	指定エフェクト停止
-	static void Stop(int _Hndl) { CEffekseerCtrl::Stop(_Hndl); }
+	static void Stop(int _Hndl) { EffekseerManager::Stop(_Hndl); }
 	//	座標変更
-	static void SetPosition(int _Hndl, VECTOR _Pos) { CEffekseerCtrl::SetPosition(_Hndl, _Pos); }
+	static void SetPosition(int _Hndl, VECTOR _Pos) { EffekseerManager::SetPosition(_Hndl, _Pos); }
 	//	拡大縮小率変更
-	static void SetScale(int _Hndl, VECTOR _Scale) { CEffekseerCtrl::SetScale(_Hndl, _Scale); }
+	static void SetScale(int _Hndl, VECTOR _Scale) { EffekseerManager::SetScale(_Hndl, _Scale); }
 	//	回転角度変更
-	static void SetRot(int _Hndl, VECTOR _Rot) { CEffekseerCtrl::SetRot(_Hndl, _Rot); }
+	static void SetRot(int _Hndl, VECTOR _Rot) { EffekseerManager::SetRot(_Hndl, _Rot); }
 };
