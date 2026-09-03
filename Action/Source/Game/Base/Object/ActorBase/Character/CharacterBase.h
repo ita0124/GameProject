@@ -70,5 +70,5 @@ public:
 	//スタミナ
 	void	SetStamina(float _Stamina) { m_Stamina = _Stamina; }
 	//スキルポイント
-	void	SkillPoints(int _SkillPoints) { m_SkillPoints = _SkillPoints; }
+	void	SetSkillPoints(int _SkillPoints) { m_SkillPoints = _SkillPoints; }
 };

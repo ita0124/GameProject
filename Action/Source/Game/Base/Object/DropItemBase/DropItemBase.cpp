@@ -1,19 +1,22 @@
 #include "DropItemBase.h"
 
 namespace {
-	constexpr float ROTATION_SPEED = 2.5f;					//回転速度
-	constexpr float ORBIT_RADIUS_DECREASE_SPEED = 0.8f;		//旋回半径減少速度
-	constexpr float ORBIT_HEIGHT_OFFSET = 18.0f;			//旋回時の高さ補正
-	constexpr float ORBIT_RADIUS_MIN = 3.0f;				//吸収開始半径
-	constexpr float SCALE_DECREASE_RATE = 0.97f;			//縮小率
-	constexpr float ORBIT_RADIUS = 25.0f;					//旋回半径
-	constexpr float ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
-	constexpr int	COIN_COUNT = 1;							//取得コイン量
+	constexpr float		RAD = 20.0f;
+	constexpr VECTOR	DROP_ITEM_SIZE = { RAD ,RAD ,RAD };
 
-	constexpr float	GRAVITY = -0.1f;						//重力
-	constexpr float	GRAVITY_MAX = -5.0f;					//最大重力
-	constexpr float	FIRST_JUMP_POWER = 2.0f;				//初回ジャンプ力
-	constexpr float	JUMP_POWER_MAX = -7.5f;					//ジャンプ速度の下限
+	constexpr float		ROTATION_SPEED = 2.5f;					//回転速度
+	constexpr float		ORBIT_RADIUS_DECREASE_SPEED = 0.8f;		//旋回半径減少速度
+	constexpr float		ORBIT_HEIGHT_OFFSET = 18.0f;			//旋回時の高さ補正
+	constexpr float		ORBIT_RADIUS_MIN = 3.0f;				//吸収開始半径
+	constexpr float		SCALE_DECREASE_RATE = 0.97f;			//縮小率
+	constexpr float		ORBIT_RADIUS = 25.0f;					//旋回半径
+	constexpr float		ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
+	constexpr int		COIN_COUNT = 1;							//取得コイン量
+
+	constexpr float		FIRST_JUMP_POWER = 3.0f;			//初回ジャンプ力
+	constexpr float		JUMP_POWER_MAX = -7.5f;				//ジャンプ速度の下限
+	constexpr float		GRAVITY = -0.025f;					//重力
+	constexpr float		GRAVITY_MAX = -0.25f;				//最大重力
 }
 
 //コンストラクタ
@@ -28,10 +31,15 @@ DropItemBase::~DropItemBase() {
 void DropItemBase::Init() {
 	ObjectBase::Init();
 
+	m_Rad = RAD;				//半径
+	m_Size = DROP_ITEM_SIZE;	//ボックス当たり判定
+
+	m_IsActive = false;
 	m_Owner = nullptr;
 
 	m_IsHit = false;
 	m_State = IDEL;
+	m_DropItemKinds = COIN;		//ドロップアイテム種類
 
 	m_OrbitAngle = 0.0f;		//現在の旋回角度
 	m_OrbitTotalAngle = 0.0f;	//累積旋回角度
@@ -47,39 +55,13 @@ void DropItemBase::Load(const int _Hndl) {
 //毎フレーム呼び出す処理
 void DropItemBase::Step() {
 	if (!m_IsActive)return;
-	switch (m_State) {
-	case IDEL:
-		Idel();
-		break;
-	case ORBIT:
-		Orbit();
-		break;
-	case DEATH:
-		Death();
-		break;
+	m_PrevPos = m_Pos;
+	if (m_PlatformVec.x != 0.0f || m_PlatformVec.y != 0.0f || m_PlatformVec.z != 0.0f) {
+		m_Pos = VAdd(m_Pos, m_PlatformVec);
 	}
-}
-//当たり判定後の処理(当たっている場合)
-void DropItemBase::HitCalc(ObjectBase* _Owner) {
-	if (_Owner->GetKinds() == ObjectBase::TagKinds::PLAYER) {
-		if (!m_IsHit) {
-			m_IsHit = true;
-			m_Owner = _Owner;
-			m_State = ORBIT;
-
-			SoundManager::Play(SoundManager::TagID::SE_COIN);
-			//旋回半径
-			m_OrbitRadius = ORBIT_RADIUS;
-
-			//プレイヤーとの距離から旋回角度を設定
-			VECTOR Pos = m_Owner->GetPos();
-			VECTOR Direction = VSub(m_Pos, Pos);
-			Direction = VNorm(Direction);
-
-			m_OrbitAngle = atan2f(-Direction.z, -Direction.x);
-			m_OrbitTotalAngle = 0.0f;
-		}
-	}
+	m_PlatformVec = VZERO;
+	//重力処理
+	GravityManager();
 }
 //待機
 void DropItemBase::Idel() {
@@ -114,10 +96,6 @@ void DropItemBase::Orbit() {
 		m_State = DEATH;
 	}
 }
-//消滅
-void DropItemBase::Death() {
-	m_IsActive = false;
-}
 //重力処理
 void DropItemBase::GravityManager() {
 	if (m_IsGravity) {
@@ -135,21 +113,38 @@ void DropItemBase::GravityManager() {
 		//ジャンプ力減衰
 		m_JumpPower += m_Gravity;
 		//
-		m_Pos = VAdd(m_Pos,m_MoveVec);
+		m_Pos = VAdd(m_Pos, m_MoveVec);
+
+		if (m_JumpPower > 0.0f) {
+			m_Scale = VScale(m_Scale, 1.025f);
+		}
+		else {
+			m_Scale = VScale(m_Scale, 0.97f);
+		}
 	}
 	else {
 		//ジャンプ力リセット
 		m_JumpPower = 0.0f;
+
+		m_Scale = VONE;
 	}
 }
 //リクエスト
 bool DropItemBase::Request(const VECTOR& _Pos) {
 	if (m_IsActive)return false;
 
+	m_IsHit = false;
 	m_IsActive = true;
+	m_IsGravity = true;
 	m_Pos = _Pos;
 	m_JumpPower = FIRST_JUMP_POWER;
-	m_MoveVec = VGet(1.0f, 0.0f, 1.0f);
+	VECTOR MoveVec = VGet((float)GetRand(100), 0.0f, (float)GetRand(100));
+	m_MoveVec = VNorm(MoveVec);
+	m_Scale = VONE;
+
+	m_State = IDEL;
+
+	SoundManager::Play(SoundManager::SE_DROP_ITEM);
 
 	return true;
 }

@@ -112,6 +112,7 @@ void StageScene::Draw() {
 		m_Sword.Draw();								//剣クラス
 		m_Shield.Draw();							//盾クラス
 		m_MobEnemyManager.Draw();					//モブ敵マネージャークラス
+		m_DropItemManager.Draw();					//ドロップアイテムマネージャー
 		//影設定終了
 		ShadowMap_DrawEnd();
 		//影生成
@@ -121,9 +122,10 @@ void StageScene::Draw() {
 		m_Shield.Draw();							//盾クラス
 		m_MobEnemyManager.Draw();					//モブ敵マネージャークラス
 		m_PlatformManager.Draw();					//プラットフォームマネージャークラス
+		m_DropItemManager.Draw();					//ドロップアイテムマネージャー
 		//影生成終了
 		SetUseShadowMap(0, -1);
-		m_StatusDrawManager.Draw();						//ステータス描画マネージャー
+		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
 		break;
 	}
 }
@@ -135,7 +137,7 @@ void StageScene::Init() {
 	m_Sword.Init(&m_Player);						//剣クラス
 	//オーナーを設定
 	m_Shield.Init(&m_Player);						//盾クラス
-	
+
 	Coin::Init();									//コイン
 
 	const int Map = 0;
@@ -146,6 +148,7 @@ void StageScene::Init() {
 	m_CameraManager.Init();							//カメラマネージャークラス
 	m_CameraManager.SetOwner(&m_Player);			//オーナー設定
 	m_StatusDrawManager.Init(&m_Player);			//ステータス描画マネージャー
+	m_DropItemManager.Init();						//ドロップアイテムマネージャー
 
 	m_Result = 0;
 }
@@ -159,6 +162,7 @@ void StageScene::Exit() {
 	m_MobEnemyManager.Exit();						//モブ敵マネージャークラス
 	m_GimmickManager.Exit();						//ギミックマネージャークラス
 	m_StatusDrawManager.Exit();						//ステータス描画マネージャー
+	m_DropItemManager.Exit();						//ドロップアイテムマネージャー
 
 	DeleteShadowMap(m_ShadowHndl);
 }
@@ -172,6 +176,7 @@ void StageScene::Load() {
 	m_MobEnemyManager.Load();						//モブ敵マネージャークラス
 	m_GimmickManager.Load();						//ギミックマネージャークラス
 	m_StatusDrawManager.Load();						//ステータス描画マネージャー
+	m_DropItemManager.Load();						//ドロップアイテムマネージャー
 }
 //毎フレーム呼び出す処理管理関数
 int StageScene::Step() {
@@ -226,6 +231,8 @@ int StageScene::Step() {
 
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
 	m_MobEnemyManager.Step();										//モブ敵マネージャークラス
+	m_MobEnemyManager.RequestDropItem(m_DropItemManager);
+	m_DropItemManager.Step();
 	m_GimmickManager.Step(m_MobEnemyManager, m_PlatformManager);	//ギミックマネージャークラス
 
 	CameraStep();
@@ -244,6 +251,10 @@ int StageScene::Step() {
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 	//オブジェクトとギミックの当たり判定
 	HitCheck::ObjectToGimmick(m_Player, m_GimmickManager);
+	//ドロップアイテムとオブジェクトの押し合い当たり判定
+	HitCheck::DropItemToObject(m_DropItemManager, m_Player);
+	//ドロップアイテムと足場の当たり判定
+	HitCheck::DropItemToPlatform(m_DropItemManager, m_PlatformManager);
 
 	if (!m_Player.GetIsActive()) {
 		m_Result = 1;
@@ -274,6 +285,8 @@ void StageScene::Update() {
 	m_CameraManager.Update();							//カメラマネージャークラス
 	m_MobEnemyManager.Update();							//モブ敵マネージャークラス
 	m_GimmickManager.Update();							//ギミックマネージャークラス
+
+	m_DropItemManager.Update();							//ドロップアイテムマネージャー
 }
 //プレイヤー関連Step
 void StageScene::PlayerStep() {
@@ -304,8 +317,10 @@ void StageScene::PlayerStep() {
 			AttackTarget = &OneMobEnemy;
 		}
 	}
-	m_Player.SetAttackTarget(AttackTarget);
-	m_Player.SetAttackTargetPos(AttackTarget->GetPos());
+	if (AttackTarget != nullptr){
+		m_Player.SetAttackTarget(AttackTarget);
+		m_Player.SetAttackTargetPos(AttackTarget->GetPos());
+	}
 
 	m_Player.Step();
 	m_Sword.Step();

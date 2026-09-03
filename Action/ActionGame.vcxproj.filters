@@ -492,6 +492,36 @@
     <Filter Include="ヘッダー ファイル\Game\Bace\ObjectBase\DropItemBase">
       <UniqueIdentifier>{3c25616e-b3ca-4136-b83a-dd9c790d05a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\DropItem">
+      <UniqueIdentifier>{b235335b-c788-4cd9-b2db-e2f12566d23e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\DropItem">
+      <UniqueIdentifier>{e79c428d-3da1-448d-b9d4-9bdbf8365861}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\DropItem\DropCoin">
+      <UniqueIdentifier>{d49f21fc-eee9-4a31-93ea-a75fadef9958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\DropItem\DropCoin">
+      <UniqueIdentifier>{0196e72e-90cf-4734-b4ac-347aa14c0263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Manager\DropItemManager">
+      <UniqueIdentifier>{22d831f1-f939-4460-9720-d9bdcf8d88fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Manager\DropItemManager">
+      <UniqueIdentifier>{8eda3f13-edb6-4880-bb91-3c6abf7593e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\DropItem\DropHitPoints">
+      <UniqueIdentifier>{5b44801e-d875-4e7a-a3bd-eaeecf0073ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\DropItem\DropHitPoints">
+      <UniqueIdentifier>{3c761499-3aa9-45d0-8562-981a96050adb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\DropItem\DropSkillPoints">
+      <UniqueIdentifier>{9140927d-ea8b-479d-b2d4-443e8094c5bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\DropItem\DropSkillPoints">
+      <UniqueIdentifier>{52024a34-070a-4b99-97c7-e65c39b18504}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -707,8 +737,20 @@
     <ClCompile Include="Source\Effekseer\effekseer.cpp">
       <Filter>ソース ファイル\Effekseer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Game\Base\Object\ItemBase\DropItemBase.cpp">
+    <ClCompile Include="Source\Game\Object\DropItem\DropCoin\DropCoin.cpp">
+      <Filter>ソース ファイル\Game\Object\DropItem\DropCoin</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Base\Object\DropItemBase\DropItemBase.cpp">
       <Filter>ソース ファイル\Game\Base\ObjectBase\DropItemBase</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Manager\DropItemManager\DropItemManager.cpp">
+      <Filter>ソース ファイル\Game\Manager\DropItemManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\DropItem\DropHitPoints\DropHitPoints.cpp">
+      <Filter>ソース ファイル\Game\Object\DropItem\DropHitPoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\DropItem\DropSkillPoints\DropSkillPoints.cpp">
+      <Filter>ソース ファイル\Game\Object\DropItem\DropSkillPoints</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -925,8 +967,20 @@
     <ClInclude Include="Source\Effekseer\effekseer.h">
       <Filter>ヘッダー ファイル\Effekseer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Game\Base\Object\ItemBase\DropItemBase.h">
+    <ClInclude Include="Source\Game\Object\DropItem\DropCoin\DropCoin.h">
+      <Filter>ヘッダー ファイル\Game\Object\DropItem\DropCoin</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Base\Object\DropItemBase\DropItemBase.h">
       <Filter>ヘッダー ファイル\Game\Bace\ObjectBase\DropItemBase</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Manager\DropItemManager\DropItemManager.h">
+      <Filter>ヘッダー ファイル\Game\Manager\DropItemManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\DropItem\DropHitPoints\DropHitPoints.h">
+      <Filter>ヘッダー ファイル\Game\Object\DropItem\DropHitPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\DropItem\DropSkillPoints\DropSkillPoints.h">
+      <Filter>ヘッダー ファイル\Game\Object\DropItem\DropSkillPoints</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

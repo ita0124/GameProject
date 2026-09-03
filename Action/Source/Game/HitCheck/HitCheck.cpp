@@ -664,6 +664,49 @@ void HitCheck::MobEnemyToPlatform(MobEnemyManager& _MobEnemyManager, PlatformMan
 		ObjectToPlatform(OneMobEnemy, _PlatformManager);
 	}
 }
+//ドロップアイテムとオブジェクトの押し合い当たり判定
+void HitCheck::DropItemToObject(DropItemManager& _DropItemManager, ObjectBase& _Object) {
+	//オブジェクトの生存フラグがオフになっていれば以降の処理をしない
+	if (!_Object.GetIsActive())return;
+	//オブジェクトの座標取得
+	VECTOR	ObjectPos = _Object.GetCenter(ObjectBase::TagShape::BOX);
+	//オブジェクトのサイズを取得
+	VECTOR	ObjectSize = _Object.GetSize();
+	for (int Index = 0; Index < DROP_ITEM_MAX; Index++) {
+		//ドロップアイテムマネージャークラスから一つ取得
+		DropItemBase& OneDropItem = _DropItemManager.GetDropItem(Index);
+		//取得したドロップアイテムクラスの生存フラグがオフになっていれば次のforへ
+		if (!OneDropItem.GetIsActive())continue;
+	}
+	for (int Index = 0; Index < DROP_ITEM_MAX; Index++) {
+		//ドロップアイテムマネージャークラスから一つ取得
+		DropItemBase& OneDropItem = _DropItemManager.GetDropItem(Index);
+		//取得したドロップアイテムクラスの生存フラグがオフになっていれば次のforへ
+		if (!OneDropItem.GetIsActive())continue;
+		//ドロップアイテムの座標取得
+		VECTOR DropItemPos = OneDropItem.GetCenter(ObjectBase::TagShape::FIELD);
+		//ドロップアイテムのサイズを取得
+		VECTOR DropItemSize = OneDropItem.GetSize();
+		//当たり判定
+		bool IsHit = Collision::CheckHitBoxToBox(ObjectPos, ObjectSize, DropItemPos, DropItemSize);
+		//当たっていれば
+		if (IsHit) {
+			//当たり判定後の処理(当たっている場合)
+			_DropItemManager.HitCalc(Index, &_Object);
+		}
+	}
+}
+//ドロップアイテムと足場の当たり判定
+void HitCheck::DropItemToPlatform(DropItemManager& _DropItemManager, PlatformManager& _PlatformManager) {
+	for (int Index = 0; Index < DROP_ITEM_MAX; Index++) {
+		//ドロップアイテムマネージャークラスから一つ取得
+		DropItemBase& OneDropIte = _DropItemManager.GetDropItem(Index);
+		//取得したドロップアイテムクラスの生存フラグがオフになっていれば次のforへ
+		if (!OneDropIte.GetIsActive())continue;
+		//オブジェクトと足場の当たり判定
+		ObjectToPlatform(OneDropIte, _PlatformManager);
+	}
+}
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
 	//クリスタル

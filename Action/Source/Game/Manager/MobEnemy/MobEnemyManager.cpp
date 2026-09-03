@@ -1,4 +1,5 @@
 #include "MobEnemyManager.h"
+#include "Game/Manager/DropItemManager/DropItemManager.h"
 
 namespace {
 	constexpr const char* MOB_ENEMY_ID_FILE_CSV_PATH[MobEnemyManager::TagMapKinds::MAP_NUM] = {			//モブ敵IDCSVファイルパス
@@ -17,6 +18,7 @@ void MobEnemyManager::Init(int _Map) {
 	//初期化
 	for (int Index = 0; Index < MOB_ENEMY_MAX; Index++) {
 		m_MobEnemy[Index] = nullptr;
+		m_IsRequestDropItem[Index] = false;			//アイテムドロップ済みフラグ
 	}
 
 	//CSVファイルからデータを読む込む
@@ -155,7 +157,32 @@ void MobEnemyManager::NotHitCalc(const int& _Num, ObjectBase* _Object) {
 	if (m_MobEnemy[_Num] != nullptr) {
 		m_MobEnemy[_Num]->NotHitCalc(_Object);
 	}
-}//Set
+}
+//アイテムドロップ処理
+void MobEnemyManager::RequestDropItem(DropItemManager& _DropItemManager) {
+	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
+		//nullなら行わない
+		if (m_MobEnemy[MobEnemyIndex] != nullptr && !m_MobEnemy[MobEnemyIndex]->GetIsActive() && !m_IsRequestDropItem[MobEnemyIndex]) {
+
+			int DropItemTyp = GetRand((int)(DropItemBase::TagDropItemKinds::DROP_ITEM_NUM)-1);
+
+			for (int DropItemIndex = 0;DropItemIndex < DROP_ITEM_MAX;DropItemIndex++) {
+				//ドロップアイテムを取得
+				DropItemBase& OneDropItem = _DropItemManager.GetDropItem(DropItemIndex);
+				if (OneDropItem.GetTagDropItemKinds() == DropItemTyp) {
+					//アイテムの生成をリクエスト
+					if (OneDropItem.Request(m_MobEnemy[MobEnemyIndex]->GetCenter())) {
+						//成功したならば
+						//アイテムドロップ済みフラグをオン
+						m_IsRequestDropItem[MobEnemyIndex] = true;
+						break;
+					}
+				}
+			}
+		}
+	}
+}
+//Set
 void MobEnemyManager::SetPlayerPos(VECTOR _PlayerPos) {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
 		//nullなら行わない

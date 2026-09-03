@@ -3,10 +3,12 @@
 #include "Game/Object/Actor/Character/Enemy/Wolf/Wolf.h"
 
 namespace {
-	constexpr int MOB_ENEMY_MAX = 25;
+	constexpr int MOB_ENEMY_MAX = 1;
 	constexpr int MOB_ENEMY_ID = 1;
 	constexpr int MOB_ENEMY_REQUEST_DATA_MAX = 15;
 }
+
+class DropItemManager;
 
 class MobEnemyManager {
 public:
@@ -21,6 +23,8 @@ public:
 private:
 	int		m_MobEnemyID[MOB_ENEMY_MAX][MOB_ENEMY_ID];							//出現させるモブ敵を指定するデータをcsvから受け取り保存する
 	float	m_RequestData[MOB_ENEMY_MAX][MOB_ENEMY_REQUEST_DATA_MAX];			//リクエスト時に必要なデータをcsvから受け取り保存する
+
+	bool	m_IsRequestDropItem[MOB_ENEMY_MAX];									//アイテムドロップ済みフラグ
 public:
 	//初期化処理
 	void Init(int _Map = 0);
@@ -38,6 +42,8 @@ public:
 	void HitCalc(const int& _Num, ObjectBase* _Object);
 	//当たり判定後の処理(当たっていない場合)
 	void NotHitCalc(const int& _Num, ObjectBase* _Object);
+	//アイテムドロップ処理
+	void RequestDropItem(DropItemManager &_DropItemManager);
 	//指定した配列番号のメンバ変数を返す
 	MobEnemyBase& GetMobEnemy(const int& _Num) { return *m_MobEnemy[_Num]; }
 	//Set

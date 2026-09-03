@@ -9,9 +9,11 @@
 #include "Game/Manager/Gimmick/GimmickManager.h"
 #include "Game/Manager/Camera/CameraManager.h"
 #include "Game/Manager/StatusDrawManager/StatusDrawManager.h"
+#include "Game/Manager/DropItemManager/DropItemManager.h"
 #include "Game/HitCheck/HitCheck.h"
 #include "Game/Result/ResultNum.h"
 #include "Game/System/Coin/Coin.h"
+
 
 class StageScene :public SceneBase {
 private:
@@ -24,6 +26,7 @@ private:
 	GimmickManager		m_GimmickManager;		//ギミックマネージャークラス
 	CameraManager		m_CameraManager;		//カメラマネージャークラス
 	StatusDrawManager	m_StatusDrawManager;	//ステータス描画マネージャー
+	DropItemManager		m_DropItemManager;		//ドロップアイテムマネージャー
 
 	int m_ShadowHndl;					//影生成用のハンドル
 
