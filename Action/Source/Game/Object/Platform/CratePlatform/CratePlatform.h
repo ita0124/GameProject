@@ -12,6 +12,8 @@ public:
 	void Init();
 	//–ˆƒtƒŒ[ƒ€ŒÄ‚Ño‚·ˆ—
 	void Step();
+	//“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
+	void HitCalc(ObjectBase* _Object);
 };
 
 

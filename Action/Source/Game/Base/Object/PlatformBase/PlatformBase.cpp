@@ -21,6 +21,8 @@ void PlatformBase::Init() {
 	m_PlayerPush = true;															//プレイヤーを押し戻すか
 	m_EnemyPush = true;																//敵を押し戻すか
 	m_IsItem = false;																//アイテム系か
+	m_IsBreak = false;																//壊れるか
+	m_IsHitCalc=false;																//当たり判定後の計算を行うか
 }
 // データ読み込み処理
 void PlatformBase::Load(const int _Hndl) {

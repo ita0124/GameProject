@@ -55,6 +55,8 @@ protected:
 	bool						m_PlayerPush;					//プレイヤーを押し戻すか
 	bool						m_EnemyPush;					//敵を押し戻すか
 	bool						m_IsItem;						//アイテム系か
+	bool						m_IsBreak;						//壊れるか
+	bool						m_IsHitCalc;					//当たり判定後の計算を行うか
 
 public:
 	//コンストラクタ
@@ -84,6 +86,10 @@ public:
 	bool						GetEnemyPush()const { return m_EnemyPush; }
 	//アイテム系か
 	bool						GetIsItem()const { return m_IsItem; };
+	//壊れるか
+	bool						GetIsBreak()const { return m_IsBreak; }
+	//当たり判定後の計算を行うか
+	bool						GetIsHitCalc()const { return m_IsHitCalc; }
 
 	//Set
 	//基本データ構造体 座標

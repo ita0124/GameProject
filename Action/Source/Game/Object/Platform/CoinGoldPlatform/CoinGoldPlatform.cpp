@@ -26,6 +26,7 @@ void CoinGoldPlatform::Init() {
 
 	m_EnemyPush = false;		//敵と当たり判定を行わない
 	m_IsItem = true;			//アイテム系である
+	m_IsHitCalc = true;			//当たり判定後の計算を行う
 
 	m_IsHit = false;
 	m_State = IDEL;

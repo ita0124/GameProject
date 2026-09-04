@@ -27,6 +27,8 @@ namespace {
 	"Data/Model/Stage/MushroomsPlatform/MushroomsPlatform.mv1",
 	"Data/Model/Stage/FenceBrokenPlatform/FenceBrokenPlatform.mv1",
 	"Data/Model/Stage/CoinGold/CoinGold.mv1",
+	"Data/Model/Stage/Crate/Crate.mv1",
+	"Data/Model/Stage/CrateStrong/CrateStrong.mv1",
 	};
 }
 
@@ -112,6 +114,14 @@ void PlatformManager::Init(int _Map) {
 		case PlatformBase::TagPlatformKinds::COIN_GOLD:
 			//‹àƒRƒCƒ“
 			m_Platform[PlatformIndex] = new CoinGoldPlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::CRATE:
+			//‰ó‚ê‚é–Ø” 
+			m_Platform[PlatformIndex] = new CratePlatform;
+			break;
+		case PlatformBase::TagPlatformKinds::CRATE_STRONG:
+			//‰ó‚ê‚é–Ø” 
+			m_Platform[PlatformIndex] = new CrateStrongPlatform;
 			break;
 		}
 	}

@@ -18,6 +18,7 @@ MovingPlatform::~MovingPlatform() {
 //初期化処理
 void MovingPlatform::Init() {
 	PlatformBase::Init();
+	m_IsHitCalc = true;			//当たり判定後の計算を行う
 	m_IsEndPos = false;			//終端座標にたどり着いたか
 	m_MoveDir = VZERO;			//移動方向ベクトル
 	m_PrevLen = 0.0f;			//前フレームの座標から終端座標までの距離を保存する

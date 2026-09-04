@@ -14,6 +14,7 @@ void RespawnPlatform::Init() {
 
 	m_Object = nullptr;
 	m_EnemyPush = false;		//敵を押し戻さない
+	m_IsHitCalc = true;			//当たり判定後の計算を行う
 	m_IsHit = false;
 }
 //毎フレーム呼び出す処理

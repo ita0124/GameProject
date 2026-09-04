@@ -476,8 +476,10 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 				_Object.GravityReset();
 				//着地フラグをオン
 				IsLanding = true;
-				//当たり判定後の処理(当たっている場合)
-				_PlatformManager.HitCalc(Index, &_Object);
+				if (OnePlatform.GetIsHitCalc()) {
+					//当たり判定後の処理(当たっている場合)
+					_PlatformManager.HitCalc(Index, &_Object);
+				}
 			}
 			//天井ヒット
 			else if (PrevObjectUp <= PlatformDown) {
@@ -552,6 +554,19 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 	if (IsGravity) {
 		//重力処理を行う
 		_Object.SetIsGravity(true);
+	}
+}
+//足場とオブジェクトの攻撃当たり判定
+void HitCheck::PlatformToObjectAttack(PlatformManager& _PlatformManager, ObjectBase& _AttackObject) {
+	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
+		///足場マネージャークラスから一つ取得
+		PlatformBase& OnePlatformBase = _PlatformManager.GetPlatform(Index);
+		//取得した足場クラスが壊れるオブジェクトではないならら次のforへ
+		if (!OnePlatformBase.GetIsBreak())continue;
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OnePlatformBase.GetIsActive())continue;
+		//オブジェクトの攻撃当たり判定
+		ObjectToObjectAttack(OnePlatformBase, _AttackObject);
 	}
 }
 //オブジェクトとギミックの当たり判定
@@ -705,15 +720,7 @@ void HitCheck::DropItemToPlatform(DropItemManager& _DropItemManager, PlatformMan
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
-	////クリスタル
-	//for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
-	//	//クリスタルを取得
-	//	Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
-	//	//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
-	//	if (!OneCrystal.GetIsActive()) continue;
-	//	//オブジェクト同士の押し合い当たり判定
-	//	ObjectToObjectPush(OneCrystal, _ObjectBase);
-	//}
+	
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {

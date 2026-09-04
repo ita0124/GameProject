@@ -27,6 +27,7 @@ void FallingPlatform::Init() {
 	m_State = NORMAL;			//プレイヤー状態変数
 	m_EnemyPush = false;		//敵を押し戻さない
 	m_Object = nullptr;
+	m_IsHitCalc = true;			//当たり判定後の計算を行う
 }
 //データ読み込み処理
 void FallingPlatform::Load(const int _Hndl) {

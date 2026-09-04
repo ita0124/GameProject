@@ -42,7 +42,7 @@ namespace {
 
 	constexpr float		FALL_OUT_Y = -500.0f;															//落下判定のY座標
 
-	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
+	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };												//エフェクトの拡大倍率
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy/Boar/Boar.mv1");							//モデルファイルパス
 }

@@ -14,9 +14,11 @@
 #include "Game/Object/Platform/MushroomsPlatform/MushroomsPlatform.h"
 #include "Game/Object/Platform/FenceBrokenPlatform/FenceBrokenPlatform.h"
 #include "Game/Object/Platform/CoinGoldPlatform/CoinGoldPlatform.h"
+#include "Game/Object/Platform/CratePlatform/CratePlatform.h"
+#include "Game/Object/Platform/CrateStrongPlatform/CrateStrongPlatform.h"
 
 namespace {
-	constexpr int PLATFORM_MAX = 620;
+	constexpr int PLATFORM_MAX = 650;
 	constexpr int PLATFORM_ID = 1;
 	constexpr int PLATFORM_REQUEST_DATA_MAX = 17;
 }

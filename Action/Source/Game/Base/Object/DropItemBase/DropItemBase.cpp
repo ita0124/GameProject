@@ -65,7 +65,7 @@ void DropItemBase::Step() {
 	//d—Íˆ—
 	GravityManager();
 
-	if (m_Pos.y <= -FALL_OUT_Y) {
+	if (m_Pos.y <= FALL_OUT_Y) {
 		m_IsActive = false;
 	}
 }

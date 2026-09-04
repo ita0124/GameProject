@@ -247,6 +247,8 @@ int StageScene::Step() {
 	HitCheck::ObjectToMobEnemyAttack(m_Player, m_MobEnemyManager);
 	//プレイヤーと足場の当たり判定
 	HitCheck::ObjectToPlatform(m_Player, m_PlatformManager);
+	//足場とオブジェクトの攻撃当たり判定
+	HitCheck::PlatformToObjectAttack(m_PlatformManager, m_Sword);
 	//モブ敵と足場の当たり判定
 	HitCheck::MobEnemyToPlatform(m_MobEnemyManager, m_PlatformManager);
 	//オブジェクトとギミックの当たり判定

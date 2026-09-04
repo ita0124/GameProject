@@ -14,6 +14,7 @@ void GoalPlatform::Init() {
 
 	m_Object = nullptr;
 	m_EnemyPush = false;		//敵を押し戻さない
+	m_IsHitCalc = true;			//当たり判定後の計算を行う
 }
 //毎フレーム呼び出す処理
 void GoalPlatform::Step() {

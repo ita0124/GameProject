@@ -20,6 +20,8 @@ public:
 	static void ObjectToField(ObjectBase& _Object, ObjectBase& _Field);
 	//オブジェクトと足場の当たり判定
 	static void ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformManager);
+	//足場とオブジェクトの攻撃当たり判定
+	static void PlatformToObjectAttack(PlatformManager& _PlatformManager, ObjectBase& _AttackObject);
 	//オブジェクトとギミックの当たり判定
 	static void ObjectToGimmick(ObjectBase& _Object, GimmickManager& _GimmickManager);
 	//モブ敵とオブジェクトの押し合い当たり判定
