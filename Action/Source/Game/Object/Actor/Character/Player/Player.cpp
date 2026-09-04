@@ -38,6 +38,7 @@ namespace {
 	constexpr float		SKILL_ATTACK_COLLISION_END = 55.0f;										//スキル攻撃の当たり判定終了フレーム
 	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_SE = 15.0f;								//スキル攻撃の演出タイミング(SE)
 	constexpr float		SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT = 30.0f;							//スキル攻撃の演出タイミング(エフェクト)
+	constexpr float		SKILL_ATTACK_EFFECT_POS_Y_OFFSET = 2.5f;								//エフェクト出現座標を設定
 	constexpr float		NORMAL_ATTACK1_COLLISION_START = 15.0f;									//通常攻撃１段目の当たり判定開始フレーム
 	constexpr float		NORMAL_ATTACK1_COLLISION_END = 25.0f;									//通常攻撃１段目の当たり判定終了フレーム
 	constexpr float		NORMAL_ATTACK1_PERFORMANCE_TIMING = 15.0f;								//通常攻撃１段目の演出タイミング
@@ -563,6 +564,7 @@ void Player::SkillAttack() {
 	if (m_AnimeData.Frame > SKILL_ATTACK_PERFORMANCE_TIMING_EFFECT) {
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;
+		Pos.y += SKILL_ATTACK_EFFECT_POS_Y_OFFSET;
 		if (!m_IsPerformance) {
 			///演出を実行オン
 			m_IsPerformance = true;

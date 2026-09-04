@@ -21,10 +21,6 @@ void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	bool IsHit = Collision::CheckHitSphereToSphere(ObjectAPos, ObjectARad, ObjectBPos, ObjectBRad);
 	//当たっていれば
 	if (IsHit) {
-		//Y軸は考慮しない
-		ObjectAPos.y = 0.0f;
-		//Y軸は考慮しない
-		ObjectBPos.y = 0.0f;
 #ifdef _DEBUG
 		DrawSphere3D(ObjectAPos, ObjectARad, DIV, RED, RED, FALSE);
 		DrawSphere3D(ObjectBPos, ObjectBRad, DIV, RED, RED, FALSE);
@@ -709,15 +705,15 @@ void HitCheck::DropItemToPlatform(DropItemManager& _DropItemManager, PlatformMan
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
-	//クリスタル
-	for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
-		//クリスタルを取得
-		Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
-		//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
-		if (!OneCrystal.GetIsActive()) continue;
-		//オブジェクト同士の押し合い当たり判定
-		ObjectToObjectPush(OneCrystal, _ObjectBase);
-	}
+	////クリスタル
+	//for (int CrystalIndex = 0;CrystalIndex < CRYSTAL_MAX;CrystalIndex++) {
+	//	//クリスタルを取得
+	//	Crystal& OneCrystal = _BossGimmickManager.GetCrystal(CrystalIndex);
+	//	//取得したクリスタルクラスの生存フラグがオフになっていれば次のforへ
+	//	if (!OneCrystal.GetIsActive()) continue;
+	//	//オブジェクト同士の押し合い当たり判定
+	//	ObjectToObjectPush(OneCrystal, _ObjectBase);
+	//}
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {

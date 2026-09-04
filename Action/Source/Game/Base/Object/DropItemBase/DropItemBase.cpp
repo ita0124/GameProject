@@ -4,6 +4,8 @@ namespace {
 	constexpr float		RAD = 20.0f;
 	constexpr VECTOR	DROP_ITEM_SIZE = { RAD ,RAD ,RAD };
 
+	constexpr float		FALL_OUT_Y = -500.0f;													//落下判定のY座標
+
 	constexpr float		ROTATION_SPEED = 2.5f;					//回転速度
 	constexpr float		ORBIT_RADIUS_DECREASE_SPEED = 0.8f;		//旋回半径減少速度
 	constexpr float		ORBIT_HEIGHT_OFFSET = 18.0f;			//旋回時の高さ補正
@@ -62,6 +64,10 @@ void DropItemBase::Step() {
 	m_PlatformVec = VZERO;
 	//重力処理
 	GravityManager();
+
+	if (m_Pos.y <= -FALL_OUT_Y) {
+		m_IsActive = false;
+	}
 }
 //待機
 void DropItemBase::Idel() {

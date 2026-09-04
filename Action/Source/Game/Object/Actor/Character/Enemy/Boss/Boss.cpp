@@ -7,7 +7,7 @@ namespace {
 	constexpr float		RAD = 50.0f;																	//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	constexpr float		HIT_POINTS = 1000.0f;															//体力
+	constexpr float		HIT_POINTS = 100.0f;															//体力
 	constexpr float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 750.0f;													//IDELに移行するプレイヤーとの距離
@@ -104,7 +104,7 @@ namespace {
 	constexpr float		SPECIAL_MOVE_HP_THRESHOLD = 100.0f;												//必殺技発動体力
 
 	constexpr VECTOR	EFFECT_SCALE = { 10.0f,10.0f,10.0f };											//エフェクトの拡大倍率
-	constexpr VECTOR	SPECIAL_EFFECT_SCALE = { 20.0f,20.0f,20.0f };									//エフェクトの拡大倍率
+	constexpr VECTOR	SPECIAL_EFFECT_SCALE = { 25.0f,25.0f,25.0f };									//エフェクトの拡大倍率
 
 	constexpr char		MODEL_FILE_PATH[] = ("Data/Model/Enemy//Boss/MainBody/Boss.mv1");				//モデルファイルパス
 	constexpr char		ATTACK_CSV_FILE_PATH[] = ("Data/CSV/Boss/AttackPatterns/AttackPatterns.csv");	//攻撃パターンCSVのファイルパス
@@ -955,6 +955,8 @@ void Boss::Special() {
 		m_IsCollision = true;
 		//ダメージ処理の継続時間の計算をオフ
 		m_IsDamageTimeCalc = true;
+		///演出を実行オフ
+		m_IsPerformance = false;
 	}
 	else {
 		//Y軸のみ計算をする
