@@ -2,12 +2,12 @@
 #include "Game/Base/Object/PlatformBase/PlatformBase.h"
 
 //通常足場
-class NormalPlatform :public PlatformBase {
+class CrateStrongPlatform :public PlatformBase {
 public:
 	//コンストラクタ
-	NormalPlatform();
+	CrateStrongPlatform();
 	//デストラクタ
-	~NormalPlatform();
+	~CrateStrongPlatform();
 	//初期化処理
 	void Init();
 	//毎フレーム呼び出す処理

@@ -522,6 +522,18 @@
     <Filter Include="ヘッダー ファイル\Game\Object\DropItem\DropSkillPoints">
       <UniqueIdentifier>{52024a34-070a-4b99-97c7-e65c39b18504}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\CratePlatform">
+      <UniqueIdentifier>{f143a320-8dfe-4c8a-8dd3-d2b8ba418561}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\CratePlatform">
+      <UniqueIdentifier>{569052db-bf65-4d35-abc2-2bf2c450eeb5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\Game\Object\Platform\CrateStrongPlatform">
+      <UniqueIdentifier>{f96064f9-8a90-4fe7-b1cf-6453397a43d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\Game\Object\Platform\CrateStrongPlatform">
+      <UniqueIdentifier>{e5601b0c-84d1-4532-93bd-1fa064371251}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -752,6 +764,12 @@
     <ClCompile Include="Source\Game\Object\DropItem\DropSkillPoints\DropSkillPoints.cpp">
       <Filter>ソース ファイル\Game\Object\DropItem\DropSkillPoints</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\CratePlatform\CratePlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\CratePlatform</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Game\Object\Platform\CrateStrongPlatform\CrateStrongPlatform.cpp">
+      <Filter>ソース ファイル\Game\Object\Platform\CrateStrongPlatform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Comon.h">
@@ -981,6 +999,12 @@
     </ClInclude>
     <ClInclude Include="Source\Game\Object\DropItem\DropSkillPoints\DropSkillPoints.h">
       <Filter>ヘッダー ファイル\Game\Object\DropItem\DropSkillPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\CratePlatform\CratePlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\CratePlatform</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Game\Object\Platform\CrateStrongPlatform\CrateStrongPlatform.h">
+      <Filter>ヘッダー ファイル\Game\Object\Platform\CrateStrongPlatform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

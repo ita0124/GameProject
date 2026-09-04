@@ -1,19 +1,19 @@
-#include "NormalPlatform.h"
+#include "CratePlatform.h"
 
 //コンストラクタ
-NormalPlatform::NormalPlatform() {
+CratePlatform::CratePlatform() {
 	Init();
 }
 //デストラクタ
-NormalPlatform::~NormalPlatform() {
+CratePlatform::~CratePlatform() {
 	Exit();
 }
 //初期化処理
-void NormalPlatform::Init() {
+void CratePlatform::Init() {
 	PlatformBase::Init();
 
-	m_PlatformKinds = NORMAL;	//足場オブジェクト種類を再設定
+	m_PlatformKinds = CRATE;	//足場オブジェクト種類を再設定
 }
 //毎フレーム呼び出す処理
-void NormalPlatform::Step() {
+void CratePlatform::Step() {
 }

@@ -21,6 +21,8 @@ public:
 		MUSHROOMS,		//‚«‚Ì‚±
 		FENCE_BROKEN,	//‰ó‚ê‚½•»
 		COIN_GOLD,		//‹àƒRƒCƒ“
+		CRATE,			//‰ó‚ê‚é–Ø” 
+		CRATE_STRONG,	//–Ø” 
 
 		PLATFORM_NUM
 	};
