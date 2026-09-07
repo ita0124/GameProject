@@ -15,7 +15,7 @@ MobEnemyBase::~MobEnemyBase() {
 }
 //初期化処理
 void MobEnemyBase::Init() {
-	ObjectBase::Init();
+	EnemyBase::Init();
 
 	memset(&m_RequestData, 0, sizeof(REQUEST_DATA));							//リクエスト時に最低限必要なデータ構造体を初期化
 

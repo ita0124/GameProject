@@ -21,7 +21,7 @@ void GoalPlatform::Step() {
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 void GoalPlatform::HitCalc(ObjectBase* _Object) {
-	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+	if (_Object->GetTagKinds() == ObjectBase::TagKinds::PLAYER) {
 		m_Object = _Object;
 		if (m_Object != nullptr) {
 			m_Object->SetIsGoal(true);

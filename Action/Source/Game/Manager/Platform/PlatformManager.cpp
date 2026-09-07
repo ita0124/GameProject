@@ -1,4 +1,7 @@
 #include "PlatformManager.h"
+#include "Game/Manager/DropItemManager/DropItemManager.h"
+
+using namespace std;
 
 namespace {
 	constexpr const char* PLATFORM_ID_FILE_CSV_PATH[PlatformManager::TagMapKinds::MAP_NUM] = {			//プラットフォームIDCSVファイルパス
@@ -38,6 +41,8 @@ void PlatformManager::Init(int _Map) {
 	for (int Index = 0; Index < PLATFORM_MAX; Index++) {
 		m_Platform[Index] = nullptr;
 	}
+	m_DropItemObjectId.clear();		//アイテムドロップ対象のオブジェクトID
+	m_IsRequestDropItem.clear();	//アイテムドロップ済みフラグ
 
 	//CSVファイルからデータを読む込む
 	FILE* PlatformIdFile;
@@ -118,6 +123,10 @@ void PlatformManager::Init(int _Map) {
 		case PlatformBase::TagPlatformKinds::CRATE:
 			//壊れる木箱
 			m_Platform[PlatformIndex] = new CratePlatform;
+			//配列番号保存
+			m_DropItemObjectId.push_back(PlatformIndex);
+			//アイテムドロップ済みフラグを準備
+			m_IsRequestDropItem.push_back(false);
 			break;
 		case PlatformBase::TagPlatformKinds::CRATE_STRONG:
 			//壊れる木箱
@@ -195,6 +204,10 @@ void PlatformManager::Exit() {
 			delete m_Platform[PlatformIndex];
 			//nullを入れておく
 			m_Platform[PlatformIndex] = nullptr;
+			//アイテムドロップ対象のオブジェクトIDをリセット
+			m_DropItemObjectId.clear();
+			//アイテムドロップ済みフラグ
+			m_IsRequestDropItem.clear();
 		}
 	}
 }
@@ -259,5 +272,29 @@ void PlatformManager::HitCalc(const int& _Num, ObjectBase* _Object) {
 void PlatformManager::NotHitCalc(const int& _Num, ObjectBase* _Object) {
 	if (m_Platform[_Num] != nullptr) {
 		m_Platform[_Num]->NotHitCalc(_Object);
+	}
+}
+//アイテムドロップ処理
+void PlatformManager::RequestDropItem(DropItemManager& _DropItemManager) {
+	for (int PlatformIndex = 0; PlatformIndex < m_DropItemObjectId.size(); PlatformIndex++) {
+		//敵が存在し、死亡していて、まだアイテムをドロップしていない場合
+		if (m_Platform[m_DropItemObjectId[PlatformIndex]] != nullptr && !m_Platform[m_DropItemObjectId[PlatformIndex]]->GetIsActive() && !m_IsRequestDropItem[PlatformIndex]) {
+			//ドロップするアイテムの種類をランダムで決定
+			int DropItemTyp = GetRand((int)(DropItemBase::TagDropItemKinds::DROP_ITEM_NUM)-1);
+
+			for (int DropItemIndex = 0;DropItemIndex < DROP_ITEM_MAX;DropItemIndex++) {
+				//ドロップアイテムを取得
+				DropItemBase& OneDropItem = _DropItemManager.GetDropItem(DropItemIndex);
+				if (OneDropItem.GetTagDropItemKinds() == DropItemTyp) {
+					//アイテムの生成をリクエスト
+					if (OneDropItem.Request(m_Platform[m_DropItemObjectId[PlatformIndex]]->GetCenter(ObjectBase::TagShape::BALL))) {
+						//成功したならば
+						//アイテムドロップ済みフラグをオン
+						m_IsRequestDropItem[PlatformIndex] = true;
+						break;
+					}
+				}
+			}
+		}
 	}
 }

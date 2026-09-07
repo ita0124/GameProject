@@ -56,7 +56,7 @@ void BarrierActivator::Step(MobEnemyManager _MobEnemyManager, PlatformManager _P
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 void BarrierActivator::HitCalc(ObjectBase* _Object) {
-	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+	if (_Object->GetTagKinds() == ObjectBase::TagKinds::PLAYER) {
 		//æ‚ç‚ê‚½
 		m_IsHit = true;
 	}

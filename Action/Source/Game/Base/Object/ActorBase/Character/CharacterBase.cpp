@@ -16,7 +16,7 @@ CharacterBase::~CharacterBase() {
 //‰Šú‰»ˆ—
 void CharacterBase::Init() {
 	ActorBase::Init();
-	m_Kinds = CHARACTER;						//í—Şİ’è
+	m_TagKinds = CHARACTER;						//í—Şİ’è
 
 	m_Power = 0.0f;								//UŒ‚—Í
 	m_HitPoints = 0.0f;							//‘Ì—Í

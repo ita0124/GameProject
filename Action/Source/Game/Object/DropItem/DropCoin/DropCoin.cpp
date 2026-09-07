@@ -44,7 +44,7 @@ void DropCoin::Step() {
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 void DropCoin::HitCalc(ObjectBase* _Owner) {
-	if (_Owner->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+	if (_Owner->GetTagKinds() == ObjectBase::TagKinds::PLAYER) {
 		if (!m_IsHit) {
 			m_IsHit = true;
 			m_Owner = _Owner;

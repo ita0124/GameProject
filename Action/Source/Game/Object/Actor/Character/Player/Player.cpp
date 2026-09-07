@@ -62,7 +62,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK2_BACkK_POWER = 5.0;										//通常攻撃２段目時の敵へ与えるノックバックの強さ
 	constexpr float		NORMAL_ATTACK3_BACkK_POWER = 25.0;										//通常攻撃３段目時の敵へ与えるノックバックの強さ
 
-	constexpr float ATTACK_TARGET_APPROACH_DISTANCE = 200.0f;									//攻撃対象へ向かう距離の閾値
+	constexpr float		ATTACK_TARGET_APPROACH_DISTANCE = 40.0f;								//攻撃対象へ向かう距離の値
 
 	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 	constexpr float		PARRY_SUCCESS_TIME = 30;												//パリィアクション成功の継続時間
@@ -90,6 +90,10 @@ namespace {
 
 	constexpr float		FALL_OUT_Y = -500.0f;													//落下判定のY座標
 
+	constexpr int		PARRY_SUCCESS_SKILL_POINT = 10;											//パリィ成功時の獲得スキルポイント
+	constexpr int		GUARD_RECEIVED_SKILL_POINT = 2;											//ガード時の獲得スキルポイント
+	constexpr int		DAMAGE_RECEIVED_SKILL_POINT = 1;										//ダメージを受けた時の獲得スキルポイント
+
 	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
 
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
@@ -107,7 +111,7 @@ Player::~Player() {
 void Player::Init() {
 	CharacterBase::Init();
 
-	m_Kinds = PLAYER;
+	m_TagKinds = PLAYER;
 
 	m_Pos = RESPAWN_POS;
 	m_RespawnPos = RESPAWN_POS;					//リスポーン座標
@@ -181,7 +185,9 @@ void Player::Step() {
 		m_HitPoints = 0;
 		m_State = DEATH;
 	}
-
+	if (m_SkillPoints >= MAX_SKILL_POINTS) {
+		m_SkillPoints = MAX_SKILL_POINTS;
+	}
 #ifdef _DEBUG
 	m_HitPoints = HIT_POINTS;
 #endif // DEBUG
@@ -229,9 +235,9 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//スタミナを回復
 		m_Stamina += PointerEnemy->GetPower() / 2;
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_SHIELD)) {
-			SoundManager::Play(SoundManager::TagID::SE_SHIELD);
-		}
+		SoundManager::Play(SoundManager::TagID::SE_SHIELD);
+		//スキルポイントを獲得
+		m_SkillPoints += PARRY_SUCCESS_SKILL_POINT;
 	}
 	//ガードの当たりがオン
 	else if (m_IsGuardCollision) {
@@ -250,9 +256,9 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ヒット方向を向く
 		UpdateRotation(HitVec, (float)DX_PI);
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_GUARD)) {
-			SoundManager::Play(SoundManager::TagID::SE_GUARD);
-		}
+		SoundManager::Play(SoundManager::TagID::SE_GUARD);
+		//スキルポイントを獲得
+		m_SkillPoints += GUARD_RECEIVED_SKILL_POINT;
 	}
 	else {
 		//HPを消費
@@ -266,9 +272,9 @@ void Player::HitCalc(ObjectBase* _Object) {
 		//ノックバックデータ数値代入
 		SetKnockBackData(PointerEnemy->GetPos(), KnockBackPower);
 		//サウンドリクエスト
-		if (!SoundManager::IsPlay(SoundManager::TagID::SE_HIT)) {
-			SoundManager::Play(SoundManager::TagID::SE_HIT);
-		}
+		SoundManager::Play(SoundManager::TagID::SE_HIT);
+		//スキルポイントを獲得
+		m_SkillPoints += DAMAGE_RECEIVED_SKILL_POINT;
 	}
 	//当たった
 	m_IsHit = true;
@@ -535,7 +541,7 @@ void Player::SkillAttack() {
 		//敵へ与えるノックバックの強さ設定
 		m_KnockBackPower = SKILL_KNOCK_BACkK_POWER;
 		//スキルゲージ減少
-		m_SkillPoints += -10;
+		m_SkillPoints += -MAX_SKILL_POINTS;
 		///演出を実行オフ
 		m_IsPerformance = false;
 	}
@@ -1099,7 +1105,7 @@ bool Player::ActionManager() {
 		IsAction = true;
 	}
 	//スキル攻撃
-	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_SKILL_ATTACK) && m_SkillPoints > 0) {
+	if (InputManager::IsPushTrg(InputManager::TagInput::INPUT_SKILL_ATTACK) && m_SkillPoints >= MAX_SKILL_POINTS) {
 		m_State = SKILL_ATTACK;
 		IsAction = true;
 	}

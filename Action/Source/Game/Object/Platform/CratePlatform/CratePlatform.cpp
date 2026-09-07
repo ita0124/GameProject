@@ -20,6 +20,13 @@ void CratePlatform::Init() {
 	m_PlatformKinds = CRATE;	//足場オブジェクト種類を再設定
 	m_IsBreak = true;			//壊れるか
 }
+// データ読み込み処理
+void CratePlatform::Load(const int _Hndl) {
+	//モデルロード
+	PlatformBase::Load(_Hndl);
+	//サイズから代表して半径に代入
+	m_Rad = m_Size.y * HALF;
+}
 //毎フレーム呼び出す処理
 void CratePlatform::Step() {
 }
@@ -29,11 +36,13 @@ void HitCalc(ObjectBase* _Object) {
 }
 //当たり判定後の処理(当たっている場合)
 void CratePlatform::HitCalc(ObjectBase* _Object) {
+	if (_Object->GetTagKinds() != TagKinds::PLAYER)return;
 	//プレイヤークラスデータを保存する変数
 	Player* PointerPlayer = nullptr;
 	//プレイヤークラスをダウンキャスト
 	PointerPlayer = dynamic_cast<Player*>(_Object);
 	if (PointerPlayer != nullptr) {
+		//生存フラグをオフ
 		m_IsActive = false;
 		//指定ボーンの座標取得
 		VECTOR Pos = m_Pos;

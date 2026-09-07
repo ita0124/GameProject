@@ -23,6 +23,8 @@ void PlatformBase::Init() {
 	m_IsItem = false;																//アイテム系か
 	m_IsBreak = false;																//壊れるか
 	m_IsHitCalc=false;																//当たり判定後の計算を行うか
+
+	m_TagShape = FIELD;																//形状設定
 }
 // データ読み込み処理
 void PlatformBase::Load(const int _Hndl) {

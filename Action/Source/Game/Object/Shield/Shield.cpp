@@ -58,5 +58,5 @@ void Shield::Init() {
 	ObjectBase::Init();
 
 	m_Rad = RAD;
-	m_Kinds = SHIELD;		//í—Şİ’è
+	m_TagKinds = SHIELD;		//í—Şİ’è
 }

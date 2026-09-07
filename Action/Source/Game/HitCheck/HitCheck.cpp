@@ -4,6 +4,10 @@
 #include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 #include "Game/Object/Sword/Sword.h"
 
+namespace {
+	constexpr int ATTACK_SUCCESS_SKILL_POINT = 3;	//攻撃成功時の獲得スキルポイント
+}
+
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
@@ -64,7 +68,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	if (!_Object.GetIsCollision())return;
 	/*===========================================================================*/
 	//オブジェクトがプレイヤーかつ攻撃オブジェクトが敵だった場合
-	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
+	if (_Object.GetTagKinds() == ObjectBase::TagKinds::PLAYER && _AttackObject.GetTagKinds() == ObjectBase::TagKinds::ENEMY) {
 		//エネミーベースクラスデータを保存する変数
 		EnemyBase* PointerEnemy = nullptr;
 		//エネミーベースクラスをダウンキャスト
@@ -74,23 +78,23 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//フレームの攻撃判定がオフになっていたら次のフレームを見る
 			if (!PointerEnemy->GetFrameDataIsAttackFlg(FrameNum))continue;
 			//プレイヤーの座標を取得
-			VECTOR	PlayerPos1 = _Object.GetCenter();
+			VECTOR	ObjectPos1 = _Object.GetCenter(ObjectBase::TagShape::BALL);
 			//プレイヤーの頭の座標を取得
-			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNumber::HEAD);
+			VECTOR	ObjectPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNumber::HEAD);
 			//プレイヤーの当たり判定半径を取得
-			float	PlayerRad = _Object.GetRad();
+			float	ObjectRad = _Object.GetRad();
 			//ボスの座標を取得
-			VECTOR	BossPos = PointerEnemy->GetFrameDataPos(FrameNum);
+			VECTOR	AttackPos = PointerEnemy->GetFrameDataPos(FrameNum);
 			//ボスの当たり判定半径を取得
-			float	BossRad = PointerEnemy->GetFrameDataRad(FrameNum);
+			float	AttackRad = PointerEnemy->GetFrameDataRad(FrameNum);
 #ifdef _DEBUG
-			DrawSphere3D(PlayerPos1, PlayerRad, DIV, RED, RED, FALSE);
-			DrawSphere3D(PlayerPos2, PlayerRad, DIV, RED, RED, FALSE);
-			DrawSphere3D(BossPos, BossRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(ObjectPos1, ObjectRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(ObjectPos2, ObjectRad, DIV, RED, RED, FALSE);
+			DrawSphere3D(AttackPos, AttackRad, DIV, RED, RED, FALSE);
 #endif // DEBUG
 			//当たり判定
-			bool IsHit1 = Collision::CheckHitSphereToSphere(PlayerPos1, PlayerRad, BossPos, BossRad);
-			bool IsHit2 = Collision::CheckHitSphereToSphere(PlayerPos2, PlayerRad, BossPos, BossRad);
+			bool IsHit1 = Collision::CheckHitSphereToSphere(ObjectPos1, ObjectRad, AttackPos, AttackRad);
+			bool IsHit2 = Collision::CheckHitSphereToSphere(ObjectPos2, ObjectRad, AttackPos, AttackRad);
 			//当たっていれば
 			if (IsHit1 || IsHit2) {
 				_Object.HitCalc(PointerEnemy);
@@ -105,7 +109,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	}
 	/*===========================================================================*/
 	//オブジェクトが盾だった場合
-	if (_Object.GetKinds() == ObjectBase::TagKinds::SHIELD) {
+	if (_Object.GetTagKinds() == ObjectBase::TagKinds::SHIELD) {
 		//オーナーを取得
 		ObjectBase* Owner = _Object.GetOwner();
 		//プレイヤークラスデータを保存する変数
@@ -131,22 +135,22 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 				//プレイヤーの当たり判定半径を取得
 				float	ShieldRad = _Object.GetRad();
 				//ボスの座標を取得
-				VECTOR	BossPos = PointerEnemy->GetFrameDataPos(FrameNum);
+				VECTOR	AttackPos = PointerEnemy->GetFrameDataPos(FrameNum);
 				//ボスの当たり判定半径を取得
-				float	BossRad = PointerEnemy->GetFrameDataRad(FrameNum);
+				float	AttackRad = PointerEnemy->GetFrameDataRad(FrameNum);
 #ifdef _DEBUG
 				//パリィ許容フラグがオンなら
 				if (PointerPlayer->GetIsParryCollision()) {
 					DrawSphere3D(ShieldPos, ShieldRad, DIV, GREEN, GREEN, FALSE);
-					DrawSphere3D(BossPos, BossRad, DIV, GREEN, GREEN, FALSE);
+					DrawSphere3D(AttackPos, AttackRad, DIV, GREEN, GREEN, FALSE);
 				}
 				else {
 					DrawSphere3D(ShieldPos, ShieldRad, DIV, BLUUE, BLUUE, FALSE);
-					DrawSphere3D(BossPos, BossRad, DIV, BLUUE, BLUUE, FALSE);
+					DrawSphere3D(AttackPos, AttackRad, DIV, BLUUE, BLUUE, FALSE);
 				}
 #endif // DEBUG
 				//当たり判定
-				bool IsHit = Collision::CheckHitSphereToSphere(ShieldPos, ShieldRad, BossPos, BossRad);
+				bool IsHit = Collision::CheckHitSphereToSphere(ShieldPos, ShieldRad, AttackPos, AttackRad);
 				//当たっていれば
 				if (IsHit) {
 					//パリィの処理
@@ -158,7 +162,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 	}
 	/*===========================================================================*/
 	//攻撃オブジェクトが剣だった場合
-	if (_AttackObject.GetKinds() == ObjectBase::TagKinds::SWORD) {
+	if (_AttackObject.GetTagKinds() == ObjectBase::TagKinds::SWORD) {
 		//オーナーを取得
 		ObjectBase* Owner = _AttackObject.GetOwner();
 		//オーナーの生存フラグがオフになっていれば以降の処理をしない
@@ -174,7 +178,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//剣の当たり判定半径を取得
 			float	SwordRad = _AttackObject.GetRad();
 			//オブジェクトの座標を取得
-			VECTOR	ObjectPos = _Object.GetCenter();
+			VECTOR	ObjectPos = _Object.GetCenter(_Object.GetTagShape());
 			//オブジェクトの当たり判定半径を取得
 			float	ObjectRad = _Object.GetRad();
 #ifdef _DEBUG
@@ -186,6 +190,10 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//当たっていれば
 			if (IsHit) {
 				_Object.HitCalc(PointerPlayer);
+				//攻撃成功時にスキルポイントを獲得
+				int SkillPoints = PointerPlayer->GetSkillPoints();
+				SkillPoints += ATTACK_SUCCESS_SKILL_POINT;
+				PointerPlayer->SetSkillPoints(SkillPoints);
 			}
 		}
 	}
@@ -197,14 +205,14 @@ void HitCheck::ObjectToObjectRelativePos(ObjectBase& _Object, ObjectBase& _Relat
 	if (!_Object.GetIsActive() || !_RelativePosObject.GetIsActive())return;
 
 	//オブジェクトがプレイヤーかつ位置関係を判定するオブジェクトがボスなら
-	if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && _RelativePosObject.GetKinds() == ObjectBase::TagKinds::ENEMY) {
+	if (_Object.GetTagKinds() == ObjectBase::TagKinds::PLAYER && _RelativePosObject.GetTagKinds() == ObjectBase::TagKinds::ENEMY) {
 		//ボスクラスデータを保存する変数
 		Boss* PointerBoss = nullptr;
 		//ボスクラスをダウンキャスト
 		PointerBoss = dynamic_cast<Boss*>(&_RelativePosObject);
 		for (int FrameNum = Boss::FrameNumber::FRONT;FrameNum < Boss::FrameNumber::FRAME_NUM;FrameNum++) {
 			//プレイヤーの座標を取得
-			VECTOR	PlayerPos1 = _Object.GetCenter();
+			VECTOR	PlayerPos1 = _Object.GetCenter(ObjectBase::TagShape::BALL);
 			//プレイヤーの頭の座標を取得
 			VECTOR	PlayerPos2 = _Object.GetFramePos(_Object.GetHndl(), Player::FrameNumber::HEAD);
 			//プレイヤーの当たり判定半径を取得
@@ -396,9 +404,9 @@ void HitCheck::ObjectToPlatform(ObjectBase& _Object, PlatformManager& _PlatformM
 		//足場クラスがオブジェクトを押し戻さない設定になっているならば次のforへ
 		if (!OnePlatform.GetObjectPush())continue;
 		//オブジェクトがプレイヤーかつ足場クラスがプレイヤーを押し戻さない設定になっているならば次のforへ
-		if (_Object.GetKinds() == ObjectBase::TagKinds::PLAYER && !OnePlatform.GetPlayerPush())continue;
+		if (_Object.GetTagKinds() == ObjectBase::TagKinds::PLAYER && !OnePlatform.GetPlayerPush())continue;
 		//オブジェクトが敵かつ足場クラスが敵を押し戻さない設定になっているならば次のforへ
-		if (_Object.GetKinds() == ObjectBase::TagKinds::ENEMY && !OnePlatform.GetEnemyPush())continue;
+		if (_Object.GetTagKinds() == ObjectBase::TagKinds::ENEMY && !OnePlatform.GetEnemyPush())continue;
 		//足場クラスの座標取得
 		VECTOR PlatformPos = OnePlatform.GetCenter(ObjectBase::TagShape::FIELD);
 		//足場クラスのサイズを取得
@@ -720,7 +728,7 @@ void HitCheck::DropItemToPlatform(DropItemManager& _DropItemManager, PlatformMan
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectPush(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {
-	
+
 }
 //Bossが使うObjectを管理するクラスとオブジェクトの当たり判定
 void HitCheck::BossGimmickManagerToObjectAttack(BossGimmickManager& _BossGimmickManager, ObjectBase& _ObjectBase) {

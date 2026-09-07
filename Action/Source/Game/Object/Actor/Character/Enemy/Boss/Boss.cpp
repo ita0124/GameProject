@@ -7,7 +7,7 @@ namespace {
 	constexpr float		RAD = 50.0f;																	//半径
 	constexpr VECTOR	BOSS_SIZE = { RAD,RAD,RAD };													//ボックス当たり判定
 
-	constexpr float		HIT_POINTS = 100.0f;															//体力
+	constexpr float		HIT_POINTS = 1000.0f;															//体力
 	constexpr float		MAX_HITPOINTS = 1000.0f;														//最大体力
 
 	constexpr float		ACTION_IDEL_DISTANCE = 750.0f;													//IDELに移行するプレイヤーとの距離
@@ -121,8 +121,6 @@ Boss::~Boss() {
 //初期化処理
 void Boss::Init() {
 	EnemyBase::Init();
-
-	m_Kinds = ENEMY;
 
 	m_Pos = INIT_POS;									//座標
 	m_Rad = RAD;										//半径

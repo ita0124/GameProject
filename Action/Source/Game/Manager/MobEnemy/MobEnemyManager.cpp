@@ -161,9 +161,9 @@ void MobEnemyManager::NotHitCalc(const int& _Num, ObjectBase* _Object) {
 //アイテムドロップ処理
 void MobEnemyManager::RequestDropItem(DropItemManager& _DropItemManager) {
 	for (int MobEnemyIndex = 0; MobEnemyIndex < MOB_ENEMY_MAX; MobEnemyIndex++) {
-		//nullなら行わない
+		//敵が存在し、死亡していて、まだアイテムをドロップしていない場合
 		if (m_MobEnemy[MobEnemyIndex] != nullptr && !m_MobEnemy[MobEnemyIndex]->GetIsActive() && !m_IsRequestDropItem[MobEnemyIndex]) {
-
+			//ドロップするアイテムの種類をランダムで決定
 			int DropItemTyp = GetRand((int)(DropItemBase::TagDropItemKinds::DROP_ITEM_NUM)-1);
 
 			for (int DropItemIndex = 0;DropItemIndex < DROP_ITEM_MAX;DropItemIndex++) {
@@ -171,7 +171,7 @@ void MobEnemyManager::RequestDropItem(DropItemManager& _DropItemManager) {
 				DropItemBase& OneDropItem = _DropItemManager.GetDropItem(DropItemIndex);
 				if (OneDropItem.GetTagDropItemKinds() == DropItemTyp) {
 					//アイテムの生成をリクエスト
-					if (OneDropItem.Request(m_MobEnemy[MobEnemyIndex]->GetCenter())) {
+					if (OneDropItem.Request(m_MobEnemy[MobEnemyIndex]->GetCenter(ObjectBase::TagShape::BALL))) {
 						//成功したならば
 						//アイテムドロップ済みフラグをオン
 						m_IsRequestDropItem[MobEnemyIndex] = true;

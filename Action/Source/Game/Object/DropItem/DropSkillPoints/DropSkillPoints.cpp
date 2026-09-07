@@ -9,7 +9,7 @@ namespace {
 	constexpr float SCALE_DECREASE_RATE = 0.97f;			//縮小率
 	constexpr float ORBIT_RADIUS = 25.0f;					//旋回半径
 	constexpr float ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
-	constexpr int	SKILL_POINTS_COUNT = 10;				//取得スキルポイント回復量
+	constexpr int	SKILL_POINTS_COUNT = 12;				//取得スキルポイント回復量
 }
 
 //コンストラクタ
@@ -44,7 +44,7 @@ void DropSkillPoints::Step() {
 }
 //当たり判定後の処理(当たっている場合)
 void DropSkillPoints::HitCalc(ObjectBase* _Owner) {
-	if (_Owner->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+	if (_Owner->GetTagKinds() == ObjectBase::TagKinds::PLAYER) {
 		if (!m_IsHit) {
 			m_IsHit = true;
 			m_Owner = _Owner;

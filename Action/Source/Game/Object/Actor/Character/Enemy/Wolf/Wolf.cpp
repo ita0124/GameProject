@@ -76,9 +76,7 @@ Wolf::~Wolf() {
 }
 //‰Šú‰»ˆ—
 void Wolf::Init() {
-	EnemyBase::Init();
-
-	m_Kinds = ENEMY;
+	MobEnemyBase::Init();
 
 	m_HitPoints = HIT_POINTS;							//‘Ì—Í
 

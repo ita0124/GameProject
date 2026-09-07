@@ -26,7 +26,8 @@ public:
 		SHAPE_NUM
 	};
 protected:
-	TagKinds	m_Kinds;			//オブジェクト種類
+	TagKinds	m_TagKinds;			//オブジェクト種類
+	TagShape	m_TagShape;			//オブジェクトの形状
 
 	VECTOR		m_Pos;				//座標
 	VECTOR		m_Rot;				//回転率
@@ -75,7 +76,9 @@ public:
 
 	//Get
 	//ゲームオブジェクト種類
-	TagKinds	GetKinds()			const { return m_Kinds; }
+	TagKinds	GetTagKinds()		const { return m_TagKinds; }
+	//オブジェクトの形状
+	TagShape	GetTagShape()		const { return m_TagShape; }
 	//座標
 	VECTOR		GetPos()			const { return m_Pos; }
 	//回転率	
@@ -105,9 +108,9 @@ public:
 	//指定したフレームの座標を渡す
 	VECTOR		GetFramePos(int _Hndl, int _FramwNum)	const { return MV1GetFramePosition(_Hndl, _FramwNum); }
 	//モデルの中心を取る
-	VECTOR		GetCenter(TagShape _Shape = BALL);
+	virtual VECTOR		GetCenter(TagShape _Shape);
 	//モデルの中心を取る
-	VECTOR		GetPrevCenter(TagShape _Shape = BALL);
+	VECTOR		GetPrevCenter(TagShape _Shape);
 	//ゴールしたか
 	bool		GetIsGoal() { return m_IsGoal; }
 

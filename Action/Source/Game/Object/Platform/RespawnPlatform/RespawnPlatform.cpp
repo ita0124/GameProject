@@ -22,7 +22,7 @@ void RespawnPlatform::Step() {
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 void RespawnPlatform::HitCalc(ObjectBase* _Object) {
-	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER&&!m_IsHit) {
+	if (_Object->GetTagKinds() == ObjectBase::TagKinds::PLAYER&&!m_IsHit) {
 		m_IsHit = true;
 		m_Object = _Object;
 		if (m_Object != nullptr) {

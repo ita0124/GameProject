@@ -128,6 +128,9 @@ void StageScene::Draw() {
 		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
 		break;
 	}
+	DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N20, "X:%f", m_Player.GetPos().x);
+	DrawFormatStringToHandle(10, 420, RED, DxLibFont::FONTHNDL_N20, "Y:%f", m_Player.GetPos().y);
+	DrawFormatStringToHandle(10, 440, RED, DxLibFont::FONTHNDL_N20, "Z:%f", m_Player.GetPos().z);
 }
 //初期化処理管理関数
 void StageScene::Init() {
@@ -232,6 +235,7 @@ int StageScene::Step() {
 	m_MobEnemyManager.SetPlayerPos(m_Player.GetPos());
 	m_MobEnemyManager.Step();										//モブ敵マネージャークラス
 	m_MobEnemyManager.RequestDropItem(m_DropItemManager);
+	m_PlatformManager.RequestDropItem(m_DropItemManager);
 	m_DropItemManager.Step();
 	m_GimmickManager.Step(m_MobEnemyManager, m_PlatformManager);	//ギミックマネージャークラス
 
@@ -304,6 +308,21 @@ void StageScene::PlayerStep() {
 		VECTOR CurrentDistance = VSub(m_Player.GetPos(), AttackTarget->GetPos());
 		CurrentTargetLength = VSize(CurrentDistance);
 	}
+	for (int PlatformIndex = 0; PlatformIndex < m_PlatformManager.GetDropItemObjectId().size(); PlatformIndex++)
+	{
+		///足場マネージャークラスから一つ取得
+		PlatformBase& OnePlatformBase = m_PlatformManager.GetPlatform(m_PlatformManager.GetDropItemObjectId()[PlatformIndex]);
+		//取得した足場クラスの生存フラグがオフになっていれば次のforへ
+		if (!OnePlatformBase.GetIsActive()) continue;
+		//プレイヤーとの距離を計算
+		float Length = VSize(VSub(m_Player.GetPos(), OnePlatformBase.GetPos()));
+		//現在の攻撃対象より一定距離近ければ更新
+		if (Length < CurrentTargetLength - CHANGE_DISTANCE)
+		{
+			CurrentTargetLength = Length;
+			AttackTarget = &OnePlatformBase;
+		}
+	}
 	for (int MobIndex = 0; MobIndex < MOB_ENEMY_MAX; MobIndex++)
 	{
 		//モブ敵を取得
@@ -319,7 +338,7 @@ void StageScene::PlayerStep() {
 			AttackTarget = &OneMobEnemy;
 		}
 	}
-	if (AttackTarget != nullptr){
+	if (AttackTarget != nullptr) {
 		m_Player.SetAttackTarget(AttackTarget);
 		m_Player.SetAttackTargetPos(AttackTarget->GetPos());
 	}

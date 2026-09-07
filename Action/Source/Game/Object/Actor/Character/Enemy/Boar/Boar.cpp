@@ -57,9 +57,7 @@ Boar::~Boar() {
 }
 //‰Šú‰»ˆ—
 void Boar::Init() {
-	EnemyBase::Init();
-
-	m_Kinds = ENEMY;
+	MobEnemyBase::Init();
 
 	m_HitPoints = HIT_POINTS;							//‘Ì—Í
 

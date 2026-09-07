@@ -26,7 +26,7 @@ Crystal::~Crystal() {
 void Crystal::Init() {
 	CharacterBase::Init();
 
-	m_Kinds = ENEMY;
+	m_TagKinds = ENEMY;
 
 	m_Rad = RAD;		//半径
 	m_IsActive = false;	//生存フラグをオフ
@@ -61,7 +61,7 @@ void Crystal::Step() {
 }
 //当たり判定後の処理(当たっている場合)
 void Crystal::HitCalc(ObjectBase* _Object) {
-	if (_Object->GetKinds() == TagKinds::PLAYER) {
+	if (_Object->GetTagKinds() == TagKinds::PLAYER) {
 		m_HitPoints--;
 		//ダメージ処理の継続時間セット
 		m_DamageTime = DAMAGE_TIME;

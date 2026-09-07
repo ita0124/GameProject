@@ -29,7 +29,8 @@ void ObjectBase::Init() {
 	m_EffectHndl = -1;			//エフェクトハンドル
 	m_IsPerformance = false;	///演出を実行したか
 
-	m_Kinds = OBJECT;			//種類設定
+	m_TagKinds = OBJECT;		//種類設定
+	m_TagShape = BALL;			//形状設定
 }
 //データ破棄処理
 void ObjectBase::Exit() {

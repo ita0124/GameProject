@@ -89,7 +89,7 @@ void FallingPlatform::Step() {
 }
 //“–‚½‚è”»’èŒã‚Ìˆ—(“–‚½‚Á‚Ä‚¢‚éê‡)
 void FallingPlatform::HitCalc(ObjectBase* _Object) {
-	if (_Object->GetKinds() == ObjectBase::TagKinds::PLAYER) {
+	if (_Object->GetTagKinds() == ObjectBase::TagKinds::PLAYER) {
 		//æ‚ç‚ê‚½
 		m_IsHit = true;
 		m_Object = _Object;
