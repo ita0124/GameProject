@@ -18,7 +18,7 @@
 #include "Game/Object/Platform/CrateStrongPlatform/CrateStrongPlatform.h"
 
 namespace {
-	constexpr int PLATFORM_MAX = 650;
+	constexpr int PLATFORM_MAX = 668;
 	constexpr int PLATFORM_ID = 1;
 	constexpr int PLATFORM_REQUEST_DATA_MAX = 17;
 }

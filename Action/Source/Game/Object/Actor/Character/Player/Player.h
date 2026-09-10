@@ -135,6 +135,7 @@ private:
 	float		m_AttackRotationSpeed;						//攻撃回転補間速度
 	bool		m_IsSetAttackMoveVec[NORMAL_ATTACK_MAX];	//攻撃進行方向を設定したか
 	float		m_TargetAngle;								//攻撃対象との角度差
+	bool		m_IsSkillPointsCalc;						//スキルポイント計算を行ったか
 
 	bool		m_IsRespawn;								//リスポーン中か
 
@@ -247,4 +248,7 @@ public:
 	void		SetAttackTarget(ObjectBase* _Object) { m_AttackTarget = _Object; }
 	//リスポーン中か
 	void		SetIsRespawn(bool _IsRespawn) { m_IsRespawn = _IsRespawn; }
+
+	//
+	void		SkillPointsCalc();
 };

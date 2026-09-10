@@ -4,10 +4,6 @@
 #include "Game/Base/Object/ActorBase/Character/EnemyBase/EnemyBase.h"
 #include "Game/Object/Sword/Sword.h"
 
-namespace {
-	constexpr int ATTACK_SUCCESS_SKILL_POINT = 3;	//攻撃成功時の獲得スキルポイント
-}
-
 //オブジェクト同士の押し合い当たり判定
 void HitCheck::ObjectToObjectPush(ObjectBase& _ObjectA, ObjectBase& _ObjectB) {
 	//どちらかのオブジェクトの生存フラグがオフになっていれば以降の処理をしない
@@ -190,10 +186,7 @@ void HitCheck::ObjectToObjectAttack(ObjectBase& _Object, ObjectBase& _AttackObje
 			//当たっていれば
 			if (IsHit) {
 				_Object.HitCalc(PointerPlayer);
-				//攻撃成功時にスキルポイントを獲得
-				int SkillPoints = PointerPlayer->GetSkillPoints();
-				SkillPoints += ATTACK_SUCCESS_SKILL_POINT;
-				PointerPlayer->SetSkillPoints(SkillPoints);
+				PointerPlayer->SkillPointsCalc();
 			}
 		}
 	}

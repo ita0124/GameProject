@@ -4,21 +4,24 @@ namespace {
 	constexpr float		RAD = 20.0f;
 	constexpr VECTOR	DROP_ITEM_SIZE = { RAD ,RAD ,RAD };
 
-	constexpr float		FALL_OUT_Y = -500.0f;													//落下判定のY座標
+	constexpr float		FALL_OUT_Y = -500.0f;								//落下判定のY座標
 
-	constexpr float		ROTATION_SPEED = 2.5f;					//回転速度
-	constexpr float		ORBIT_RADIUS_DECREASE_SPEED = 0.8f;		//旋回半径減少速度
-	constexpr float		ORBIT_HEIGHT_OFFSET = 18.0f;			//旋回時の高さ補正
-	constexpr float		ORBIT_RADIUS_MIN = 3.0f;				//吸収開始半径
-	constexpr float		SCALE_DECREASE_RATE = 0.97f;			//縮小率
-	constexpr float		ORBIT_RADIUS = 25.0f;					//旋回半径
-	constexpr float		ORBIT_SPEED = 15.0f * RADIAN_CALC;		//旋回速度
-	constexpr int		COIN_COUNT = 1;							//取得コイン量
+	constexpr float		ROTATION_SPEED = 2.5f;								//回転速度
+	constexpr float		ORBIT_RADIUS_DECREASE_SPEED = 0.8f;					//旋回半径減少速度
+	constexpr float		ORBIT_HEIGHT_OFFSET = 18.0f;						//旋回時の高さ補正
+	constexpr float		ORBIT_RADIUS_MIN = 3.0f;							//吸収開始半径
+	constexpr float		SCALE_DECREASE_RATE = 0.97f;						//縮小率
+	constexpr float		ORBIT_RADIUS = 25.0f;								//旋回半径
+	constexpr float		ORBIT_SPEED = 15.0f * RADIAN_CALC;					//旋回速度
+	constexpr int		COIN_COUNT = 1;										//取得コイン量
 
-	constexpr float		FIRST_JUMP_POWER = 3.0f;			//初回ジャンプ力
-	constexpr float		JUMP_POWER_MAX = -7.5f;				//ジャンプ速度の下限
-	constexpr float		GRAVITY = -0.025f;					//重力
-	constexpr float		GRAVITY_MAX = -0.25f;				//最大重力
+	constexpr float		FIRST_JUMP_POWER = 3.0f;							//初回ジャンプ力
+	constexpr float		JUMP_POWER_MAX = -7.5f;								//ジャンプ速度の下限
+	constexpr float		GRAVITY = -0.025f;									//重力
+	constexpr float		GRAVITY_MAX = -0.25f;								//最大重力
+
+	constexpr int		MOVE_RANDOM_RANGE = 200;							//移動方向のランダム範囲
+	constexpr float		MOVE_RANDOM_OFFSET = (float)MOVE_RANDOM_RANGE*HALF;	//移動方向のランダム範囲の半分
 }
 
 //コンストラクタ
@@ -138,18 +141,24 @@ void DropItemBase::GravityManager() {
 //リクエスト
 bool DropItemBase::Request(const VECTOR& _Pos) {
 	if (m_IsActive)return false;
-
+	//ヒット判定オフ
 	m_IsHit = false;
+	//生存フラグオン
 	m_IsActive = true;
+	//重力判定オン
 	m_IsGravity = true;
+	//座標代入
 	m_Pos = _Pos;
+	//放出力
 	m_JumpPower = FIRST_JUMP_POWER;
-	VECTOR MoveVec = VGet((float)GetRand(100), 0.0f, (float)GetRand(100));
+
+	VECTOR MoveVec = VGet((float)GetRand(MOVE_RANDOM_RANGE) - MOVE_RANDOM_OFFSET,0.0f,(float)GetRand(MOVE_RANDOM_RANGE) - MOVE_RANDOM_OFFSET);
+
 	m_MoveVec = VNorm(MoveVec);
 	m_Scale = VONE;
 
 	m_State = IDEL;
-
+	//サウンドリクエスト
 	SoundManager::Play(SoundManager::SE_DROP_ITEM);
 
 	return true;

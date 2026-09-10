@@ -96,6 +96,8 @@ namespace {
 
 	constexpr VECTOR	EFFECT_SCALE = { 5.0f,5.0f,5.0f };										//エフェクトの拡大倍率
 
+	constexpr int		ATTACK_SUCCESS_SKILL_POINT = 3;											//攻撃成功時の獲得スキルポイント
+
 	constexpr char		FILE_PATH[] = ("Data/Model/Player/MainBody/MainBody.mv1");				//モデルファイルパス
 }
 
@@ -155,6 +157,7 @@ void Player::Init() {
 		m_IsSetAttackMoveVec[Index] = true;		//攻撃進行方向を設定したか
 	}
 	m_IsAttackCollision = false;				//攻撃の当たり判定を発生させてよいか
+	m_IsSkillPointsCalc = false;				//スキルポイント計算を行ったか
 
 	m_IsRespawn = false;						//リスポーン中か
 
@@ -544,6 +547,8 @@ void Player::SkillAttack() {
 		m_SkillPoints += -MAX_SKILL_POINTS;
 		///演出を実行オフ
 		m_IsPerformance = false;
+		//スキルポイント計算済み判定をオフ
+		m_IsSkillPointsCalc = false;
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > SKILL_ATTACK_COLLISION_START && m_AnimeData.Frame < SKILL_ATTACK_COLLISION_END) {
@@ -615,6 +620,8 @@ void Player::NormalAttack1() {
 		m_AttackRotationSpeed = NORMAL_ATTACK1_MOVE_ROTATE_SPEED;
 		///演出を実行オフ
 		m_IsPerformance = false;
+		//スキルポイント計算済み判定をオフ
+		m_IsSkillPointsCalc = false;
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > NORMAL_ATTACK1_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK1_COLLISION_END) {
@@ -724,6 +731,8 @@ void Player::NormalAttack2() {
 		m_AttackRotationSpeed = NORMAL_ATTACK2_MOVE_ROTATE_SPEED;
 		///演出を実行オフ
 		m_IsPerformance = false;
+		//スキルポイント計算済み判定をオフ
+		m_IsSkillPointsCalc = false;
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > NORMAL_ATTACK2_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK2_COLLISION_END) {
@@ -835,6 +844,8 @@ void Player::NormalAttack3() {
 		m_AttackRotationSpeed = NORMAL_ATTACK3_MOVE_ROTATE_SPEED;
 		///演出を実行オフ
 		m_IsPerformance = false;
+		//スキルポイント計算済み判定をオフ
+		m_IsSkillPointsCalc = false;
 	}
 	//指定フレームから指定フレームまでの間
 	if (m_AnimeData.Frame > NORMAL_ATTACK3_COLLISION_START && m_AnimeData.Frame < NORMAL_ATTACK3_COLLISION_END) {
@@ -1215,4 +1226,11 @@ void Player::IsParrySucessManager() {
 		m_IsCollision = true;
 	}
 
+}
+void Player::SkillPointsCalc() {
+	if (!m_IsSkillPointsCalc) {
+		m_SkillPoints += ATTACK_SUCCESS_SKILL_POINT;
+		//スキルポイント計算済み判定をオン
+		m_IsSkillPointsCalc = true;
+	}
 }
