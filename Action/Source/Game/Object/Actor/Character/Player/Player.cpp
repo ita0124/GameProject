@@ -62,7 +62,7 @@ namespace {
 	constexpr float		NORMAL_ATTACK2_BACkK_POWER = 5.0;										//通常攻撃２段目時の敵へ与えるノックバックの強さ
 	constexpr float		NORMAL_ATTACK3_BACkK_POWER = 25.0;										//通常攻撃３段目時の敵へ与えるノックバックの強さ
 
-	constexpr float		ATTACK_TARGET_APPROACH_DISTANCE = 40.0f;								//攻撃対象へ向かう距離の値
+	constexpr float		ATTACK_TARGET_APPROACH_DISTANCE = 70.0f;								//攻撃対象へ向かう距離の値
 
 	constexpr float		GUARD_SUCCESS_TIME = 30;												//ガードアクション成功の継続時間
 	constexpr float		PARRY_SUCCESS_TIME = 30;												//パリィアクション成功の継続時間
@@ -187,6 +187,9 @@ void Player::Step() {
 	if (m_HitPoints <= 0) {
 		m_HitPoints = 0;
 		m_State = DEATH;
+	}
+	if (m_HitPoints >= MAX_HITPOINTS){
+		m_HitPoints = MAX_HITPOINTS;
 	}
 	if (m_SkillPoints >= MAX_SKILL_POINTS) {
 		m_SkillPoints = MAX_SKILL_POINTS;

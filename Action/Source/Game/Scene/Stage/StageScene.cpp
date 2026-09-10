@@ -128,9 +128,6 @@ void StageScene::Draw() {
 		m_StatusDrawManager.Draw();					//ステータス描画マネージャー
 		break;
 	}
-	DrawFormatStringToHandle(10, 400, RED, DxLibFont::FONTHNDL_N20, "X:%f", m_Player.GetPos().x);
-	DrawFormatStringToHandle(10, 420, RED, DxLibFont::FONTHNDL_N20, "Y:%f", m_Player.GetPos().y);
-	DrawFormatStringToHandle(10, 440, RED, DxLibFont::FONTHNDL_N20, "Z:%f", m_Player.GetPos().z);
 }
 //初期化処理管理関数
 void StageScene::Init() {
