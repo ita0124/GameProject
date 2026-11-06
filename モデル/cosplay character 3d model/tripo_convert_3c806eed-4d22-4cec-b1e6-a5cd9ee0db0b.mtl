@@ -1,0 +1,16 @@
+# Blender 5.0.1 MTL File: 'None'
+# www.blender.org
+
+newmtl tripo_mat_3c806eed-4d22-4cec-b1e6-a5cd9ee0db0b
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd cosplay_character_3d_model_basecolor.JPEG
+map_Ns cosplay_character_3d_model_roughness.JPEG
+map_Pr cosplay_character_3d_model_roughness.JPEG
+map_refl cosplay_character_3d_model_metallic.JPEG
+map_Pm cosplay_character_3d_model_metallic.JPEG
+map_Bump -bm 1.000000 cosplay_character_3d_model_normal.JPEG

@@ -1,0 +1,16 @@
+# Blender 5.0.1 MTL File: 'None'
+# www.blender.org
+
+newmtl tripo_mat_7dec3c6b-f761-4cff-97e4-4748ff4e4943
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd magic_staff_3d_model_basecolor.JPEG
+map_Ns magic_staff_3d_model_roughness.JPEG
+map_Pr magic_staff_3d_model_roughness.JPEG
+map_refl magic_staff_3d_model_metallic.JPEG
+map_Pm magic_staff_3d_model_metallic.JPEG
+map_Bump -bm 1.000000 magic_staff_3d_model_normal.PNG
